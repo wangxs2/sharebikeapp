@@ -19,7 +19,7 @@
               <div class="right">
                   <div class="topRight">
                       <p><span>{{FormatDate(iteam.updateTime)}}</span> <span :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</span></p>
-                      <p style="width:0.1rem"></p>
+                      <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="bottomRight">
                       <span class="mint-toast-icon mintui mintui-search"></span>
@@ -161,7 +161,7 @@ export default {
         display: flex;
         flex: 1;
         p {
-          width: 100%;
+          // width: 100%;
           display: flex;
           flex: 1;
           justify-content: space-between;
