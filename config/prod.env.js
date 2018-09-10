@@ -1,0 +1,8 @@
+'use strict'
+module.exports = {
+  NODE_ENV: '"production"',
+  // API_HOST:'"http://101.132.164.97:8888/babyrobot/"'
+  // API_HOST:'"http://10.1.4.163:8888/babyrobot/"'
+  API_HOST:'"http://localhost:8090/sharebikesclean/"'
+  // API_HOST:'"http://10.1.30.205:20100/babyrobot/"'
+}
