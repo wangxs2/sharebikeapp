@@ -13,15 +13,15 @@
                 <img slot="icon" src="../../assets/image/login/LOGO.png">
                 督办
             </mt-tab-item>
-            <mt-tab-item id="/layout/supervise">
+            <mt-tab-item id="/layout/count">
                 <img slot="icon" src="../../assets/image/login/LOGO.png">
                  统计
             </mt-tab-item>
-            <mt-tab-item id="/layout/supervise">
+            <mt-tab-item id="/layout/warning">
                 <img slot="icon" src="../../assets/image/login/LOGO.png">
                预警
             </mt-tab-item>
-             <mt-tab-item id="/layout/supervise">
+             <mt-tab-item id="/layout/me">
                 <img slot="icon" src="../../assets/image/login/LOGO.png">
                 <!-- <img slot="icon" src="../../assets/image/login/LOGO.png"> -->
                 <!-- <i class="iconfont icon-zhanghao"></i> -->

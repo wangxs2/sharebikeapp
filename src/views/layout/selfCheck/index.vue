@@ -5,7 +5,7 @@
         <!-- 自查
         <mt-button icon="more" slot="right"></mt-button> -->
         <mt-header title="自查">
-            <mt-button class="iconfont icon-zhanghao"  slot="right" @click="iconClick">
+            <mt-button class="iconfont icon-gengduo"  slot="right" @click="iconClick">
                 
             </mt-button>
         </mt-header>
@@ -22,7 +22,7 @@
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="bottomRight">
-                      <span class="mint-toast-icon mintui mintui-search"></span>
+                      <span class="iconfont icon-weizhi"></span>
                       <span class="moreFont">{{iteam.handleAddr}}</span>
                   </div>
               </div>
