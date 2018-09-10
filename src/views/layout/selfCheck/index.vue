@@ -121,10 +121,10 @@ export default {
   flex-direction: column;
   .header {
     width: 100%;
-    height: 2.666667rem;
+    height: 1rem;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     text-align: center;
-    line-height: 2.666667rem;
+    line-height: 1rem;
     color: #fff;
   }
   .content {

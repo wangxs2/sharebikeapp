@@ -33,7 +33,7 @@ body,
   color: #5076ff;
 }
 .mint-header {
-  height: 2.666667rem;
+  height: 1rem;
   font-size: 16px;
   background: -webkit-linear-gradient(left, #6698ff, #5076ff);
 }

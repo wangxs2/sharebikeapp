@@ -11,35 +11,35 @@
       </div>
       <div class="content">
         <div class="iteamForm">
-          <i class="iconfont icon-zhanghao"></i>
+          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
           <p>
             <span>时间</span>
             <input type="text" placeholder="请选择时间">
           </p>
         </div>
         <div class="iteamForm">
-          <i class="iconfont icon-zhanghao"></i>
+          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
           <p>
             <span>地点</span>
             <input type="text" placeholder="请选择地点">
           </p>
         </div>
         <div class="iteamForm">
-          <i class="iconfont icon-zhanghao"></i>
+          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
           <p>
             <span>整理数</span>
             <input type="text" placeholder="请选择整理数">
           </p>
         </div>
         <div class="iteamForm">
-          <i class="iconfont icon-zhanghao"></i>
+          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
           <p>
             <span>清运数</span>
             <input type="text" placeholder="请选择清运数">
           </p>
         </div>
         <div class="iteamForm" style="height:100px">
-          <i class="iconfont icon-zhanghao"></i>
+          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
           <p>
             <span>备注</span>
             <textarea cols="50" rows="10" placeholder="请选择备注"></textarea>
@@ -89,10 +89,10 @@ textarea {
   flex-direction: column;
   .header {
     width: 100%;
-    height: 2.666667rem;
+    height: 1rem;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     text-align: center;
-    line-height: 2.666667rem;
+    line-height: 1rem;
     color: #fff;
   }
   .content {
@@ -116,9 +116,9 @@ textarea {
         padding-left: 1rem;
         span {
           color: #282828;
-          font-size: 1rem;
+          font-size: 0.4rem;
           text-align: left;
-          width: 20%;
+          width: 22%;
         }
       }
     }
@@ -131,10 +131,10 @@ textarea {
       border-radius: 0;
       text-align: center;
       width: 50%;
-      height: 4rem;
+      height: 1.5rem;
       color: #fff;
-      line-height: 4rem;
-      font-size: 1.2rem;
+      line-height: 1.5rem;
+      font-size: 0.5rem;
       background: -webkit-linear-gradient(left, #c69efc, #8f78f4);
     }
     .buttonSa1 {
@@ -142,10 +142,10 @@ textarea {
       border-radius: 0;
       text-align: center;
       width: 50%;
-      height: 4rem;
+      height: 1.5rem;
       color: #fff;
-      line-height: 4rem;
-      font-size: 1.2rem;
+      line-height: 1.5rem;
+      font-size: 0.5rem;
       background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     }
   }

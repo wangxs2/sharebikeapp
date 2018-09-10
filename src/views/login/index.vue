@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="content">
-        <p style="height:2rem;"></p>
+        <p style="height:0.8rem;"></p>
           <div class="formList">
               <mt-field label="用户名" placeholder="请输入用户名" v-model="loginMess.username"></mt-field>
               <mt-field label="密码" placeholder="请输入密码" type="password" v-model="loginMess.password"></mt-field>
@@ -103,14 +103,14 @@ export default {
     box-sizing: border-box;
     .title {
       width: 100%;
-      height: 9.92rem;
+      height: 4.96rem;
       padding-top: 1rem;
       box-sizing: border-box;
       background: -webkit-linear-gradient(left, #6698ff, #5076ff);
       text-align: center;
       color: #fff;
       p {
-        font-size: 1.5rem;
+        font-size: 0.5rem;
         padding: 0;
         margin: 0;
         margin-top: 0.2rem;
@@ -121,7 +121,7 @@ export default {
   .content {
     flex: 1;
     .formList {
-      margin: 1rem;
+      margin: 0.5rem;
     }
     .forget {
       margin: 1.2rem;

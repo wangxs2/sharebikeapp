@@ -5,9 +5,9 @@
         <!-- 自查
         <mt-button icon="more" slot="right"></mt-button> -->
         <mt-header title="派单">
-            <mt-button class="iconfont icon-zhanghao"  slot="right" @click="iconClick">
+            <!-- <mt-button class="iconfont icon-gengduo"  slot="right" @click="iconClick">
                 
-            </mt-button>
+            </mt-button> -->
         </mt-header>
       </div>
       <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
@@ -19,9 +19,10 @@
               <div class="right">
                   <div class="topRight">
                       <p><span>{{FormatDate(iteam.updateTime)}}</span> <span :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</span></p>
+                      <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="bottomRight">
-                      <span class="mint-toast-icon mintui mintui-search"></span>
+                      <span class="iconfont icon-weizhi"></span>
                       <span class="moreFont">{{iteam.handleAddr}}</span>
                   </div>
               </div>
@@ -37,7 +38,7 @@ export default {
   computed: {},
   data() {
     return {
-      selected: "/layout/supervise",
+      selected: "/layout/selfCheck",
       searchCondition: {
         //分页属性
         page: "1",
@@ -120,10 +121,10 @@ export default {
   flex-direction: column;
   .header {
     width: 100%;
-    height: 2.666667rem;
+    height: 1rem;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     text-align: center;
-    line-height: 2.666667rem;
+    line-height: 1rem;
     color: #fff;
   }
   .content {
@@ -160,7 +161,7 @@ export default {
         display: flex;
         flex: 1;
         p {
-          width: 100%;
+          // width: 100%;
           display: flex;
           flex: 1;
           justify-content: space-between;
@@ -183,5 +184,4 @@ export default {
   }
 }
 </style>
-
 
