@@ -5,16 +5,16 @@
         <!-- 自查
         <mt-button icon="more" slot="right"></mt-button> -->
         <mt-header title="自查">
-            <mt-button class="iconfont icon-gengduo"  slot="right" @click="iconClick">
+            <mt-button class="iconfont icon-gengduo" style="font-size:24px" slot="right" @click="iconClick">
                 
             </mt-button>
         </mt-header>
       </div>
       <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
         <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-          <div class="iteamList" v-for="(iteam, index) in pageList">
+          <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
-                  <img src="../../../assets/image/login/LOGO.png" alt="" width="110" height="84" srcset="">
+                  <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="110" height="84" srcset="">
               </div>
               <div class="right">
                   <div class="topRight">
@@ -34,6 +34,7 @@
 
 <script>
 import { Loadmore } from "mint-ui";
+import { Toast } from 'mint-ui';
 export default {
   computed: {},
   data() {
@@ -61,7 +62,24 @@ export default {
     this.loadPageList(); //初次访问查询列表
   },
   methods: {
-    iconClick(){
+    detailClick(row) {
+      if (row.status == 2) {
+        this.$router.push({
+          path: "/selfCheckdetail",
+          query: {
+            message: row.sheetCode
+          }
+        });
+      } else {
+        this.$router.push({
+          path: "/selfCheckAdd",
+          query: {
+            message: row.sheetCode
+          }
+        });
+      }
+    },
+    iconClick() {
       this.$router.push("/selfCheckAdd");
     },
     loadTop() {
@@ -77,9 +95,14 @@ export default {
     },
     loadPageList() {
       // 查询数据
+      Toast({
+        message: "加载中...",
+        position: "center",
+        duration: 1000
+      });
       this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
         data => {
-          console.log(data);
+          // console.log(data);
           // 是否还有下一页，加个方法判断，没有下一页要禁止上拉
           this.isHaveMore(data.nextPage);
           this.pageList = data.list;
@@ -121,10 +144,10 @@ export default {
   flex-direction: column;
   .header {
     width: 100%;
-    height: 1rem;
+    height: 1.173333rem;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     text-align: center;
-    line-height: 1rem;
+    line-height: 1.173333rem;
     color: #fff;
   }
   .content {

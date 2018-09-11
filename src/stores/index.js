@@ -49,4 +49,9 @@ document.addEventListener("plusready", function () {
       }
   }, false);
 });
+// getImage();
+window.getImage=function(val){
+    stores.commit('SET_IMAGE', val)
+    alert(val)
+}
 export default stores

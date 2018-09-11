@@ -42,14 +42,23 @@ export default {
   data() {
     return {
         selected:"/layout/selfCheck",
+        // selected:"",
+        roleCode:"",
     };
+  },
+  created(){
+    this.roleCode = localStorage.roleCode;
+    // console.log(this.roleCode)
   },
   methods:{
     message(val){
-      console.log(this.selected)
+      // console.log(this.selected)
+      if(this.roleCode=="clean"&&this.selected=="/layout/supervise"){
+        this.$router.push("/layout/needtodo");
+      }else{
+        this.$router.push(this.selected);
+      }
       
-      this.$router.push(this.selected);
-
     }
   }
 };

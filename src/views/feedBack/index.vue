@@ -1,76 +1,47 @@
 
 <template>
   <div class="container">
-      <div class="header">
-      
-        <mt-header title="企业自查">   
-            <router-link to="/layout/selfCheck" slot="left">
-                <mt-button icon="back" style="font-size:24px"></mt-button>
-            </router-link>         
+      <div class="header">  
+        <mt-header title="处理情况反馈">  
+            <mt-button class="iconfont icon-fanhui" style="font-size:24px;color:#fff" slot="left" @click="iconClick">                
+            </mt-button>       
         </mt-header>
       </div>
       <div class="content">
-        <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-          <p>
-            <span>时间</span>
-            <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
-          </p>
-        </div>
-        <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-          <p>
-            <span>地点</span>
-            <input type="text" placeholder="请输入清理地点" v-model="formMessage.handleAddr">
-          </p>
-        </div>
-        <div class="iteamImage">
-          <p>
-            <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-            <span style="padding-left:0.5rem">整理前</span>
-          </p>
-          <p class="imageClean">
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
-               <vue-preview :slides="slide" @close="handleClose"></vue-preview>
-             
-          </p>
-        </div>
-        <div class="iteamImage">
-          <p>
-            <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-            <span style="padding-left:0.5rem">整理后</span>
-          </p>
-          <p class="imageClean">
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage1"></i>
-             <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
-          </p>
-        </div>
-        <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-          <p>
-            <span>整理数</span>
-            <input type="text" placeholder="请选择整理数" v-model="formMessage.arrangeNum">
-          </p>
-        </div>
-        <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-          <p>
-            <span>清运数</span>
-            <input type="text" placeholder="请选择清运数" v-model="formMessage.cleanNum">
-          </p>
-        </div>
         <div class="iteamForm" style="height:100px">
           <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
           <p>
-            <span>备注</span>
-            <textarea cols="50" rows="10" placeholder="请选择备注" v-model="formMessage.remark"></textarea>
+            <span>处理情况</span>
+            <textarea cols="50" rows="10" placeholder="请输入处理情况" v-model="formMessage.remark"></textarea>
+          </p>
+        </div>
+        <div class="iteamImage">
+          <p>
+            <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+            <span style="padding-left:0.5rem">核实照片</span>
+          </p>
+          <p class="imageClean">
+             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px"></i>
+               <vue-preview :slides="slide" @close="handleClose"></vue-preview>             
+          </p>
+        </div>
+        <div class="iteamImage">
+          <p>
+            <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+            <span style="padding-left:0.5rem">派单</span>
+          </p>
+          <p class="imageClean">
+                <mt-checklist
+                    v-model="value"
+                    :options="options" @change="getCompany">
+                </mt-checklist>
           </p>
         </div>
         </form>
        
       </div>
       <div class="bottom">
-          <button type="button" class="buttonSa" @click.native="save()">暂存</button>
+          <button type="button" class="buttonSa" @click.native="save()">重新派单</button>
           <button type="button" class="buttonSa1" @click.native="submit()">完成</button>
       </div>
   </div>
@@ -87,6 +58,8 @@ export default {
       slide: [],
       sheetCode: "",
       iteamList: {},
+      options: [],
+      value: [],
       formMessage: {
         handleTime: Date.now(),
         handleAddr: "",
@@ -101,55 +74,45 @@ export default {
   components: {},
   mounted() {},
   created() {
+    this.getAll();
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
-      this.getMessage(this.sheetCode);
     }
   },
-  mounted() {},
+  mounted() {
+    console.log(this.$store.getters.imageUrl);
+  },
   methods: {
+    getAll() {
+      this.$fetchGet("count/bikeCompany").then(res => {
+        res.forEach(iteam => {
+          let obj = {};
+          obj.label = iteam.name;
+          obj.value = iteam.id;
+          this.options.push(obj);
+        });
+      });
+    },
+    getCompany(val) {
+      this.value = val;
+      console.log(this.value);
+    },
+    iconClick() {
+      this.$router.push({
+        path: "/superviseDetail",
+        query: {
+          message: this.sheetCode
+        }
+      });
+    },
     clickImage() {
       window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
-      let obj = {};
-      obj.w = 600;
-      obj.h = 600;
-      obj.msrc = this.Ip + this.$store.getters.imageUrl;
-      obj.src = this.Ip + this.$store.getters.imageUrl;
-      this.slide.push(obj);
-      // alert(this.$store.getters.imageUrl)
     },
     clickImage1() {
       window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
     },
     handleClose() {
       console.log("close event");
-    },
-    getMessage(val) {
-      this.$fetchGet("selfcheck/selfCheck", {
-        sheetCode: val
-      })
-        .then(res => {
-          this.formMessage = res;
-          this.formMessage.handleBeforeURLs.forEach(iteam => {
-            let obj = {};
-            console.log(iteam);
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide.push(obj);
-          });
-          this.formMessage.handleAfterURLs.forEach(iteam => {
-            let obj = {};
-            console.log(iteam);
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide1.push(obj);
-          });
-        })
-        .catch(res => {});
     },
     save() {
       this.$fetchPost("selfcheck", this.formMessage)
@@ -221,7 +184,7 @@ textarea {
           color: #282828;
           font-size: 0.4rem;
           text-align: left;
-          width: 22%;
+          width: 27%;
         }
       }
     }

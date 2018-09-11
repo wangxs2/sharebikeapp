@@ -29,7 +29,7 @@
 
 <script>
 import base64 from "@/libs/base.js";
-import { MessageBox } from 'mint-ui';
+import { MessageBox } from "mint-ui";
 export default {
   data() {
     return {
@@ -67,9 +67,12 @@ export default {
       this.$fetchPost("login", data)
         .then(res => {
           if (res.status == "success") {
-            this.message = "登录成功";
             document.cookie = "user=" + res.id;
             document.cookie = "userName=" + res.userName;
+            localStorage.setItem(
+                "roleCode",
+                res.info.roleCode
+            );
             this.$router.push("/layout/selfCheck");
           } else if (res.status == "fail") {
             MessageBox.alert("", {
