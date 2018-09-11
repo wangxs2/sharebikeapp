@@ -2,7 +2,6 @@
 <template>
   <div class="container">
       <div class="header">
-      
         <mt-header title="添加企业自查">   
             <router-link to="/layout/selfCheck" slot="left">
                 <mt-button icon="back"></mt-button>

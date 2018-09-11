@@ -1,18 +1,38 @@
-
-
 <template>
   <div class="container">
-      <div class="header">
-       
-        <mt-header title="预警">
-            <!-- <mt-button class="iconfont icon-zhanghao"  slot="right" @click="iconClick">
-                
-            </mt-button> -->
-        </mt-header>
+    <div class="header">
+      <div class="header-tittle">预警</div>
+    </div>
+    <div class="content">
+      <div class="warning-box">
+        <div class="warning-box-top">
+          <div class="warning-info">
+            <div class="warning-info-top">
+              <div class="warning-info-date"></div>
+              <div class="warning-info-status"></div>
+            </div>
+            <div class="warning-info-bottom">
+              <img src="" alt="">
+              <div class="warning-info-address"></div>
+            </div>
+          </div>
+          <div class="warning-btn">
+            <div class="warning-btn-detail"></div>
+            <div class="warning-btn-ignore"></div>
+          </div>
+        </div>
+        <div class="warning-total">
+          <div class="warning-total-cars">
+            <div class="warning-total-title"></div>
+            <div class="warning-total-data"></div>
+          </div>
+          <div class="warning-total-parking">
+            <div class="warning-total-title"></div>
+            <div class="warning-total-data"></div>
+          </div>
+        </div>
       </div>
-      <div class="content" >
-      
-      </div>
+    </div>
   </div>
 </template>
 
@@ -21,52 +41,63 @@ import { Loadmore } from "mint-ui";
 export default {
   computed: {},
   data() {
-    return {
-      selected: "/layout/count",
-     
-    };
+    return {};
   },
-  components: {
-   
-  },
-  mounted() {
-  },
+  components: {},
+  mounted() {},
   created() {},
-  mounted() {
-  },
-  methods: {
- 
-  }
+  mounted() {},
+  methods: {}
 };
 </script>
 
 <style lang="scss" scoped>
-.containerSa {
+.container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   .header {
-    width: 100%;
-    height: 2.666667rem;
+    height: 1.173333rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
-    text-align: center;
-    line-height: 2.666667rem;
     color: #fff;
+    font-size: 0.48rem;
+    flex-shrink: 0;
   }
   .content {
-    flex: 1;
+    height: 100%;
+    background-color: #f2f2f2;
+    padding: 0 0.32rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    .warning-box {
+      margin-top: 0.32rem;
+      height: 2.986667rem;
+      background: rgba(255, 255, 255, 1);
+      border-radius: 12px;
+      padding: 0.32rem;
+      box-sizing: border-box;
+      .warning-box-top {
+        width: 100%;
+        height: 1.706667rem;
+        border-bottom:1px solid salmon;
+        .warning-info {
+
+        }
+        .warning-btn {
+
+        }
+      }
+      .warning-total {
+      }
+    }
   }
 }
-.green {
-  color: #ffc000;
-}
-.red {
-  color: #41cd76;
-}
 </style>
-<style  lang="scss" scoped>
-.container {
-}
-</style>
+
 

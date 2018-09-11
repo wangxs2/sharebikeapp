@@ -51,6 +51,11 @@ export const constantRouterMap = [
     name: '添加企业自查',
     component: _import('selfCheckAdd/index')
   },
+  {
+    path: '/infoModification',
+    name: '个人信息修改',
+    component: _import('infoModification/index')
+  }
   // {
   //   path: '/test',
   //   name: '测试组件',
