@@ -7,12 +7,16 @@
         <div class="header-setting"><img src="@/assets/image/me/icon_nav_set@2x.png" alt="" @click="iconClick"></div>
       </div>
       <div class="header-content">
-        <img class="user-avatar" src="" alt="">
+        <img class="user-avatar" :src="Ip + userInfo.imageURL" alt="" v-if="userInfo.imageURL">
+        <img class="user-avatar" src="@/assets/image/me/默认头像@2x.png" alt="" v-else>
         <div class="user-info">
-          <div class="user-name">李木木</div>
-          <div class="user-gender"><img src="@/assets/image/me/icon_woman@2x.png" alt=""></div>
+          <div class="user-name" v-text="userInfo.userName"></div>
+          <div class="user-gender">
+            <img src="@/assets/image/me/icon_woman@2x.png" alt="" v-if="userInfo.sex == 'W'">
+            <img src="@/assets/image/me/icon_man@2x.png" alt="" v-else>
+          </div>
         </div>
-        <div class="user-email">email：54325116@163.com</div>
+        <div class="user-email" v-text="'email: ' + userInfo.emailAddr"></div>
       </div>
     </div>
     <div class="content">
@@ -51,8 +55,11 @@
 
 <script>
 import { Loadmore } from "mint-ui";
+import { mapGetters } from "vuex";
 export default {
-  computed: {},
+  computed: {
+    ...mapGetters(["userInfo"])
+  },
   data() {
     return {
       userCount: {}

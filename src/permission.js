@@ -7,16 +7,43 @@ import {
 
 
 router.beforeEach((to, from, next) => {
-  if (to.path === '/') {
-    next('/login');
-    return;
-  }
-  if (to.path === '/login') {
+  if (to.path === "/login") {
+    delCookie('flag');
+    store.commit("SET_USERINFO", {});
     next();
     return;
-  }else{
-    next()
   }
+
+  if (to.path !== "/login" && !getCookie('flag')) {
+    next('/login');
+    return;
+  } else if (getCookie('flag')) {
+    if (getCookie('userId') == (store.getters.userId + '')) {
+      next();
+    } else {
+      store.dispatch("GetUserInfo").then(res => {
+        if (to.path == '/') {
+          next("/layout/selfCheck")
+        } else {
+          next({ ...to,
+            replace: true
+          })
+        }
+      })
+    }
+  }
+
+
+  // if (to.path === '/') {
+  //   next('/login');
+  //   return;
+  // }
+  // if (to.path === '/login') {
+  //   next();
+  //   return;
+  // } else {
+  //   next()
+  // }
 
   // if (to.path != '/login' && to.path != '/socket' && to.path != '/forget' && !getCookie('flag')) {
   //   next('/login');
@@ -52,5 +79,4 @@ router.beforeEach((to, from, next) => {
 
 })
 
-router.afterEach((to, from) => {
-})
+router.afterEach((to, from) => {})

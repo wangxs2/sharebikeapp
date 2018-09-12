@@ -60,6 +60,11 @@ export const constantRouterMap = [
     path: '/infoModification',
     name: '个人信息修改',
     component: _import('infoModification/index')
+  },
+  {
+    path: '/warningDetail',
+    name: '预警详情',
+    component: _import('warningDetail/index')
   }
   // {
   //   path: '/test',

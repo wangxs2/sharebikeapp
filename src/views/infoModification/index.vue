@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt="" @click="iconClick">
-      <div class="header-tittle">个人信息修改</div>
+      <div class="header-title">个人信息修改</div>
       <img src="" alt="">
 
     </div>
@@ -11,38 +11,45 @@
         <div class="info-title">头像</div>
         <div class="info-content">
           <img class="user-avatar-arrow" src="@/assets/image/infoModification/icon_next@2x.png" alt="">
-          <img class="user-avatar" src="" alt="">
+          <img class="user-avatar" :src="Ip + userInfoNew.imageURL" alt="" v-if="userInfoNew.imageURL">
+          <img class="user-avatar" src="@/assets/image/infoModification/默认头像@2x.png" alt="" v-else>
 
         </div>
       </div>
       <div class="user-info-box box-margin-large">
         <div class="info-title">姓名</div>
-        <div class="info-content">李木木</div>
+        <!-- <div class="info-content" v-text="userInfo.userName"></div> -->
+        <input class="info-content" type="text" name="" id="" v-model="userInfoNew.userName">
+
       </div>
       <div class="user-info-box">
         <div class="info-title">性别</div>
         <div class="info-content">
           <div class="info-gender-box">
-            <img src="@/assets/image/infoModification/icon_select_pre@2x.png" alt="">
+            <img src="@/assets/image/infoModification/icon_select_pre@2x.png" alt="" v-if="userInfoNew.sex == 'W'">
+            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt="" @click="setGenderW"v-else>
             <div class="info-gender">女</div>
           </div>
           <div class="info-gender-box">
-            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt="">
+            <img src="@/assets/image/infoModification/icon_select_pre@2x.png" alt="" v-if="userInfoNew.sex == 'M'">
+            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt="" @click="setGenderM" v-else>
             <div class="info-gender">男</div>
           </div>
         </div>
       </div>
       <div class="user-info-box box-margin-large">
         <div class="info-title">邮箱</div>
-        <div class="info-content">13025463879@163.com</div>
+        <!-- <div class="info-content" v-text="userInfo.emailAddr"></div> -->
+        <input class="info-content" type="text" name="" id="" v-model="userInfoNew.emailAddr">
       </div>
       <div class="user-info-box">
         <div class="info-title">手机号</div>
-        <div class="info-content">13025492586</div>
+        <!-- <div class="info-content" v-text="userInfo.phoneNum"></div> -->
+        <input class="info-content" type="text" name="" id="" v-model="userInfoNew.phoneNum">
       </div>
     </div>
     <div class="bottom">
-      <div class="save">保存</div>
+      <div class="save" @click="saveChange">保存</div>
     </div>
     <!-- 选择头像方式 ↓-->
     <mt-popup class="avatar-popup" v-model="popupVisible" position="bottom">
@@ -63,11 +70,15 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-  computed: {},
+  computed: {
+    ...mapGetters({userInfoNew:"userInfo"}),
+
+  },
   data() {
     return {
-      popupVisible: false
+      popupVisible: false,
     };
   },
   components: {},
@@ -77,6 +88,17 @@ export default {
     //返回个人信息修改
     iconClick() {
       this.$router.push("/layout/me");
+    },
+    //设置性别
+    setGenderW(){
+      this.userInfoNew.sex = 'W';
+    },
+    setGenderM(){
+      this.userInfoNew.sex = 'M';
+    },
+    saveChange(){
+      // this.$fetchPut('user/updateUser',)
+      console.log(this.userInfoNew)
     }
   }
 };
@@ -132,6 +154,7 @@ export default {
         display: flex;
         flex-direction: row-reverse;
         align-items: center;
+        text-align: right;
         .user-avatar {
           height: 1.306667rem;
           width: 1.306667rem;

@@ -1,29 +1,29 @@
 <template>
   <div class="login">
-      <div class="header">
-        <div class="title">
-            <img src="../../assets/image/login/LOGO.png" alt="" srcset="">
-            <p>共享单车清运</p>
-        </div>
+    <div class="header">
+      <div class="title">
+        <img src="../../assets/image/login/LOGO.png" alt="" srcset="">
+        <p>共享单车清运</p>
       </div>
-      <div class="content">
-        <p style="height:0.8rem;"></p>
-          <div class="formList">
-              <mt-field label="用户名" placeholder="请输入用户名" v-model="loginMess.username"></mt-field>
-              <mt-field label="密码" placeholder="请输入密码" type="password" v-model="loginMess.password"></mt-field>
+    </div>
+    <div class="content">
+      <p style="height:0.8rem;"></p>
+      <div class="formList">
+        <mt-field label="用户名" placeholder="请输入用户名" v-model="loginMess.username"></mt-field>
+        <mt-field label="密码" placeholder="请输入密码" type="password" v-model="loginMess.password"></mt-field>
 
-          </div>
-            <!-- <p class="forget">
+      </div>
+      <!-- <p class="forget">
                    <label><input name="Fruit" class="forgetps" type="checkbox" value="" />记住密码 </label> 
             </p> -->
-          <div style="width:100%">
-            <mt-button @click.native="submitForm()" class="btn">登 录 </mt-button>
-          </div>
-          
+      <div style="width:100%">
+        <mt-button @click.native="submitForm()" class="btn">登 录 </mt-button>
       </div>
-      <div class="bottom">
-        上海产业技术研究院
-      </div>
+
+    </div>
+    <div class="bottom">
+      上海产业技术研究院
+    </div>
   </div>
 </template>
 
@@ -67,12 +67,10 @@ export default {
       this.$fetchPost("login", data)
         .then(res => {
           if (res.status == "success") {
-            document.cookie = "user=" + res.id;
-            document.cookie = "userName=" + res.userName;
-            localStorage.setItem(
-                "roleCode",
-                res.info.roleCode
-            );
+            // localStorage.setItem("roleCode", res.info.roleCode);
+            // this.$store.commit("SET_USERINFO", res.info);
+            document.cookie = "flag=true";
+            document.cookie = "userId=" + res.info.id;
             this.$router.push("/layout/selfCheck");
           } else if (res.status == "fail") {
             MessageBox.alert("", {
