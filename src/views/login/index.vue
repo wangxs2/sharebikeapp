@@ -80,14 +80,14 @@ export default {
         .then(res => {
           Indicator.close();
           if (res.status == "success") {
-            // localStorage.setItem("roleCode", res.info.roleCode);
+            localStorage.setItem("roleCode", res.info.roleCode);
             // this.$store.commit("SET_USERINFO", res.info);
             document.cookie = "flag=true";
             document.cookie = "userId=" + res.info.id;
             this.$router.push("/layout/selfCheck");
           } else if (res.status == "fail") {
             MessageBox.alert("", {
-              message: res.data,
+              message: res.info,
               title: "提示"
             }).then(action => {});
           }

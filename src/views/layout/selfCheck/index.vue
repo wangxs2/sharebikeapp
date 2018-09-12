@@ -39,6 +39,7 @@
 <script>
 import { Loadmore } from "mint-ui";
 import { Toast } from "mint-ui";
+import { Indicator } from "mint-ui";
 export default {
   computed: {},
   data() {
@@ -102,10 +103,9 @@ export default {
     },
     loadPageList() {
       // 查询数据
-      Toast({
-        message: "加载中...",
-        position: "center",
-        duration: 1000
+      Indicator.open({
+        text: "加载中...",
+        spinnerType: "fading-circle"
       });
       this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
         data => {
@@ -114,6 +114,7 @@ export default {
           }else{
             this.noneList=false
           }
+          Indicator.close();
           // console.log(data);
           // 是否还有下一页，加个方法判断，没有下一页要禁止上拉
           this.isHaveMore(data.hasNextPage);

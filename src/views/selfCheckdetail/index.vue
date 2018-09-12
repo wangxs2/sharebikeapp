@@ -94,6 +94,7 @@
 
 <script>
 import { Loadmore } from "mint-ui";
+import { Indicator } from "mint-ui";
 export default {
   computed: {},
   data() {
@@ -118,10 +119,15 @@ export default {
       console.log("close event");
     },
     getMessage(val) {
+      Indicator.open({
+        text: "加载中...",
+        spinnerType: "fading-circle"
+      });
       this.$fetchGet("selfcheck/selfCheck", {
         sheetCode: val
       })
         .then(res => {
+          Indicator.close();
           var obj = {};
           this.iteamList = res;
           this.iteamList.handleBeforeURLs.forEach(iteam => {

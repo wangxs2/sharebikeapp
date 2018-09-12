@@ -41,8 +41,7 @@ export default {
   computed: {},
   data() {
     return {
-      selected: "/layout/selfCheck",
-      // selected:"",
+      selected: "",
       roleCode: "",
       imgUrl: [
         require("../../assets/image/login/icon_tab_1_nor@3x.png"),
@@ -57,38 +56,41 @@ export default {
   created() {
     this.roleCode = localStorage.roleCode;
     console.log(this.$route.path);
-    this.changeImage();
+    this.selected=this.$route.path
+    this.changeImage(this.$route.path);
+    // this
   },
   methods: {
-    changeImage() {
-      if (this.$route.path == "/layout/selfCheck") {
+    changeImage(val) {
+      if (val == "/layout/selfCheck") {
         this.imgUrl[0] = require("../../assets/image/login/icon_tab_1_pre@3x.png");
       } else {
         this.imgUrl[0] = require("../../assets/image/login/icon_tab_1_nor@3x.png");
       }
-      if (this.$route.path == "/layout/supervise") {
+      if (val == "/layout/supervise") {
         this.imgUrl[1] = require("../../assets/image/login/icon_tab_2_pre@3x.png");
       } else {
         this.imgUrl[1] = require("../../assets/image/login/icon_tab_2_nor@3x.png");
       }
-      if (this.$route.path == "/layout/count") {
+      if (val == "/layout/count") {
         this.imgUrl[2] = require("../../assets/image/login/icon_tab_3_pre@3x.png");
       } else {
         this.imgUrl[2] = require("../../assets/image/login/icon_tab_3_nor@3x.png");
       }
-      if (this.$route.path == "/layout/warning") {
+      if (val == "/layout/warning") {
         this.imgUrl[3] = require("../../assets/image/login/icon_tab_4_pre@3x.png");
       } else {
         this.imgUrl[3] = require("../../assets/image/login/icon_tab_4_nor@3x.png");
       }
-      if (this.$route.path == "/layout/me") {
+      if (val == "/layout/me") {
         this.imgUrl[4] = require("../../assets/image/login/icon_tab_5_pre@3x.png");
       } else {
         this.imgUrl[4] = require("../../assets/image/login/icon_tab_5_nor@3x.png");
       }
     },
     message() {
-      this.changeImage();
+      this.changeImage(this.selected);
+      console.log(this.selected)
       if (this.roleCode == "clean" && this.selected == "/layout/supervise") {
         this.$router.push("/layout/needtodo");
       } else {

@@ -34,6 +34,7 @@
 
 <script>
 import { Loadmore } from "mint-ui";
+import { Indicator } from "mint-ui";
 export default {
   computed: {},
   data() {
@@ -63,13 +64,13 @@ export default {
   methods: {
     detailClick(row) {
       this.$router.push({
-          path: "/needtodoAdd",
-          query: {
-            id: row.id
-          }
-        });
+        path: "/needtodoAdd",
+        query: {
+          id: row.id
+        }
+      });
     },
-    iconClick(){
+    iconClick() {
       this.$router.push("/selfCheckAdd");
     },
     loadTop() {
@@ -85,8 +86,13 @@ export default {
     },
     loadPageList() {
       // 查询数据
+      Indicator.open({
+        text: "加载中...",
+        spinnerType: "fading-circle"
+      });
       this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
         data => {
+          Indicator.close();
           console.log(data);
           // 是否还有下一页，加个方法判断，没有下一页要禁止上拉
           this.isHaveMore(data.hasNextPage);

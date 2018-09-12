@@ -129,7 +129,7 @@
 
 <script>
 import { Loadmore } from "mint-ui";
-
+import { Indicator } from "mint-ui";
 export default {
   computed: {},
   data() {
@@ -163,10 +163,15 @@ export default {
       });
     },
     getMessage(val) {
+      Indicator.open({
+        text: "加载中...",
+        spinnerType: "fading-circle"
+      });
       this.$fetchGet("dispatch/listDispatchDetails", {
         sheetCode: val
       })
         .then(res => {
+            Indicator.close();
           this.iteamList = res;
           console.log(this.iteamList);
           res.forEach(iteam => {
