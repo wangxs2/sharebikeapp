@@ -61,7 +61,7 @@ export default {
     },
     submitForm() {
       Indicator.open({
-        text: "登陆...",
+        text: "登录...",
         spinnerType: "fading-circle"
       });
       let timeNumber = new Date().getTime();
