@@ -7,7 +7,6 @@ import {
 
 
 router.beforeEach((to, from, next) => {
-  console.log(to)
   if (to.path === '/') {
     next('/login');
     return;

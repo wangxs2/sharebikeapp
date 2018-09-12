@@ -115,6 +115,7 @@ export default {
       let now_day=nstr.getDate()<10?'0'+nstr.getDate():nstr.getDate() //日期   
       return now_year+"-"+now_month+"-"+now_day
     };
+   
     Vue.filter('FormatTime', (value, arg) => {
       if (value) {
         return new Date(value).Format(arg)

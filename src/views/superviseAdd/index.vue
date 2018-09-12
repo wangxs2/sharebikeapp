@@ -2,8 +2,9 @@
 <template>
   <div class="container">
       <div class="header">
-        <mt-header title="添加企业自查">   
-            <router-link to="/layout/selfCheck" slot="left">
+      
+        <mt-header title="派单">   
+            <router-link to="/layout/supervise" slot="left">
                 <mt-button icon="back" style="font-size:24px"></mt-button>
             </router-link>         
         </mt-header>
@@ -20,42 +21,29 @@
           <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
           <p>
             <span>地点</span>
-            <input type="text" placeholder="请输入清理地点" v-model="formMessage.handleAddr">
+            <input type="text" placeholder="请输入待处理地点" v-model="formMessage.handleAddr">
           </p>
         </div>
         <div class="iteamImage">
           <p>
             <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-            <span style="padding-left:0.5rem">整理前</span>
+            <span style="padding-left:0.5rem">现场照</span>
           </p>
           <p class="imageClean">
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
-               <vue-preview :slides="slide" @close="handleClose"></vue-preview>
-             
+             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px"></i>
+               <vue-preview :slides="slide" @close="handleClose"></vue-preview>             
           </p>
         </div>
         <div class="iteamImage">
           <p>
             <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-            <span style="padding-left:0.5rem">整理后</span>
+            <span style="padding-left:0.5rem">派单</span>
           </p>
           <p class="imageClean">
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage1"></i>
-             <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
-          </p>
-        </div>
-        <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-          <p>
-            <span>整理数</span>
-            <input type="text" placeholder="请选择整理数" v-model="formMessage.arrangeNum">
-          </p>
-        </div>
-        <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-          <p>
-            <span>清运数</span>
-            <input type="text" placeholder="请选择清运数" v-model="formMessage.cleanNum">
+                <mt-checklist
+                    v-model="value"
+                    :options="options" @change="getCompany">
+                </mt-checklist>
           </p>
         </div>
         <div class="iteamForm" style="height:100px">
@@ -65,16 +53,14 @@
             <textarea cols="50" rows="10" placeholder="请选择备注" v-model="formMessage.remark"></textarea>
           </p>
         </div>
-        </form>
-       
+        </form>       
       </div>
       <div class="bottom">
-          <button type="button" class="buttonSa" @click.native="save()">暂存</button>
-          <button type="button" class="buttonSa1" @click.native="submit()">完成</button>
+          <!-- <button type="button" class="buttonSa" @click.native="save()">暂存</button> -->
+          <button type="button" class="buttonSa1" @click.native="submit()">派单</button>
       </div>
   </div>
 </template>
-
 <script>
 import { MessageBox } from "mint-ui";
 export default {
@@ -82,6 +68,8 @@ export default {
   data() {
     return {
       time: "",
+      value: [],
+      options: [],
       slide1: [],
       slide: [],
       sheetCode: "",
@@ -100,6 +88,7 @@ export default {
   components: {},
   mounted() {},
   created() {
+    this.getAll();
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
       this.getMessage(this.sheetCode);
@@ -107,21 +96,23 @@ export default {
   },
   mounted() {},
   methods: {
-    clickImage() {
-      window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
-      let obj = {};
-      obj.w = 600;
-      obj.h = 600;
-      obj.msrc = this.Ip + this.$store.getters.imageUrl;
-      obj.src = this.Ip + this.$store.getters.imageUrl;
-      this.slide.push(obj);
-      // alert(this.$store.getters.imageUrl)
-    },
-    clickImage1() {
-      window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
-    },
     handleClose() {
       console.log("close event");
+    },
+    getCompany(val){
+        
+        this.value=val
+        console.log(this.value)
+    },
+    getAll() {
+      this.$fetchGet("count/bikeCompany").then(res => {
+        res.forEach(iteam => {
+          let obj = {};
+          obj.label = iteam.name;
+          obj.value = iteam.id;
+          this.options.push(obj);
+        });
+      });
     },
     getMessage(val) {
       this.$fetchGet("selfcheck/selfCheck", {
@@ -261,7 +252,7 @@ textarea {
       border: none;
       border-radius: 0;
       text-align: center;
-      width: 50%;
+      width: 100%;
       height: 1.5rem;
       color: #fff;
       line-height: 1.5rem;

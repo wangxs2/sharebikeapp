@@ -30,6 +30,11 @@ export const constantRouterMap = [
         component: () => import('@/views/layout/supervise'),
       },
       {
+        path: 'needtodo',
+        name: '待办',
+        component: () => import('@/views/layout/needtodo'),
+      },
+      {
         path: 'count',
         name: '统计',
         component: () => import('@/views/layout/count'),
