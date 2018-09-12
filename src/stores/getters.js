@@ -9,6 +9,5 @@ const getters = {
   menuData: state => state.permission.menuData,
   routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
-  imageUrl:state => state.app.imageUrl,
 }
 export default getters

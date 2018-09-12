@@ -4,9 +4,8 @@
       <div class="header">
       
         <mt-header title="派单">   
-            <router-link to="/layout/supervise" slot="left">
-                <mt-button icon="back" style="font-size:24px"></mt-button>
-            </router-link>         
+            <mt-button class="iconfont icon-fanhui" style="font-size:24px;color:#fff" slot="left" @click="iconClick">                
+            </mt-button>         
         </mt-header>
       </div>
       <div class="content">
@@ -99,10 +98,12 @@ export default {
     handleClose() {
       console.log("close event");
     },
-    getCompany(val){
-        
-        this.value=val
-        console.log(this.value)
+    iconClick() {
+      this.$router.push("/layout/supervise");
+    },
+    getCompany(val) {
+      this.value = val;
+      console.log(this.value);
     },
     getAll() {
       this.$fetchGet("count/bikeCompany").then(res => {

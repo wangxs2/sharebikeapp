@@ -12,13 +12,13 @@
       </div>
       <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
         <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-          <div class="iteamList" v-for="(iteam, index) in pageList">
+          <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
-                  <img src="../../../assets/image/login/LOGO.png" alt="" width="110" height="84" srcset="">
+                  <img :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="110" height="84" srcset="">
               </div>
               <div class="right">
                   <div class="topRight">
-                      <p><span>{{FormatDate(iteam.updateTime)}}</span> <span :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</span></p>
+                      <p><span>{{FormatDate(iteam.dispatchTime)}}</span> <span :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span></p>
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="bottomRight">
@@ -61,6 +61,14 @@ export default {
     this.loadPageList(); //初次访问查询列表
   },
   methods: {
+    detailClick(row) {
+      this.$router.push({
+          path: "/needtodoAdd",
+          query: {
+            message: row.sheetCode
+          }
+        });
+    },
     iconClick(){
       this.$router.push("/selfCheckAdd");
     },
@@ -77,7 +85,7 @@ export default {
     },
     loadPageList() {
       // 查询数据
-      this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
+      this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
         data => {
           console.log(data);
           // 是否还有下一页，加个方法判断，没有下一页要禁止上拉

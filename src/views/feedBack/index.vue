@@ -12,7 +12,7 @@
           <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
           <p>
             <span>处理情况</span>
-            <textarea cols="50" rows="10" placeholder="请输入处理情况" v-model="formMessage.remark"></textarea>
+            <textarea cols="50" rows="10" placeholder="请输入处理情况" v-model="formMessage.remark" style="margin-top:0.46rem"></textarea>
           </p>
         </div>
         <div class="iteamImage">

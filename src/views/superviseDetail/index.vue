@@ -15,7 +15,7 @@
       </div>
       <div class="content">
         <mt-swipe :auto="0">
-            <mt-swipe-item v-for="(iteam,index) in iteamList">
+            <mt-swipe-item v-for="(iteam,index) in iteamList" :key="index">
                 <div class="iteamList">
                     <div>
                         <span class="iconfont icon-zihangche1" style="color:#6698FF;font-size:24px"></span>

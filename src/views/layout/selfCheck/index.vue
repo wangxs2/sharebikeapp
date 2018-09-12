@@ -10,31 +10,34 @@
             </mt-button>
         </mt-header>
       </div>
-      <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
-        <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-          <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
-              <div class="left">                  
-                  <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="110" height="84" srcset="">
-              </div>
-              <div class="right">
-                  <div class="topRight">
-                      <p><span>{{FormatDate(iteam.updateTime)}}</span> <span :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</span></p>
-                      <!-- <p style="width:0.1rem"></p> -->
-                  </div>
-                  <div class="bottomRight">
-                      <span class="iconfont icon-weizhi"></span>
-                      <span class="moreFont">{{iteam.handleAddr}}</span>
-                  </div>
-              </div>
-          </div>
-        </v-loadmore>
-      </div>
+      <!-- <div class="content"> -->
+        <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
+          <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+            <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
+                <div class="left">                  
+                    <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="110" height="84" srcset="">
+                </div>
+                <div class="right">
+                    <div class="topRight">
+                        <p><span>{{FormatDate(iteam.updateTime)}}</span> <span :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</span></p>
+                        <!-- <p style="width:0.1rem"></p> -->
+                    </div>
+                    <div class="bottomRight">
+                        <span class="iconfont icon-weizhi"></span>
+                        <span class="moreFont">{{iteam.handleAddr}}</span>
+                    </div>
+                </div>
+            </div>
+          </v-loadmore>
+        </div>
+      <!-- </div> -->
+
   </div>
 </template>
 
 <script>
 import { Loadmore } from "mint-ui";
-import { Toast } from 'mint-ui';
+import { Toast } from "mint-ui";
 export default {
   computed: {},
   data() {
@@ -43,7 +46,7 @@ export default {
       searchCondition: {
         //分页属性
         page: "1",
-        pageSize: "10"
+        pageSize: "4"
       },
       pageList: [],
       allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
@@ -128,7 +131,7 @@ export default {
     isHaveMore(isHaveMore) {
       // 是否还有下一页，如果没有就禁止上拉刷新
       this.allLoaded = true; //true是禁止上拉加载
-      if (isHaveMore) {
+      if (isHaveMore!==0) {
         this.allLoaded = false;
       }
     }
@@ -142,6 +145,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   .header {
     width: 100%;
     height: 1.173333rem;
@@ -152,6 +156,11 @@ export default {
   }
   .content {
     flex: 1;
+    overflow: hidden;
+    overflow-y: scroll;
+    // .contenter{
+    //   flex: 1;
+    // }
   }
 }
 .green {

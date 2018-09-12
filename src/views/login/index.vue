@@ -11,7 +11,6 @@
           <div class="formList">
               <mt-field label="用户名" placeholder="请输入用户名" v-model="loginMess.username"></mt-field>
               <mt-field label="密码" placeholder="请输入密码" type="password" v-model="loginMess.password"></mt-field>
-
           </div>
             <!-- <p class="forget">
                    <label><input name="Fruit" class="forgetps" type="checkbox" value="" />记住密码 </label> 
@@ -34,6 +33,7 @@ export default {
   data() {
     return {
       value: "optionA",
+      loginId: "",
       loginMess: {
         username: "",
         password: ""
@@ -49,13 +49,25 @@ export default {
       }
     };
   },
+  created() {
+    this.downApp()
+     window.getLogin = this.getLogin;
+  },
   methods: {
+    getLogin(val) {
+        this.loginId = val;
+        
+    },
+
     submitForm() {
+      
+      //  this.getLogin(val)
+      // alert(this.loginId)
       this.loading = true;
       let timeNumber = new Date().getTime();
       let b = new base64();
       let data = {
-        username: this.loginMess.username,
+        username: this.loginMess.username + "&" + this.loginId,
         password: b.encode(
           timeNumber +
             "&" +
@@ -69,10 +81,7 @@ export default {
           if (res.status == "success") {
             document.cookie = "user=" + res.id;
             document.cookie = "userName=" + res.userName;
-            localStorage.setItem(
-                "roleCode",
-                res.info.roleCode
-            );
+            localStorage.setItem("roleCode", res.info.roleCode);
             this.$router.push("/layout/selfCheck");
           } else if (res.status == "fail") {
             MessageBox.alert("", {

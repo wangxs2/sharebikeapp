@@ -29,6 +29,22 @@ const stores = new Vuex.Store({
 //   stores.commit('SET_HEIGHT', $(document).height() - 180)
 //   countratio($(document).width())
 // })
+//ios手动缩放
+// window.onload=function () { 
+//     document.addEventListener('touchstart',function (event) { 
+//       if(event.touches.length>1){ 
+//         event.preventDefault(); 
+//       } 
+//     }) 
+//     var lastTouchEnd=0; 
+//     document.addEventListener('touchend',function (event) { 
+//       var now=(new Date()).getTime(); 
+//       if(now-lastTouchEnd<=300){ 
+//         event.preventDefault(); 
+//       } 
+//       lastTouchEnd=now; 
+//     },false) 
+//   };
 document.addEventListener("plusready", function () {
   var first = null;
   plus.key.addEventListener('backbutton', function () {
@@ -50,8 +66,7 @@ document.addEventListener("plusready", function () {
   }, false);
 });
 // getImage();
-window.getImage=function(val){
-    stores.commit('SET_IMAGE', val)
-    alert(val)
-}
+// window.getImage=function(val,row){
+//     stores.commit('SET_IMAGE',val,row)
+// }
 export default stores

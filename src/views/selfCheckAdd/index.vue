@@ -63,15 +63,15 @@
           <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
           <p>
             <span>备注</span>
-            <textarea cols="50" rows="10" placeholder="请选择备注" v-model="formMessage.remark"></textarea>
+            <textarea cols="50" rows="10" placeholder="请输入备注" style="margin-top:0.4rem" v-model="formMessage.remark"></textarea>
           </p>
         </div>
         </form>
        
       </div>
       <div class="bottom">
-          <button type="button" class="buttonSa" @click.native="save()">暂存</button>
-          <button type="button" class="buttonSa1" @click.native="submit()">完成</button>
+          <button type="button" class="buttonSa" @click="save()">暂存</button>
+          <button type="button" class="buttonSa1" @click="submit()">完成</button>
       </div>
   </div>
 </template>
@@ -87,14 +87,16 @@ export default {
       slide: [],
       sheetCode: "",
       iteamList: {},
+      imageStatus: 0,
+      imageName: "",
       formMessage: {
         handleTime: Date.now(),
         handleAddr: "",
         arrangeNum: "",
         cleanNum: "",
         remark: "",
-        handleBeforeURLs: [],
-        handleAfterURLs: []
+        handleBefore: [],
+        handleAfter: []
       }
     };
   },
@@ -105,21 +107,33 @@ export default {
       this.sheetCode = this.$route.query.message;
       this.getMessage(this.sheetCode);
     }
+    window.getImage = this.getImage;
+    // alert(this.$store.getters.imageUrl)
   },
   mounted() {},
   methods: {
     clickImage() {
-      window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
+      this.imageStatus = 1;
+      this.downPictur();
+    },
+    getImage(val, row) {
       let obj = {};
       obj.w = 600;
       obj.h = 600;
-      obj.msrc = this.Ip + this.$store.getters.imageUrl;
-      obj.src = this.Ip + this.$store.getters.imageUrl;
-      this.slide.push(obj);
-      // alert(this.$store.getters.imageUrl)
+      obj.msrc = this.Ip + row;
+      obj.src = this.Ip + row;
+      if (this.imageStatus == 1) {
+        this.formMessage.handleBefore.push(val);
+        this.slide.push(obj);
+      }
+      if (this.imageStatus == 2) {
+        this.formMessage.handleAfter.push(val);
+        this.slide1.push(obj);
+      }
     },
     clickImage1() {
-      window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
+      this.imageStatus = 2;
+      this.downPictur();
     },
     handleClose() {
       console.log("close event");
@@ -152,16 +166,102 @@ export default {
         .catch(res => {});
     },
     save() {
-      this.$fetchPost("selfcheck", this.formMessage)
-        .then(res => {})
-        .catch(res => {
-          MessageBox.alert("", {
-            message: "登录超时",
-            title: "提示"
-          }).then(action => {});
-        });
+      if (this.formMessage.handleAddr == "") {
+        MessageBox.alert("", {
+          message: "请输入清理地点",
+          title: "提示"
+        }).then(action => {});
+      } else if (this.formMessage.handleBefore == []) {
+        MessageBox.alert("", {
+          message: "请上传整理前照片",
+          title: "提示"
+        }).then(action => {});
+      } else {
+        let obj = {};
+        this.formMessage.handleBefore;
+        obj.selfCheck = this.formMessage;
+        obj.selfCheck.handleBefore = this.formMessage.handleBefore.join(";");
+        obj.selfCheck.handleAfter = this.formMessage.handleAfter.join(";");
+        obj.finish = 0;
+        this.$fetchPost("selfcheck", obj, "json")
+          .then(res => {
+            if (res.status == -1) {
+              MessageBox.alert("", {
+                message: res.message,
+                title: "提示"
+              }).then(action => {});
+            } else {
+              MessageBox.alert("", {
+                message: "保存成功",
+                title: "提示"
+              }).then(action => {
+                this.$router.push("/layout/selfCheck");
+              });
+            }
+          })
+          .catch(res => {
+            MessageBox.alert("", {
+              message: "请求超时",
+              title: "提示"
+            }).then(action => {});
+          });
+      }
     },
-    submit() {}
+    submit() {
+      if (this.formMessage.handleAddr == "") {
+        MessageBox.alert("", {
+          message: "请输入清理地点",
+          title: "提示"
+        }).then(action => {});
+      } else if (this.formMessage.handleBefore == []) {
+        MessageBox.alert("", {
+          message: "请上传整理前照片",
+          title: "提示"
+        }).then(action => {});
+      } else if (this.formMessage.handleAfter == []) {
+        MessageBox.alert("", {
+          message: "请上传整理后照片",
+          title: "提示"
+        }).then(action => {});
+      } else if (
+        this.formMessage.arrangeNum == "" &&
+        this.formMessage.cleanNum == ""
+      ) {
+        MessageBox.alert("", {
+          message: "整理或清运数量有误",
+          title: "提示"
+        }).then(action => {});
+      } else {
+        let obj = {};
+        this.formMessage.handleBefore;
+        obj.selfCheck = this.formMessage;
+        obj.selfCheck.handleBefore = this.formMessage.handleBefore.join(";");
+        obj.selfCheck.handleAfter = this.formMessage.handleAfter.join(";");
+        obj.finish = 1;
+        this.$fetchPost("selfcheck", obj, "json")
+          .then(res => {
+            if (res.status == -1) {
+              MessageBox.alert("", {
+                message: res.message,
+                title: "提示"
+              }).then(action => {});
+            } else {
+              MessageBox.alert("", {
+                message: "保存成功",
+                title: "提示"
+              }).then(action => {
+                this.$router.push("/layout/selfCheck");
+              });
+            }
+          })
+          .catch(res => {
+            MessageBox.alert("", {
+              message: "请求超时",
+              title: "提示"
+            }).then(action => {});
+          });
+      }
+    }
   }
 };
 </script>
