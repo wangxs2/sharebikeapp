@@ -15,7 +15,7 @@
             <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt="">
             <p style="color:#989898">暂时没有自查数据哦~</p>
           </div>
-          <v-loadmore v-if="!noneList" :top-method="loadTop" :bottom-method="loadBottom" bottomPullText="上拉加载" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+          <v-loadmore v-if="!noneList" :top-method="loadTop" :bottom-method="loadBottom" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
             <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
                 <div class="left">                  
                     <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="110" height="84" srcset="">
@@ -45,6 +45,7 @@ export default {
     return {
       selected: "/layout/selfCheck",
       noneList:false,
+      bottomPullText:"上拉加载",
       searchCondition: {
         //分页属性
         page: "1",
@@ -139,8 +140,10 @@ export default {
     isHaveMore(isHaveMore) {
       // 是否还有下一页，如果没有就禁止上拉刷新
       this.allLoaded = true; //true是禁止上拉加载
+      this.bottomPullText="已加载全部数据";
       if (isHaveMore) {
         this.allLoaded = false;
+        this.bottomPullText="上拉加载";
       }
     }
   }
