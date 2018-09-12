@@ -52,10 +52,6 @@ export default {
   methods: {
     getLogin(val) {
       this.loginId = val;
-      MessageBox.alert("", {
-        message: val,
-        title: "提示"
-      }).then(action => {});
     },
     getTest() {
       MessageBox.alert("", {

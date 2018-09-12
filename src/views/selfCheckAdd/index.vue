@@ -66,7 +66,6 @@
           </p>
         </div>
         </form>
-       
       </div>
       <div class="bottom">
           <button type="button" class="buttonSa" @click="save()">暂存</button>
