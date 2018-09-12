@@ -27,7 +27,7 @@
         <div class="info-content">
           <div class="info-gender-box">
             <img src="@/assets/image/infoModification/icon_select_pre@2x.png" alt="" v-if="userInfoNew.sex == 'W'">
-            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt="" @click="setGenderW"v-else>
+            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt="" @click="setGenderW" v-else>
             <div class="info-gender">女</div>
           </div>
           <div class="info-gender-box">
@@ -48,8 +48,8 @@
         <input class="info-content" type="text" name="" id="" v-model="userInfoNew.phoneNum">
       </div>
     </div>
-    <div class="bottom">
-      <div class="save" @click="saveChange">保存</div>
+    <div class="bottom" @click="saveChange">
+      <div class="save">保存</div>
     </div>
     <!-- 选择头像方式 ↓-->
     <mt-popup class="avatar-popup" v-model="popupVisible" position="bottom">
@@ -71,14 +71,15 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { MessageBox } from "mint-ui";
+import { Toast } from "mint-ui";
 export default {
   computed: {
-    ...mapGetters({userInfoNew:"userInfo"}),
-
+    ...mapGetters({ userInfoNew: "userInfo" })
   },
   data() {
     return {
-      popupVisible: false,
+      popupVisible: false
     };
   },
   components: {},
@@ -90,15 +91,43 @@ export default {
       this.$router.push("/layout/me");
     },
     //设置性别
-    setGenderW(){
-      this.userInfoNew.sex = 'W';
+    setGenderW() {
+      this.userInfoNew.sex = "W";
     },
-    setGenderM(){
-      this.userInfoNew.sex = 'M';
+    setGenderM() {
+      this.userInfoNew.sex = "M";
     },
-    saveChange(){
-      // this.$fetchPut('user/updateUser',)
-      console.log(this.userInfoNew)
+    //保存修改
+    saveChange() {
+      MessageBox({
+        title: "提示",
+        message: "是否确认修改?",
+        showCancelButton: true
+      }).then(action => {
+        if (action === "confirm") {
+          let updateData = {
+            id: this.userInfoNew.id,
+            realName: this.userInfoNew.realName,
+            sex: this.userInfoNew.sex,
+            emailAddr: this.userInfoNew.emailAddr,
+            phoneAum: this.userInfoNew.phoneAum
+          };
+          this.$fetchPut("user/updateUser", updateData).then(res => {
+            if (res.status === 0) {
+              Toast("操作成功");
+              setTimeout(() => {
+      this.$router.push("/layout/me");
+                
+              }, 600);
+              
+            } else {
+            }
+          });
+        }
+      });
+      return;
+
+      // console.log(this.userInfoNew)
     }
   }
 };
@@ -211,9 +240,9 @@ export default {
         width: 3rem;
         border: 1px solid salmon;
         display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
         .img-holder {
           height: 2.4rem;
           width: 2.4rem;
