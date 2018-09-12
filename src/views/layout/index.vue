@@ -56,7 +56,7 @@ export default {
   },
   created() {
     this.roleCode = localStorage.roleCode;
-    console.log(this.selected);
+    console.log(this.$route.path)
     // this.message();
   },
   methods: {

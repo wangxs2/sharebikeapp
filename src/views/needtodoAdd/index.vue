@@ -72,8 +72,8 @@
        
       </div>
       <div class="bottom">
-          <button type="button" class="buttonSa" @click.native="save()">暂存</button>
-          <button type="button" class="buttonSa1" @click.native="submit()">完成</button>
+          <button type="button" class="buttonSa" @click="save()">暂存</button>
+          <button type="button" class="buttonSa1" @click="submit()">完成</button>
       </div>
   </div>
 </template>
@@ -91,14 +91,14 @@ export default {
       sheetCode: "",
       imageStatus: 0,
       iteamList: {},
+      handleBefore:[],
+      handleAfter:[],
       formMessage: {
         handleTime: Date.now(),
         handleAddr: "",
         arrangeNum: "",
         cleanNum: "",
-        remark: "",
-        handleBefore: [],
-        handleAfter: []
+        
       }
     };
   },
@@ -110,6 +110,7 @@ export default {
       this.getMessage(this.sheetCode);
     }
     window.getImage = this.getImage;
+  
   },
   mounted() {},
   methods: {
@@ -118,19 +119,17 @@ export default {
       this.downPictur();
     },
     getImage(val, row) {
-      
       let obj = {};
       obj.w = 600;
       obj.h = 600;
       obj.msrc = this.Ip + row;
       obj.src = this.Ip + row;
       if (this.imageStatus == 1) {
-        alert(row)
-        this.formMessage.handleBefore.push(val);
+        this.handleBefore.push(val);
         this.slide.push(obj);
       }
       if (this.imageStatus == 2) {
-        this.formMessage.handleAfter.push(val);
+       this.handleAfter.push(val);
         this.slide1.push(obj);
       }
     },
@@ -146,42 +145,44 @@ export default {
         id: val
       })
         .then(res => {
-          this.formMessage = res.dispatchDetail;
-          if (this.formMessage.handleTime == undefined) {
-            this.formMessage.handleTime = Date.now();
+          if (res.status == 1) {
+            this.formMessage = res.dispatchDetail;
+            if (this.formMessage.handleTime == undefined) {
+              this.formMessage.handleTime = Date.now();
+            }
+            res.dispatchDetail.handleBeforeURLs.forEach(iteam => {
+              let obj = {};
+              console.log(iteam);
+              obj.w = 600;
+              obj.h = 600;
+              obj.msrc = this.Ip + iteam;
+              obj.src = this.Ip + iteam;
+              this.slide.push(obj);
+            });
+            res.dispatchDetail.handleAfterURLs.forEach(iteam => {
+              let obj = {};
+              console.log(iteam);
+              obj.w = 600;
+              obj.h = 600;
+              obj.msrc = this.Ip + iteam;
+              obj.src = this.Ip + iteam;
+              this.slide1.push(obj);
+            });
+            res.dispatchDetail.dispachPhotoURLs.forEach(iteam => {
+              let obj = {};
+              console.log(iteam);
+              obj.w = 600;
+              obj.h = 600;
+              obj.msrc = this.Ip + iteam;
+              obj.src = this.Ip + iteam;
+              this.slide2.push(obj);
+            });
           }
-          this.formMessage.handleBeforeURLs.forEach(iteam => {
-            let obj = {};
-            console.log(iteam);
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide.push(obj);
-          });
-          this.formMessage.handleAfterURLs.forEach(iteam => {
-            let obj = {};
-            console.log(iteam);
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide1.push(obj);
-          });
-          this.formMessage.dispachPhotoURLs.forEach(iteam => {
-            let obj = {};
-            console.log(iteam);
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide2.push(obj);
-          });
         })
         .catch(res => {});
     },
     save() {
-      if (this.formMessage.handleBefore == []) {
+      if (this.slide.length==0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
           title: "提示"
@@ -190,10 +191,10 @@ export default {
         let obj = {};
         this.formMessage.handleBefore;
         obj.dispatchDetail = this.formMessage;
-        obj.dispatchDetail.handleBefore = this.formMessage.handleBefore.join(
+        obj.dispatchDetail.handleBefore = this.handleBefore.join(
           ";"
         );
-        obj.dispatchDetail.handleAfter = this.formMessage.handleAfter.join(";");
+        obj.dispatchDetail.handleAfter = this.handleAfter.join(";");
         obj.finish = 0;
         this.$fetchPost("dispatch/saveDispatchDetail", obj, "json")
           .then(res => {
@@ -207,7 +208,7 @@ export default {
                 message: "保存成功",
                 title: "提示"
               }).then(action => {
-                this.$router.push("/layout/selfCheck");
+                this.$router.push("/layout/needtodo");
               });
             }
           })
@@ -220,17 +221,12 @@ export default {
       }
     },
     submit() {
-      if (this.formMessage.handleAddr == "") {
-        MessageBox.alert("", {
-          message: "请输入清理地点",
-          title: "提示"
-        }).then(action => {});
-      } else if (this.formMessage.handleBefore == []) {
+     if (this.slide == []) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
           title: "提示"
         }).then(action => {});
-      } else if (this.formMessage.handleAfter == []) {
+      } else if (this.slide1 == []) {
         MessageBox.alert("", {
           message: "请上传整理后照片",
           title: "提示"
@@ -247,12 +243,12 @@ export default {
         let obj = {};
         this.formMessage.handleBefore;
         obj.dispatchDetail = this.formMessage;
-        obj.dispatchDetail.handleBefore = this.formMessage.handleBefore.join(
+        obj.dispatchDetail.handleBefore = this.handleBefore.join(
           ";"
         );
-        obj.dispatchDetail.handleAfter = this.formMessage.handleAfter.join(";");
+        obj.dispatchDetail.handleAfter = this.handleAfter.join(";");
         obj.finish = 1;
-        this.$fetchPost("selfcheck", obj, "json")
+        this.$fetchPost("dispatch/saveDispatchDetail", obj, "json")
           .then(res => {
             if (res.status == -1) {
               MessageBox.alert("", {
@@ -264,7 +260,7 @@ export default {
                 message: "保存成功",
                 title: "提示"
               }).then(action => {
-                this.$router.push("/layout/selfCheck");
+                this.$router.push("/layout/needtodo");
               });
             }
           })

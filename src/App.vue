@@ -49,6 +49,9 @@ body,
 .mintui{
   font-size: 24px;
 }
+.mint-swipe-items-wrap{
+  overflow:scroll;
+}
 .mint-header {
   height: 1.173333rem;
   font-size: 16px;

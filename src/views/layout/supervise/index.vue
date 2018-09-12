@@ -11,7 +11,7 @@
         </mt-header>
       </div>
       <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
-        <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+        <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" bottomPullText="上拉加载" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
                   <img :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="110" height="84" srcset="">

@@ -29,6 +29,7 @@
 <script>
 import base64 from "@/libs/base.js";
 import { MessageBox } from "mint-ui";
+import { Indicator } from "mint-ui";
 export default {
   data() {
     return {
@@ -57,14 +58,22 @@ export default {
   methods: {
     getLogin(val) {
       this.loginId = val;
-      alert(val);
+      MessageBox.alert("", {
+        message: val,
+        title: "提示"
+      }).then(action => {});
     },
     getTest() {
-      alert("测试");
+      MessageBox.alert("", {
+        message: "测试",
+        title: "提示"
+      }).then(action => {});
     },
     submitForm() {
-      alert(this.loginId);
-      this.loading = true;
+      Indicator.open({
+        text: "登陆...",
+        spinnerType: "fading-circle"
+      });
       let timeNumber = new Date().getTime();
       let b = new base64();
       let data = {
@@ -79,6 +88,7 @@ export default {
       };
       this.$fetchPost("login", data)
         .then(res => {
+          Indicator.close();
           if (res.status == "success") {
             document.cookie = "user=" + res.id;
             document.cookie = "userName=" + res.userName;
