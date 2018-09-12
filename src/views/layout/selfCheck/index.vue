@@ -10,9 +10,12 @@
             </mt-button>
         </mt-header>
       </div>
-      <!-- <div class="content"> -->
         <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
-          <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+          <div class="noneList" v-if="noneList">
+            <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt="">
+            <p style="color:#989898">暂时没有自查数据哦~</p>
+          </div>
+          <v-loadmore v-if="!noneList" :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
             <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
                 <div class="left">                  
                     <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="110" height="84" srcset="">
@@ -20,7 +23,6 @@
                 <div class="right">
                     <div class="topRight">
                         <p><span>{{FormatDate(iteam.updateTime)}}</span> <span :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</span></p>
-                        <!-- <p style="width:0.1rem"></p> -->
                     </div>
                     <div class="bottomRight">
                         <span class="iconfont icon-weizhi"></span>
@@ -30,7 +32,6 @@
             </div>
           </v-loadmore>
         </div>
-      <!-- </div> -->
 
   </div>
 </template>
@@ -43,10 +44,11 @@ export default {
   data() {
     return {
       selected: "/layout/selfCheck",
+      noneList:false,
       searchCondition: {
         //分页属性
         page: "1",
-        pageSize: "4"
+        pageSize: "5"
       },
       pageList: [],
       allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
@@ -88,8 +90,9 @@ export default {
     loadTop() {
       //组件提供的下拉触发方法
       //下拉加载
-      this.loadPageList();
-      this.$refs.loadmore.onTopLoaded(); // 固定方法，查询完要调用一次，用于重新定位
+      // this.searchCondition.page = parseInt(this.searchCondition.page) - 1;
+      // this.loadPageList();
+      // this.$refs.loadmore.onTopLoaded(); // 固定方法，查询完要调用一次，用于重新定位
     },
     loadBottom() {
       // 上拉加载
@@ -105,9 +108,14 @@ export default {
       });
       this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
         data => {
+          if(data.list.length==0){
+            this.noneList=true
+          }else{
+            this.noneList=false
+          }
           // console.log(data);
           // 是否还有下一页，加个方法判断，没有下一页要禁止上拉
-          this.isHaveMore(data.nextPage);
+          this.isHaveMore(data.hasNextPage);
           this.pageList = data.list;
           this.$nextTick(function() {
             // 原意是DOM更新循环结束时调用延迟回调函数，大意就是DOM元素在因为某些原因要进行修改就在这里写，要在修改某些数据后才能写，
@@ -124,14 +132,14 @@ export default {
       this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
         data => {
           this.pageList = this.pageList.concat(data.list);
-          this.isHaveMore(data.nextPage);
+          this.isHaveMore(data.hasNextPage);
         }
       );
     },
     isHaveMore(isHaveMore) {
       // 是否还有下一页，如果没有就禁止上拉刷新
       this.allLoaded = true; //true是禁止上拉加载
-      if (isHaveMore!==0) {
+      if (isHaveMore) {
         this.allLoaded = false;
       }
     }
@@ -155,12 +163,16 @@ export default {
     color: #fff;
   }
   .content {
+  
     flex: 1;
-    overflow: hidden;
+    // overflow: hidden;
     overflow-y: scroll;
-    // .contenter{
-    //   flex: 1;
-    // }
+    .noneList{
+      flex: 1;
+      line-height: 1;
+      text-align: center;
+      margin-top: 2rem;
+    }
   }
 }
 .green {

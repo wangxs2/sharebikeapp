@@ -10,23 +10,34 @@
       </div>
       <div class="content">
         <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+          <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>时间</span>
-            <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
+            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
           </p>
         </div>
         <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+          <span><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>地点</span>
-            <input type="text" placeholder="请输入清理地点" v-model="formMessage.handleAddr">
+            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.handleAddr">{{formMessage.handleAddr}}</span>
+            <!-- <input type="text" placeholder="请输入清理地点" disabled="disabled" v-model="formMessage.handleAddr"> -->
           </p>
         </div>
         <div class="iteamImage">
           <p>
-            <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-            <span style="padding-left:0.5rem">整理前</span>
+            <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+            <span style="padding-left:0.2rem">派单照片</span>
+          </p>
+          <p class="imageClean">
+             <!-- <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i> -->
+               <vue-preview :slides="slide2" @close="handleClose"></vue-preview>            
+          </p>
+        </div>
+        <div class="iteamImage">
+          <p>
+            <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+            <span style="padding-left:0.2rem">整理前</span>
           </p>
           <p class="imageClean">
              <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
@@ -35,8 +46,8 @@
         </div>
         <div class="iteamImage">
           <p>
-            <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-            <span style="padding-left:0.5rem">整理后</span>
+            <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+            <span style="padding-left:0.2rem">整理后</span>
           </p>
           <p class="imageClean">
              <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage1"></i>
@@ -44,14 +55,14 @@
           </p>
         </div>
         <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+          <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>整理数</span>
             <input type="text" placeholder="请选择整理数" v-model="formMessage.arrangeNum">
           </p>
         </div>
         <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+          <span><img src="../../assets/image/selfcheck/icon_6_num2@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>清运数</span>
             <input type="text" placeholder="请选择清运数" v-model="formMessage.cleanNum">
@@ -75,8 +86,10 @@ export default {
     return {
       time: "",
       slide1: [],
+      slide2: [],
       slide: [],
       sheetCode: "",
+      imageStatus: 0,
       iteamList: {},
       formMessage: {
         handleTime: Date.now(),
@@ -84,77 +97,185 @@ export default {
         arrangeNum: "",
         cleanNum: "",
         remark: "",
-        handleBeforeURLs: [],
-        handleAfterURLs: []
+        handleBefore: [],
+        handleAfter: []
       }
     };
   },
   components: {},
   mounted() {},
   created() {
-    if (this.$route.query.message) {
-      this.sheetCode = this.$route.query.message;
+    if (this.$route.query.id) {
+      this.sheetCode = this.$route.query.id;
       this.getMessage(this.sheetCode);
     }
+    window.getImage = this.getImage;
   },
   mounted() {},
   methods: {
     clickImage() {
-      window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
+      this.imageStatus = 1;
+      this.downPictur();
+    },
+    getImage(val, row) {
+      
       let obj = {};
       obj.w = 600;
       obj.h = 600;
-      obj.msrc = this.Ip + this.$store.getters.imageUrl;
-      obj.src = this.Ip + this.$store.getters.imageUrl;
-      this.slide.push(obj);
-      // alert(this.$store.getters.imageUrl)
+      obj.msrc = this.Ip + row;
+      obj.src = this.Ip + row;
+      if (this.imageStatus == 1) {
+        alert(row)
+        this.formMessage.handleBefore.push(val);
+        this.slide.push(obj);
+      }
+      if (this.imageStatus == 2) {
+        this.formMessage.handleAfter.push(val);
+        this.slide1.push(obj);
+      }
     },
     clickImage1() {
-      window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
+      this.imageStatus = 2;
+      this.downPictur();
     },
     handleClose() {
       console.log("close event");
     },
     getMessage(val) {
       this.$fetchGet("dispatch/dispatchDetail", {
-        sheetCode: val
+        id: val
       })
         .then(res => {
-          if (res.status == 1) {
-            this.formMessage = res.dispatchDetail;
-            this.formMessage.handleBeforeURLs.forEach(iteam => {
-              let obj = {};
-              console.log(iteam);
-              obj.w = 600;
-              obj.h = 600;
-              obj.msrc = this.Ip + iteam;
-              obj.src = this.Ip + iteam;
-              this.slide.push(obj);
-            });
-            this.formMessage.handleAfterURLs.forEach(iteam => {
-              let obj = {};
-              console.log(iteam);
-              obj.w = 600;
-              obj.h = 600;
-              obj.msrc = this.Ip + iteam;
-              obj.src = this.Ip + iteam;
-              this.slide1.push(obj);
-            });
+          this.formMessage = res.dispatchDetail;
+          if (this.formMessage.handleTime == undefined) {
+            this.formMessage.handleTime = Date.now();
           }
+          this.formMessage.handleBeforeURLs.forEach(iteam => {
+            let obj = {};
+            console.log(iteam);
+            obj.w = 600;
+            obj.h = 600;
+            obj.msrc = this.Ip + iteam;
+            obj.src = this.Ip + iteam;
+            this.slide.push(obj);
+          });
+          this.formMessage.handleAfterURLs.forEach(iteam => {
+            let obj = {};
+            console.log(iteam);
+            obj.w = 600;
+            obj.h = 600;
+            obj.msrc = this.Ip + iteam;
+            obj.src = this.Ip + iteam;
+            this.slide1.push(obj);
+          });
+          this.formMessage.dispachPhotoURLs.forEach(iteam => {
+            let obj = {};
+            console.log(iteam);
+            obj.w = 600;
+            obj.h = 600;
+            obj.msrc = this.Ip + iteam;
+            obj.src = this.Ip + iteam;
+            this.slide2.push(obj);
+          });
         })
         .catch(res => {});
     },
     save() {
-      this.$fetchPost("selfcheck", this.formMessage)
-        .then(res => {})
-        .catch(res => {
-          MessageBox.alert("", {
-            message: "登录超时",
-            title: "提示"
-          }).then(action => {});
-        });
+      if (this.formMessage.handleBefore == []) {
+        MessageBox.alert("", {
+          message: "请上传整理前照片",
+          title: "提示"
+        }).then(action => {});
+      } else {
+        let obj = {};
+        this.formMessage.handleBefore;
+        obj.dispatchDetail = this.formMessage;
+        obj.dispatchDetail.handleBefore = this.formMessage.handleBefore.join(
+          ";"
+        );
+        obj.dispatchDetail.handleAfter = this.formMessage.handleAfter.join(";");
+        obj.finish = 0;
+        this.$fetchPost("dispatch/saveDispatchDetail", obj, "json")
+          .then(res => {
+            if (res.status == -1) {
+              MessageBox.alert("", {
+                message: res.message,
+                title: "提示"
+              }).then(action => {});
+            } else {
+              MessageBox.alert("", {
+                message: "保存成功",
+                title: "提示"
+              }).then(action => {
+                this.$router.push("/layout/selfCheck");
+              });
+            }
+          })
+          .catch(res => {
+            MessageBox.alert("", {
+              message: "请求超时",
+              title: "提示"
+            }).then(action => {});
+          });
+      }
     },
-    submit() {}
+    submit() {
+      if (this.formMessage.handleAddr == "") {
+        MessageBox.alert("", {
+          message: "请输入清理地点",
+          title: "提示"
+        }).then(action => {});
+      } else if (this.formMessage.handleBefore == []) {
+        MessageBox.alert("", {
+          message: "请上传整理前照片",
+          title: "提示"
+        }).then(action => {});
+      } else if (this.formMessage.handleAfter == []) {
+        MessageBox.alert("", {
+          message: "请上传整理后照片",
+          title: "提示"
+        }).then(action => {});
+      } else if (
+        this.formMessage.arrangeNum == "" &&
+        this.formMessage.cleanNum == ""
+      ) {
+        MessageBox.alert("", {
+          message: "整理或清运数量有误",
+          title: "提示"
+        }).then(action => {});
+      } else {
+        let obj = {};
+        this.formMessage.handleBefore;
+        obj.dispatchDetail = this.formMessage;
+        obj.dispatchDetail.handleBefore = this.formMessage.handleBefore.join(
+          ";"
+        );
+        obj.dispatchDetail.handleAfter = this.formMessage.handleAfter.join(";");
+        obj.finish = 1;
+        this.$fetchPost("selfcheck", obj, "json")
+          .then(res => {
+            if (res.status == -1) {
+              MessageBox.alert("", {
+                message: res.message,
+                title: "提示"
+              }).then(action => {});
+            } else {
+              MessageBox.alert("", {
+                message: "保存成功",
+                title: "提示"
+              }).then(action => {
+                this.$router.push("/layout/selfCheck");
+              });
+            }
+          })
+          .catch(res => {
+            MessageBox.alert("", {
+              message: "请求超时",
+              title: "提示"
+            }).then(action => {});
+          });
+      }
+    }
   }
 };
 </script>
@@ -197,6 +318,9 @@ textarea {
       line-height: 55px;
       box-sizing: border-box;
       padding: 0 0 0 0.4rem;
+      img {
+        margin-top: 0.4rem;
+      }
       p {
         display: flex;
         justify-content: flex-start;
@@ -205,7 +329,7 @@ textarea {
         padding: 0;
         border-bottom: 1px solid #eeeeee;
         box-sizing: border-box;
-        padding-left: 0.5rem;
+        padding-left: 0.2rem;
         // .imageSa{
         //   display: flex;
         //   flex-direction:row;
@@ -224,6 +348,9 @@ textarea {
       flex-direction: column;
       box-sizing: border-box;
       padding-top: 0.5rem;
+      img {
+        margin-top: -0.1rem;
+      }
       p {
         display: flex;
         justify-content: flex-start;

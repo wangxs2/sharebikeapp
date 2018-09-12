@@ -11,14 +11,14 @@
       </div>
       <div class="content">
         <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+          <span><img src="../../assets/image/selfcheck/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>时间</span>
             <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
           </p>
         </div>
         <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+          <span><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>地点</span>
             <input type="text" placeholder="请输入清理地点" v-model="formMessage.handleAddr">
@@ -26,8 +26,8 @@
         </div>
         <div class="iteamImage">
           <p>
-            <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-            <span style="padding-left:0.5rem">整理前</span>
+            <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+            <span style="padding-left:0.2rem">整理前</span>
           </p>
           <p class="imageClean">
              <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
@@ -37,8 +37,8 @@
         </div>
         <div class="iteamImage">
           <p>
-            <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-            <span style="padding-left:0.5rem">整理后</span>
+            <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+            <span style="padding-left:0.2rem">整理后</span>
           </p>
           <p class="imageClean">
              <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage1"></i>
@@ -46,21 +46,21 @@
           </p>
         </div>
         <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+           <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>整理数</span>
             <input type="text" placeholder="请选择整理数" v-model="formMessage.arrangeNum">
           </p>
         </div>
         <div class="iteamForm">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+           <span><img src="../../assets/image/selfcheck/icon_6_num2@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>清运数</span>
             <input type="text" placeholder="请选择清运数" v-model="formMessage.cleanNum">
           </p>
         </div>
         <div class="iteamForm" style="height:100px">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+           <span><img src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>备注</span>
             <textarea cols="50" rows="10" placeholder="请输入备注" style="margin-top:0.4rem" v-model="formMessage.remark"></textarea>
@@ -123,6 +123,7 @@ export default {
       obj.msrc = this.Ip + row;
       obj.src = this.Ip + row;
       if (this.imageStatus == 1) {
+        alert(row)
         this.formMessage.handleBefore.push(val);
         this.slide.push(obj);
       }
@@ -304,6 +305,11 @@ textarea {
       line-height: 55px;
       box-sizing: border-box;
       padding: 0 0 0 0.4rem;
+      span{
+        img{
+          margin-top: 0.4rem;
+        }
+      }
       p {
         display: flex;
         justify-content: flex-start;
@@ -312,7 +318,7 @@ textarea {
         padding: 0;
         border-bottom: 1px solid #eeeeee;
         box-sizing: border-box;
-        padding-left: 0.5rem;
+        padding-left: 0.2rem;
         // .imageSa{
         //   display: flex;
         //   flex-direction:row;
@@ -331,6 +337,9 @@ textarea {
       flex-direction: column;
       box-sizing: border-box;
       padding-top: 0.5rem;
+      img{
+        margin-top: -0.1rem;
+      }
       p {
         display: flex;
         justify-content: flex-start;

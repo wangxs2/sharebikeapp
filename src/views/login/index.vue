@@ -2,7 +2,7 @@
   <div class="login">
       <div class="header">
         <div class="title">
-            <img src="../../assets/image/login/LOGO.png" alt="" srcset="">
+            <img src="../../assets/image/login/LOGO@3x.png" width="150" height="132" alt="" srcset="">
             <p>共享单车清运</p>
         </div>
       </div>
@@ -16,7 +16,7 @@
                    <label><input name="Fruit" class="forgetps" type="checkbox" value="" />记住密码 </label> 
             </p> -->
           <div style="width:100%">
-            <mt-button @click.native="submitForm()" class="btn">登 录 </mt-button>
+            <mt-button @click="submitForm()" class="btn">登 录 </mt-button>
           </div>
           
       </div>
@@ -50,19 +50,20 @@ export default {
     };
   },
   created() {
-    this.downApp()
-     window.getLogin = this.getLogin;
+    this.downApp();
+    window.getLogin = this.getLogin;
+    window.getTest = this.getTest;
   },
   methods: {
     getLogin(val) {
-        this.loginId = val;
-        
+      this.loginId = val;
+      alert(val);
     },
-
+    getTest() {
+      alert("测试");
+    },
     submitForm() {
-      
-      //  this.getLogin(val)
-      // alert(this.loginId)
+      alert(this.loginId);
       this.loading = true;
       let timeNumber = new Date().getTime();
       let b = new base64();
@@ -116,7 +117,7 @@ export default {
     .title {
       width: 100%;
       height: 4.96rem;
-      padding-top: 1rem;
+      padding-top: 0.2rem;
       box-sizing: border-box;
       background: -webkit-linear-gradient(left, #6698ff, #5076ff);
       text-align: center;
@@ -144,8 +145,9 @@ export default {
       }
     }
     .btn {
-      width: 90%;
-      margin-left: 5%;
+      width: 88%;
+      height: 1.173333rem;
+      margin-left: 6%;
       margin-top: 1.333333rem;
       border-radius: 20px;
       background: #5076ff;
