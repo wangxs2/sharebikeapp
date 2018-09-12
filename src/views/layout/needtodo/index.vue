@@ -11,7 +11,7 @@
         </mt-header>
       </div>
       <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
-        <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+        <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="上拉加载" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
                   <img :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="110" height="84" srcset="">
@@ -65,7 +65,7 @@ export default {
       this.$router.push({
           path: "/needtodoAdd",
           query: {
-            message: row.sheetCode
+            id: row.id
           }
         });
     },
@@ -75,8 +75,8 @@ export default {
     loadTop() {
       //组件提供的下拉触发方法
       //下拉加载
-      this.loadPageList();
-      this.$refs.loadmore.onTopLoaded(); // 固定方法，查询完要调用一次，用于重新定位
+      // this.loadPageList();
+      // this.$refs.loadmore.onTopLoaded(); // 固定方法，查询完要调用一次，用于重新定位
     },
     loadBottom() {
       // 上拉加载
@@ -89,7 +89,7 @@ export default {
         data => {
           console.log(data);
           // 是否还有下一页，加个方法判断，没有下一页要禁止上拉
-          this.isHaveMore(data.nextPage);
+          this.isHaveMore(data.hasNextPage);
           this.pageList = data.list;
           this.$nextTick(function() {
             // 原意是DOM更新循环结束时调用延迟回调函数，大意就是DOM元素在因为某些原因要进行修改就在这里写，要在修改某些数据后才能写，
@@ -106,7 +106,7 @@ export default {
       this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
         data => {
           this.pageList = this.pageList.concat(data.list);
-          this.isHaveMore(data.nextPage);
+          this.isHaveMore(data.hasNextPage);
         }
       );
     },

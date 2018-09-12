@@ -18,7 +18,7 @@
             <mt-swipe-item v-for="(iteam,index) in iteamList" :key="index">
                 <div class="iteamList">
                     <div>
-                        <span class="iconfont icon-zihangche1" style="color:#6698FF;font-size:24px"></span>
+                        <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>时间：</span>
                         <span>{{FormatDate(iteam.dispatchTime)}}</span>
                         
@@ -28,7 +28,7 @@
                 </div>
                 <div class="iteamList">
                     <div>
-                        <span class="iconfont icon-weizhi" style="color:#6698FF;font-size:24px"></span>
+                        <span><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>地点：</span>
                         <span>{{iteam.handleAddr}}</span>
                         
@@ -37,7 +37,7 @@
                 </div>
                 <div class="iteamList">
                     <div>
-                        <span class="iconfont icon-weizhi" style="color:#6698FF;font-size:24px"></span>
+                        <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>派单人：</span>
                         <span>{{iteam.dispatchUserName}}</span>
                         
@@ -46,7 +46,7 @@
                 </div>
                 <div class="iteamList">
                     <div>
-                        <span class="iconfont icon-weizhi" style="color:#6698FF;font-size:24px"></span>
+                        <span><img src="../../assets/image/supervise/icon_4_company@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>企业：</span>
                         <span>{{iteam.orgName}}</span>
                         
@@ -55,33 +55,33 @@
                 </div>
                 <div class="imageClean" style="padding:0.3rem 0.213333rem">
                     <div>
-                        <span class="iconfont icon-weizhi" style="color:#6698FF;font-size:24px"></span>
+                        <span><img src="../../assets/image/supervise/icon_3_picture@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>派单前</span>                                
                     </div>
                     <div>
-                        <vue-preview :slides="slide" @close="handleClose"></vue-preview>
+                        <vue-preview :slides="slide2" @close="handleClose"></vue-preview>
                     </div>
 
                 </div>
                 <div class="iteamList">
                     <div class="moreText">
-                        <span class="iconfont icon-zihangche1" style="color:#6698FF;font-size:24px"></span>
+                        <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span style="width:25%;margin-left:0.1rem">派单备注：</span>
                         <span class="textFont">{{iteam.dispatchRemark}}</span>                
                     </div>
                 </div>
                 <div class="imageClean" style="padding:0.3rem 0.213333rem">
                     <div>
-                        <span class="iconfont icon-weizhi" style="color:#6698FF;font-size:24px"></span>
+                        <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>处理前</span>                                
                     </div>
                     <div>
-                        <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
+                        <vue-preview :slides="slide" @close="handleClose"></vue-preview>
                     </div>
                 </div>
                 <div class="imageClean" style="padding:0.3rem 0.213333rem">
                     <div>
-                        <span class="iconfont icon-weizhi" style="color:#6698FF;font-size:24px"></span>
+                        <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>处理后</span>                                
                     </div>
                     <div>
@@ -90,14 +90,14 @@
                 </div>
                 <div class="iteamList">
                     <div>
-                        <span class="iconfont icon-zihangche1" style="color:#6698FF;font-size:24px"></span>
+                        <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>整理数：</span>
                         <span>{{iteam.arrangeNum}}</span>                
                     </div>
                 </div>
                 <div class="iteamList">
                     <div>
-                        <span class="iconfont icon-zihangche1" style="color:#6698FF;font-size:24px"></span>
+                        <span><img src="../../assets/image/selfcheck/icon_6_num2@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>清运数：</span>
                         <span>{{iteam.cleanNum}}</span>
                         
@@ -106,16 +106,16 @@
                 </div>
                 <div class="iteamList">
                     <div>
-                        <span class="iconfont icon-zihangche1" style="color:#6698FF;font-size:24px"></span>
+                        <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>处理人：</span>
                         <span>{{iteam.handleUserName}}</span>                
                     </div>
                 </div>
                 <div class="iteamList">
                     <div>
-                        <span class="iconfont icon-zihangche1" style="color:#6698FF;font-size:24px"></span>
+                         <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>处理时间：</span>
-                        <span>{{FormatDate(iteam.handleTime)}}</span>
+                        <span>{{FormatDate(iteam.updateTime)}}</span>
                         
                     </div>
 
@@ -135,6 +135,7 @@ export default {
   data() {
     return {
       slide: [],
+      slide2: [],
       slide1: [],
       sheetCode: "",
       iteamList: []
@@ -154,41 +155,46 @@ export default {
       console.log("close event");
     },
     iconClick() {
-      this.$router.push(
-          {
-            path:"/feedBack",
-            query: {
-                message: this.sheetCode
-            }
-          }
-          );
+      this.$router.push({
+        path: "/feedBack",
+        query: {
+          message: this.sheetCode
+        }
+      });
     },
     getMessage(val) {
       this.$fetchGet("dispatch/listDispatchDetails", {
         sheetCode: val
       })
         .then(res => {
-            console.log(res)
-          var obj = {};
           this.iteamList = res;
-        //   this.iteamList.handleBeforeURLs.forEach(iteam => {
-        //     let obj = {};
-        //     console.log(iteam);
-        //     obj.w = 600;
-        //     obj.h = 600;
-        //     obj.msrc = this.Ip + iteam;
-        //     obj.src = this.Ip + iteam;
-        //     this.slide.push(obj);
-        //   });
-        //   this.iteamList.handleAfterURLs.forEach(iteam => {
-        //     let obj = {};
-        //     console.log(iteam);
-        //     obj.w = 600;
-        //     obj.h = 600;
-        //     obj.msrc = this.Ip + iteam;
-        //     obj.src = this.Ip + iteam;
-        //     this.slide1.push(obj);
-        //   });
+          console.log(this.iteamList);
+          res.forEach(iteam => {
+            iteam.handleBeforeURLs.forEach(item => {
+              let obj = {};
+              obj.w = 600;
+              obj.h = 600;
+              obj.msrc = this.Ip + item;
+              obj.src = this.Ip + item;
+              this.slide.push(obj);
+            });
+            iteam.handleAfterURLs.forEach(item => {
+              let obj = {};
+              obj.w = 600;
+              obj.h = 600;
+              obj.msrc = this.Ip + item;
+              obj.src = this.Ip + item;
+              this.slide1.push(obj);
+            });
+            iteam.dispachPhotoURLs.forEach(item => {
+              let obj = {};
+              obj.w = 600;
+              obj.h = 600;
+              obj.msrc = this.Ip + item;
+              obj.src = this.Ip + item;
+              this.slide2.push(obj);
+            });
+          });
         })
         .catch(res => {});
     }

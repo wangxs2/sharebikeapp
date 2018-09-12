@@ -30,6 +30,8 @@ body,
 /* mintUI */
 .mint-loadmore{
   height: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 .mint-tabbar > .mint-tab-item{
   color: #AAAAAA;
@@ -46,6 +48,9 @@ body,
 }
 .mintui{
   font-size: 24px;
+}
+.mint-swipe-items-wrap{
+  overflow:scroll;
 }
 .mint-header {
   height: 1.173333rem;

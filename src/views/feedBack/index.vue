@@ -9,26 +9,26 @@
       </div>
       <div class="content">
         <div class="iteamForm" style="height:100px">
-          <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
+          <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>处理情况</span>
-            <textarea cols="50" rows="10" placeholder="请输入处理情况" v-model="formMessage.remark" style="margin-top:0.46rem"></textarea>
+            <textarea cols="50" rows="10" placeholder="请输入处理情况" v-model="formMessage.dealCondition" style="margin-top:0.46rem"></textarea>
           </p>
         </div>
         <div class="iteamImage">
           <p>
-            <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-            <span style="padding-left:0.5rem">核实照片</span>
+            <span><img src="../../assets/image/supervise/icon_3_picture@3x.png" width="22" height="22" alt="" srcset=""></span>
+            <span style="padding-left:0.2rem">核实照片</span>
           </p>
           <p class="imageClean">
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px"></i>
+             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
                <vue-preview :slides="slide" @close="handleClose"></vue-preview>             
           </p>
         </div>
         <div class="iteamImage">
           <p>
-            <i class="iconfont icon-zihangche1" style="color:#6698FF"></i>
-            <span style="padding-left:0.5rem">派单</span>
+            <span><img src="../../assets/image/supervise/icon_4_company@3x.png" width="22" height="22" alt="" srcset=""></span>
+            <span style="padding-left:0.2rem">派单</span>
           </p>
           <p class="imageClean">
                 <mt-checklist
@@ -41,8 +41,8 @@
        
       </div>
       <div class="bottom">
-          <button type="button" class="buttonSa" @click.native="save()">重新派单</button>
-          <button type="button" class="buttonSa1" @click.native="submit()">完成</button>
+          <button type="button" class="buttonSa" @click="save()">重新派单</button>
+          <button type="button" class="buttonSa1" @click="submit()">完成</button>
       </div>
   </div>
 </template>
@@ -56,18 +56,15 @@ export default {
       time: "",
       slide1: [],
       slide: [],
+      dispachPhoto: [],
       sheetCode: "",
       iteamList: {},
       options: [],
       value: [],
       formMessage: {
-        handleTime: Date.now(),
-        handleAddr: "",
-        arrangeNum: "",
-        cleanNum: "",
-        remark: "",
-        handleBeforeURLs: [],
-        handleAfterURLs: []
+        dealCondition: "",
+        sheetCode:""
+        
       }
     };
   },
@@ -76,8 +73,9 @@ export default {
   created() {
     this.getAll();
     if (this.$route.query.message) {
-      this.sheetCode = this.$route.query.message;
+      this.formMessage.sheetCode = this.$route.query.message;
     }
+    window.getImage = this.getImage;
   },
   mounted() {
     console.log(this.$store.getters.imageUrl);
@@ -106,25 +104,113 @@ export default {
       });
     },
     clickImage() {
-      window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
+      this.downPictur();
     },
-    clickImage1() {
-      window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
+    getImage(val, row) {
+      let obj = {};
+      obj.w = 600;
+      obj.h = 600;
+      obj.msrc = this.Ip + row;
+      obj.src = this.Ip + row;
+      this.dispachPhoto.push(val);
+      this.slide.push(obj);
     },
     handleClose() {
       console.log("close event");
     },
     save() {
-      this.$fetchPost("selfcheck", this.formMessage)
-        .then(res => {})
-        .catch(res => {
-          MessageBox.alert("", {
-            message: "登录超时",
-            title: "提示"
-          }).then(action => {});
-        });
+      alert(this.dispachPhoto)
+      if (this.formMessage.dealCondition == "") {
+        MessageBox.alert("", {
+          message: "请输入处理情况",
+          title: "提示"
+        }).then(action => {});
+      } 
+      else if (this.dispachPhoto == []) {
+        MessageBox.alert("", {
+          message: "请上传核实照片",
+          title: "提示"
+        }).then(action => {});
+      } 
+      else if (this.value.length == 0) {
+        MessageBox.alert("", {
+          message: "请选择派单企业",
+          title: "提示"
+        }).then(action => {});
+      } else {
+        let obj = {};
+        this.formMessage.handleBefore;
+        obj.dispatch = this.formMessage;
+        obj.dispatch.dealPhoto = this.dispachPhoto.join(";");
+        obj.orgIdList = this.value;
+        obj.finish = 0;
+        this.$fetchPost("dispatch/saveDispatchFeedBack", obj, "json")
+          .then(res => {
+            alert(res)
+            if (res.status == -1) {
+              MessageBox.alert("", {
+                message: res.message,
+                title: "提示"
+              }).then(action => {});
+            } else {
+              MessageBox.alert("", {
+                message: "保存成功",
+                title: "提示"
+              }).then(action => {
+                this.$router.push("/layout/supervise");
+              });
+            }
+          })
+          .catch(res => {
+            MessageBox.alert("", {
+              message: "请求超时",
+              title: "提示"
+            }).then(action => {});
+          });
+      }
     },
-    submit() {}
+    submit() {
+      if (this.formMessage.dealCondition == "") {
+        MessageBox.alert("", {
+          message: "请输入处理情况",
+          title: "提示"
+        }).then(action => {});
+      } else if (this.formMessage.handleBefore == []) {
+        MessageBox.alert("", {
+          message: "请上传现场照片",
+          title: "提示"
+        }).then(action => {});
+      }else{
+        alert("进入");
+        let obj = {};
+        obj.dispatch = this.formMessage;
+        obj.dispatch.dispachPhoto = this.dispachPhoto.join(";");
+        obj.orgIdList = this.value;
+        obj.finish = 1;
+        this.$fetchPost("dispatch/saveDispatchFeedBack", obj, "json")
+          .then(res => {
+            if (res.status == -1) {
+              MessageBox.alert("", {
+                message: res.message,
+                title: "提示"
+              }).then(action => {});
+            } else {
+              MessageBox.alert("", {
+                message: "保存成功",
+                title: "提示"
+              }).then(action => {
+                this.$router.push("/layout/supervise");
+              });
+            }
+          })
+          .catch(res => {
+            MessageBox.alert("", {
+              message: "请求超时",
+              title: "提示"
+            }).then(action => {});
+          });
+      }
+    }
   }
 };
 </script>
@@ -167,6 +253,9 @@ textarea {
       line-height: 55px;
       box-sizing: border-box;
       padding: 0 0 0 0.4rem;
+      img {
+        margin-top: 0.4rem;
+      }
       p {
         display: flex;
         justify-content: flex-start;
@@ -175,7 +264,7 @@ textarea {
         padding: 0;
         border-bottom: 1px solid #eeeeee;
         box-sizing: border-box;
-        padding-left: 0.5rem;
+        padding-left: 0.2rem;
         // .imageSa{
         //   display: flex;
         //   flex-direction:row;
@@ -194,6 +283,9 @@ textarea {
       flex-direction: column;
       box-sizing: border-box;
       padding-top: 0.5rem;
+      img {
+        margin-top: -0.1rem;
+      }
       p {
         display: flex;
         justify-content: flex-start;

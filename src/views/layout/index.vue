@@ -56,8 +56,8 @@ export default {
   },
   created() {
     this.roleCode = localStorage.roleCode;
-    console.log(this.selected);
-    this.message();
+    console.log(this.$route.path)
+    // this.message();
   },
   methods: {
     message() {
@@ -103,10 +103,14 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   .appMain {
     flex: 1;
+    overflow: hidden;
+    overflow-y: scroll;
   }
   .bottom {
+    display: flex;
     width: 100%;
     height: 55px;
     //   background: red;
