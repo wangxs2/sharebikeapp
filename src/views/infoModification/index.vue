@@ -116,11 +116,10 @@ export default {
             if (res.status === 0) {
               Toast("操作成功");
               setTimeout(() => {
-      this.$router.push("/layout/me");
-                
+                this.$router.push("/layout/me");
               }, 600);
-              
             } else {
+              Toast(res.message);
             }
           });
         }
