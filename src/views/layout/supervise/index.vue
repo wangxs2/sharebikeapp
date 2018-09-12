@@ -5,7 +5,7 @@
         <!-- 自查
         <mt-button icon="more" slot="right"></mt-button> -->
         <mt-header title="派单">
-            <mt-button class="iconfont icon-gengduo"  slot="right" @click="iconClick">
+            <mt-button class="iconfont icon-gengduo" style="font-size:24px" slot="right" @click="iconClick">
                 
             </mt-button>
         </mt-header>
@@ -34,6 +34,7 @@
 
 <script>
 import { Loadmore } from "mint-ui";
+import { Toast } from 'mint-ui';
 export default {
   computed: {},
   data() {
@@ -63,11 +64,11 @@ export default {
   methods: {
     detailClick(row) {
       this.$router.push({
-          path: "/superviseDetail",
-          query: {
-            message: row.sheetCode
-          }
-        });
+        path: "/superviseDetail",
+        query: {
+          message: row.sheetCode
+        }
+      });
     },
     iconClick() {
       this.$router.push("/superviseAdd");
@@ -85,6 +86,11 @@ export default {
     },
     loadPageList() {
       // 查询数据
+      Toast({
+        message: "加载中...",
+        position: "center",
+        duration: 1000
+      });
       this.$fetchGet("dispatch/pageDispatch", this.searchCondition).then(
         data => {
           console.log(data);

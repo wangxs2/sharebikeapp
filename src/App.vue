@@ -28,6 +28,9 @@ body,
 }
 
 /* mintUI */
+.mint-loadmore{
+  height: 100%;
+}
 .mint-tabbar > .mint-tab-item{
   color: #AAAAAA;
 }

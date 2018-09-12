@@ -5,6 +5,7 @@
         <img src="../../assets/image/login/LOGO.png" alt="" srcset="">
         <p>共享单车清运</p>
       </div>
+<<<<<<< HEAD
     </div>
     <div class="content">
       <p style="height:0.8rem;"></p>
@@ -14,6 +15,15 @@
 
       </div>
       <!-- <p class="forget">
+=======
+      <div class="content">
+        <p style="height:0.8rem;"></p>
+          <div class="formList">
+              <mt-field label="用户名" placeholder="请输入用户名" v-model="loginMess.username"></mt-field>
+              <mt-field label="密码" placeholder="请输入密码" type="password" v-model="loginMess.password"></mt-field>
+          </div>
+            <!-- <p class="forget">
+>>>>>>> 6cc2a1bb30425aec8319f2af38788f179ba96e5b
                    <label><input name="Fruit" class="forgetps" type="checkbox" value="" />记住密码 </label> 
             </p> -->
       <div style="width:100%">
@@ -34,6 +44,7 @@ export default {
   data() {
     return {
       value: "optionA",
+      loginId: "",
       loginMess: {
         username: "",
         password: ""
@@ -49,13 +60,25 @@ export default {
       }
     };
   },
+  created() {
+    this.downApp()
+     window.getLogin = this.getLogin;
+  },
   methods: {
+    getLogin(val) {
+        this.loginId = val;
+        
+    },
+
     submitForm() {
+      
+      //  this.getLogin(val)
+      // alert(this.loginId)
       this.loading = true;
       let timeNumber = new Date().getTime();
       let b = new base64();
       let data = {
-        username: this.loginMess.username,
+        username: this.loginMess.username + "&" + this.loginId,
         password: b.encode(
           timeNumber +
             "&" +
