@@ -57,27 +57,20 @@ export const constantRouterMap = [
     component: _import('selfCheckAdd/index')
   },
   {
-    path: '/selfCheckdetail',
-    name: '自查处理详情',
-    component: _import('selfCheckdetail/index')
-  },{
-    path: '/superviseAdd',
-    name: '派单',
-    component: _import('superviseAdd/index')
-  },{
-    path: '/needtodoAdd',
-    name: '待办',
-    component: _import('needtodoAdd/index')
-  },{
-    path: '/superviseDetail',
-    name: '派单处理详情',
-    component: _import('superviseDetail/index')
-  },{
-    
-    path: '/feedBack',
-    name: '处理情况反馈',
-    component: _import('feedBack/index')
+    path: '/infoModification',
+    name: '个人信息修改',
+    component: _import('infoModification/index')
+  },
+  {
+    path: '/warningDetail',
+    name: '预警详情',
+    component: _import('warningDetail/index')
   }
+  // {
+  //   path: '/test',
+  //   name: '测试组件',
+  //   component: _import('test/index')
+  // }
 ]
 
 /* {
