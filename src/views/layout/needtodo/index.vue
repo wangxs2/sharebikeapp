@@ -109,7 +109,7 @@ export default {
     more() {
       // 分页查询
       this.searchCondition.page = parseInt(this.searchCondition.page) + 1;
-      this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
+      this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
         data => {
           this.pageList = this.pageList.concat(data.list);
           this.isHaveMore(data.hasNextPage);
@@ -143,6 +143,8 @@ export default {
   }
   .content {
     flex: 1;
+    overflow: hidden;
+    overflow-y: scroll;
   }
 }
 .green {

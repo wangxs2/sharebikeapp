@@ -11,7 +11,7 @@
         </mt-header>
       </div>
       <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
-        <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" bottomPullText="上拉加载" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+        <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
                   <img :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="110" height="84" srcset="">
@@ -41,6 +41,7 @@ export default {
   data() {
     return {
       selected: "/layout/supervise",
+      bottomPullText:"上拉加载",
       searchCondition: {
         //分页属性
         page: "1",
@@ -109,7 +110,7 @@ export default {
     more() {
       // 分页查询
       this.searchCondition.page = parseInt(this.searchCondition.page) + 1;
-      this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
+      this.$fetchGet("dispatch/pageDispatch", this.searchCondition).then(
         data => {
           this.pageList = this.pageList.concat(data.list);
           this.isHaveMore(data.hasNextPage);
@@ -119,8 +120,10 @@ export default {
     isHaveMore(isHaveMore) {
       // 是否还有下一页，如果没有就禁止上拉刷新
       this.allLoaded = true; //true是禁止上拉加载
+      this.bottomPullText="加载完成"
       if (isHaveMore) {
         this.allLoaded = false;
+        this.bottomPullText="上拉加载"
       }
     }
   }
@@ -143,6 +146,8 @@ export default {
   }
   .content {
     flex: 1;
+    overflow: hidden;
+    overflow-y: scroll;
   }
 }
 .green {

@@ -86,7 +86,10 @@ export default {
   methods: {
     // 获取统计数据
     getCount() {
-      Indicator.open('加载中...');
+      Indicator.open({
+        text: "加载中...",
+        spinnerType: "fading-circle"
+      });
       this.$fetchGet("count/countDeviceClickWeekOrDay", {
         orgId: this.activeComany,
         countType: this.dateType,

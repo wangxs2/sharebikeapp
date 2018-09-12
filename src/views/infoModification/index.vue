@@ -7,7 +7,8 @@
 
     </div>
     <div class="content">
-      <div class="user-info-box user-info-avatar box-margin-large" @click="popupVisible = true">
+      <!-- <div class="user-info-box user-info-avatar box-margin-large" @click="popupVisible = true"> -->
+      <div class="user-info-box user-info-avatar box-margin-large" @click="clickImage()">
         <div class="info-title">头像</div>
         <div class="info-content">
           <img class="user-avatar-arrow" src="@/assets/image/infoModification/icon_next@2x.png" alt="">
@@ -52,7 +53,7 @@
       <div class="save">保存</div>
     </div>
     <!-- 选择头像方式 ↓-->
-    <mt-popup class="avatar-popup" v-model="popupVisible" position="bottom">
+    <!-- <mt-popup class="avatar-popup" v-model="popupVisible" position="bottom">
       <div class="avatar-popup-box">
         <div class="select-avatar">
           <div class="img-holder"></div>
@@ -63,7 +64,7 @@
           <div class="select-title">相册</div>
         </div>
       </div>
-    </mt-popup>
+    </mt-popup> -->
 
     <!-- 选择头像方式 -->
   </div>
@@ -84,8 +85,16 @@ export default {
   },
   components: {},
   mounted() {},
-  created() {},
+  created() {
+    window.getImage = this.getImage;
+  },
   methods: {
+    clickImage() {
+      this.downPictur();
+    },
+    getImage(val, row) {
+      this.userInfoNew.imageURL=row
+    },
     //返回个人信息修改
     iconClick() {
       this.$router.push("/layout/me");
