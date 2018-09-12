@@ -8,6 +8,8 @@ const getters = {
   btnAuth: state => state.user.btnAuth,
   menuData: state => state.permission.menuData,
   routers: state => state.permission.routers,
-  addRouters: state => state.permission.addRouters
+  addRouters: state => state.permission.addRouters,
+  imageUrl:state => state.app.imageUrl,
+  userInfo:state => state.user.userInfo
 }
 export default getters

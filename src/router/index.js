@@ -30,6 +30,11 @@ export const constantRouterMap = [
         component: () => import('@/views/layout/supervise'),
       },
       {
+        path: 'needtodo',
+        name: '待办',
+        component: () => import('@/views/layout/needtodo'),
+      },
+      {
         path: 'count',
         name: '统计',
         component: () => import('@/views/layout/count'),
@@ -51,11 +56,36 @@ export const constantRouterMap = [
     name: '添加企业自查',
     component: _import('selfCheckAdd/index')
   },
-  // {
-  //   path: '/test',
-  //   name: '测试组件',
-  //   component: _import('test/index')
-  // }
+  {
+    path: '/infoModification',
+    name: '个人信息修改',
+    component: _import('infoModification/index')
+  },
+  {
+    path: '/warningDetail',
+    name: '预警详情',
+    component: _import('warningDetail/index')
+  },
+  {
+    path: '/selfCheckdetail',
+    name: '自查详情',
+    component: _import('selfCheckdetail/index')
+  },
+  {
+    path: '/needtodoAdd',
+    name: '待办添加',
+    component: _import('needtodoAdd/index')
+  },
+  {
+    path: '/superviseDetail',
+    name: '自查详情',
+    component: _import('superviseDetail/index')
+  },
+  {
+    path: '/superviseAdd',
+    name: '添加派单',
+    component: _import('superviseAdd/index')
+  }
 ]
 
 /* {

@@ -15,7 +15,7 @@ Axios.interceptors.request.use(
     return config;
   },
   error => {
-   
+
     return Promise.reject(error);
   }
 );
@@ -36,12 +36,12 @@ Axios.interceptors.response.use(
       switch (res.status) {
         //401 登录过期 返回登录
         case 401:
-         
-        
+          router.push('/login')
+
           break;
       }
     } else {
-    
+
     }
     return Promise.reject(error);
   }

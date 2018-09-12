@@ -9,19 +9,19 @@ export default {
      *成功提示
      */
     Vue.prototype.Gsuccess = function (msg) {
-   
+
     }
     /* *
      *警告提示
      */
     Vue.prototype.Gwarning = function (msg) {
-    
+
     }
     /* *
      *失败提示
      */
     Vue.prototype.Gerror = function (msg) {
-  
+
     }
 
     /* *
@@ -40,8 +40,8 @@ export default {
 
     /* *
      *@method 返回功能
-     */ 
-    Vue.prototype.getBack = function(){
+     */
+    Vue.prototype.getBack = function () {
       this.$router.go(-1)
     }
 
@@ -104,17 +104,49 @@ export default {
       }
       return newobj;
     };
-
-    /* *
-     *全局过滤 时间
-     */
-    Vue.prototype.FormatDate = function (date) {
-      let nstr = new Date(date)//当天时间  
-      let now_year = nstr.getFullYear() //年份  
-      let now_month = (nstr.getMonth() + 1)<10?'0'+(nstr.getMonth() + 1):nstr.getMonth() + 1 //月份 
-      let now_day=nstr.getDate()<10?'0'+nstr.getDate():nstr.getDate() //日期   
-      return now_year+"-"+now_month+"-"+now_day
+    Vue.prototype.downPictur = function (ios, andio) {
+      let ua = navigator.userAgent.toLowerCase();
+      let isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1; //Ios终端
+      let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+        //Ios
+        // ios
+        // window.webkit.messageHandlers.login.postMessage({ body: "nowlogin" });
+        window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
+      } else if (/(Android)/i.test(navigator.userAgent)) {
+        // andio
+        //Android终端
+        // Android.requestTerminal()
+        Android.requestPicture();
+      }
     };
+    Vue.prototype.downApp = function (ios, andio) {
+      let ua = navigator.userAgent.toLowerCase();
+      let isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1; //Ios终端
+      let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+        //Ios
+        // ios
+        window.webkit.messageHandlers.login.postMessage({ body: "nowlogin" });
+        // window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
+      } else if (/(Android)/i.test(navigator.userAgent)) {
+        // andio
+        //Android终端
+        Android.requestTerminal()
+        // Android.requestPicture();
+      }
+    };
+      /* *
+       *全局过滤 时间
+       */
+      Vue.prototype.FormatDate = function (date) {
+        let nstr = new Date(date)//当天时间  
+        let now_year = nstr.getFullYear() //年份  
+        let now_month = (nstr.getMonth() + 1) < 10 ? '0' + (nstr.getMonth() + 1) : nstr.getMonth() + 1 //月份 
+        let now_day = nstr.getDate() < 10 ? '0' + nstr.getDate() : nstr.getDate() //日期   
+        return now_year + "-" + now_month + "-" + now_day
+      };
+
     Vue.filter('FormatTime', (value, arg) => {
       if (value) {
         return new Date(value).Format(arg)

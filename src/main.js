@@ -10,9 +10,30 @@ import mintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import 'lib-flexible'
 import $ from 'zepto'
-import common from './libs/common.js' //自定义包
+import common from './libs/common.js'
+import './libs/global.css' //自定义包
+import VuePreview from 'vue-preview'
+import { Swipe, SwipeItem } from "mint-ui";
+
+Vue.component(Swipe.name, Swipe);
+Vue.component(SwipeItem.name, SwipeItem);
+// defalut install
+// Vue.use(VuePreview)
+
+// with parameters install
+Vue.use(VuePreview, {
+  mainClass: 'pswp--minimal--dark',
+  barsSize: { top: 0, bottom: 0 },
+  captionEl: false,
+  fullscreenEl: false,
+  shareEl: false,
+  bgOpacity: 0.85,
+  tapToClose: true,
+  tapToToggleControls: false
+})
 Vue.use(common)
 Vue.use(mintUI)
+Vue.prototype.Ip = process.env.API_HOST + '';
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
