@@ -26,14 +26,14 @@
       <div class="user-info-box">
         <div class="info-title">性别</div>
         <div class="info-content">
-          <div class="info-gender-box">
+          <div class="info-gender-box" @click="setGenderW">
             <img src="@/assets/image/infoModification/icon_select_pre@2x.png" alt="" v-if="userInfoNew.sex == 'W'">
-            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt="" @click="setGenderW" v-else>
+            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt="" v-else>
             <div class="info-gender">女</div>
           </div>
-          <div class="info-gender-box">
+          <div class="info-gender-box" @click="setGenderM">
             <img src="@/assets/image/infoModification/icon_select_pre@2x.png" alt="" v-if="userInfoNew.sex == 'M'">
-            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt="" @click="setGenderM" v-else>
+            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt="" v-else>
             <div class="info-gender">男</div>
           </div>
         </div>
@@ -74,7 +74,7 @@
 import { mapGetters } from "vuex";
 import { MessageBox } from "mint-ui";
 import { Toast } from "mint-ui";
-import { userInfo } from 'os';
+import { userInfo } from "os";
 export default {
   computed: {
     ...mapGetters(["userInfo"])
@@ -82,7 +82,8 @@ export default {
   data() {
     return {
       popupVisible: false,
-      userInfoNew: {}
+      userInfoNew:{},
+      updetailImage: ""
     };
   },
   components: {},
@@ -99,6 +100,7 @@ export default {
     //设置头像
     getImage(val, row) {
       this.userInfoNew.imageURL = row;
+      this.updetailImage = val;
     },
     //返回个人信息修改
     iconClick() {
@@ -126,7 +128,7 @@ export default {
             sex: this.userInfoNew.sex,
             emailAddr: this.userInfoNew.emailAddr,
             phoneNum: this.userInfoNew.phoneNum,
-            image: this.userInfoNew.imageURL
+            image: this.updetailImage?this.updetailImage:this.userInfoNew.image
           };
           this.$fetchPut("user/updateUser", updateData).then(res => {
             if (res.status === 0) {
@@ -140,7 +142,6 @@ export default {
           });
         }
       });
-      return;
 
       // console.log(this.userInfoNew)
     }
