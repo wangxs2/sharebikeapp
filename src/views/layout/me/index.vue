@@ -10,7 +10,7 @@
         <img class="user-avatar" :src="Ip + userInfo.imageURL" alt="" v-if="userInfo.imageURL">
         <img class="user-avatar" src="@/assets/image/me/默认头像@2x.png" alt="" v-else>
         <div class="user-info">
-          <div class="user-name" v-text="userInfo.userName"></div>
+          <div class="user-name" v-text="userInfo.realName"></div>
           <div class="user-gender">
             <img src="@/assets/image/me/icon_woman@2x.png" alt="" v-if="userInfo.sex == 'W'">
             <img src="@/assets/image/me/icon_man@2x.png" alt="" v-else>

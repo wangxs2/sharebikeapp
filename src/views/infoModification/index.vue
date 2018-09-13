@@ -20,7 +20,7 @@
       <div class="user-info-box box-margin-large">
         <div class="info-title">姓名</div>
         <!-- <div class="info-content" v-text="userInfo.userName"></div> -->
-        <input class="info-content" type="text" name="" id="" v-model="userInfoNew.userName">
+        <input class="info-content" type="text" name="" id="" v-model="userInfoNew.realName">
 
       </div>
       <div class="user-info-box">
@@ -46,7 +46,7 @@
       <div class="user-info-box">
         <div class="info-title">手机号</div>
         <!-- <div class="info-content" v-text="userInfo.phoneNum"></div> -->
-        <input class="info-content" type="text" name="" id="" v-model="userInfoNew.phoneNum">
+        <input class="info-content" type="text" name="" id="" v-model="userInfoNew.phoneNum" @blur="checkPhoneNum">
       </div>
     </div>
     <div class="bottom" @click="saveChange">
@@ -74,31 +74,37 @@
 import { mapGetters } from "vuex";
 import { MessageBox } from "mint-ui";
 import { Toast } from "mint-ui";
+import { userInfo } from 'os';
 export default {
   computed: {
-    ...mapGetters({ userInfoNew: "userInfo" })
+    ...mapGetters(["userInfo"])
   },
   data() {
     return {
-      popupVisible: false
+      popupVisible: false,
+      userInfoNew: {}
     };
   },
   components: {},
   mounted() {},
   created() {
     window.getImage = this.getImage;
+    this.userInfoNew = this.cloneObj(this.userInfo);
   },
   methods: {
+    //选择头像
     clickImage() {
       this.downPictur();
     },
+    //设置头像
     getImage(val, row) {
-      this.userInfoNew.imageURL=row
+      this.userInfoNew.imageURL = row;
     },
     //返回个人信息修改
     iconClick() {
       this.$router.push("/layout/me");
     },
+    checkPhoneNum() {},
     //设置性别
     setGenderW() {
       this.userInfoNew.sex = "W";
@@ -119,8 +125,8 @@ export default {
             realName: this.userInfoNew.realName,
             sex: this.userInfoNew.sex,
             emailAddr: this.userInfoNew.emailAddr,
-            phoneAum: this.userInfoNew.phoneAum,
-            image:this.userInfoNew.imageURL
+            phoneNum: this.userInfoNew.phoneNum,
+            image: this.userInfoNew.imageURL
           };
           this.$fetchPut("user/updateUser", updateData).then(res => {
             if (res.status === 0) {
