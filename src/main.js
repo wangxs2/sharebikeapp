@@ -3,11 +3,11 @@
 import Vue from 'vue'
 import 'normalize.css' // 样式重置
 import App from './App'
+import mintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
 import router from './router'
 import './permission' //路由判断
 import store from './stores' //vuex
-import mintUI from 'mint-ui'
-import 'mint-ui/lib/style.css'
 import 'lib-flexible'
 import $ from 'zepto'
 import common from './libs/common.js'

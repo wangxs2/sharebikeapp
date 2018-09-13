@@ -80,7 +80,8 @@ export default {
   },
   data() {
     return {
-      popupVisible: false
+      popupVisible: false,
+      updetailImage:"",
     };
   },
   components: {},
@@ -94,6 +95,8 @@ export default {
     },
     getImage(val, row) {
       this.userInfoNew.imageURL=row
+      this.updetailImage=val
+      
     },
     //返回个人信息修改
     iconClick() {
@@ -119,8 +122,8 @@ export default {
             realName: this.userInfoNew.realName,
             sex: this.userInfoNew.sex,
             emailAddr: this.userInfoNew.emailAddr,
-            phoneAum: this.userInfoNew.phoneAum,
-            image:this.userInfoNew.imageURL
+            phoneNum: this.userInfoNew.phoneAum,
+            image:this.updetailImage
           };
           this.$fetchPut("user/updateUser", updateData).then(res => {
             if (res.status === 0) {
