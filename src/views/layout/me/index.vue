@@ -48,6 +48,9 @@
         </div>
         <div class="static-data" v-text="userCount.cleanNum"></div>
       </div>
+      <div class="exit">
+        <button @click="logOut">退出登录</button>
+      </div>
 
     </div>
   </div>
@@ -56,6 +59,7 @@
 <script>
 import { Loadmore } from "mint-ui";
 import { mapGetters } from "vuex";
+import { MessageBox } from "mint-ui";
 export default {
   computed: {
     ...mapGetters(["userInfo"])
@@ -80,6 +84,22 @@ export default {
     //进入个人信息修改
     iconClick() {
       this.$router.push("/infoModification");
+    },
+    //退出登录
+    logOut() {
+      MessageBox({
+        title: "提示",
+        message: "是否确认退出?",
+        showCancelButton: true
+      }).then(action => {
+        if (action == "confirm") {
+          this.$fetchGet("login/logout").then(res => {
+            if (res == "login") {
+              this.$router.push("/login");
+            }
+          });
+        }
+      });
     }
   }
 };
@@ -174,7 +194,7 @@ export default {
       justify-content: space-between;
       box-shadow: 0px 1px 0px 0px rgba(221, 221, 221, 0.5);
       margin-bottom: 1px;
-      height: 2.133333rem;
+      height: 1.9rem;
       .static-box-left {
         display: flex;
         align-items: center;
@@ -197,6 +217,20 @@ export default {
         margin-right: 0.36rem;
         color: #282828;
         font-size: 0.586667rem;
+      }
+    }
+    .exit {
+      width: 100%;
+      height: 1rem;
+      padding: 0 1rem;
+      box-sizing: border-box;
+      margin-top: 1rem;
+      button {
+        width: 100%;
+        height: 100%;
+        background: #ef4f4f;
+        color: #fff;
+        border-radius: 0.12rem;
       }
     }
   }

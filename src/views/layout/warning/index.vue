@@ -3,7 +3,8 @@
     <div class="header">
       <div class="header-title">预警</div>
     </div>
-    <div class="content">
+    <div style="text-align:center;padding-top:.33rem;color:#aaa">开发中</div>
+    <!-- <div class="content">
       <div class="warning-box">
         <div class="warning-box-top">
           <div class="warning-info">
@@ -60,7 +61,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
