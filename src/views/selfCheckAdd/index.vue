@@ -29,8 +29,9 @@
             <span style="padding-left:0.2rem">整理前</span>
           </p>
           <p class="imageClean">
+           
+            <vue-preview :slides="slide" @close="handleClose"></vue-preview>
              <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
-               <vue-preview :slides="slide" @close="handleClose"></vue-preview>
              
           </p>
         </div>
@@ -40,8 +41,9 @@
             <span style="padding-left:0.2rem">整理后</span>
           </p>
           <p class="imageClean">
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage1"></i>
+             
              <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
+             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage1"></i>
           </p>
         </div>
         <div class="iteamForm">
@@ -135,7 +137,7 @@ export default {
       this.downPictur();
     },
     handleClose() {
-      console.log("close event");
+      // console.log("close event");
     },
     getMessage(val) {
       this.$fetchGet("selfcheck/selfCheck", {
@@ -145,7 +147,7 @@ export default {
           this.formMessage = res;
           this.formMessage.handleBeforeURLs.forEach(iteam => {
             let obj = {};
-            console.log(iteam);
+            // console.log(iteam);
             obj.w = 600;
             obj.h = 600;
             obj.msrc = this.Ip + iteam;
@@ -154,7 +156,7 @@ export default {
           });
           this.formMessage.handleAfterURLs.forEach(iteam => {
             let obj = {};
-            console.log(iteam);
+            // console.log(iteam);
             obj.w = 600;
             obj.h = 600;
             obj.msrc = this.Ip + iteam;

@@ -138,7 +138,7 @@ export default {
       this.downPictur();
     },
     handleClose() {
-      console.log("close event");
+      // console.log("close event");
     },
     getMessage(val) {
       this.$fetchGet("dispatch/dispatchDetail", {
@@ -152,7 +152,7 @@ export default {
             }
             res.dispatchDetail.handleBeforeURLs.forEach(iteam => {
               let obj = {};
-              console.log(iteam);
+              // console.log(iteam);
               obj.w = 600;
               obj.h = 600;
               obj.msrc = this.Ip + iteam;
@@ -161,7 +161,7 @@ export default {
             });
             res.dispatchDetail.handleAfterURLs.forEach(iteam => {
               let obj = {};
-              console.log(iteam);
+              // console.log(iteam);
               obj.w = 600;
               obj.h = 600;
               obj.msrc = this.Ip + iteam;
@@ -170,7 +170,7 @@ export default {
             });
             res.dispatchDetail.dispachPhotoURLs.forEach(iteam => {
               let obj = {};
-              console.log(iteam);
+              // console.log(iteam);
               obj.w = 600;
               obj.h = 600;
               obj.msrc = this.Ip + iteam;

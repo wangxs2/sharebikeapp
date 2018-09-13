@@ -5,13 +5,14 @@ import 'normalize.css' // 样式重置
 import App from './App'
 import mintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+import './libs/global.css' //自定义包
 import router from './router'
 import './permission' //路由判断
 import store from './stores' //vuex
 import 'lib-flexible'
 import $ from 'zepto'
 import common from './libs/common.js'
-import './libs/global.css' //自定义包
+
 import VuePreview from 'vue-preview'
 import { Swipe, SwipeItem } from "mint-ui";
 

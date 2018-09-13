@@ -11,10 +11,11 @@
         </mt-header>
       </div>
       <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
-        <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+        <v-loadmore :bottom-method="loadBottom" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
-                  <img :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="110" height="84" srcset="">
+                  <img v-if="iteam.dispachPhotoURLs.length!==0" :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="110" height="84" srcset="">
+                  <img v-if="iteam.dispachPhotoURLs.length==0" src="../../../assets/image/selfcheck/image_no data@3x.png" alt="" width="110" height="84" srcset="">
               </div>
               <div class="right">
                   <div class="topRight">
@@ -41,7 +42,7 @@ export default {
   data() {
     return {
       selected: "/layout/supervise",
-      bottomPullText:"上拉加载",
+      bottomPullText:"已加载全部数据",
       searchCondition: {
         //分页属性
         page: "1",
@@ -60,9 +61,6 @@ export default {
     this.loadPageList(); //初次访问查询列表
   },
   created() {},
-  mounted() {
-    this.loadPageList(); //初次访问查询列表
-  },
   methods: {
     detailClick(row) {
       this.$router.push({
@@ -75,12 +73,12 @@ export default {
     iconClick() {
       this.$router.push("/superviseAdd");
     },
-    loadTop() {
+    // loadTop() {
       //组件提供的下拉触发方法
       //下拉加载
       // this.loadPageList();
       // this.$refs.loadmore.onTopLoaded(); // 固定方法，查询完要调用一次，用于重新定位
-    },
+    // },
     loadBottom() {
       // 上拉加载
       this.more(); // 上拉触发的分页查询
@@ -120,10 +118,10 @@ export default {
     isHaveMore(isHaveMore) {
       // 是否还有下一页，如果没有就禁止上拉刷新
       this.allLoaded = true; //true是禁止上拉加载
-      this.bottomPullText="加载完成"
+      this.bottomPullText="已加载全部数据"
       if (isHaveMore) {
         this.allLoaded = false;
-        this.bottomPullText="上拉加载"
+        this.bottomPullText="已加载全部数据"
       }
     }
   }

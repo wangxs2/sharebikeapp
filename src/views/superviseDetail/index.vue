@@ -163,6 +163,10 @@ export default {
       });
     },
     getMessage(val) {
+      this.iteamList = [];
+      this.slide = [];
+      this.slide1 = [];
+      this.slide2 = [];
       Indicator.open({
         text: "加载中...",
         spinnerType: "fading-circle"
@@ -171,7 +175,7 @@ export default {
         sheetCode: val
       })
         .then(res => {
-            Indicator.close();
+          Indicator.close();
           this.iteamList = res;
           console.log(this.iteamList);
           res.forEach(iteam => {

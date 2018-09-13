@@ -37,8 +37,7 @@
                 </mt-checklist>
           </p>
         </div>
-        </form>
-       
+        </form>      
       </div>
       <div class="bottom">
           <button type="button" class="buttonSa" @click="save()">重新派单</button>
@@ -99,7 +98,7 @@ export default {
       this.$router.push({
         path: "/superviseDetail",
         query: {
-          message: this.sheetCode
+          message: this.formMessage.sheetCode
         }
       });
     },

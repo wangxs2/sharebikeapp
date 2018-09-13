@@ -15,7 +15,7 @@
             <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt="">
             <p style="color:#989898">暂时没有自查数据哦~</p>
           </div>
-          <v-loadmore v-if="!noneList" :top-method="loadTop" :bottom-method="loadBottom" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+          <v-loadmore v-if="!noneList" :bottom-method="loadBottom" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
             <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
                 <div class="left">                  
                     <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="110" height="84" srcset="">
@@ -23,6 +23,9 @@
                 <div class="right">
                     <div class="topRight">
                         <p><span>{{FormatDate(iteam.updateTime)}}</span> <span :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</span></p>
+                    </div>
+                    <div class="center">
+                        整理{{iteam.arrangeNum}}辆，清运{{iteam.cleanNum}}辆
                     </div>
                     <div class="bottomRight">
                         <span class="iconfont icon-weizhi"></span>
@@ -45,12 +48,12 @@ export default {
   data() {
     return {
       selected: "/layout/selfCheck",
-      noneList:false,
-      bottomPullText:"上拉加载",
+      noneList: false,
+      bottomPullText: "已加载全部数据",
       searchCondition: {
         //分页属性
         page: "1",
-        pageSize: "5"
+        pageSize: "10"
       },
       pageList: [],
       allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
@@ -60,9 +63,6 @@ export default {
   components: {
     "v-loadmore": Loadmore // 为组件起别名，vue转换template标签时不会区分大小写，例如：loadMore这种标签转换完就会变成loadmore，容易出现一些匹配问题
     // 推荐应用组件时用a-b形式起名
-  },
-  mounted() {
-    this.loadPageList(); //初次访问查询列表
   },
   created() {},
   mounted() {
@@ -89,13 +89,13 @@ export default {
     iconClick() {
       this.$router.push("/selfCheckAdd");
     },
-    loadTop() {
-      //组件提供的下拉触发方法
-      //下拉加载
-      // this.searchCondition.page = parseInt(this.searchCondition.page) - 1;
-      // this.loadPageList();
-      // this.$refs.loadmore.onTopLoaded(); // 固定方法，查询完要调用一次，用于重新定位
-    },
+    // loadTop() {
+    //组件提供的下拉触发方法
+    //下拉加载
+    // this.searchCondition.page = parseInt(this.searchCondition.page) - 1;
+    // this.loadPageList();
+    // this.$refs.loadmore.onTopLoaded(); // 固定方法，查询完要调用一次，用于重新定位
+    // },
     loadBottom() {
       // 上拉加载
       this.more(); // 上拉触发的分页查询
@@ -109,10 +109,10 @@ export default {
       });
       this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
         data => {
-          if(data.list.length==0){
-            this.noneList=true
-          }else{
-            this.noneList=false
+          if (data.list.length == 0) {
+            this.noneList = true;
+          } else {
+            this.noneList = false;
           }
           Indicator.close();
           // console.log(data);
@@ -140,11 +140,12 @@ export default {
     },
     isHaveMore(isHaveMore) {
       // 是否还有下一页，如果没有就禁止上拉刷新
+      this.bottomPullText = "已加载全部数据";
       this.allLoaded = true; //true是禁止上拉加载
-      this.bottomPullText="已加载全部数据";
+
       if (isHaveMore) {
+        this.bottomPullText = "已加载全部数据";
         this.allLoaded = false;
-        this.bottomPullText="上拉加载";
       }
     }
   }
@@ -167,11 +168,10 @@ export default {
     color: #fff;
   }
   .content {
-  
     flex: 1;
     // overflow: hidden;
     overflow-y: scroll;
-    .noneList{
+    .noneList {
       flex: 1;
       line-height: 1;
       text-align: center;
@@ -212,8 +212,15 @@ export default {
           // width: 100%;
           display: flex;
           flex: 1;
+          padding: 0;
+          margin: 0;
           justify-content: space-between;
         }
+      }
+      .center{
+        width: 100%;
+        display: flex;
+        flex: 1;
       }
       .bottomRight {
         display: flex;

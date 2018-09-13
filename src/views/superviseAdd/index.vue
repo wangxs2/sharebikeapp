@@ -105,14 +105,14 @@ export default {
       this.slide.push(obj);
     },
     handleClose() {
-      console.log("close event");
+      // console.log("close event");
     },
     iconClick() {
       this.$router.push("/layout/supervise");
     },
     getCompany(val) {
       this.value = val;
-      console.log(this.value);
+      // console.log(this.value);
     },
     getAll() {
       this.$fetchGet("count/bikeCompany").then(res => {

@@ -85,6 +85,10 @@ export const constantRouterMap = [
     path: '/superviseAdd',
     name: '添加派单',
     component: _import('superviseAdd/index')
+  },{
+    path: '/feedBack',
+    name: '添加反馈',
+    component: _import('feedBack/index')
   }
 ]
 

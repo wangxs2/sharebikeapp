@@ -11,7 +11,7 @@
         </mt-header>
       </div>
       <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
-        <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="上拉加载" :auto-fill="false" ref="loadmore">
+        <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="已加载全部数据" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
                   <img :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="110" height="84" srcset="">
@@ -39,7 +39,7 @@ export default {
   computed: {},
   data() {
     return {
-      selected: "/layout/selfCheck",
+      selected: "/layout/needtodo",
       searchCondition: {
         //分页属性
         page: "1",
@@ -53,9 +53,6 @@ export default {
   components: {
     "v-loadmore": Loadmore // 为组件起别名，vue转换template标签时不会区分大小写，例如：loadMore这种标签转换完就会变成loadmore，容易出现一些匹配问题
     // 推荐应用组件时用a-b形式起名
-  },
-  mounted() {
-    this.loadPageList(); //初次访问查询列表
   },
   created() {},
   mounted() {
@@ -73,12 +70,12 @@ export default {
     iconClick() {
       this.$router.push("/selfCheckAdd");
     },
-    loadTop() {
+    // loadTop() {
       //组件提供的下拉触发方法
       //下拉加载
       // this.loadPageList();
       // this.$refs.loadmore.onTopLoaded(); // 固定方法，查询完要调用一次，用于重新定位
-    },
+    // },
     loadBottom() {
       // 上拉加载
       this.more(); // 上拉触发的分页查询
@@ -93,7 +90,7 @@ export default {
       this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
         data => {
           Indicator.close();
-          console.log(data);
+          // console.log(data);
           // 是否还有下一页，加个方法判断，没有下一页要禁止上拉
           this.isHaveMore(data.hasNextPage);
           this.pageList = data.list;
