@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header">
       <img src="@/assets/image/warningDetail/nav_1_back@2x.png" alt="" @click="iconReturn">
-      <div class="header-title">个人信息修改</div>
+      <div class="header-title">预警详情</div>
       <img src="" alt="">
     </div>
     <div class="content">

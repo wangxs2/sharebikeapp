@@ -119,7 +119,8 @@ export default {
             realName: this.userInfoNew.realName,
             sex: this.userInfoNew.sex,
             emailAddr: this.userInfoNew.emailAddr,
-            phoneAum: this.userInfoNew.phoneAum
+            phoneAum: this.userInfoNew.phoneAum,
+            image:this.userInfoNew.imageURL
           };
           this.$fetchPut("user/updateUser", updateData).then(res => {
             if (res.status === 0) {
