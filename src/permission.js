@@ -8,16 +8,17 @@ import {
 
 router.beforeEach((to, from, next) => {
   if (to.path === "/login") {
-    delCookie('flag');
+    delCookie('userId');
+    store.commit("SET_ID","");
     store.commit("SET_USERINFO", {});
     next();
     return;
   }
 
-  if (to.path !== "/login" && !getCookie('flag')) {
+  if (to.path !== "/login" && !getCookie('userId')) {
     next('/login');
     return;
-  } else if (getCookie('flag')) {
+  } else if (getCookie('userId')) {
     if (getCookie('userId') == (store.getters.userId + '')) {
       next();
     } else {

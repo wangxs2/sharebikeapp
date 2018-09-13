@@ -133,6 +133,7 @@ export default {
           this.$fetchPut("user/updateUser", updateData).then(res => {
             if (res.status === 0) {
               Toast("操作成功");
+              this.$store.dispatch("GetUserInfo");
               setTimeout(() => {
                 this.$router.push("/layout/me");
               }, 600);
