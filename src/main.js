@@ -5,7 +5,7 @@ import 'normalize.css' // 样式重置
 import App from './App'
 import mintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import './libs/global.css' //自定义包
+import './assets/css/global.css'
 import router from './router'
 import './permission' //路由判断
 import store from './stores' //vuex

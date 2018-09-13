@@ -72,6 +72,11 @@ export default {
       } else {
         this.imgUrl[1] = require("../../assets/image/login/icon_tab_2_nor@3x.png");
       }
+      if (val == "/layout/needtodo") {
+        this.imgUrl[1] = require("../../assets/image/login/icon_tab_2_pre@3x.png");
+      } else {
+        this.imgUrl[1] = require("../../assets/image/login/icon_tab_2_nor@3x.png");
+      }
       if (val == "/layout/count") {
         this.imgUrl[2] = require("../../assets/image/login/icon_tab_3_pre@3x.png");
       } else {
@@ -93,6 +98,7 @@ export default {
       console.log(this.selected)
       if (this.roleCode == "clean" && this.selected == "/layout/supervise") {
         this.$router.push("/layout/needtodo");
+        this.selected="/layout/supervise"
       } else {
         this.$router.push(this.selected);
       }

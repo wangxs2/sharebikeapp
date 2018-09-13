@@ -11,7 +11,11 @@
         </mt-header>
       </div>
       <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
-        <v-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="已加载全部数据" :auto-fill="false" ref="loadmore">
+        <div class="noneList" v-if="noneList">
+            <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt="">
+            <p style="color:#989898">暂时没有数据哦~</p>
+        </div>
+        <v-loadmore v-if="!noneList" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="已加载全部数据" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
                   <img :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="110" height="84" srcset="">
@@ -40,6 +44,7 @@ export default {
   data() {
     return {
       selected: "/layout/needtodo",
+      noneList: false,
       searchCondition: {
         //分页属性
         page: "1",
@@ -71,10 +76,10 @@ export default {
       this.$router.push("/selfCheckAdd");
     },
     // loadTop() {
-      //组件提供的下拉触发方法
-      //下拉加载
-      // this.loadPageList();
-      // this.$refs.loadmore.onTopLoaded(); // 固定方法，查询完要调用一次，用于重新定位
+    //组件提供的下拉触发方法
+    //下拉加载
+    // this.loadPageList();
+    // this.$refs.loadmore.onTopLoaded(); // 固定方法，查询完要调用一次，用于重新定位
     // },
     loadBottom() {
       // 上拉加载
@@ -89,6 +94,11 @@ export default {
       });
       this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
         data => {
+          if (data.list.length == 0) {
+            this.noneList = true;
+          } else {
+            this.noneList = false;
+          }
           Indicator.close();
           // console.log(data);
           // 是否还有下一页，加个方法判断，没有下一页要禁止上拉
@@ -142,6 +152,12 @@ export default {
     flex: 1;
     overflow: hidden;
     overflow-y: scroll;
+    .noneList {
+      flex: 1;
+      line-height: 1;
+      text-align: center;
+      margin-top: 2rem;
+    }
   }
 }
 .green {

@@ -70,7 +70,9 @@ export default {
     };
   },
   components: {},
-  mounted() {},
+  mounted() {
+    console.log(this.userInfo)
+  },
   created() {
     this.getData();
   },
