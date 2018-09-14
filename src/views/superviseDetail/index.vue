@@ -14,7 +14,7 @@
         </mt-header>
       </div>
       <div class="content">
-        <mt-swipe :auto="0">
+        <mt-swipe :auto="0" :continuous="false">
             <mt-swipe-item v-for="(iteam,index) in iteamList" :key="index">
                 <div class="iteamList">
                     <div>

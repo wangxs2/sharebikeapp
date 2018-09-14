@@ -89,6 +89,10 @@ export const constantRouterMap = [
     path: '/feedBack',
     name: '添加反馈',
     component: _import('feedBack/index')
+  },{
+    path: '/test',
+    name: '测试',
+    component: _import('test/index')
   }
 ]
 

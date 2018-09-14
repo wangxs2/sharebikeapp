@@ -56,8 +56,20 @@ export default {
   created() {
     this.roleCode = localStorage.roleCode;
     console.log(this.$route.path);
-    this.selected=this.$route.path
-    this.changeImage(this.$route.path);
+    this.selected = this.$route.path;
+    if (this.$route.path == "/layout/needtodo") {
+      this.selected = "/layout/supervise";
+      this.changeImage("/layout/needtodo");
+    } else {
+      if (this.$route.path == "/layout/supervise") {
+        this.selected = "/layout/supervise";
+        this.changeImage("/layout/needtodo");
+      } else {
+        this.selected = this.$route.path;
+        this.changeImage(this.$route.path);
+      }
+    }
+
     // this
   },
   methods: {
@@ -94,13 +106,18 @@ export default {
       }
     },
     message() {
-      this.changeImage(this.selected);
-      console.log(this.selected)
+      console.log(this.selected);
       if (this.roleCode == "clean" && this.selected == "/layout/supervise") {
+        this.changeImage("/layout/needtodo");
         this.$router.push("/layout/needtodo");
-        this.selected="/layout/supervise"
       } else {
-        this.$router.push(this.selected);
+        if (this.selected == "/layout/supervise") {
+          this.$router.push(this.selected);
+          this.changeImage("/layout/needtodo");
+        } else {
+          this.$router.push(this.selected);
+          this.changeImage(this.selected);
+        }
       }
     }
   }

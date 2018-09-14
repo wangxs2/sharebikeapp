@@ -25,7 +25,7 @@
                         <p><span>{{FormatDate(iteam.updateTime)}}</span> <span :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</span></p>
                     </div>
                     <div class="center">
-                        整理{{iteam.arrangeNum}}辆，清运{{iteam.cleanNum}}辆
+                        {{iteam.orgName}}： 整理{{iteam.arrangeNum}}辆，清运{{iteam.cleanNum}}辆
                     </div>
                     <div class="bottomRight">
                         <span class="iconfont icon-weizhi"></span>
@@ -202,7 +202,7 @@ export default {
       width: 100%;
       display: flex;
       box-sizing: border-box;
-      padding: 0 0.5rem;
+      padding: 0 0.2rem;
       flex-direction: column;
       .topRight {
         width: 100%;

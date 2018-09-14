@@ -91,14 +91,13 @@ export default {
       sheetCode: "",
       imageStatus: 0,
       iteamList: {},
-      handleBefore:[],
-      handleAfter:[],
+      handleBefore: [],
+      handleAfter: [],
       formMessage: {
         handleTime: Date.now(),
         handleAddr: "",
         arrangeNum: "",
-        cleanNum: "",
-        
+        cleanNum: ""
       }
     };
   },
@@ -110,7 +109,6 @@ export default {
       this.getMessage(this.sheetCode);
     }
     window.getImage = this.getImage;
-  
   },
   mounted() {},
   methods: {
@@ -129,7 +127,7 @@ export default {
         this.slide.push(obj);
       }
       if (this.imageStatus == 2) {
-       this.handleAfter.push(val);
+        this.handleAfter.push(val);
         this.slide1.push(obj);
       }
     },
@@ -150,6 +148,8 @@ export default {
             if (this.formMessage.handleTime == undefined) {
               this.formMessage.handleTime = Date.now();
             }
+            this.handleBefore = res.handleBefore.split(";");
+            this.handleAfter = res.handleAfter.split(";");
             res.dispatchDetail.handleBeforeURLs.forEach(iteam => {
               let obj = {};
               // console.log(iteam);
@@ -182,7 +182,7 @@ export default {
         .catch(res => {});
     },
     save() {
-      if (this.slide.length==0) {
+      if (this.slide.length == 0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
           title: "提示"
@@ -191,9 +191,7 @@ export default {
         let obj = {};
         this.formMessage.handleBefore;
         obj.dispatchDetail = this.formMessage;
-        obj.dispatchDetail.handleBefore = this.handleBefore.join(
-          ";"
-        );
+        obj.dispatchDetail.handleBefore = this.handleBefore.join(";");
         obj.dispatchDetail.handleAfter = this.handleAfter.join(";");
         obj.finish = 0;
         this.$fetchPost("dispatch/saveDispatchDetail", obj, "json")
@@ -221,7 +219,7 @@ export default {
       }
     },
     submit() {
-     if (this.slide == []) {
+      if (this.slide == []) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
           title: "提示"
@@ -243,9 +241,7 @@ export default {
         let obj = {};
         this.formMessage.handleBefore;
         obj.dispatchDetail = this.formMessage;
-        obj.dispatchDetail.handleBefore = this.handleBefore.join(
-          ";"
-        );
+        obj.dispatchDetail.handleBefore = this.handleBefore.join(";");
         obj.dispatchDetail.handleAfter = this.handleAfter.join(";");
         obj.finish = 1;
         this.$fetchPost("dispatch/saveDispatchDetail", obj, "json")

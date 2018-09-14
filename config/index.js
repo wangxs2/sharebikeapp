@@ -15,7 +15,8 @@ module.exports = {
         // target: 'http://10.1.30.94:8888/babyrobot',
         // target: 'http://10.1.4.163:8888/babyrobot',
         // target: 'http://10.1.4.40:8888/babyrobot',
-        target: 'http://10.1.4.42:8090/sharebikesclean',
+        // target: 'http://10.1.30.188:8090/sharebikesclean',
+         target: 'http://10.1.4.42:8090/sharebikesclean',
         // target: 'http://101.132.164.97:8888/babyrobot/',
         changeOrigin: true,
         pathRewrite: {
@@ -25,7 +26,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: '10.1.4.90', // can be overwritten by process.env.HOST
+    host: '10.1.4.38', // can be overwritten by process.env.HOST
     port: 8090, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

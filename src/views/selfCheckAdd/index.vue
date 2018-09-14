@@ -123,7 +123,6 @@ export default {
       obj.msrc = this.Ip + row;
       obj.src = this.Ip + row;
       if (this.imageStatus == 1) {
-        alert(row)
         this.formMessage.handleBefore.push(val);
         this.slide.push(obj);
       }
@@ -147,16 +146,17 @@ export default {
           this.formMessage = res;
           this.formMessage.handleBeforeURLs.forEach(iteam => {
             let obj = {};
-            // console.log(iteam);
             obj.w = 600;
             obj.h = 600;
             obj.msrc = this.Ip + iteam;
             obj.src = this.Ip + iteam;
             this.slide.push(obj);
           });
+          this.formMessage.handleBefore=res.handleBefore.split(";")
+          this.formMessage.handleAfter=res.handleAfter.split(";")
+          console.log(this.formMessage.handleBefore)
           this.formMessage.handleAfterURLs.forEach(iteam => {
             let obj = {};
-            // console.log(iteam);
             obj.w = 600;
             obj.h = 600;
             obj.msrc = this.Ip + iteam;
@@ -172,7 +172,7 @@ export default {
           message: "请输入清理地点",
           title: "提示"
         }).then(action => {});
-      } else if (this.formMessage.handleBefore == []) {
+      } else if (this.formMessage.handleBefore.length==0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
           title: "提示"

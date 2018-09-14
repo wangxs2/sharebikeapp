@@ -46,7 +46,7 @@ body,
     color: #AAAAAA;
   }
   .mint-swipe-indicator.is-active{
-    background: #ccc;
+    background: #41cd76;
   }
   .mint-tabbar > .mint-tab-item.is-selected {
     background: #fff;

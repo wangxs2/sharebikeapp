@@ -183,7 +183,7 @@ export default {
       width: 100%;
       display: flex;
       box-sizing: border-box;
-      padding: 0 0.5rem;
+      padding: 0 0.2rem;
       flex-direction: column;
       .topRight {
         width: 100%;
