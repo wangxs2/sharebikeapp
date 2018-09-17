@@ -11,7 +11,7 @@ module.exports = {
     assetsSubDirectory: 'sharebikesclean',
     assetsPublicPath: '/',
     proxyTable: {
-      '/sharebikesclean':{
+      '/sharebikesclean': {
         // target: 'http://10.1.30.94:8888/babyrobot',
         // target: 'http://10.1.4.163:8888/babyrobot',
         // target: 'http://10.1.4.40:8888/babyrobot',
@@ -26,14 +26,14 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: '10.1.4.38', // can be overwritten by process.env.HOST
+    host: '10.1.4.90', // can be overwritten by process.env.HOST
     port: 8090, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */

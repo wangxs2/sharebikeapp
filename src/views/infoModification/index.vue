@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="header">
-      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt="" @click="iconClick">
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt="" @click="toUserInfo">
       <div class="header-title">个人信息修改</div>
       <img src="" alt="">
 
@@ -103,7 +103,7 @@ export default {
       this.updetailImage = val;
     },
     //返回个人信息修改
-    iconClick() {
+    toUserInfo() {
       this.$router.push("/layout/me");
     },
     checkPhoneNum() {},

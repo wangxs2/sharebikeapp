@@ -8,8 +8,7 @@ Vue.use(Router)
 
 // import Layout from '@/views/layout/index'
 
-export const constantRouterMap = [
-  {
+export const constantRouterMap = [{
     path: '/login',
     name: '登录',
     component: _import('login/index')
@@ -18,36 +17,41 @@ export const constantRouterMap = [
     path: '/layout',
     name: '主页',
     component: _import('layout/index'),
-    children: [
-      {
+    children: [{
         path: 'selfCheck',
         name: '自查',
-        component: () => import('@/views/layout/selfCheck'),
+        component: () =>
+          import('@/views/layout/selfCheck'),
       },
       {
         path: 'supervise',
         name: '派单',
-        component: () => import('@/views/layout/supervise'),
+        component: () =>
+          import('@/views/layout/supervise'),
       },
       {
         path: 'needtodo',
         name: '待办',
-        component: () => import('@/views/layout/needtodo'),
+        component: () =>
+          import('@/views/layout/needtodo'),
       },
       {
         path: 'count',
         name: '统计',
-        component: () => import('@/views/layout/count'),
+        component: () =>
+          import('@/views/layout/count'),
       },
       {
         path: 'warning',
         name: '预警',
-        component: () => import('@/views/layout/warning'),
+        component: () =>
+          import('@/views/layout/warning'),
       },
       {
         path: 'me',
         name: '个人中心',
-        component: () => import('@/views/layout/me'),
+        component: () =>
+          import('@/views/layout/me'),
       },
     ]
   },
@@ -60,6 +64,21 @@ export const constantRouterMap = [
     path: '/infoModification',
     name: '个人信息修改',
     component: _import('infoModification/index')
+  },
+  {
+    path: '/settings',
+    name: '设置',
+    component: _import('settings/index')
+  },
+  {
+    path: '/password',
+    name: '修改密码',
+    component: _import('password/index')
+  },
+  {
+    path: '/problemFeedback',
+    name: '意见反馈',
+    component: _import('problemFeedback/index')
   },
   {
     path: '/warningDetail',
@@ -85,11 +104,11 @@ export const constantRouterMap = [
     path: '/superviseAdd',
     name: '添加派单',
     component: _import('superviseAdd/index')
-  },{
+  }, {
     path: '/feedBack',
     name: '添加反馈',
     component: _import('feedBack/index')
-  },{
+  }, {
     path: '/test',
     name: '测试',
     component: _import('test/index')

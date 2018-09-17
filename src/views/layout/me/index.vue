@@ -4,11 +4,11 @@
       <div class="header-header">
         <div class="header-setting"></div>
         <div class="header-tittle">个人中心</div>
-        <div class="header-setting"><img src="@/assets/image/me/icon_nav_set@2x.png" alt="" @click="iconClick"></div>
+        <div class="header-setting"><img src="@/assets/image/me/icon_nav_set@2x.png" alt="" @click="toSettings"></div>
       </div>
-      <div class="header-content">
-        <img class="user-avatar" :src="Ip + userInfo.imageURL" alt="" v-if="userInfo.imageURL">
-        <img class="user-avatar" src="@/assets/image/me/默认头像@2x.png" alt="" v-else>
+      <div class="header-content" >
+        <img class="user-avatar" @click="toUserModi" :src="Ip + userInfo.imageURL" alt="" v-if="userInfo.imageURL">
+        <img class="user-avatar" @click="toUserModi" src="@/assets/image/me/默认头像@2x.png" alt="" v-else>
         <div class="user-info">
           <div class="user-name" v-text="userInfo.realName"></div>
           <div class="user-gender">
@@ -16,13 +16,14 @@
             <img src="@/assets/image/me/icon_man@2x.png" alt="" v-else>
           </div>
         </div>
+        <div class="user-enterprise" v-text="'企业：'+ userInfo.orgName"></div>
         <div class="user-email" v-text="'email: ' + userInfo.emailAddr"></div>
       </div>
     </div>
     <div class="content">
       <div class="static-box">
         <div class="static-box-left">
-          <div class="static-img"><img src="@/assets/image/me/icon_3@2x.png" alt=""></div>
+          <div class="static-img"><img src="@/assets/image/me/icon_2@2x.png" alt=""></div>
           <div class="static-title">收到派单</div>
         </div>
         <div class="static-data" v-text="userCount.dispatch"></div>
@@ -36,7 +37,7 @@
       </div>
       <div class="static-box">
         <div class="static-box-left">
-          <div class="static-img"><img src="@/assets/image/me/icon_2@2x.png" alt=""></div>
+          <div class="static-img"><img src="@/assets/image/me/icon_21@2x.png" alt=""></div>
           <div class="static-title">整理车辆</div>
         </div>
         <div class="static-data" v-text="userCount.arrangeNum"></div>
@@ -47,9 +48,6 @@
           <div class="static-title">清运车辆</div>
         </div>
         <div class="static-data" v-text="userCount.cleanNum"></div>
-      </div>
-      <div class="exit">
-        <button @click="logOut">退出登录</button>
       </div>
 
     </div>
@@ -70,9 +68,7 @@ export default {
     };
   },
   components: {},
-  mounted() {
-    console.log(this.userInfo)
-  },
+  mounted() {},
   created() {
     this.getData();
   },
@@ -84,24 +80,12 @@ export default {
       });
     },
     //进入个人信息修改
-    iconClick() {
+    toUserModi() {
       this.$router.push("/infoModification");
     },
-    //退出登录
-    logOut() {
-      MessageBox({
-        title: "提示",
-        message: "是否确认退出?",
-        showCancelButton: true
-      }).then(action => {
-        if (action == "confirm") {
-          this.$fetchGet("login/logout").then(res => {
-            if (res == "login") {
-              this.$router.push("/login");
-            }
-          });
-        }
-      });
+    //进入设置
+    toSettings() {
+      this.$router.push("/settings");
     }
   }
 };
@@ -178,6 +162,17 @@ export default {
           }
         }
       }
+      .user-enterprise {
+        margin-top: 0.36rem;
+        width: 1.973333rem;
+        height: 0.48rem;
+        background: rgba(255, 255, 255, 1);
+        border-radius: 18px;
+        color: #537bff;
+        font-size: 0.32rem;
+        text-align: center;
+        line-height: 0.48rem;
+      }
       .user-email {
         margin-top: 0.36rem;
         font-size: 0.346667rem;
@@ -219,20 +214,6 @@ export default {
         margin-right: 0.36rem;
         color: #282828;
         font-size: 0.586667rem;
-      }
-    }
-    .exit {
-      width: 100%;
-      height: 1rem;
-      padding: 0 1rem;
-      box-sizing: border-box;
-      margin-top: 1rem;
-      button {
-        width: 100%;
-        height: 100%;
-        background: #ef4f4f;
-        color: #fff;
-        border-radius: 0.12rem;
       }
     }
   }
