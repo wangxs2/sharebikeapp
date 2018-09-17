@@ -2,60 +2,39 @@
 <template>
   <div class="container">
       <div class="header">
-      
-        <mt-header title="派单">   
-            <mt-button class="iconfont icon-fanhui" style="font-size:24px;color:#fff" slot="left" @click="iconClick">                
-            </mt-button>         
+        <mt-header title="转派">   
+                <mt-button icon="back" slot="left" style="font-size:24px" @click="iconClick"></mt-button>
+             <!-- <mt-button style="font-size:18px" slot="right" @click="iconClick">
+                {{roleCode=="manage"?"转派":""}}
+            </mt-button>           -->
         </mt-header>
       </div>
       <div class="content">
         <div class="iteamForm">
-          <!-- <i class="iconfont icon-zihangche1" style="color:#6698FF"></i> -->
           <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>时间</span>
-            <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.dispatchTime">{{FormatDate(formMessage.dispatchTime)}}</span>
+            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
           </p>
         </div>
         <div class="iteamForm">
           <span><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>地点</span>
-            <input type="text" placeholder="请输入待处理地点" v-model="formMessage.handleAddr">
+            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.handleAddr">{{formMessage.handleAddr}}</span>
+            <!-- <input type="text" placeholder="请输入清理地点" disabled="disabled" v-model="formMessage.handleAddr"> -->
           </p>
         </div>
         <div class="iteamImage">
           <p>
-            <span><img src="../../assets/image/supervise/icon_3_picture@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">现场照</span>
+            <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
+            <span style="padding-left:0.2rem">转派</span>
           </p>
           <p class="imageClean">
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
-               <vue-preview :slides="slide" @close="handleClose"></vue-preview>             
-          </p>
-        </div>
-        <div class="iteamImage">
-          <p>
-            <span><img src="../../assets/image/supervise/icon_4_company@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">派单</span>
-          </p>
-          <p class="imageClean">
-                <mt-checklist
+                <mt-radio
                     v-model="value"
                     :options="options" @change="getCompany">
-                </mt-checklist>
-          </p>
-        </div>
-        <div class="iteamImage">
-          <p>
-            <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">处理方式</span>
-          </p>
-          <p class="imageClean">
-                <mt-checklist
-                    v-model="value1"
-                    :options="options1" @change="getCompany1">
-                </mt-checklist>
+                </mt-radio>
           </p>
         </div>
         <div class="iteamForm" style="height:100px">
@@ -65,14 +44,16 @@
             <textarea cols="50" rows="10" placeholder="请输入派单备注" style="margin-top:0.46rem" v-model="formMessage.remark"></textarea>
           </p>
         </div>
-        </form>       
+        </form>
+       
       </div>
       <div class="bottom">
-          <!-- <button type="button" class="buttonSa" @click.native="save()">暂存</button> -->
-          <button type="button" class="buttonSa1" @click="submit()">派单</button>
+          <!-- <button type="button" class="buttonSa" @click="save()">暂存</button> -->
+          <button type="button" class="buttonSa1" @click="submit()">转派</button>
       </div>
   </div>
 </template>
+
 <script>
 import { MessageBox } from "mint-ui";
 export default {
@@ -80,125 +61,88 @@ export default {
   data() {
     return {
       time: "",
-      dealMethod:"",
-      value: [],
-      value1: [],
+      roleCode: "",
       options: [],
-      options1: [
-        {
-          label: "整理",
-          value: "1"
-        },
-        {
-          label: "清运",
-          value: "2"
-        }
-      ],
+      value: "",
       slide1: [],
+      slide2: [],
       slide: [],
       sheetCode: "",
+      imageStatus: 0,
       iteamList: {},
+      handleBefore: [],
+      handleAfter: [],
       formMessage: {
-        dispatchTime: Date.now(),
+        handleTime: Date.now(),
         handleAddr: "",
-        remark: "",
-        orgId: "",
-        dispachPhoto: []
+        id:"",
+        userId:"",
+        remark:"",
+        radio:"",
+      },
+      sendMessage:{
       }
     };
   },
   components: {},
   mounted() {},
   created() {
-    this.getAll();
-    window.getImage = this.getImage;
+      this.getAll()
+    if (this.$route.query.message) {
+      this.sheetCode = this.$route.query.message;
+      this.getMessage(this.sheetCode);
+    }
   },
   mounted() {},
   methods: {
-    clickImage() {
-      this.downPictur("bikeImg");
-    },
-    getImage(val, row) {
-      // alert(row)
-      let obj = {};
-      obj.w = 600;
-      obj.h = 600;
-      obj.msrc = this.Ip + row;
-      obj.src = this.Ip + row;
-      this.formMessage.dispachPhoto.push(val);
-      this.slide.push(obj);
-    },
-    handleClose() {
-      // console.log("close event");
-    },
     iconClick() {
-      this.$router.push("/layout/supervise");
-    },
-    getCompany(val) {
-      this.value = val;
-      // console.log(this.value);
-    },
-    getCompany1(val) {
-      this.value1 = val;
-      // console.log(this.value1.toString())
-      let arr="1";
-      let arr1="2";
-      if(this.value1.toString()==arr){
-        this.dealMethod="1"
-      }else if(this.value1.toString()==arr1){
-        this.dealMethod="2"
-      }else if(this.value1.toString()==""){
-        this.dealMethod=""
-      }else{
-        this.dealMethod="3"
-      }
-      console.log(this.dealMethod)
-    },
-    getAll() {
-      this.$fetchGet("count/bikeCompany").then(res => {
-        res.forEach(iteam => {
-          let obj = {};
-          obj.label = iteam.name;
-          obj.value = iteam.id;
-          this.options.push(obj);
-        });
+      this.$router.push({
+        path: "/needtodoAdd",
+        query: {
+          id: this.sheetCode
+        }
       });
     },
-    save() {
-      this.$fetchPost("selfcheck", this.formMessage)
-        .then(res => {})
-        .catch(res => {
-          MessageBox.alert("", {
-            message: "登录超时",
-            title: "提示"
-          }).then(action => {});
+    getCompany(val) {
+        console.log(val)
+    },
+    getAll() {
+      this.$fetchGet("user/listUser").then(res => {
+        res.forEach(iteam => {
+          let obj = {};
+          obj.label = iteam.realName;
+          obj.value = iteam.id.toString();
+          this.options.push(obj);
         });
+        this.value=res[0].id.toString()
+
+      });
+    },
+    getMessage(val) {
+      this.$fetchGet("dispatch/dispatchDetail", {
+        id: val
+      })
+        .then(res => {
+          if (res.status == 1) {
+            this.formMessage = res.dispatchDetail;
+            if (this.formMessage.handleTime == undefined) {
+              this.formMessage.handleTime = Date.now();
+            }
+          }
+        })
+        .catch(res => {});
     },
     submit() {
-      if (this.formMessage.handleAddr == "") {
+      if (this.userId == "") {
         MessageBox.alert("", {
-          message: "请输入待清理地点",
+          message: "请选择转派人",
           title: "提示"
         }).then(action => {});
-      } else if (this.formMessage.dispachPhoto == []) {
-        MessageBox.alert("", {
-          message: "请上传现场照片",
-          title: "提示"
-        }).then(action => {});
-      } else if (this.value == []) {
-        MessageBox.alert("", {
-          message: "请选择派单企业",
-          title: "提示"
-        }).then(action => {});
-      } else {
-        let obj = {};
-        this.formMessage.handleBefore;
-        obj.dispatch = this.formMessage;
-        obj.dispatch.dispachPhoto = this.formMessage.dispachPhoto.join(";");
-        obj.dispatch.dealMethod = this.dealMethod;
-        obj.orgIdList = this.value;
-        obj.finish = 1;
-        this.$fetchPost("dispatch/saveDispatch", obj, "json")
+      }else {
+          this.sendMessage.userId=this.value
+          this.sendMessage.id=this.sheetCode
+          this.sendMessage.remark=this.formMessage.remark
+        this.$fetchPost("dispatch/turnDispatchDetail", this.sendMessage)
           .then(res => {
             if (res.status == -1) {
               MessageBox.alert("", {
@@ -210,7 +154,7 @@ export default {
                 message: "保存成功",
                 title: "提示"
               }).then(action => {
-                this.$router.push("/layout/supervise");
+                this.$router.push("/needtodoAdd");
               });
             }
           })
@@ -264,10 +208,8 @@ textarea {
       line-height: 55px;
       box-sizing: border-box;
       padding: 0 0 0 0.4rem;
-      span {
-        img {
-          margin-top: 0.4rem;
-        }
+      img {
+        margin-top: 0.4rem;
       }
       p {
         display: flex;
@@ -296,17 +238,16 @@ textarea {
       flex-direction: column;
       box-sizing: border-box;
       padding-top: 0.5rem;
+      img {
+        margin-top: -0.1rem;
+      }
       p {
         display: flex;
         justify-content: flex-start;
         width: 100%;
         margin: 0;
         padding: 0;
-        padding: 0 0 0 0.2rem;
-        img {
-          margin-top: -0.1rem;
-          margin-left: 0.2rem;
-        }
+        padding: 0 0 0 0.4rem;
         span {
           font-size: 0.4rem;
         }

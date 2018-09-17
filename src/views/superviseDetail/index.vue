@@ -2,15 +2,23 @@
 
 <template>
   <div class="container">
+      <mt-popup
+      class="imgMask"
+        v-model="popupVisible"
+        position="right">
+        <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
+        <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+      </mt-popup>
       <div class="header">
        
         <mt-header title="派单处理详情">
            <router-link to="/layout/supervise" slot="left">
                 <mt-button icon="back" style="font-size:24px"></mt-button>
             </router-link>
-             <mt-button style="font-size:18px" slot="right" @click="iconClick">
+            <mt-button style="font-size:18px" slot="right" @click="iconClick">
                 反馈
-            </mt-button>        
+            </mt-button>
+
         </mt-header>
       </div>
       <div class="content">
@@ -58,10 +66,12 @@
                         <span><img src="../../assets/image/supervise/icon_3_picture@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>派单前</span>                                
                     </div>
-                    <div>
-                        <vue-preview :slides="slide2" @close="handleClose"></vue-preview>
+                    <div class="imageList">
+                        <img v-for="(iteam,index) in iteam.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
                     </div>
-
+                    <!-- <div>
+                        <vue-preview :slides="slide2" @close="handleClose"></vue-preview>
+                    </div> -->
                 </div>
                 <div class="iteamList">
                     <div class="moreText">
@@ -75,8 +85,8 @@
                         <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>处理前</span>                                
                     </div>
-                    <div>
-                        <vue-preview :slides="slide" @close="handleClose"></vue-preview>
+                     <div class="imageList">
+                        <img v-for="(iteam,index) in iteam.handleBeforeURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
                     </div>
                 </div>
                 <div class="imageClean" style="padding:0.3rem 0.213333rem">
@@ -84,8 +94,8 @@
                         <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>处理后</span>                                
                     </div>
-                    <div>
-                        <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
+                     <div class="imageList">
+                        <img v-for="(iteam,index) in iteam.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
                     </div>
                 </div>
                 <div class="iteamList">
@@ -113,16 +123,14 @@
                 </div>
                 <div class="iteamList">
                     <div>
-                         <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
+                        <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>处理时间：</span>
-                        <span>{{FormatDate(iteam.updateTime)}}</span>
-                        
+                        <span>{{FormatDate(iteam.updateTime)}}</span>                       
                     </div>
 
                 </div>
             </mt-swipe-item>
         </mt-swipe>
-
       </div>
   </div>
 </template>
@@ -135,6 +143,11 @@ export default {
   data() {
     return {
       slide: [],
+      imgArray: [],
+      popupVisible: false,
+      title: "",
+      bigImage: "",
+      roleCode: "",
       slide2: [],
       slide1: [],
       sheetCode: "",
@@ -144,6 +157,8 @@ export default {
   components: {},
   mounted() {},
   created() {
+    this.roleCode = localStorage.roleCode;
+    console.log(this.roleCode);
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
       this.getMessage(this.sheetCode);
@@ -153,6 +168,10 @@ export default {
   methods: {
     handleClose() {
       console.log("close event");
+    },
+    handOpen(val) {
+      this.popupVisible = true;
+      this.bigImage = val;
     },
     iconClick() {
       this.$router.push({
@@ -176,34 +195,9 @@ export default {
       })
         .then(res => {
           Indicator.close();
+          var that = this;
           this.iteamList = res;
           console.log(this.iteamList);
-          res.forEach(iteam => {
-            iteam.handleBeforeURLs.forEach(item => {
-              let obj = {};
-              obj.w = 600;
-              obj.h = 600;
-              obj.msrc = this.Ip + item;
-              obj.src = this.Ip + item;
-              this.slide.push(obj);
-            });
-            iteam.handleAfterURLs.forEach(item => {
-              let obj = {};
-              obj.w = 600;
-              obj.h = 600;
-              obj.msrc = this.Ip + item;
-              obj.src = this.Ip + item;
-              this.slide1.push(obj);
-            });
-            iteam.dispachPhotoURLs.forEach(item => {
-              let obj = {};
-              obj.w = 600;
-              obj.h = 600;
-              obj.msrc = this.Ip + item;
-              obj.src = this.Ip + item;
-              this.slide2.push(obj);
-            });
-          });
         })
         .catch(res => {});
     }
@@ -224,6 +218,18 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  .imgMask {
+    width: 100%;
+    height: 100%;
+    line-height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      // margin-top: 20%;
+    }
+  }
   .header {
     width: 100%;
     height: 1.173333rem;
@@ -258,6 +264,16 @@ export default {
           width: 80%;
           display: flex;
           flex-wrap: wrap;
+        }
+      }
+    }
+    .imageClean {
+      .imageList {
+        display: flex;
+        flex-wrap: wrap;
+        img {
+          margin-right: 5px;
+          box-shadow: 0 0 010px #ccc;
         }
       }
     }

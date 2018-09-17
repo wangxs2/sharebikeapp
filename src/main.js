@@ -12,7 +12,7 @@ import store from './stores' //vuex
 import 'lib-flexible'
 import $ from 'zepto'
 import common from './libs/common.js'
-
+import Vconsole from "vconsole"
 import VuePreview from 'vue-preview'
 import { Swipe, SwipeItem } from "mint-ui";
 
@@ -22,6 +22,7 @@ Vue.component(SwipeItem.name, SwipeItem);
 // Vue.use(VuePreview)
 
 // with parameters install
+let vConsole = new Vconsole()
 Vue.use(VuePreview, {
   mainClass: 'pswp--minimal--dark',
   barsSize: { top: 0, bottom: 0 },

@@ -108,10 +108,18 @@ export const constantRouterMap = [{
     path: '/feedBack',
     name: '添加反馈',
     component: _import('feedBack/index')
-  }, {
-    path: '/test',
-    name: '测试',
-    component: _import('test/index')
+  },{
+    path: '/map',
+    name: '地图',
+    component: _import('map/index')
+  },{
+    path: '/transfer',
+    name: '转派',
+    component: _import('transfer/index')
+  },{
+    path: '/needtodoDetail',
+    name: '待办详情',
+    component: _import('needtodoDetail/index')
   }
 ]
 

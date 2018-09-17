@@ -107,7 +107,7 @@ export default {
     },
     message() {
       console.log(this.selected);
-      if (this.roleCode == "clean" && this.selected == "/layout/supervise") {
+      if ((this.roleCode == "clean"|| this.roleCode == "manage")&& this.selected == "/layout/supervise") {
         this.changeImage("/layout/needtodo");
         this.$router.push("/layout/needtodo");
       } else {

@@ -104,36 +104,24 @@ export default {
       }
       return newobj;
     };
-    Vue.prototype.downPictur = function (ios, andio) {
+    Vue.prototype.downPictur = function (val) {
       let ua = navigator.userAgent.toLowerCase();
       let isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1; //Ios终端
       let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
       if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-        //Ios
-        // ios
-        // window.webkit.messageHandlers.login.postMessage({ body: "nowlogin" });
-        window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
+        window.webkit.messageHandlers.photo.postMessage({ body: val });
       } else if (/(Android)/i.test(navigator.userAgent)) {
-        // andio
-        //Android终端
-        // Android.requestTerminal()
-        Android.requestPicture();
+        Android.requestPicture(val);
       }
     };
-    Vue.prototype.downApp = function (ios, andio) {
+    Vue.prototype.downApp = function () {
       let ua = navigator.userAgent.toLowerCase();
       let isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1; //Ios终端
       let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
       if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-        //Ios
-        // ios
         window.webkit.messageHandlers.login.postMessage({ body: "nowlogin" });
-        // window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
-      } else if (/(Android)/i.test(navigator.userAgent)) {
-        // andio
-        //Android终端
+      } else if (/(Android)/i.test(navigator.userAgent)){
         Android.requestTerminal()
-        // Android.requestPicture();
       }
     };
       /* *

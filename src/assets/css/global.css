@@ -23,20 +23,6 @@ body,
 .imageClean >div{
     width: 100%;
 }
-.imageClean .my-gallery{
-    display: flex;
-    flex-wrap: wrap;
-}
-.imageClean .my-gallery figure{
-    margin: 10px;
-    box-shadow: 0 0 010px #ccc;
-
-}
-.imageClean .my-gallery figure img{
-    width: 100px;
-    vertical-align: middle;
-}
-
 .mint-loadmore{
     height: 100%;
     overflow: hidden;
@@ -69,4 +55,7 @@ body,
   input ,textarea ,button{
     border: none;
     outline: none;
+  }
+  .anchorBL {
+    display: none;
   }

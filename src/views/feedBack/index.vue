@@ -1,6 +1,13 @@
 
 <template>
   <div class="container">
+      <mt-popup
+      class="imgMask"
+        v-model="popupVisible"
+        position="right">
+        <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
+        <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+      </mt-popup>
       <div class="header">  
         <mt-header title="处理情况反馈">  
             <mt-button class="iconfont icon-fanhui" style="font-size:24px;color:#fff" slot="left" @click="iconClick">                
@@ -20,10 +27,14 @@
             <span><img src="../../assets/image/supervise/icon_3_picture@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">核实照片</span>
           </p>
-          <p class="imageClean">
+           <div class="imageList">
+              <img v-for="(iteam,index) in formMessage.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage">
+          </div>          
+          <!-- <p class="imageClean">
              <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
                <vue-preview :slides="slide" @close="handleClose"></vue-preview>             
-          </p>
+          </p> -->
         </div>
         <div class="iteamImage">
           <p>
@@ -53,6 +64,8 @@ export default {
   data() {
     return {
       time: "",
+      popupVisible: false,
+      bigImage: "",
       slide1: [],
       slide: [],
       dispachPhoto: [],
@@ -62,8 +75,8 @@ export default {
       value: [],
       formMessage: {
         dealCondition: "",
-        sheetCode:""
-        
+        sheetCode: "",
+        handleAfterURLs:[],
       }
     };
   },
@@ -94,6 +107,10 @@ export default {
       this.value = val;
       console.log(this.value);
     },
+    handOpen(val) {
+      this.popupVisible1 = true;
+      this.bigImage = val;
+    },
     iconClick() {
       this.$router.push({
         path: "/superviseDetail",
@@ -103,35 +120,28 @@ export default {
       });
     },
     clickImage() {
-      this.downPictur();
+      this.downPictur("bikeImg");
     },
     getImage(val, row) {
-      let obj = {};
-      obj.w = 600;
-      obj.h = 600;
-      obj.msrc = this.Ip + row;
-      obj.src = this.Ip + row;
       this.dispachPhoto.push(val);
-      this.slide.push(obj);
+      this.formMessage.handleAfterURLs.push(row)
     },
     handleClose() {
       console.log("close event");
     },
     save() {
-      alert(this.dispachPhoto)
+      alert(this.dispachPhoto);
       if (this.formMessage.dealCondition == "") {
         MessageBox.alert("", {
           message: "请输入处理情况",
           title: "提示"
         }).then(action => {});
-      } 
-      else if (this.dispachPhoto == []) {
+      } else if (this.dispachPhoto == []) {
         MessageBox.alert("", {
           message: "请上传核实照片",
           title: "提示"
         }).then(action => {});
-      } 
-      else if (this.value.length == 0) {
+      } else if (this.value.length == 0) {
         MessageBox.alert("", {
           message: "请选择派单企业",
           title: "提示"
@@ -145,7 +155,7 @@ export default {
         obj.finish = 0;
         this.$fetchPost("dispatch/saveDispatchFeedBack", obj, "json")
           .then(res => {
-            alert(res)
+            alert(res);
             if (res.status == -1) {
               MessageBox.alert("", {
                 message: res.message,
@@ -179,7 +189,7 @@ export default {
           message: "请上传现场照片",
           title: "提示"
         }).then(action => {});
-      }else{
+      } else {
         alert("进入");
         let obj = {};
         obj.dispatch = this.formMessage;
@@ -231,6 +241,18 @@ textarea {
   display: flex;
   overflow: hidden;
   flex-direction: column;
+  .imgMask {
+    width: 100%;
+    height: 100%;
+    line-height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      // margin-top: 20%;
+    }
+  }
   .header {
     width: 100%;
     height: 1rem;
@@ -282,6 +304,17 @@ textarea {
       flex-direction: column;
       box-sizing: border-box;
       padding-top: 0.5rem;
+      .imageList {
+        display: flex;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+        padding-left: 0.4rem;
+        img {
+          margin-right: 5px;
+          margin-bottom: 10px;
+          box-shadow: 0 0 010px #ccc;
+        }
+      }
       img {
         margin-top: -0.1rem;
       }

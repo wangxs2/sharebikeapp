@@ -18,7 +18,7 @@
           <v-loadmore v-if="!noneList" :bottom-method="loadBottom" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
             <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
                 <div class="left">                  
-                    <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="110" height="84" srcset="">
+                    <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="80" height="80" srcset="">
                 </div>
                 <div class="right">
                     <div class="topRight">

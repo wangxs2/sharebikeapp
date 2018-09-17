@@ -1,6 +1,13 @@
 
 <template>
   <div class="container">
+    <mt-popup
+      class="imgMask"
+        v-model="popupVisible1"
+        position="right">
+        <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible1=false"></span>
+        <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+      </mt-popup>
       <div class="header">
         <mt-header title="添加企业自查">   
             <router-link to="/layout/selfCheck" slot="left">
@@ -16,11 +23,11 @@
             <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
           </p>
         </div>
-        <div class="iteamForm">
+        <div class="iteamForm" @click="placeClick">
           <span><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
-            <span>地点</span>
-            <input type="text" placeholder="请输入清理地点" v-model="formMessage.handleAddr">
+            <span style="width:10%">地点</span>
+            <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
           </p>
         </div>
         <div class="iteamImage">
@@ -28,23 +35,20 @@
             <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">整理前</span>
           </p>
-          <p class="imageClean">
-           
-            <vue-preview :slides="slide" @close="handleClose"></vue-preview>
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
-             
-          </p>
+          <div class="imageList">
+              <img v-for="(iteam,index) in formMessage.handleBeforeURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage">
+          </div>
         </div>
         <div class="iteamImage">
           <p>
             <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">整理后</span>
           </p>
-          <p class="imageClean">
-             
-             <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage1"></i>
-          </p>
+           <div class="imageList">
+              <img v-for="(iteam,index) in formMessage.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage1">
+          </div>
         </div>
         <div class="iteamForm">
            <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
@@ -63,7 +67,7 @@
         <div class="iteamForm" style="height:100px">
            <span><img src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
-            <span>备注</span>
+            <span style="width:12%">备注</span>
             <textarea cols="50" rows="10" placeholder="请输入备注" style="margin-top:0.4rem" v-model="formMessage.remark"></textarea>
           </p>
         </div>
@@ -73,6 +77,18 @@
           <button type="button" class="buttonSa" @click="save()">暂存</button>
           <button type="button" class="buttonSa1" @click="submit()">完成</button>
       </div>
+      <mt-popup v-model="popupVisible" class="mapwhere" position="right">
+          <div class="header">
+            <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
+            <p>位置</p>
+          </div>
+          <div id="myMap">
+
+          </div>
+          <div class="placeList">
+
+          </div>
+      </mt-popup>
   </div>
 </template>
 
@@ -82,7 +98,11 @@ export default {
   computed: {},
   data() {
     return {
+      popupVisible1: false,
+      popupVisible: true,
+      bigImage: "",
       time: "",
+      myMap: null,
       slide1: [],
       slide: [],
       sheetCode: "",
@@ -96,7 +116,9 @@ export default {
         cleanNum: "",
         remark: "",
         handleBefore: [],
-        handleAfter: []
+        handleBeforeURLs:[],
+        handleAfterURLs:[],
+        handleAfter:[],
       }
     };
   },
@@ -110,30 +132,77 @@ export default {
     window.getImage = this.getImage;
     // alert(this.$store.getters.imageUrl)
   },
-  mounted() {},
+  mounted() {
+    let that = this;
+    that.myMap = new BMap.Map("myMap", { enableMapClick: false });
+    let myCity = new BMap.Geolocation();
+    let geoc = new BMap.Geocoder();
+    // console.log(navigator.geolocation.getCurrentPosition(res))
+    navigator.geolocation.getCurrentPosition(
+      function(res) {
+        console.log(res);
+      },
+      function(erro) {
+        console.log(erro);
+      }
+    );
+    myCity.getCurrentPosition(rs => {
+      let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
+      var marker = new BMap.Marker(ggPoint); // 创建标注
+      this.myMap.addOverlay(marker);
+      this.myMap.centerAndZoom(ggPoint, 16);
+      geoc.getLocation(ggPoint, rs => {
+        let addComp = rs.addressComponents;
+
+        console.log(rs);
+        MessageBox.alert("", {
+          message:
+            addComp.province +
+            " " +
+            addComp.city +
+            " " +
+            " " +
+            addComp.district +
+            " " +
+            " " +
+            addComp.street +
+            " " +
+            " " +
+            addComp.streetNumber,
+          title: "提示"
+        }).then(action => {});
+      });
+    });
+  },
   methods: {
+    placeClick() {
+      this.popupVisible = true;
+    },
+    handOpen(val) {
+      this.popupVisible1 = true;
+      this.bigImage = val;
+    },
     clickImage() {
       this.imageStatus = 1;
-      this.downPictur();
-    },
-    getImage(val, row) {
-      let obj = {};
-      obj.w = 600;
-      obj.h = 600;
-      obj.msrc = this.Ip + row;
-      obj.src = this.Ip + row;
-      if (this.imageStatus == 1) {
-        this.formMessage.handleBefore.push(val);
-        this.slide.push(obj);
-      }
-      if (this.imageStatus == 2) {
-        this.formMessage.handleAfter.push(val);
-        this.slide1.push(obj);
-      }
+      this.downPictur("bikeImg");
     },
     clickImage1() {
       this.imageStatus = 2;
-      this.downPictur();
+      this.downPictur("bikeImg");
+    },
+    getImage(val, row) {
+      MessageBox.alert("", {
+        message: row,
+        title: "提示"
+      }).then(action => {});
+      if (this.imageStatus == 1) {
+        this.formMessage.handleBefore.push(val);
+        this.formMessage.handleBeforeURLs.push(row);
+      }
+      if (this.imageStatus == 2) {
+        this.formMessage.handleAfter.push(val);
+        this.formMessage.handleAfterURLs.push(row);
+      }
     },
     handleClose() {
       // console.log("close event");
@@ -144,25 +213,8 @@ export default {
       })
         .then(res => {
           this.formMessage = res;
-          this.formMessage.handleBeforeURLs.forEach(iteam => {
-            let obj = {};
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide.push(obj);
-          });
-          this.formMessage.handleBefore=res.handleBefore.split(";")
-          this.formMessage.handleAfter=res.handleAfter.split(";")
-          console.log(this.formMessage.handleBefore)
-          this.formMessage.handleAfterURLs.forEach(iteam => {
-            let obj = {};
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide1.push(obj);
-          });
+          this.formMessage.handleBefore = res.handleBefore.split(";");
+          this.formMessage.handleAfter = res.handleAfter.split(";");
         })
         .catch(res => {});
     },
@@ -172,7 +224,7 @@ export default {
           message: "请输入清理地点",
           title: "提示"
         }).then(action => {});
-      } else if (this.formMessage.handleBefore.length==0) {
+      } else if (this.formMessage.handleBefore.length == 0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
           title: "提示"
@@ -275,7 +327,7 @@ input {
 }
 textarea {
   width: 80%;
-  margin: 0.733333rem 1rem 0 1rem;
+  margin: 0.733333rem 1rem 0 0rem;
   text-align: right;
 }
 .container {
@@ -284,6 +336,46 @@ textarea {
   display: flex;
   overflow: hidden;
   flex-direction: column;
+  .imgMask {
+    width: 100%;
+    height: 100%;
+    line-height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      // margin-top: 20%;
+    }
+  }
+  .mapwhere {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    background: #fff;
+    flex-direction: column;
+    .header {
+      height: 1.173333rem;
+      line-height: 1.173333rem;
+      font-size: 16px;
+      background: -webkit-linear-gradient(left, #6698ff, #5076ff);
+      display: flex;
+      justify-content: flex-start;
+      p {
+        margin: 0;
+        padding: 0;
+      }
+    }
+    #myMap {
+      width: 100%;
+      flex: 1;
+    }
+    .placeList {
+      width: 100%;
+      flex: 1;
+    }
+  }
   .header {
     width: 100%;
     height: 1rem;
@@ -305,8 +397,8 @@ textarea {
       line-height: 55px;
       box-sizing: border-box;
       padding: 0 0 0 0.4rem;
-      span{
-        img{
+      span {
+        img {
           margin-top: 0.4rem;
         }
       }
@@ -337,7 +429,18 @@ textarea {
       flex-direction: column;
       box-sizing: border-box;
       padding-top: 0.5rem;
-      img{
+      .imageList {
+        display: flex;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+        padding-left: 0.4rem;
+        img {
+          margin-right: 5px;
+          margin-bottom: 10px;
+          box-shadow: 0 0 010px #ccc;
+        }
+      }
+      img {
         margin-top: -0.1rem;
       }
       p {
