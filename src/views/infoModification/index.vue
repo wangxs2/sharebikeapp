@@ -95,7 +95,7 @@ export default {
   methods: {
     //选择头像
     clickImage() {
-      this.downPictur();
+      this.downPictur("headImg");
     },
     //设置头像
     getImage(val, row) {

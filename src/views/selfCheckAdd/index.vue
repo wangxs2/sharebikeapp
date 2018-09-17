@@ -1,6 +1,13 @@
 
 <template>
   <div class="container">
+    <mt-popup
+      class="imgMask"
+        v-model="popupVisible1"
+        position="right">
+        <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible1=false"></span>
+        <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+      </mt-popup>
       <div class="header">
         <mt-header title="添加企业自查">   
             <router-link to="/layout/selfCheck" slot="left">
@@ -28,23 +35,20 @@
             <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">整理前</span>
           </p>
-          <p class="imageClean">
-           
-            <vue-preview :slides="slide" @close="handleClose"></vue-preview>
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
-             
-          </p>
+          <div class="imageList">
+              <img v-for="(iteam,index) in formMessage.handleBeforeURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage">
+          </div>
         </div>
         <div class="iteamImage">
           <p>
             <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">整理后</span>
           </p>
-          <p class="imageClean">
-             
-             <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage1"></i>
-          </p>
+           <div class="imageList">
+              <img v-for="(iteam,index) in formMessage.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage1">
+          </div>
         </div>
         <div class="iteamForm">
            <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
@@ -94,7 +98,9 @@ export default {
   computed: {},
   data() {
     return {
-      popupVisible: false,
+      popupVisible1: false,
+      popupVisible: true,
+      bigImage: "",
       time: "",
       myMap: null,
       slide1: [],
@@ -110,7 +116,9 @@ export default {
         cleanNum: "",
         remark: "",
         handleBefore: [],
-        handleAfter: []
+        handleBeforeURLs:[],
+        handleAfterURLs:[],
+        handleAfter:[],
       }
     };
   },
@@ -145,7 +153,7 @@ export default {
       this.myMap.centerAndZoom(ggPoint, 16);
       geoc.getLocation(ggPoint, rs => {
         let addComp = rs.addressComponents;
-        
+
         console.log(rs);
         MessageBox.alert("", {
           message:
@@ -170,28 +178,31 @@ export default {
     placeClick() {
       this.popupVisible = true;
     },
+    handOpen(val) {
+      this.popupVisible1 = true;
+      this.bigImage = val;
+    },
     clickImage() {
       this.imageStatus = 1;
-      this.downPictur();
-    },
-    getImage(val, row) {
-      let obj = {};
-      obj.w = 600;
-      obj.h = 600;
-      obj.msrc = this.Ip + row;
-      obj.src = this.Ip + row;
-      if (this.imageStatus == 1) {
-        this.formMessage.handleBefore.push(val);
-        this.slide.push(obj);
-      }
-      if (this.imageStatus == 2) {
-        this.formMessage.handleAfter.push(val);
-        this.slide1.push(obj);
-      }
+      this.downPictur("bikeImg");
     },
     clickImage1() {
       this.imageStatus = 2;
-      this.downPictur();
+      this.downPictur("bikeImg");
+    },
+    getImage(val, row) {
+      MessageBox.alert("", {
+        message: row,
+        title: "提示"
+      }).then(action => {});
+      if (this.imageStatus == 1) {
+        this.formMessage.handleBefore.push(val);
+        this.formMessage.handleBeforeURLs.push(row);
+      }
+      if (this.imageStatus == 2) {
+        this.formMessage.handleAfter.push(val);
+        this.formMessage.handleAfterURLs.push(row);
+      }
     },
     handleClose() {
       // console.log("close event");
@@ -202,24 +213,8 @@ export default {
       })
         .then(res => {
           this.formMessage = res;
-          this.formMessage.handleBeforeURLs.forEach(iteam => {
-            let obj = {};
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide.push(obj);
-          });
           this.formMessage.handleBefore = res.handleBefore.split(";");
           this.formMessage.handleAfter = res.handleAfter.split(";");
-          this.formMessage.handleAfterURLs.forEach(iteam => {
-            let obj = {};
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide1.push(obj);
-          });
         })
         .catch(res => {});
     },
@@ -341,6 +336,18 @@ textarea {
   display: flex;
   overflow: hidden;
   flex-direction: column;
+  .imgMask {
+    width: 100%;
+    height: 100%;
+    line-height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      // margin-top: 20%;
+    }
+  }
   .mapwhere {
     width: 100%;
     height: 100%;
@@ -422,6 +429,17 @@ textarea {
       flex-direction: column;
       box-sizing: border-box;
       padding-top: 0.5rem;
+      .imageList {
+        display: flex;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+        padding-left: 0.4rem;
+        img {
+          margin-right: 5px;
+          margin-bottom: 10px;
+          box-shadow: 0 0 010px #ccc;
+        }
+      }
       img {
         margin-top: -0.1rem;
       }

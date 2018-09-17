@@ -2,20 +2,18 @@
 <template>
   <div class="containerSa">
       <div class="header">
-        <!-- 自查
-        <mt-button icon="more" slot="right"></mt-button> -->
-        <mt-header title="待办">
-            <!-- <mt-button class="iconfont icon-gengduo"  slot="right" @click="iconClick">
-                
-            </mt-button> -->
+        <mt-header title="督办">
         </mt-header>
       </div>
       <div class="content" :style="{'-webkit-overflow-scrolling': scrollMode}">
+        <nav @click="selectComany($event)">
+          <div v-for="item in company" :key="item.id" :companyId="item.id" :class="[activeComany == item.id ? 'nav-active' : '']" class="nav-item">{{item.name}}</div>
+        </nav>
         <div class="noneList" v-if="noneList">
             <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt="">
             <p style="color:#989898">暂时没有数据哦~</p>
         </div>
-        <v-loadmore v-if="!noneList" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="已加载全部数据" :auto-fill="false" ref="loadmore">
+        <v-loadmore style="height:92%" v-if="!noneList" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="已加载全部数据" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
                   <img :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="80" height="80" srcset="">
@@ -23,7 +21,6 @@
               <div class="right">
                   <div class="topRight">
                       <p><span>{{FormatDate(iteam.dispatchTime)}}</span> <span :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span></p>
-                      <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="bottomRight">
                       <span class="iconfont icon-weizhi"></span>
@@ -48,8 +45,20 @@ export default {
       searchCondition: {
         //分页属性
         page: "1",
-        pageSize: "10"
+        pageSize: "10",
+        status: ""
       },
+      company: [
+        {
+          id: 1,
+          name: "待办"
+        },
+        {
+          id: 2,
+          name: "已办"
+        }
+      ], //导航
+      activeComany: 1,
       pageList: [],
       allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
       scrollMode: "auto" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
@@ -59,18 +68,46 @@ export default {
     "v-loadmore": Loadmore // 为组件起别名，vue转换template标签时不会区分大小写，例如：loadMore这种标签转换完就会变成loadmore，容易出现一些匹配问题
     // 推荐应用组件时用a-b形式起名
   },
-  created() {},
+  created() {
+     if (this.$route.query.name=="2") {
+      this.activeComany=2
+      this.searchCondition.status = 2;
+    }
+  },
   mounted() {
     this.loadPageList(); //初次访问查询列表
   },
   methods: {
     detailClick(row) {
-      this.$router.push({
-        path: "/needtodoAdd",
-        query: {
-          id: row.id
-        }
-      });
+      if (row.status == 2) {
+        this.$router.push({
+          path: "/needtodoDetail",
+          query: {
+            id: row.id
+          }
+        });
+      } else {
+        this.$router.push({
+          path: "/needtodoAdd",
+          query: {
+            id: row.id
+          }
+        });
+      }
+    },
+    // 导航标签
+    selectComany(e) {
+      let id = e.target.getAttribute("companyId");
+      this.activeComany = id;
+      if (id == 1) {
+        this.searchCondition.page = "1";
+        this.searchCondition.status = "";
+        this.loadPageList();
+      } else if (id == 2) {
+        this.searchCondition.page = "1";
+        this.searchCondition.status = 2;
+        this.loadPageList();
+      }
     },
     iconClick() {
       this.$router.push("/selfCheckAdd");
@@ -142,7 +179,7 @@ export default {
   flex-direction: column;
   .header {
     width: 100%;
-    height: 1rem;
+    // height: 1rem;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     text-align: center;
     line-height: 1rem;
@@ -151,7 +188,38 @@ export default {
   .content {
     flex: 1;
     overflow: hidden;
-    overflow-y: scroll;
+    flex-direction: column;
+    // overflow-y: scroll;
+    nav {
+      width: 100%;
+      height: 1.066667rem;
+      box-shadow: 0 0 1px #ddd;
+      // border-bottom: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .nav-item {
+        flex: 1;
+        text-align: center;
+        color: #656565;
+        font-size: 0.426667rem;
+        line-height: 1.066667rem;
+      }
+      .nav-active {
+        position: relative;
+        color: #5076ff;
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0px;
+          left: 50%;
+          width: 1.173333rem;
+          height: 0.04rem;
+          background: #5076ff;
+          margin-left: -0.586667rem;
+        }
+      }
+    }
     .noneList {
       flex: 1;
       line-height: 1;

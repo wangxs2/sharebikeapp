@@ -104,14 +104,14 @@ export default {
       }
       return newobj;
     };
-    Vue.prototype.downPictur = function () {
+    Vue.prototype.downPictur = function (val) {
       let ua = navigator.userAgent.toLowerCase();
       let isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1; //Ios终端
       let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
       if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-        window.webkit.messageHandlers.photo.postMessage({ body: "Photograph" });
+        window.webkit.messageHandlers.photo.postMessage({ body: val });
       } else if (/(Android)/i.test(navigator.userAgent)) {
-        Android.requestPicture();
+        Android.requestPicture(val);
       }
     };
     Vue.prototype.downApp = function () {

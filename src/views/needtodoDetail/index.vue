@@ -11,10 +11,11 @@
       </mt-popup>
       <div class="header">
        
-        <mt-header title="自查处理详情">
-           <router-link to="/layout/selfCheck" slot="left">
+        <mt-header title="详情">
+            <mt-button icon="back" slot="left" style="font-size:24px" @click="iconClick"></mt-button>
+           <!-- <router-link to="/layout/needtodo" slot="left">
                 <mt-button icon="back" style="font-size:24px"></mt-button>
-            </router-link>  
+            </router-link>   -->
         </mt-header>
       </div>
       <div class="content" >
@@ -25,7 +26,7 @@
                 <span>{{FormatDate(iteamList.updateTime)}}</span>
                 
               </div>
-              <div :class="iteamList.status == 1 ? 'green' : 'red'">{{iteamList.status == 1 ? '处理中' : "已处理"}}</div>
+              <div style="margin-top:0.2rem" :class="iteamList.status == 1 ? 'green' : 'red'">{{iteamList.status == 1 ? '处理中' : "已处理"}}</div>
 
         </div>
         <div class="iteamList">
@@ -34,6 +35,16 @@
                 <span>地点：</span>
                 <span>{{iteamList.handleAddr}}</span>
                 
+              </div>
+
+        </div>
+        <div class="imageClean" style="padding:0.3rem 0.213333rem">
+              <div>
+                <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span>派单照片</span>                                
+              </div>
+              <div class="imageList">
+                <img v-for="(iteam,index) in iteamList.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
               </div>
 
         </div>
@@ -72,28 +83,6 @@
               </div>
 
         </div>
-        <div class="iteamList">
-              <div class="moreText">
-                <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span style="width:17%;margin-left:0.1rem">备注：</span>
-                <span class="textFont">{{iteamList.remark}}</span>                
-              </div>
-        </div>
-        <div class="iteamList">
-              <div>
-                <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>处理人：</span>
-                <span>{{iteamList.handleUserName}}</span>                
-              </div>
-        </div>
-        <div class="iteamList">
-              <div>
-                <span><img src="../../assets/image/selfcheck/icon_9_dealtime@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>处理时间：</span>
-                <span>{{FormatDate(iteamList.handleTime)}}</span>                
-              </div>
-
-        </div>
       </div>
   </div>
 </template>
@@ -116,8 +105,8 @@ export default {
   components: {},
   mounted() {},
   created() {
-    if (this.$route.query.message) {
-      this.sheetCode = this.$route.query.message;
+    if (this.$route.query.id) {
+      this.sheetCode = this.$route.query.id;
       this.getMessage(this.sheetCode);
     }
   },
@@ -127,36 +116,26 @@ export default {
       this.popupVisible = true;
       this.bigImage = val;
     },
+    iconClick() {
+      this.$router.push({
+        path: "/layout/needtodo",
+        query: {
+          name: "2"
+        }
+      });
+    },
     getMessage(val) {
       Indicator.open({
         text: "加载中...",
         spinnerType: "fading-circle"
       });
-      this.$fetchGet("selfcheck/selfCheck", {
-        sheetCode: val
+      this.$fetchGet("dispatch/dispatchDetail", {
+        id: val
       })
         .then(res => {
           Indicator.close();
-          var obj = {};
-          this.iteamList = res;
-          this.iteamList.handleBeforeURLs.forEach(iteam => {
-            let obj = {};
-            console.log(iteam);
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide.push(obj);
-          });
-          this.iteamList.handleAfterURLs.forEach(iteam => {
-            let obj = {};
-            console.log(iteam);
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide1.push(obj);
-          });
+          //   var obj = {};
+          this.iteamList = res.dispatchDetail;
         })
         .catch(res => {});
     }

@@ -93,6 +93,14 @@ export const constantRouterMap = [
     path: '/map',
     name: '地图',
     component: _import('map/index')
+  },{
+    path: '/transfer',
+    name: '转派',
+    component: _import('transfer/index')
+  },{
+    path: '/needtodoDetail',
+    name: '待办详情',
+    component: _import('needtodoDetail/index')
   }
 ]
 

@@ -1,11 +1,21 @@
 
 <template>
   <div class="container">
+        <mt-popup
+      class="imgMask"
+        v-model="popupVisible"
+        position="right">
+        <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
+        <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+      </mt-popup>
       <div class="header">
         <mt-header title="派单处理">   
             <router-link to="/layout/needtodo" slot="left">
                 <mt-button icon="back" style="font-size:24px"></mt-button>
-            </router-link>         
+            </router-link>
+             <mt-button style="font-size:18px" slot="right" @click="iconClick">
+                {{roleCode=="manage"?"转派":""}}
+            </mt-button>          
         </mt-header>
       </div>
       <div class="content">
@@ -29,30 +39,37 @@
             <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">派单照片</span>
           </p>
-          <p class="imageClean">
-             <!-- <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i> -->
-               <vue-preview :slides="slide2" @close="handleClose"></vue-preview>            
-          </p>
+          <div class="imageList">
+            <img v-for="(iteam,index) in formMessage.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+          </div>
         </div>
         <div class="iteamImage">
           <p>
             <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">整理前</span>
           </p>
-          <p class="imageClean">
+          <div class="imageList">
+              <img v-for="(iteam,index) in formMessage.handleBeforeURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage">
+          </div>
+          <!-- <p class="imageClean">
              <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
                <vue-preview :slides="slide" @close="handleClose"></vue-preview>            
-          </p>
+          </p> -->
         </div>
         <div class="iteamImage">
           <p>
             <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">整理后</span>
           </p>
-          <p class="imageClean">
+          <div class="imageList">
+              <img v-for="(iteam,index) in formMessage.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage">
+          </div>
+          <!-- <p class="imageClean">
              <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage1"></i>
              <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
-          </p>
+          </p> -->
         </div>
         <div class="iteamForm">
           <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
@@ -85,6 +102,9 @@ export default {
   data() {
     return {
       time: "",
+      popupVisible: false,
+      bigImage: "",
+      roleCode: "",
       slide1: [],
       slide2: [],
       slide: [],
@@ -104,36 +124,44 @@ export default {
   components: {},
   mounted() {},
   created() {
+    this.roleCode = localStorage.roleCode;
     if (this.$route.query.id) {
       this.sheetCode = this.$route.query.id;
       this.getMessage(this.sheetCode);
     }
-    window.getImage = this.getImage;
   },
   mounted() {},
   methods: {
     clickImage() {
       this.imageStatus = 1;
-      this.downPictur();
+      this.downPictur("bikeImg");
+    },
+    iconClick() {
+      this.$router.push({
+        path: "/transfer",
+        query: {
+          message: this.sheetCode
+        }
+      });
+    },
+    handOpen(val) {
+      this.popupVisible = true;
+      this.bigImage = val;
     },
     getImage(val, row) {
-      let obj = {};
-      obj.w = 600;
-      obj.h = 600;
-      obj.msrc = this.Ip + row;
-      obj.src = this.Ip + row;
+     
       if (this.imageStatus == 1) {
         this.handleBefore.push(val);
-        this.slide.push(obj);
+        this.formMessage.handleBeforeURLs(row)
       }
       if (this.imageStatus == 2) {
         this.handleAfter.push(val);
-        this.slide1.push(obj);
+        this.formMessage.handleAfterURLs(row)
       }
     },
     clickImage1() {
       this.imageStatus = 2;
-      this.downPictur();
+      this.downPictur("bikeImg");
     },
     handleClose() {
       // console.log("close event");
@@ -148,35 +176,8 @@ export default {
             if (this.formMessage.handleTime == undefined) {
               this.formMessage.handleTime = Date.now();
             }
-            this.handleBefore = res.handleBefore.split(";");
-            this.handleAfter = res.handleAfter.split(";");
-            res.dispatchDetail.handleBeforeURLs.forEach(iteam => {
-              let obj = {};
-              // console.log(iteam);
-              obj.w = 600;
-              obj.h = 600;
-              obj.msrc = this.Ip + iteam;
-              obj.src = this.Ip + iteam;
-              this.slide.push(obj);
-            });
-            res.dispatchDetail.handleAfterURLs.forEach(iteam => {
-              let obj = {};
-              // console.log(iteam);
-              obj.w = 600;
-              obj.h = 600;
-              obj.msrc = this.Ip + iteam;
-              obj.src = this.Ip + iteam;
-              this.slide1.push(obj);
-            });
-            res.dispatchDetail.dispachPhotoURLs.forEach(iteam => {
-              let obj = {};
-              // console.log(iteam);
-              obj.w = 600;
-              obj.h = 600;
-              obj.msrc = this.Ip + iteam;
-              obj.src = this.Ip + iteam;
-              this.slide2.push(obj);
-            });
+            this.handleBefore = res.dispatchDetail.handleBefore.split(";");
+            this.handleAfter = res.dispatchDetail.handleAfter.split(";");
           }
         })
         .catch(res => {});
@@ -289,6 +290,18 @@ textarea {
   display: flex;
   overflow: hidden;
   flex-direction: column;
+  .imgMask {
+    width: 100%;
+    height: 100%;
+    line-height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      // margin-top: 20%;
+    }
+  }
   .header {
     width: 100%;
     height: 1rem;
@@ -340,6 +353,17 @@ textarea {
       flex-direction: column;
       box-sizing: border-box;
       padding-top: 0.5rem;
+      .imageList {
+        display: flex;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+        padding-left: 0.4rem;
+        img {
+          margin-right: 5px;
+          margin-bottom: 10px;
+          box-shadow: 0 0 010px #ccc;
+        }
+      }
       img {
         margin-top: -0.1rem;
       }
