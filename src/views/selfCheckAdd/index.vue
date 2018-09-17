@@ -16,11 +16,11 @@
             <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
           </p>
         </div>
-        <div class="iteamForm">
+        <div class="iteamForm" @click="placeClick">
           <span><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
-            <span>地点</span>
-            <input type="text" placeholder="请输入清理地点" v-model="formMessage.handleAddr">
+            <span style="width:10%">地点</span>
+            <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
           </p>
         </div>
         <div class="iteamImage">
@@ -63,7 +63,7 @@
         <div class="iteamForm" style="height:100px">
            <span><img src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
-            <span>备注</span>
+            <span style="width:12%">备注</span>
             <textarea cols="50" rows="10" placeholder="请输入备注" style="margin-top:0.4rem" v-model="formMessage.remark"></textarea>
           </p>
         </div>
@@ -73,6 +73,18 @@
           <button type="button" class="buttonSa" @click="save()">暂存</button>
           <button type="button" class="buttonSa1" @click="submit()">完成</button>
       </div>
+      <mt-popup v-model="popupVisible" class="mapwhere" position="right">
+          <div class="header">
+            <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
+            <p>位置</p>
+          </div>
+          <div id="myMap">
+
+          </div>
+          <div class="placeList">
+
+          </div>
+      </mt-popup>
   </div>
 </template>
 
@@ -82,7 +94,9 @@ export default {
   computed: {},
   data() {
     return {
+      popupVisible: false,
       time: "",
+      myMap: null,
       slide1: [],
       slide: [],
       sheetCode: "",
@@ -110,8 +124,52 @@ export default {
     window.getImage = this.getImage;
     // alert(this.$store.getters.imageUrl)
   },
-  mounted() {},
+  mounted() {
+    let that = this;
+    that.myMap = new BMap.Map("myMap", { enableMapClick: false });
+    let myCity = new BMap.Geolocation();
+    let geoc = new BMap.Geocoder();
+    // console.log(navigator.geolocation.getCurrentPosition(res))
+    navigator.geolocation.getCurrentPosition(
+      function(res) {
+        console.log(res);
+      },
+      function(erro) {
+        console.log(erro);
+      }
+    );
+    myCity.getCurrentPosition(rs => {
+      let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
+      var marker = new BMap.Marker(ggPoint); // 创建标注
+      this.myMap.addOverlay(marker);
+      this.myMap.centerAndZoom(ggPoint, 16);
+      geoc.getLocation(ggPoint, rs => {
+        let addComp = rs.addressComponents;
+        
+        console.log(rs);
+        MessageBox.alert("", {
+          message:
+            addComp.province +
+            " " +
+            addComp.city +
+            " " +
+            " " +
+            addComp.district +
+            " " +
+            " " +
+            addComp.street +
+            " " +
+            " " +
+            addComp.streetNumber,
+          title: "提示"
+        }).then(action => {});
+      });
+    });
+  },
   methods: {
+    placeClick() {
+      this.popupVisible = true;
+    },
     clickImage() {
       this.imageStatus = 1;
       this.downPictur();
@@ -152,9 +210,8 @@ export default {
             obj.src = this.Ip + iteam;
             this.slide.push(obj);
           });
-          this.formMessage.handleBefore=res.handleBefore.split(";")
-          this.formMessage.handleAfter=res.handleAfter.split(";")
-          console.log(this.formMessage.handleBefore)
+          this.formMessage.handleBefore = res.handleBefore.split(";");
+          this.formMessage.handleAfter = res.handleAfter.split(";");
           this.formMessage.handleAfterURLs.forEach(iteam => {
             let obj = {};
             obj.w = 600;
@@ -172,7 +229,7 @@ export default {
           message: "请输入清理地点",
           title: "提示"
         }).then(action => {});
-      } else if (this.formMessage.handleBefore.length==0) {
+      } else if (this.formMessage.handleBefore.length == 0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
           title: "提示"
@@ -275,7 +332,7 @@ input {
 }
 textarea {
   width: 80%;
-  margin: 0.733333rem 1rem 0 1rem;
+  margin: 0.733333rem 1rem 0 0rem;
   text-align: right;
 }
 .container {
@@ -284,6 +341,34 @@ textarea {
   display: flex;
   overflow: hidden;
   flex-direction: column;
+  .mapwhere {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    background: #fff;
+    flex-direction: column;
+    .header {
+      height: 1.173333rem;
+      line-height: 1.173333rem;
+      font-size: 16px;
+      background: -webkit-linear-gradient(left, #6698ff, #5076ff);
+      display: flex;
+      justify-content: flex-start;
+      p {
+        margin: 0;
+        padding: 0;
+      }
+    }
+    #myMap {
+      width: 100%;
+      flex: 1;
+    }
+    .placeList {
+      width: 100%;
+      flex: 1;
+    }
+  }
   .header {
     width: 100%;
     height: 1rem;
@@ -305,8 +390,8 @@ textarea {
       line-height: 55px;
       box-sizing: border-box;
       padding: 0 0 0 0.4rem;
-      span{
-        img{
+      span {
+        img {
           margin-top: 0.4rem;
         }
       }
@@ -337,7 +422,7 @@ textarea {
       flex-direction: column;
       box-sizing: border-box;
       padding-top: 0.5rem;
-      img{
+      img {
         margin-top: -0.1rem;
       }
       p {

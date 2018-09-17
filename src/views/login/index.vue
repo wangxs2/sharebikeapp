@@ -120,7 +120,7 @@ export default {
     box-sizing: border-box;
     .title {
       width: 100%;
-      height: 4.96rem;
+      height:5.6rem;
       padding-top: 0.2rem;
       box-sizing: border-box;
       background: -webkit-linear-gradient(left, #6698ff, #5076ff);

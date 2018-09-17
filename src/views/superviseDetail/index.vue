@@ -181,24 +181,24 @@ export default {
           res.forEach(iteam => {
             iteam.handleBeforeURLs.forEach(item => {
               let obj = {};
-              obj.w = 600;
-              obj.h = 600;
+              obj.w = "";
+              obj.h = "";
               obj.msrc = this.Ip + item;
               obj.src = this.Ip + item;
               this.slide.push(obj);
             });
             iteam.handleAfterURLs.forEach(item => {
               let obj = {};
-              obj.w = 600;
-              obj.h = 600;
+              obj.w = "";
+              obj.h = "";
               obj.msrc = this.Ip + item;
               obj.src = this.Ip + item;
               this.slide1.push(obj);
             });
             iteam.dispachPhotoURLs.forEach(item => {
               let obj = {};
-              obj.w = 600;
-              obj.h = 600;
+              obj.w = "";
+              obj.h = "";
               obj.msrc = this.Ip + item;
               obj.src = this.Ip + item;
               this.slide2.push(obj);

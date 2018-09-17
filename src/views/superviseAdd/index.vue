@@ -88,7 +88,6 @@ export default {
   created() {
     this.getAll();
     window.getImage = this.getImage;
-   
   },
   mounted() {},
   methods: {
@@ -140,12 +139,12 @@ export default {
           message: "请输入待清理地点",
           title: "提示"
         }).then(action => {});
-      } else if(this.formMessage.handleBefore == []) {
+      } else if (this.formMessage.handleBefore == []) {
         MessageBox.alert("", {
           message: "请上传现场照片",
           title: "提示"
         }).then(action => {});
-      } else if(this.value == []) {
+      } else if (this.value == []) {
         MessageBox.alert("", {
           message: "请选择派单企业",
           title: "提示"
@@ -153,9 +152,9 @@ export default {
       } else {
         let obj = {};
         this.formMessage.handleBefore;
-        obj.dispatch= this.formMessage;
+        obj.dispatch = this.formMessage;
         obj.dispatch.dispachPhoto = this.formMessage.dispachPhoto.join(";");
-        obj.orgIdList  = this.value;
+        obj.orgIdList = this.value;
         obj.finish = 1;
         this.$fetchPost("dispatch/saveDispatch", obj, "json")
           .then(res => {
@@ -223,8 +222,8 @@ textarea {
       line-height: 55px;
       box-sizing: border-box;
       padding: 0 0 0 0.4rem;
-      span{
-        img{
+      span {
+        img {
           margin-top: 0.4rem;
         }
       }
@@ -262,7 +261,7 @@ textarea {
         margin: 0;
         padding: 0;
         padding: 0 0 0 0.2rem;
-        img{
+        img {
           margin-top: -0.1rem;
           margin-left: 0.2rem;
         }

@@ -70,3 +70,6 @@ body,
     border: none;
     outline: none;
   }
+  .anchorBL {
+    display: none;
+  }

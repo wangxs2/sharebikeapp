@@ -18,7 +18,7 @@
         <v-loadmore v-if="!noneList" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="已加载全部数据" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
-                  <img :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="110" height="84" srcset="">
+                  <img :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="80" height="80" srcset="">
               </div>
               <div class="right">
                   <div class="topRight">
