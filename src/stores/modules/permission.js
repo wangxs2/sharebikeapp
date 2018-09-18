@@ -60,6 +60,7 @@ const permission = {
     menuData: [], //菜单数据
     routers: constantRouterMap, //路由表
     addRouters: [], //动态路由表
+    
   },
   mutations: {
     SET_MENU: (state, menuData) => { //菜单

@@ -1,12 +1,12 @@
 
 <template>
   <div class="container">
-    <mt-popup
-      class="imgMask"
-        v-model="popupVisible1"
-        position="right">
-        <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible1=false"></span>
-        <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+      <mt-popup
+        class="imgMask"
+          v-model="popupVisible1"
+          position="right">
+          <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible1=false"></span>
+          <img :src="Ip+bigImage" alt="" srcset="" width="100%">
       </mt-popup>
       <div class="header">
         <mt-header title="添加企业自查">   
@@ -27,7 +27,7 @@
           <span><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span style="width:10%">地点</span>
-            <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
+            <span style="width:80%;text-align:right;margin-right:1rem;white-space:normal; word-break:break-all;overflow:hidden" v-model="formMessage.handleAddr">{{formMessage.handleAddr}}</span>
           </p>
         </div>
         <div class="iteamImage">
@@ -86,7 +86,14 @@
 
           </div>
           <div class="placeList">
-
+                <div v-for="(iteam,index) in placeData" class="address" @click="getAddress(iteam,index)">
+                  <div>
+                    <h5>{{iteam.title}}</h5>
+                    <p>{{iteam.city}}&nbsp;&nbsp;{{iteam.address}}</p>
+                  </div>
+                     <span v-if="changeId==index" class="iconfont icon-xuanzhong" style="font-size:22px;color:#1caa20"></span>
+                </div>
+             
           </div>
       </mt-popup>
   </div>
@@ -98,27 +105,29 @@ export default {
   computed: {},
   data() {
     return {
+      changeId: 0,
       popupVisible1: false,
-      popupVisible: true,
+      popupVisible: false,
       bigImage: "",
       time: "",
       myMap: null,
       slide1: [],
       slide: [],
+      placeData: [],
       sheetCode: "",
       iteamList: {},
       imageStatus: 0,
       imageName: "",
       formMessage: {
         handleTime: Date.now(),
-        handleAddr: "",
+        handleAddr: "点击获取当前位置",
         arrangeNum: "",
         cleanNum: "",
         remark: "",
         handleBefore: [],
-        handleBeforeURLs:[],
-        handleAfterURLs:[],
-        handleAfter:[],
+        handleBeforeURLs: [],
+        handleAfterURLs: [],
+        handleAfter: []
       }
     };
   },
@@ -130,53 +139,39 @@ export default {
       this.getMessage(this.sheetCode);
     }
     window.getImage = this.getImage;
-    // alert(this.$store.getters.imageUrl)
   },
-  mounted() {
-    let that = this;
-    that.myMap = new BMap.Map("myMap", { enableMapClick: false });
-    let myCity = new BMap.Geolocation();
-    let geoc = new BMap.Geocoder();
-    // console.log(navigator.geolocation.getCurrentPosition(res))
-    navigator.geolocation.getCurrentPosition(
-      function(res) {
-        console.log(res);
-      },
-      function(erro) {
-        console.log(erro);
-      }
-    );
-    myCity.getCurrentPosition(rs => {
-      let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
-      var marker = new BMap.Marker(ggPoint); // 创建标注
-      this.myMap.addOverlay(marker);
-      this.myMap.centerAndZoom(ggPoint, 16);
-      geoc.getLocation(ggPoint, rs => {
-        let addComp = rs.addressComponents;
-
-        console.log(rs);
-        MessageBox.alert("", {
-          message:
-            addComp.province +
-            " " +
-            addComp.city +
-            " " +
-            " " +
-            addComp.district +
-            " " +
-            " " +
-            addComp.street +
-            " " +
-            " " +
-            addComp.streetNumber,
-          title: "提示"
-        }).then(action => {});
-      });
-    });
-  },
+  mounted() {},
   methods: {
     placeClick() {
+      this.getMap();
       this.popupVisible = true;
+    },
+    getAddress(row, index) {
+      this.changeId = index;
+      this.formMessage.handleAddr = row.address;
+      this.popupVisible = false;
+    },
+    getMap() {
+      this.myMap = new BMap.Map("myMap", { enableMapClick: false });
+      let myCity = new BMap.Geolocation();
+      let geoc = new BMap.Geocoder();
+      myCity.getCurrentPosition(rs => {
+        let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
+        // this.myMap.setCenter(ggPoint);
+        var marker = new BMap.Marker(ggPoint); // 创建标注
+        this.myMap.addOverlay(marker);
+        this.myMap.centerAndZoom(ggPoint, 16);
+        geoc.getLocation(
+          ggPoint,
+          rs => {
+            console.log(rs);
+            this.placeData = rs.surroundingPois;
+            this.formMessage.handleAddr = this.placeData[0].address;
+            let addComp = rs.addressComponents;
+          },
+          { poiRadius: 200, numPois: 20 }
+        );
+      });
     },
     handOpen(val) {
       this.popupVisible1 = true;
@@ -191,10 +186,10 @@ export default {
       this.downPictur("bikeImg");
     },
     getImage(val, row) {
-      MessageBox.alert("", {
-        message: row,
-        title: "提示"
-      }).then(action => {});
+      // MessageBox.alert("", {
+      //   message: row,
+      //   title: "提示"
+      // }).then(action => {});
       if (this.imageStatus == 1) {
         this.formMessage.handleBefore.push(val);
         this.formMessage.handleBeforeURLs.push(row);
@@ -374,6 +369,29 @@ textarea {
     .placeList {
       width: 100%;
       flex: 1;
+      padding-top: 0.2rem;
+      box-sizing: border-box;
+      overflow: hidden;
+      overflow-y: scroll;
+      .address {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.34rem 0.2rem;
+        box-sizing: border-box;
+        border-bottom: 1px solid #eeeeee;
+      }
+      h5 {
+        margin: 0;
+        padding: 0;
+        font-size: 0.4rem;
+        color: #282828;
+        font-weight: normal;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+        color: #aeaeae;
+      }
     }
   }
   .header {
@@ -388,18 +406,19 @@ textarea {
     flex: 1;
     overflow: hidden;
     overflow-y: scroll;
-
+    box-sizing: border-box;
+    padding-top: 0.4rem;
     .iteamForm {
       display: flex;
       justify-content: flex-start;
       width: 100%;
-      height: 55px;
-      line-height: 55px;
+      // height: 55px;
+      // line-height: 55px;
       box-sizing: border-box;
-      padding: 0 0 0 0.4rem;
+      padding: 0.2rem 0 0.2rem 0.4rem;
       span {
         img {
-          margin-top: 0.4rem;
+          // margin-top: 0.4rem;
         }
       }
       p {
@@ -408,6 +427,7 @@ textarea {
         width: 100%;
         margin: 0;
         padding: 0;
+        padding-top: 0.1rem;
         border-bottom: 1px solid #eeeeee;
         box-sizing: border-box;
         padding-left: 0.2rem;

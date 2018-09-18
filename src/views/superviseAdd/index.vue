@@ -1,6 +1,13 @@
 
 <template>
   <div class="container">
+       <mt-popup
+        class="imgMask"
+          v-model="popupVisible1"
+          position="right">
+          <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible1=false"></span>
+          <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+      </mt-popup>
       <div class="header">
       
         <mt-header title="派单">   
@@ -17,11 +24,11 @@
             <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.dispatchTime">{{FormatDate(formMessage.dispatchTime)}}</span>
           </p>
         </div>
-        <div class="iteamForm">
+        <div class="iteamForm" @click="placeClick">
           <span><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>地点</span>
-            <input type="text" placeholder="请输入待处理地点" v-model="formMessage.handleAddr">
+            <span style="width:80%;text-align:right;margin-right:1rem;white-space:normal; word-break:break-all;overflow:hidden" v-model="formMessage.handleAddr">{{formMessage.handleAddr}}</span>
           </p>
         </div>
         <div class="iteamImage">
@@ -30,8 +37,8 @@
             <span style="padding-left:0.2rem">现场照</span>
           </p>
           <p class="imageClean">
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
-               <vue-preview :slides="slide" @close="handleClose"></vue-preview>             
+              <img v-for="(iteam,index) in dispachPhotoUrls" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage">        
           </p>
         </div>
         <div class="iteamImage">
@@ -60,9 +67,9 @@
         </div>
         <div class="iteamForm" style="height:100px">
           <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
+          <p style="border:none">
             <span>备注</span>
-            <textarea cols="50" rows="10" placeholder="请输入派单备注" style="margin-top:0.46rem" v-model="formMessage.remark"></textarea>
+            <textarea cols="50" rows="10" placeholder="请输入派单备注" style="margin-top:0rem" v-model="formMessage.remark"></textarea>
           </p>
         </div>
         </form>       
@@ -71,16 +78,40 @@
           <!-- <button type="button" class="buttonSa" @click.native="save()">暂存</button> -->
           <button type="button" class="buttonSa1" @click="submit()">派单</button>
       </div>
+      <mt-popup v-model="popupVisible" class="mapwhere" position="right">
+          <div class="header">
+            <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
+            <p>位置</p>
+          </div>
+          <div id="myMap">
+
+          </div>
+          <div class="placeList">
+                <div v-for="(iteam,index) in placeData" class="address" @click="getAddress(iteam,index)">
+                  <div>
+                    <h5>{{iteam.title}}</h5>
+                    <p>{{iteam.city}}&nbsp;&nbsp;{{iteam.address}}</p>
+                  </div>
+                     <span v-if="changeId==index" class="iconfont icon-xuanzhong" style="font-size:22px;color:#1caa20"></span>
+                </div>
+             
+          </div>
+      </mt-popup>
   </div>
 </template>
 <script>
 import { MessageBox } from "mint-ui";
+import { Indicator } from "mint-ui";
 export default {
   computed: {},
   data() {
     return {
       time: "",
-      dealMethod:"",
+      changeId: 0,
+      dealMethod: "",
+      popupVisible: false,
+      popupVisible1: false,
+      bigImage: "",
       value: [],
       value1: [],
       options: [],
@@ -98,9 +129,11 @@ export default {
       slide: [],
       sheetCode: "",
       iteamList: {},
+      dispachPhotoUrls: [],
+      placeData: [],
       formMessage: {
         dispatchTime: Date.now(),
-        handleAddr: "",
+        handleAddr: "点击获取当前位置",
         remark: "",
         orgId: "",
         dispachPhoto: []
@@ -118,15 +151,51 @@ export default {
     clickImage() {
       this.downPictur("bikeImg");
     },
+    placeClick() {
+      this.getMap();
+      this.popupVisible = true;
+    },
+    getAddress(row, index) {
+      this.changeId = index;
+      this.formMessage.handleAddr = row.address;
+      this.popupVisible = false;
+    },
+    handOpen(val) {
+      this.popupVisible1 = true;
+      this.bigImage = val;
+    },
     getImage(val, row) {
-      // alert(row)
-      let obj = {};
-      obj.w = 600;
-      obj.h = 600;
-      obj.msrc = this.Ip + row;
-      obj.src = this.Ip + row;
+      // Indicator.open({
+      //   text: "加载中...",
+      //   spinnerType: "fading-circle"
+      // });
+      // if(row){
+      //   Indicator.close();
+      // }
+      this.dispachPhotoUrls.push(row);
       this.formMessage.dispachPhoto.push(val);
-      this.slide.push(obj);
+    },
+    getMap() {
+      this.myMap = new BMap.Map("myMap", { enableMapClick: false });
+      let myCity = new BMap.Geolocation();
+      let geoc = new BMap.Geocoder();
+      myCity.getCurrentPosition(rs => {
+        let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
+        // this.myMap.setCenter(ggPoint);
+        var marker = new BMap.Marker(ggPoint); // 创建标注
+        this.myMap.addOverlay(marker);
+        this.myMap.centerAndZoom(ggPoint, 16);
+        geoc.getLocation(
+          ggPoint,
+          rs => {
+            console.log(rs);
+            this.placeData = rs.surroundingPois;
+            this.formMessage.handleAddr = this.placeData[0].address;
+            let addComp = rs.addressComponents;
+          },
+          { poiRadius: 200, numPois: 20 }
+        );
+      });
     },
     handleClose() {
       // console.log("close event");
@@ -141,18 +210,18 @@ export default {
     getCompany1(val) {
       this.value1 = val;
       // console.log(this.value1.toString())
-      let arr="1";
-      let arr1="2";
-      if(this.value1.toString()==arr){
-        this.dealMethod="1"
-      }else if(this.value1.toString()==arr1){
-        this.dealMethod="2"
-      }else if(this.value1.toString()==""){
-        this.dealMethod=""
-      }else{
-        this.dealMethod="3"
+      let arr = "1";
+      let arr1 = "2";
+      if (this.value1.toString() == arr) {
+        this.dealMethod = "1";
+      } else if (this.value1.toString() == arr1) {
+        this.dealMethod = "2";
+      } else if (this.value1.toString() == "") {
+        this.dealMethod = "";
+      } else {
+        this.dealMethod = "3";
       }
-      console.log(this.dealMethod)
+      console.log(this.dealMethod);
     },
     getAll() {
       this.$fetchGet("count/bikeCompany").then(res => {
@@ -234,7 +303,7 @@ input {
 }
 textarea {
   width: 80%;
-  margin: 0.733333rem 1rem 0 1rem;
+  margin: 0rem 1rem 0 0rem;
   text-align: right;
 }
 .container {
@@ -243,6 +312,69 @@ textarea {
   display: flex;
   overflow: hidden;
   flex-direction: column;
+  .imgMask {
+    width: 100%;
+    height: 100%;
+    line-height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      // margin-top: 20%;
+    }
+  }
+  .mapwhere {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    background: #fff;
+    flex-direction: column;
+    .header {
+      height: 1.173333rem;
+      line-height: 1.173333rem;
+      font-size: 16px;
+      background: -webkit-linear-gradient(left, #6698ff, #5076ff);
+      display: flex;
+      justify-content: flex-start;
+      p {
+        margin: 0;
+        padding: 0;
+      }
+    }
+    #myMap {
+      width: 100%;
+      flex: 1;
+    }
+    .placeList {
+      width: 100%;
+      flex: 1;
+      padding-top: 0.2rem;
+      box-sizing: border-box;
+      overflow: hidden;
+      overflow-y: scroll;
+      .address {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.34rem 0.2rem;
+        box-sizing: border-box;
+        border-bottom: 1px solid #eeeeee;
+      }
+      h5 {
+        margin: 0;
+        padding: 0;
+        font-size: 0.4rem;
+        color: #282828;
+        font-weight: normal;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+        color: #aeaeae;
+      }
+    }
+  }
   .header {
     width: 100%;
     height: 1rem;
@@ -255,18 +387,19 @@ textarea {
     flex: 1;
     overflow: hidden;
     overflow-y: scroll;
-
+    box-sizing: border-box;
+    padding-top: 0.4rem;
     .iteamForm {
       display: flex;
       justify-content: flex-start;
       width: 100%;
-      height: 55px;
-      line-height: 55px;
+      // height: 55px;
+      // line-height: 55px;
       box-sizing: border-box;
-      padding: 0 0 0 0.4rem;
+      padding: 0.2rem 0 0.2rem 0.4rem;
       span {
         img {
-          margin-top: 0.4rem;
+          // margin-top: 0.4rem;
         }
       }
       p {
@@ -275,6 +408,7 @@ textarea {
         width: 100%;
         margin: 0;
         padding: 0;
+        padding-top: 0.1rem;
         border-bottom: 1px solid #eeeeee;
         box-sizing: border-box;
         padding-left: 0.2rem;

@@ -5,7 +5,6 @@ import {
   delCookie
 } from './libs/util'
 
-
 router.beforeEach((to, from, next) => {
   if (to.path === "/login") {
     delCookie('userId');

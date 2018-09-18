@@ -16,7 +16,6 @@ const stores = new Vuex.Store({
   getters
 })
 
-
 // document.addEventListener("plusready", function () {
 //   var first = null;
 //   plus.key.addEventListener('backbutton', function () {

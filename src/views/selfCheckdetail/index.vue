@@ -29,12 +29,17 @@
 
         </div>
         <div class="iteamList">
-              <div>
+           <div class="moreText">
+                <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span style="width:17%;margin-left:0.1rem">地点：</span>
+                <span class="textFont">{{iteamList.handleAddr}}</span>                
+            </div>
+              <!-- <div>
                 <span><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
                 <span>地点：</span>
                 <span>{{iteamList.handleAddr}}</span>
                 
-              </div>
+              </div> -->
 
         </div>
         <div class="imageClean" style="padding:0.3rem 0.213333rem">
@@ -221,7 +226,7 @@ export default {
         flex: 1;
         justify-content: flex-start;
         .textFont {
-          width: 80%;
+          width: 100%;
           display: flex;
           flex-wrap: wrap;
         }

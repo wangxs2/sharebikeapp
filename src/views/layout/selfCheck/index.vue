@@ -22,7 +22,8 @@
                 </div>
                 <div class="right">
                     <div class="topRight">
-                        <p><span>{{FormatDate(iteam.updateTime)}}</span> <span :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</span></p>
+                        <p>{{FormatDate(iteam.updateTime)}}</p> 
+                        <p style="margin-left:1rem" :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</p>
                     </div>
                     <div class="center">
                         {{iteam.orgName}}： 整理{{iteam.arrangeNum}}辆，清运{{iteam.cleanNum}}辆
@@ -179,12 +180,7 @@ export default {
     }
   }
 }
-.green {
-  color: #ffc000;
-}
-.red {
-  color: #41cd76;
-}
+
 </style>
 <style  lang="scss">
 .containerSa {
@@ -205,22 +201,22 @@ export default {
       padding: 0 0.2rem;
       flex-direction: column;
       .topRight {
-        width: 100%;
         display: flex;
         flex: 1;
-        p {
-          // width: 100%;
-          display: flex;
-          flex: 1;
-          padding: 0;
-          margin: 0;
-          justify-content: space-between;
+        justify-content: flex-start;
+        .green {
+          color: #ffc000;
+        }
+        .red {
+          color: #41cd76;
         }
       }
-      .center{
+      .center {
         width: 100%;
         display: flex;
         flex: 1;
+        box-sizing: border-box;
+        padding-top: 0.2rem;
       }
       .bottomRight {
         display: flex;
