@@ -17,7 +17,7 @@
           <div class="info-title">意见反馈</div>
           <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
         </div>
-        <div class="info-box" @click="toVersion">
+        <div class="info-box" @click="popupVisible = true">
           <div class="info-title">版本更新V1.0</div>
           <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
         </div>
@@ -27,6 +27,26 @@
           <div class="submit" @click="logOut">退出登录</div>
         </div>
       </div>
+      <!-- 版本信息弹框↓ -->
+      <mt-popup class="version-popup-box" v-model="popupVisible" position="right">
+        <div class="version-popup">
+        <img class="close-popup" src="@/assets/image/settings/icon_close@2x.png" alt="" @click="popupVisible = false">
+          <div class="version-popup-top">
+            <img class="logo" src="@/assets/image/settings/ios-template-120.png" alt="">
+            <div class="cur-version">版本V1.0 2018-09-13</div>
+            <div class="new-version">当前版本已是最新版本</div>
+          </div>
+          <div class="version-popup-bottom">
+            <ul class="version-detail" v-for="(item,index) in versionDetail" :key="item.index">
+              <li class="version-detail-li">
+                <span class="dot"></span>
+                <span>{{index+1}}、{{item}}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </mt-popup>
+      <!-- 版本信息弹框↑ -->
 
     </div>
 
@@ -36,10 +56,21 @@
 <script>
 import { mapGetters } from "vuex";
 import { MessageBox } from "mint-ui";
+import { Popup } from "mint-ui";
 export default {
   computed: {},
   data() {
-    return {};
+    return {
+      popupVisible: false,
+      versionDetail: [
+        "开放企业自查功能",
+        "开放派单、派单处理功能",
+        "开放统计页面",
+        "个人中心页面优化",
+        "性能优化",
+        "修复bug"
+      ]
+    };
   },
   components: {},
   mounted() {},
@@ -56,10 +87,6 @@ export default {
     //去意见反馈
     toProblemFeedback() {
       this.$router.push("/problemFeedback");
-    },
-    //去版本更新
-    toVersion() {
-      this.$router.push("/layout/me");
     },
     //退出登录
     logOut() {
@@ -152,6 +179,80 @@ export default {
       border-radius: 0.586667rem;
       color: #fff;
       font-size: 0.426667rem;
+    }
+  }
+  .version-popup-box {
+    height: 11.466667rem;
+    width: 100%;
+    background: transparent;
+    color: #282828;
+    .version-popup {
+      margin: 0 auto;
+      background: #fff;
+      height: 11.466667rem;
+      width: 8.72rem;
+      border-radius: 0.16rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      .close-popup {
+        position: absolute;
+        right: .32rem;
+        top: .32rem;
+        height: .48rem;
+        width: .48rem;
+      }
+      .version-popup-top {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 4.64rem;
+        flex-shrink: 0;
+        border-bottom: 0.026667rem dashed #dddddd;
+        padding-top: 0.7rem;
+        box-sizing: border-box;
+        .logo {
+          height: 1.706667rem;
+          width: 1.706667rem;
+          margin-bottom: 0.2rem;
+        }
+        .cur-version {
+          font-size: 0.4rem;
+          font-weight: bold;
+          line-height: 2;
+        }
+        .new-version {
+          font-size: 0.373333rem;
+          font-weight: 400;
+          color: rgba(101, 101, 101, 1);
+          line-height: 2;
+        }
+      }
+      .version-popup-bottom {
+        padding: 0.8rem 1.533333rem;
+        flex: 1;
+        font-size: 0.4rem;
+        overflow: scroll;
+        .version-detail {
+          padding: 0;
+          margin: 0;
+          line-height: 2;
+          list-style: none;
+          .version-detail-li {
+            display: flex;
+            align-items: center;
+            .dot {
+              display: inline-block;
+              width: 0.16rem;
+              height: 0.16rem;
+              background: rgba(255, 174, 31, 1);
+              border-radius: 50%;
+              margin-right: 0.3rem;
+            }
+          }
+        }
+      }
     }
   }
 }
