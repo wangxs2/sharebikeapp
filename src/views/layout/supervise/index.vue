@@ -23,7 +23,8 @@
               </div>
               <div class="right">
                   <div class="topRight">
-                      <p><span>{{FormatDate(iteam.dispatchTime)}}</span> <span :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span></p>
+                      <span>{{FormatDate(iteam.dispatchTime)}}</span>
+                       <span style="margin-left:1rem" :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="bottomRight">
@@ -68,12 +69,15 @@ export default {
   created() {},
   methods: {
     detailClick(row) {
+      this.$store.commit("SET_QUERY", {
+        message: row.sheetCode
+      });
+      console.log(this.$store.getters.query);
       this.$router.push({
         path: "/superviseDetail",
-        query: {
-          message: row.sheetCode
-        }
+        query: this.$store.getters.query
       });
+
     },
     iconClick() {
       this.$router.push("/superviseAdd");
@@ -164,12 +168,6 @@ export default {
     }
   }
 }
-.green {
-  color: #ffc000;
-}
-.red {
-  color: #41cd76;
-}
 </style>
 <style  lang="scss">
 .containerSa {
@@ -190,14 +188,14 @@ export default {
       padding: 0 0.5rem;
       flex-direction: column;
       .topRight {
-        width: 100%;
         display: flex;
         flex: 1;
-        p {
-          // width: 100%;
-          display: flex;
-          flex: 1;
-          justify-content: space-between;
+        justify-content: flex-start;
+        .green {
+          color: #ffc000;
+        }
+        .red {
+          color: #41cd76;
         }
       }
       .bottomRight {

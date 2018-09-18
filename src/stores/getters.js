@@ -10,6 +10,7 @@ const getters = {
   routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
   imageUrl:state => state.app.imageUrl,
-  userInfo:state => state.user.userInfo
+  userInfo:state => state.user.userInfo,
+  query:state => state.app.query
 }
 export default getters

@@ -16,11 +16,12 @@
         <v-loadmore style="height:92%" v-if="!noneList" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="已加载全部数据" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
-                  <img :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="80" height="80" srcset="">
+                  <img :src="iteam.status == 2 ?Ip + iteam.handleAfterURLs[0]:Ip + iteam.dispachPhotoURLs[0]" alt="" width="80" height="80" srcset="">
               </div>
               <div class="right">
                   <div class="topRight">
-                      <p><span>{{FormatDate(iteam.dispatchTime)}}</span> <span :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span></p>
+                      <span>{{FormatDate(iteam.dispatchTime)}}</span> 
+                      <span style="margin-left:1rem" :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
                   </div>
                   <div class="bottomRight">
                       <span class="iconfont icon-weizhi"></span>
@@ -228,12 +229,6 @@ export default {
     }
   }
 }
-.green {
-  color: #ffc000;
-}
-.red {
-  color: #41cd76;
-}
 </style>
 <style  lang="scss">
 .containerSa {
@@ -254,14 +249,14 @@ export default {
       padding: 0 0.2rem;
       flex-direction: column;
       .topRight {
-        width: 100%;
         display: flex;
         flex: 1;
-        p {
-          // width: 100%;
-          display: flex;
-          flex: 1;
-          justify-content: space-between;
+        justify-content: flex-start;
+        .green {
+          color: #ffc000;
+        }
+        .red {
+          color: #41cd76;
         }
       }
       .bottomRight {

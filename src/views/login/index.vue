@@ -37,12 +37,6 @@ export default {
   },
   beforeCreate() {},
   mounted() {
-    document.onkeydown = event => {
-      //回车登录
-      if (event.keyCode === 13) {
-        this.submitForm();
-      }
-    };
   },
   created() {
     this.downApp();

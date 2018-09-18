@@ -35,12 +35,17 @@
 
                 </div>
                 <div class="iteamList">
-                    <div>
+                  <div class="moreText">
+                        <span><img style="margin-top:-0.1rem" src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
+                        <span style="width:17%;margin-left:0.1rem">地点：</span>
+                        <span class="textFont">{{iteam.handleAddr}}</span>                
+                    </div>
+                    <!-- <div>
                         <span><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>地点：</span>
                         <span>{{iteam.handleAddr}}</span>
                         
-                    </div>
+                    </div> -->
 
                 </div>
                 <div class="iteamList">
@@ -76,7 +81,7 @@
                 <div class="iteamList">
                     <div class="moreText">
                         <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
-                        <span style="width:25%;margin-left:0.1rem">派单备注：</span>
+                        <span style="width:17%;margin-left:0.1rem">备注：</span>
                         <span class="textFont">{{iteam.dispatchRemark}}</span>                
                     </div>
                 </div>
@@ -174,11 +179,9 @@ export default {
       this.bigImage = val;
     },
     iconClick() {
-      this.$router.push({
+       this.$router.push({
         path: "/feedBack",
-        query: {
-          message: this.sheetCode
-        }
+        query: this.$store.getters.query
       });
     },
     getMessage(val) {
@@ -226,9 +229,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    img {
-      // margin-top: 20%;
-    }
   }
   .header {
     width: 100%;
@@ -261,7 +261,7 @@ export default {
         flex: 1;
         justify-content: flex-start;
         .textFont {
-          width: 80%;
+          width: 100%;
           display: flex;
           flex-wrap: wrap;
         }

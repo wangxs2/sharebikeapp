@@ -4,6 +4,7 @@ const app = {
     menuFlag: false, //左侧菜单的开关
     imageUrl: "",
     imageName: "",
+    query:{},//全局传参对象
   },
   mutations: {
     SET_FLAG: (state) => { //菜单收缩
@@ -11,6 +12,10 @@ const app = {
     },
     SET_HEIGHT: (state, docHeight) => { //文档高度
       state.docHeight = docHeight
+    },
+    SET_QUERY: (state, query) => { 
+      state.query = query
+      console.log(query);
     },
   }
 }

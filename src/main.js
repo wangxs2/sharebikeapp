@@ -15,13 +15,9 @@ import common from './libs/common.js'
 import Vconsole from "vconsole"
 import VuePreview from 'vue-preview'
 import { Swipe, SwipeItem } from "mint-ui";
-
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
-// defalut install
-// Vue.use(VuePreview)
 
-// with parameters install
 let vConsole = new Vconsole()
 Vue.use(VuePreview, {
   mainClass: 'pswp--minimal--dark',
@@ -38,6 +34,8 @@ Vue.use(mintUI)
 Vue.prototype.Ip = process.env.API_HOST + '';
 Vue.config.productionTip = false
 /* eslint-disable no-new */
+
+
 new Vue({
   el: '#app',
   router,

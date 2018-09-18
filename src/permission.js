@@ -4,8 +4,6 @@ import {
   getCookie,
   delCookie
 } from './libs/util'
-
-
 router.beforeEach((to, from, next) => {
   if (to.path === "/login") {
     delCookie('userId');
@@ -14,7 +12,6 @@ router.beforeEach((to, from, next) => {
     next();
     return;
   }
-
   if (to.path !== "/login" && !getCookie('userId')) {
     next('/login');
     return;
@@ -29,6 +26,7 @@ router.beforeEach((to, from, next) => {
           next({ ...to,
             replace: true
           })
+         
         }
       })
     }
