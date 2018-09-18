@@ -16,7 +16,7 @@
         <v-loadmore style="height:92%" v-if="!noneList" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="已加载全部数据" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
-                  <img :src="iteam.status == 2 ?Ip + iteam.handleAfterURLs[0]:Ip + iteam.dispachPhotoURLs[0]" alt="" width="80" height="80" srcset="">
+                  <img :src="iteam.status == 2 ?Ip + iteam.handleAfterURLs[0]:Ip + iteam.dispachPhotoURLs[0]" alt="" width="90" height="90" srcset="">
               </div>
               <div class="right">
                   <div class="topRight">
@@ -213,11 +213,11 @@ export default {
           content: "";
           position: absolute;
           bottom: 0px;
-          left: 50%;
-          width: 1.173333rem;
+          left: 0;
+          width: 100%;
           height: 0.04rem;
           background: #5076ff;
-          margin-left: -0.586667rem;
+          // margin-left: -0.586667rem;
         }
       }
     }
@@ -236,7 +236,7 @@ export default {
     display: flex;
     justify-content: flex-start;
     box-sizing: border-box;
-    padding: 0.5rem;
+    padding: 0.2rem 0.2rem;
     border-bottom: 1px solid #eeeeee;
     .left {
       display: flex;

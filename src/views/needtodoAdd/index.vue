@@ -117,6 +117,8 @@ export default {
         handleTime: Date.now(),
         handleAddr: "",
         arrangeNum: "",
+        handleBeforeURLs:[],
+        handleAfterURLs:[],
         cleanNum: ""
       }
     };
@@ -129,6 +131,7 @@ export default {
       this.sheetCode = this.$route.query.id;
       this.getMessage(this.sheetCode);
     }
+    window.getImage = this.getImage;
   },
   mounted() {},
   methods: {
@@ -146,18 +149,22 @@ export default {
     },
     handOpen(val) {
       this.popupVisible = true;
-      val=val.replace(".400x400.jpg","")
+      val = val.replace(".400x400.jpg", "");
       this.bigImage = val;
     },
     getImage(val, row) {
-     
+       
       if (this.imageStatus == 1) {
+        MessageBox.alert("", {
+          message:row,
+          title: "提示"
+        }).then(action => {});
         this.handleBefore.push(val);
-        this.formMessage.handleBeforeURLs(row)
+        this.formMessage.handleBeforeURLs(row);
       }
       if (this.imageStatus == 2) {
         this.handleAfter.push(val);
-        this.formMessage.handleAfterURLs(row)
+        this.formMessage.handleAfterURLs(row);
       }
     },
     clickImage1() {
@@ -299,9 +306,6 @@ textarea {
     display: flex;
     justify-content: center;
     align-items: center;
-    img {
-      // margin-top: 20%;
-    }
   }
   .header {
     width: 100%;
@@ -315,24 +319,21 @@ textarea {
     flex: 1;
     overflow: hidden;
     overflow-y: scroll;
-
+    box-sizing: border-box;
+    padding-top: 0.4rem;
     .iteamForm {
       display: flex;
       justify-content: flex-start;
       width: 100%;
-      height: 55px;
-      line-height: 55px;
       box-sizing: border-box;
-      padding: 0 0 0 0.4rem;
-      img {
-        margin-top: 0.4rem;
-      }
+      padding: 0.2rem 0 0.2rem 0.4rem;
       p {
         display: flex;
         justify-content: flex-start;
         width: 100%;
         margin: 0;
         padding: 0;
+        padding-top: 0.1rem;
         border-bottom: 1px solid #eeeeee;
         box-sizing: border-box;
         padding-left: 0.2rem;
@@ -353,12 +354,13 @@ textarea {
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
-      padding-top: 0.5rem;
+      padding-top: 0.4rem;
       .imageList {
         display: flex;
         flex-wrap: wrap;
         box-sizing: border-box;
         padding-left: 0.4rem;
+        padding-top: 0.2rem;
         img {
           margin-right: 5px;
           margin-bottom: 10px;

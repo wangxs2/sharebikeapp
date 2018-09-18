@@ -16,7 +16,16 @@
             </router-link>  
         </mt-header>
       </div>
-      <div class="content" >
+      <div class="content">
+        <div class="iteamList">
+              <div>
+                <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span>单号：</span>
+                <span>{{iteamList.sheetCode}}</span>
+                
+              </div>
+
+        </div>
         <div class="iteamList">
               <div>
                 <span><img src="../../assets/image/selfcheck/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
@@ -129,7 +138,7 @@ export default {
   methods: {
     handOpen(val) {
       this.popupVisible = true;
-      val=val.replace(".400x400.jpg","")
+      val = val.replace(".400x400.jpg", "");
       this.bigImage = val;
     },
     getMessage(val) {
@@ -142,9 +151,8 @@ export default {
       })
         .then(res => {
           Indicator.close();
-          
+
           this.iteamList = res;
-        
         })
         .catch(res => {});
     }

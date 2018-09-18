@@ -18,8 +18,8 @@
         <v-loadmore v-if="!noneList" :bottom-method="loadBottom" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
-                  <img v-if="iteam.dispachPhotoURLs.length!==0" :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="80" height="80" srcset="">
-                  <img v-if="iteam.dispachPhotoURLs.length==0" src="../../../assets/image/selfcheck/image_no data@3x.png" alt="" width="80" height="80" srcset="">
+                  <img v-if="iteam.dispachPhotoURLs.length!==0" :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="90" height="90" srcset="">
+                  <img v-if="iteam.dispachPhotoURLs.length==0" src="../../../assets/image/selfcheck/image_no data@3x.png" alt="" width="90" height="90" srcset="">
               </div>
               <div class="right">
                   <div class="topRight">
@@ -175,7 +175,7 @@ export default {
     display: flex;
     justify-content: flex-start;
     box-sizing: border-box;
-    padding: 0.5rem;
+    padding: 0.2rem 0.2rem;
     border-bottom: 1px solid #eeeeee;
     .left {
       display: flex;

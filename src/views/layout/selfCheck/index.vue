@@ -18,7 +18,7 @@
           <v-loadmore v-if="!noneList" :bottom-method="loadBottom" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
             <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
                 <div class="left">                
-                    <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="80" height="80" srcset="">
+                    <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="90" height="90" srcset="">
                 </div>
                 <div class="right">
                     <div class="topRight">
@@ -188,7 +188,7 @@ export default {
     display: flex;
     justify-content: flex-start;
     box-sizing: border-box;
-    padding: 0.5rem;
+    padding: 0.1rem 0.2rem;
     border-bottom: 1px solid #eeeeee;
     .left {
       display: flex;
@@ -228,7 +228,7 @@ export default {
         color: #989898;
         justify-content: flex-start;
         .moreFont {
-          width: 66%;
+          width: 81%;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;

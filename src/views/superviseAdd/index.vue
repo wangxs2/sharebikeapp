@@ -245,9 +245,9 @@ export default {
         });
     },
     submit() {
-      if (this.formMessage.handleAddr == "") {
+      if (this.formMessage.handleAddr == "点击获取当前位置") {
         MessageBox.alert("", {
-          message: "请输入待清理地点",
+          message: "请选择待清理地点",
           title: "提示"
         }).then(action => {});
       } else if (this.formMessage.dispachPhoto == []) {

@@ -25,6 +25,15 @@
         <mt-swipe :auto="0" :continuous="false">
             <mt-swipe-item v-for="(iteam,index) in iteamList" :key="index">
                 <div class="iteamList">
+                      <div>
+                        <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+                        <span>单号：</span>
+                        <span>{{iteam.sheetCode}}</span>
+                        
+                      </div>
+
+                </div>
+                <div class="iteamList">
                     <div>
                         <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>时间：</span>
@@ -176,11 +185,11 @@ export default {
     },
     handOpen(val) {
       this.popupVisible = true;
-      val=val.replace(".400x400.jpg","")
+      val = val.replace(".400x400.jpg", "");
       this.bigImage = val;
     },
     iconClick() {
-       this.$router.push({
+      this.$router.push({
         path: "/feedBack",
         query: this.$store.getters.query
       });

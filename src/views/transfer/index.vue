@@ -14,7 +14,7 @@
           <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>时间</span>
-            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
+            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.createTime">{{FormatDate(formMessage.createTime)}}</span>
           </p>
         </div>
         <div class="iteamForm">
@@ -41,7 +41,7 @@
           <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>备注</span>
-            <textarea cols="50" rows="10" placeholder="请输入派单备注" style="margin-top:0.46rem" v-model="formMessage.remark"></textarea>
+            <textarea cols="50" rows="10" placeholder="请输入派单备注"  v-model="formMessage.remark"></textarea>
           </p>
         </div>
         </form>
@@ -73,21 +73,20 @@ export default {
       handleBefore: [],
       handleAfter: [],
       formMessage: {
-        handleTime: Date.now(),
+        createTime: Date.now(),
         handleAddr: "",
-        id:"",
-        userId:"",
-        remark:"",
-        radio:"",
+        id: "",
+        userId: "",
+        remark: "",
+        radio: ""
       },
-      sendMessage:{
-      }
+      sendMessage: {}
     };
   },
   components: {},
   mounted() {},
   created() {
-      this.getAll()
+    this.getAll();
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
       this.getMessage(this.sheetCode);
@@ -104,7 +103,7 @@ export default {
       });
     },
     getCompany(val) {
-        console.log(val)
+      console.log(val);
     },
     getAll() {
       this.$fetchGet("user/listUser").then(res => {
@@ -114,8 +113,7 @@ export default {
           obj.value = iteam.id.toString();
           this.options.push(obj);
         });
-        this.value=res[0].id.toString()
-
+        this.value = res[0].id.toString();
       });
     },
     getMessage(val) {
@@ -138,10 +136,10 @@ export default {
           message: "请选择转派人",
           title: "提示"
         }).then(action => {});
-      }else {
-          this.sendMessage.userId=this.value
-          this.sendMessage.id=this.sheetCode
-          this.sendMessage.remark=this.formMessage.remark
+      } else {
+        this.sendMessage.userId = this.value;
+        this.sendMessage.id = this.sheetCode;
+        this.sendMessage.remark = this.formMessage.remark;
         this.$fetchPost("dispatch/turnDispatchDetail", this.sendMessage)
           .then(res => {
             if (res.status == -1) {
@@ -154,7 +152,7 @@ export default {
                 message: "保存成功",
                 title: "提示"
               }).then(action => {
-                this.$router.push("/needtodoAdd");
+                this.$router.push("/layout/needtodo");
               });
             }
           })
@@ -177,8 +175,8 @@ input {
   text-align: right;
 }
 textarea {
-  width: 80%;
-  margin: 0.733333rem 1rem 0 1rem;
+  width:100%;
+  margin: 0rem 1rem 0 0rem;
   text-align: right;
 }
 .container {
@@ -199,15 +197,14 @@ textarea {
     flex: 1;
     overflow: hidden;
     overflow-y: scroll;
-
+    box-sizing: border-box;
+    padding-top: 0.4rem;
     .iteamForm {
       display: flex;
       justify-content: flex-start;
       width: 100%;
-      height: 55px;
-      line-height: 55px;
       box-sizing: border-box;
-      padding: 0 0 0 0.4rem;
+      padding: 0.2rem 0 0.2rem 0.4rem;
       img {
         margin-top: 0.4rem;
       }
@@ -220,6 +217,7 @@ textarea {
         border-bottom: 1px solid #eeeeee;
         box-sizing: border-box;
         padding-left: 0.2rem;
+        padding-top: 0.6rem;
         // .imageSa{
         //   display: flex;
         //   flex-direction:row;

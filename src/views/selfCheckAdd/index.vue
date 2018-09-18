@@ -20,7 +20,7 @@
           <span><img src="../../assets/image/selfcheck/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>时间</span>
-            <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
+            <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.createTime">{{FormatDate(formMessage.createTime)}}</span>
           </p>
         </div>
         <div class="iteamForm" @click="placeClick">
@@ -119,7 +119,7 @@ export default {
       imageStatus: 0,
       imageName: "",
       formMessage: {
-        handleTime: Date.now(),
+        createTime: Date.now(),
         handleAddr: "点击获取当前位置",
         arrangeNum: "",
         cleanNum: "",
@@ -215,9 +215,13 @@ export default {
         .catch(res => {});
     },
     save() {
-      if (this.formMessage.handleAddr == "") {
+      //  MessageBox.alert("", {
+      //     message: "点击",
+      //     title: "提示"
+      //   }).then(action => {});
+      if (this.formMessage.handleAddr == "点击获取当前位置") {
         MessageBox.alert("", {
-          message: "请输入清理地点",
+          message: "请选择清理地点",
           title: "提示"
         }).then(action => {});
       } else if (this.formMessage.handleBefore.length == 0) {
@@ -259,7 +263,7 @@ export default {
     submit() {
       if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
-          message: "请输入清理地点",
+          message: "请选择清理地点",
           title: "提示"
         }).then(action => {});
       } else if (this.formMessage.handleBefore == []) {
@@ -435,12 +439,13 @@ textarea {
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
-      padding-top: 0.5rem;
+      padding-top: 0.4rem;
       .imageList {
         display: flex;
         flex-wrap: wrap;
         box-sizing: border-box;
         padding-left: 0.4rem;
+        padding-top: 0.4rem;
         img {
           margin-right: 5px;
           margin-bottom: 10px;
