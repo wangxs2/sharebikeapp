@@ -9,16 +9,16 @@
     <div class="content">
       <div class="info-box">
         <div class="info-title">原密码</div>
-        <input class="input-pwd" type="password" v-model="pwd.curPwd" placeholder="请输入您现在的密码">
+        <input class="input-pwd" type="password" v-model="pwd.curPwd" placeholder="请输入您现在的密码" @blur="checkCurPwd">
       </div>
       <div class="info-box">
         <div class="info-title">新密码</div>
-        <input class="input-pwd" type="password" v-model="pwd.newPwd" placeholder="请输入新密码">
+        <input class="input-pwd" type="password" v-model="pwd.newPwd" placeholder="请输入新密码" @blur="checkNewPwd">
 
       </div>
       <div class="info-box">
         <div class="info-title">确认密码</div>
-        <input class="input-pwd" type="password" v-model="pwd.confirmPwd" placeholder="请再次输入新密码">
+        <input class="input-pwd" type="password" v-model="pwd.confirmPwd" placeholder="请再次输入新密码" @blur="checkconfirmPwd">
 
       </div>
       <div class="bottom-btn">
@@ -31,7 +31,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { MessageBox } from "mint-ui";
+import { MessageBox, Toast } from "mint-ui";
+import base64 from "@/libs/base.js";
+import { LvalidatePwd } from "@/libs/validate.js";
 export default {
   computed: {},
   data() {
@@ -40,7 +42,11 @@ export default {
         curPwd: "",
         newPwd: "",
         confirmPwd: ""
-      }
+      },
+      curPwdCheck: false,
+      newPwdCheck: false,
+      confirmPwdCheck: false,
+      bcode: new base64()
     };
   },
   components: {},
@@ -51,7 +57,74 @@ export default {
     toSettings() {
       this.$router.push("/settings");
     },
-    //修改密码
+    //判断原密码
+    checkCurPwd() {
+      if (!this.pwd.curPwd) {
+        return;
+      }
+      this.$fetchGet(
+          "user/checkPwd/" + this.bcode.encode(this.pwd.curPwd)
+        ).then(res => {
+          this.curPwdCheck = res;
+        });
+      // if (LvalidatePwd(this.pwd.curPwd)) {
+      //   this.$fetchGet(
+      //     "user/checkPwd/" + this.bcode.encode(this.pwd.curPwd)
+      //   ).then(res => {
+      //     this.curPwdCheck = res;
+      //   });
+      // } else {
+      //   Toast({
+      //     message: "密码必须为6-16位，且不能含有特殊字符",
+      //     position: "middle",
+      //     duration: 3000
+      //   });
+      // }
+    },
+    //判断新密码
+    checkNewPwd() {
+      //新密码为空
+      if (!this.pwd.newPwd) {
+        return;
+      }
+      //新密码不为空，检查格式
+      this.newPwdCheck = LvalidatePwd(this.pwd.newPwd);
+      if (LvalidatePwd(this.pwd.newPwd)) {
+        //确认密码已输入
+        if (this.pwd.confirmPwd.length !== 0) {
+          if (this.pwd.newPwd === this.pwd.confirmPwd) {
+            this.confirmPwdCheck = true;
+          } else {
+            this.confirmPwdCheck = false;
+            Toast({
+              message: "两次密码输入不一致，请检查",
+              position: "middle",
+              duration: 3000
+            });
+          }
+        }
+      } else {
+        Toast({
+          message: "新密码必须为6-16位，且不能含有特殊字符",
+          position: "middle",
+          duration: 3000
+        });
+      }
+    },
+    //判断确认密码
+    checkconfirmPwd() {
+      if (this.pwd.newPwd === this.pwd.confirmPwd) {
+        this.confirmPwdCheck = true;
+      } else {
+        this.confirmPwdCheck = false;
+        Toast({
+          message: "两次密码输入不一致，请检查",
+          position: "middle",
+          duration: 3000
+        });
+      }
+    },
+    //修改密码提交
     submit() {
       MessageBox({
         title: "提示",
@@ -59,9 +132,37 @@ export default {
         showCancelButton: true
       }).then(action => {
         if (action == "confirm") {
-          MessageBox("提示", "修改成功/失败").then(action => {
-            this.$router.push("/settings");
-          });
+          //验证原密码
+          if (
+            this.curPwdCheck === true &&
+            this.newPwdCheck === true &&
+            this.pwd.newPwd === this.pwd.confirmPwd
+          ) {
+            this.$fetchPut("user/pwd/" + bcode.encode(this.pwd.newPwd)).then(
+              res => {
+                if (res === "success") {
+                  MessageBox("提示", "修改成功！").then(action => {
+                    this.$router.push("/settings");
+                  });
+                } else {
+                  MessageBox("提示", "修改失败");
+                }
+              }
+            );
+          } else {
+            if (this.curPwdCheck !== true) {
+              MessageBox("提示", "原密码输入错误");
+              return;
+            }
+            if (this.newPwdCheck !== true) {
+              MessageBox("提示", "新密码必须为6-16位，且不能含有特殊字符");
+              return;
+            }
+            if (this.pwd.newPwd !== this.pwd.confirmPwd) {
+              MessageBox("提示", "两次密码输入不一致，请检查");
+              return;
+            }
+          }
         }
       });
     }

@@ -42,4 +42,24 @@ export function validatePwd(Pwd) {
   const re = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?_&])[A-Za-z\d$@$!%*#?_&]{8,}$/
   return re.test(Pwd)
 }
+/**
+ * 验证联系方式（手机号或邮箱）
+ * @param contact
+ * @returns {boolean}
+ */
+export function validateContact(contact) {
+  const re = /(^1[0-9]{10}$)|(^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/
+  return re.test(contact)
+}
+
+/**
+ * 验证密码 至少8个字符
+ * @param password
+ * @returns {boolean}
+ */
+export function LvalidatePwd(Pwd) {
+  const re = /^[A-Za-z0-9]{6,16}$/
+  return re.test(Pwd)
+}
+
 
