@@ -162,6 +162,7 @@ export default {
     },
     handOpen(val) {
       this.popupVisible1 = true;
+      val=val.replace(".400x400.jpg","")
       this.bigImage = val;
     },
     getImage(val, row) {

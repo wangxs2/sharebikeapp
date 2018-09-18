@@ -21,7 +21,7 @@
               <div class="right">
                   <div class="topRight">
                       <span>{{FormatDate(iteam.dispatchTime)}}</span> 
-                      <span style="margin-left:1rem" :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
+                      <span style="margin-left:1rem" :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"已转派":"已完成"}}</span>
                   </div>
                   <div class="bottomRight">
                       <span class="iconfont icon-weizhi"></span>

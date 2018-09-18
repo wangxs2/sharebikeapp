@@ -15,6 +15,13 @@ import common from './libs/common.js'
 import Vconsole from "vconsole"
 import VuePreview from 'vue-preview'
 import { Swipe, SwipeItem } from "mint-ui";
+import VueLazyLoad from 'vue-lazyload'
+Vue.use(VueLazyLoad, {
+  preLoad: 1,
+  error: require('./assets/image/error.svg'),
+  loading: require('./assets/image/loading.svg'),
+  attempt: 2,
+})
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 

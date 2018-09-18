@@ -31,7 +31,7 @@
                         <span>{{FormatDate(iteam.dispatchTime)}}</span>
                         
                     </div>
-                    <div :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</div>
+                    <div :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"已转派":"已完成"}}</div>
 
                 </div>
                 <div class="iteamList">
@@ -176,6 +176,7 @@ export default {
     },
     handOpen(val) {
       this.popupVisible = true;
+      val=val.replace(".400x400.jpg","")
       this.bigImage = val;
     },
     iconClick() {
@@ -198,7 +199,6 @@ export default {
       })
         .then(res => {
           Indicator.close();
-          var that = this;
           this.iteamList = res;
           console.log(this.iteamList);
         })

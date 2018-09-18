@@ -114,6 +114,7 @@ export default {
   methods: {
     handOpen(val) {
       this.popupVisible = true;
+      val=val.replace(".400x400.jpg","")
       this.bigImage = val;
     },
     iconClick() {

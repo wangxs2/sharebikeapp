@@ -7,7 +7,7 @@
         v-model="popupVisible"
         position="right">
         <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
-        <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+        <img :v-lazy="Ip+bigImage" alt="" srcset="" width="100%">
       </mt-popup>
       <div class="header">
        
@@ -22,7 +22,7 @@
               <div>
                 <span><img src="../../assets/image/selfcheck/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
                 <span>时间：</span>
-                <span>{{FormatDate(iteamList.updateTime)}}</span>
+                <span>{{FormatDate(iteamList.createTime)}}</span>
                 
               </div>
               <div :class="iteamList.status == 1 ? 'green' : 'red'">{{iteamList.status == 1 ? '处理中' : "已处理"}}</div>
@@ -130,6 +130,7 @@ export default {
   methods: {
     handOpen(val) {
       this.popupVisible = true;
+      val=val.replace(".400x400.jpg","")
       this.bigImage = val;
     },
     getMessage(val) {
@@ -142,26 +143,9 @@ export default {
       })
         .then(res => {
           Indicator.close();
-          var obj = {};
+          
           this.iteamList = res;
-          this.iteamList.handleBeforeURLs.forEach(iteam => {
-            let obj = {};
-            console.log(iteam);
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide.push(obj);
-          });
-          this.iteamList.handleAfterURLs.forEach(iteam => {
-            let obj = {};
-            console.log(iteam);
-            obj.w = 600;
-            obj.h = 600;
-            obj.msrc = this.Ip + iteam;
-            obj.src = this.Ip + iteam;
-            this.slide1.push(obj);
-          });
+        
         })
         .catch(res => {});
     }
