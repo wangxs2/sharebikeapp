@@ -191,9 +191,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    img {
-      // margin-top: 20%;
-    }
   }
   .header {
     width: 100%;

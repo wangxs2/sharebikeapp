@@ -339,9 +339,6 @@ textarea {
     display: flex;
     justify-content: center;
     align-items: center;
-    img {
-      // margin-top: 20%;
-    }
   }
   .mapwhere {
     width: 100%;
@@ -412,15 +409,8 @@ textarea {
       display: flex;
       justify-content: flex-start;
       width: 100%;
-      // height: 55px;
-      // line-height: 55px;
       box-sizing: border-box;
       padding: 0.2rem 0 0.2rem 0.4rem;
-      span {
-        img {
-          // margin-top: 0.4rem;
-        }
-      }
       p {
         display: flex;
         justify-content: flex-start;
@@ -431,10 +421,6 @@ textarea {
         border-bottom: 1px solid #eeeeee;
         box-sizing: border-box;
         padding-left: 0.2rem;
-        // .imageSa{
-        //   display: flex;
-        //   flex-direction:row;
-        // }
         span {
           color: #282828;
           font-size: 0.4rem;
