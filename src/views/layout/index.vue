@@ -53,9 +53,11 @@ export default {
       //imgUrls:[require("../../assets/image/login/icon_tab_1_pre@3x.png"),require("../../assets/image/login/icon_tab_2_pre@3x.png"),require("../../assets/image/login/icon_tab_3_pre@3x.png"),require("../../assets/image/login/icon_tab_4_pre@3x.png"),require("../../assets/image/login/icon_tab_5_pre@3x.png")],
     };
   },
+  mounted() {
+    
+  },
   created() {
     this.roleCode = localStorage.roleCode;
-    console.log(this.$route.path);
     this.selected = this.$route.path;
     if (this.$route.path == "/layout/needtodo") {
       this.selected = "/layout/supervise";
@@ -73,6 +75,7 @@ export default {
     // this
   },
   methods: {
+
     changeImage(val) {
       if (val == "/layout/selfCheck") {
         this.imgUrl[0] = require("../../assets/image/login/icon_tab_1_pre@3x.png");
@@ -106,8 +109,10 @@ export default {
       }
     },
     message() {
-      console.log(this.selected);
-      if ((this.roleCode == "clean"|| this.roleCode == "manage")&& this.selected == "/layout/supervise") {
+      if (
+        (this.roleCode == "clean" || this.roleCode == "manage") &&
+        this.selected == "/layout/supervise"
+      ) {
         this.changeImage("/layout/needtodo");
         this.$router.push("/layout/needtodo");
       } else {

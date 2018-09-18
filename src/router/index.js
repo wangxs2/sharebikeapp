@@ -7,7 +7,6 @@ const _import = require('./_import_production')
 Vue.use(Router)
 
 // import Layout from '@/views/layout/index'
-
 export const constantRouterMap = [{
     path: '/login',
     name: '登录',

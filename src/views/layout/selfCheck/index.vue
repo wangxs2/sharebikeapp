@@ -17,13 +17,13 @@
           </div>
           <v-loadmore v-if="!noneList" :bottom-method="loadBottom" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
             <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
-                <div class="left">                  
+                <div class="left">                
                     <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="80" height="80" srcset="">
                 </div>
                 <div class="right">
                     <div class="topRight">
-                        <p>{{FormatDate(iteam.updateTime)}}</p> 
-                        <p style="margin-left:1rem" :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</p>
+                        <span>{{FormatDate(iteam.updateTime)}}</span> 
+                        <span style="margin-left:1rem" :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</span>
                     </div>
                     <div class="center">
                         {{iteam.orgName}}： 整理{{iteam.arrangeNum}}辆，清运{{iteam.cleanNum}}辆
@@ -204,6 +204,9 @@ export default {
         display: flex;
         flex: 1;
         justify-content: flex-start;
+        // p{
+        //   flex:1;
+        // }
         .green {
           color: #ffc000;
         }

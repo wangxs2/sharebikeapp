@@ -179,11 +179,9 @@ export default {
       this.bigImage = val;
     },
     iconClick() {
-      this.$router.push({
+       this.$router.push({
         path: "/feedBack",
-        query: {
-          message: this.sheetCode
-        }
+        query: this.$store.getters.query
       });
     },
     getMessage(val) {

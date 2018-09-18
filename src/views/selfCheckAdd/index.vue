@@ -68,7 +68,7 @@
            <span><img src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span style="width:12%">备注</span>
-            <textarea cols="50" rows="10" placeholder="请输入备注" style="margin-top:0.4rem" v-model="formMessage.remark"></textarea>
+            <textarea cols="50" rows="10" placeholder="请输入备注" style="margin-top:0rem" v-model="formMessage.remark"></textarea>
           </p>
         </div>
         </form>
@@ -322,7 +322,7 @@ input {
 }
 textarea {
   width: 80%;
-  margin: 0.733333rem 1rem 0 0rem;
+  margin: 0rem 1rem 0 0rem;
   text-align: right;
 }
 .container {
