@@ -37,6 +37,7 @@
 import { mapGetters } from "vuex";
 import { MessageBox } from "mint-ui";
 import { validateContact } from "@/libs/validate.js";
+// import { constants } from 'http2';
 export default {
   computed: {},
   data() {
@@ -65,7 +66,7 @@ export default {
     },
     //添加图片
     addImg() {
-      this.downPictur("fedbackImg");
+      this.downPictur("feedbackImg");
     },
     //获取图像
     getImage(imgName, url) {
@@ -99,6 +100,7 @@ export default {
           if (this.phoneNumberCheck === false) {
             MessageBox("提示", "联系方式输入有误，请检查");
           } else {
+            
             this.$fetchPost(
               "problemFeedback",
               {
