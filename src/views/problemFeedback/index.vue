@@ -101,11 +101,13 @@ export default {
             MessageBox("提示", "联系方式输入有误，请检查");
           } else {
             
+            let photoStr = this.photo.join(";");
+            console.log(photoStr);
             this.$fetchPost(
               "problemFeedback",
               {
                 problemContent: this.problemContent,
-                photo: this.photo,
+                photo: photoStr,
                 contact: this.phoneNumber
               },
               "json"

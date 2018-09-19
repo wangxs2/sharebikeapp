@@ -63,23 +63,10 @@ export default {
         return;
       }
       this.$fetchGet(
-          "user/checkPwd/" + this.bcode.encode(this.pwd.curPwd)
-        ).then(res => {
-          this.curPwdCheck = res;
-        });
-      // if (LvalidatePwd(this.pwd.curPwd)) {
-      //   this.$fetchGet(
-      //     "user/checkPwd/" + this.bcode.encode(this.pwd.curPwd)
-      //   ).then(res => {
-      //     this.curPwdCheck = res;
-      //   });
-      // } else {
-      //   Toast({
-      //     message: "密码必须为6-16位，且不能含有特殊字符",
-      //     position: "middle",
-      //     duration: 3000
-      //   });
-      // }
+        "user/checkPwd/" + this.bcode.encode(this.pwd.curPwd)
+      ).then(res => {
+        this.curPwdCheck = res;
+      });
     },
     //判断新密码
     checkNewPwd() {
@@ -138,7 +125,7 @@ export default {
             this.newPwdCheck === true &&
             this.pwd.newPwd === this.pwd.confirmPwd
           ) {
-            this.$fetchPut("user/pwd/" + bcode.encode(this.pwd.newPwd)).then(
+            this.$fetchPut("user/pwd/" + this.bcode.encode(this.pwd.newPwd)).then(
               res => {
                 if (res === "success") {
                   MessageBox("提示", "修改成功！").then(action => {

@@ -62,4 +62,14 @@ export function LvalidatePwd(Pwd) {
   return re.test(Pwd)
 }
 
+/**
+ * 验证手机号
+ * @param phoneNum
+ * @returns {boolean}
+ */
+export function validatePhoneNum(phoneNum) {
+  const re = /^1[0-9]{10}$/
+  return re.test(phoneNum)
+}
+
 

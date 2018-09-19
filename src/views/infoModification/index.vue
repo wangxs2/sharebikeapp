@@ -19,7 +19,6 @@
       </div>
       <div class="user-info-box box-margin-large">
         <div class="info-title">姓名</div>
-        <!-- <div class="info-content" v-text="userInfo.userName"></div> -->
         <input class="info-content" type="text" name="" id="" v-model="userInfoNew.realName">
 
       </div>
@@ -40,41 +39,25 @@
       </div>
       <div class="user-info-box box-margin-large">
         <div class="info-title">邮箱</div>
-        <!-- <div class="info-content" v-text="userInfo.emailAddr"></div> -->
         <input class="info-content" type="text" name="" id="" v-model="userInfoNew.emailAddr">
       </div>
       <div class="user-info-box">
         <div class="info-title">手机号</div>
-        <!-- <div class="info-content" v-text="userInfo.phoneNum"></div> -->
         <input class="info-content" type="text" name="" id="" v-model="userInfoNew.phoneNum" @blur="checkPhoneNum">
       </div>
     </div>
     <div class="bottom" @click="saveChange">
       <div class="save">保存</div>
     </div>
-    <!-- 选择头像方式 ↓-->
-    <!-- <mt-popup class="avatar-popup" v-model="popupVisible" position="bottom">
-      <div class="avatar-popup-box">
-        <div class="select-avatar">
-          <div class="img-holder"></div>
-          <div class="select-title">拍照</div>
-        </div>
-        <div class="select-avatar">
-          <div class="img-holder"></div>
-          <div class="select-title">相册</div>
-        </div>
-      </div>
-    </mt-popup> -->
-
-    <!-- 选择头像方式 -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { MessageBox } from "mint-ui";
-import { Toast } from "mint-ui";
+import { MessageBox, Toast } from "mint-ui";
 import { userInfo } from "os";
+import { validatePhoneNum, validateEmail } from "@/libs/validate.js";
+
 export default {
   computed: {
     ...mapGetters(["userInfo"])
@@ -82,7 +65,7 @@ export default {
   data() {
     return {
       popupVisible: false,
-      userInfoNew:{},
+      userInfoNew: {},
       updetailImage: ""
     };
   },
@@ -122,13 +105,40 @@ export default {
         showCancelButton: true
       }).then(action => {
         if (action === "confirm") {
+          //姓名为空或超过32位
+          if (
+            this.userInfoNew.realName.length > 32 ||
+            this.userInfoNew.realName.length <= 0
+          ) {
+            MessageBox("提示", "姓名输入错误！");
+            return;
+          }
+          //手机号不为空
+          if (this.userInfoNew.phoneNum.length !== 0) {
+            let phoneNumCheck = validatePhoneNum(this.userInfoNew.phoneNum);
+            if (phoneNumCheck === false) {
+              MessageBox("提示", "手机号格式错误！");
+              return;
+            }
+          }
+          //邮箱不为空
+          if (this.userInfoNew.emailAddr.length !== 0) {
+            let emailCheck = validateEmail(this.userInfoNew.emailAddr);
+            if (emailCheck === false) {
+              MessageBox("提示", "邮箱格式错误！");
+              return;
+            }
+          }
+          //输入信息检测无误后发送请求
           let updateData = {
             id: this.userInfoNew.id,
             realName: this.userInfoNew.realName,
             sex: this.userInfoNew.sex,
             emailAddr: this.userInfoNew.emailAddr,
             phoneNum: this.userInfoNew.phoneNum,
-            image: this.updetailImage?this.updetailImage:this.userInfoNew.image
+            image: this.updetailImage
+              ? this.updetailImage
+              : this.userInfoNew.image
           };
           this.$fetchPut("user/updateUser", updateData).then(res => {
             if (res.status === 0) {
@@ -143,8 +153,6 @@ export default {
           });
         }
       });
-
-      // console.log(this.userInfoNew)
     }
   }
 };
