@@ -41,7 +41,7 @@
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
                   <span class="iconfont icon-shanchu1" @click="detailImage(index)"></span>
               </div>             
-              <img src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">       
+              <img v-if="dispachPhotoUrls.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">       
           </div>
         </div>
         <div class="iteamImage">
@@ -87,7 +87,6 @@
             <p>位置</p>
           </div>
           <div id="myMap">
-
           </div>
           <div class="placeList">
                 <div v-for="(iteam,index) in placeData" class="address" @click="getAddress(iteam,index)">

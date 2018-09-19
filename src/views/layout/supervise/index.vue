@@ -70,7 +70,8 @@ export default {
   methods: {
     detailClick(row) {
       this.$store.commit("SET_QUERY", {
-        message: row.sheetCode
+        message: row.sheetCode,
+        status:row.status
       });
       console.log(this.$store.getters.query);
       this.$router.push({
