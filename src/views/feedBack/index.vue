@@ -28,13 +28,11 @@
             <span style="padding-left:0.2rem">核实照片</span>
           </p>
            <div class="imageList">
-              <!-- <img v-for="(iteam,index) in formMessage.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage"> -->
                <div v-for="(iteam,index) in formMessage.handleAfterURLs" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
                   <span class="iconfont icon-shanchu1" @click="detailImage(index)"></span>
               </div>             
-              <img src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">       
+              <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">       
           </div>          
         </div>
         <div class="iteamImage">

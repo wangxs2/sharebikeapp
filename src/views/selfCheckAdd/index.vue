@@ -40,7 +40,7 @@
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
                   <span class="iconfont icon-shanchu1" @click="detailImage(1,index)"></span>
               </div>             
-              <img src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">
+              <img v-if="formMessage.handleBeforeURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">
           </div>
         </div>
         <div class="iteamImage">
@@ -53,21 +53,21 @@
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
                   <span class="iconfont icon-shanchu1" @click="detailImage(1,index)"></span>
               </div>             
-              <img src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage1">                         
+              <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage1">                         
           </div>
         </div>
         <div class="iteamForm">
            <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>整理数</span>
-            <input type="text" placeholder="请选择整理数" v-model="formMessage.arrangeNum">
+            <input type="number" placeholder="请选择整理数" v-model="formMessage.arrangeNum">
           </p>
         </div>
         <div class="iteamForm">
            <span><img src="../../assets/image/selfcheck/icon_6_num2@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>清运数</span>
-            <input type="text" placeholder="请选择清运数" v-model="formMessage.cleanNum">
+            <input type="number" placeholder="请选择清运数" v-model="formMessage.cleanNum">
           </p>
         </div>
         <div class="iteamForm" style="height:100px">

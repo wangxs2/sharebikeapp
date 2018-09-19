@@ -16,7 +16,7 @@
                 <mt-button icon="back" style="font-size:24px"></mt-button>
             </router-link>
             <mt-button style="font-size:18px" slot="right" @click="iconClick">
-                反馈
+                {{status==2?"反馈":""}}
             </mt-button>
 
         </mt-header>
@@ -165,6 +165,7 @@ export default {
       slide2: [],
       slide1: [],
       sheetCode: "",
+      status:"",
       iteamList: []
     };
   },
@@ -175,6 +176,7 @@ export default {
     console.log(this.roleCode);
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
+      this.status = this.$route.query.status;
       this.getMessage(this.sheetCode);
     }
   },
