@@ -223,6 +223,7 @@ export default {
     .imageList {
       display: flex;
       flex-wrap: wrap;
+      margin-top: 0.2rem;
       img {
         margin-right: 5px;
         box-shadow: 0 0 010px #ccc;

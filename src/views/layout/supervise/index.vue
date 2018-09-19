@@ -160,6 +160,8 @@ export default {
     flex: 1;
     overflow: hidden;
     overflow-y: scroll;
+    box-sizing: border-box;
+    // padding-top: 0.2rem;
     .noneList {
       flex: 1;
       line-height: 1;

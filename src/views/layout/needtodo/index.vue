@@ -190,7 +190,8 @@ export default {
     flex: 1;
     overflow: hidden;
     flex-direction: column;
-    // overflow-y: scroll;
+    box-sizing: border-box;
+    // padding-top: 0.2rem;
     nav {
       width: 100%;
       height: 1.066667rem;

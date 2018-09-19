@@ -66,10 +66,6 @@
               <img v-for="(iteam,index) in formMessage.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
               <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage">
           </div>
-          <!-- <p class="imageClean">
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage1"></i>
-             <vue-preview :slides="slide1" @close="handleClose"></vue-preview>
-          </p> -->
         </div>
         <div class="iteamForm">
           <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
@@ -160,11 +156,11 @@ export default {
           title: "提示"
         }).then(action => {});
         this.handleBefore.push(val);
-        this.formMessage.handleBeforeURLs(row);
+        this.formMessage.handleBeforeURLs.push(row);
       }
       if (this.imageStatus == 2) {
         this.handleAfter.push(val);
-        this.formMessage.handleAfterURLs(row);
+        this.formMessage.handleAfterURLs.push(row);
       }
     },
     clickImage1() {
@@ -191,7 +187,7 @@ export default {
         .catch(res => {});
     },
     save() {
-      if (this.slide.length == 0) {
+      if (this.formMessage.handleBeforeURLs.length == 0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
           title: "提示"
@@ -228,12 +224,12 @@ export default {
       }
     },
     submit() {
-      if (this.slide == []) {
+      if (this.formMessage.handleBeforeURLs.length == 0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
           title: "提示"
         }).then(action => {});
-      } else if (this.slide1 == []) {
+      } else if (this.formMessage.handleAfterURLs.length == 0) {
         MessageBox.alert("", {
           message: "请上传整理后照片",
           title: "提示"

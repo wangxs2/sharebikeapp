@@ -67,7 +67,7 @@
         <div class="iteamForm" style="height:100px">
            <span><img src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
-            <span style="width:12%">备注</span>
+            <span style="width:15%">备注</span>
             <textarea cols="50" rows="10" placeholder="请输入备注" style="margin-top:0rem" v-model="formMessage.remark"></textarea>
           </p>
         </div>
@@ -124,6 +124,8 @@ export default {
         arrangeNum: "",
         cleanNum: "",
         remark: "",
+        longitude:"",
+        latitude:"",
         handleBefore: [],
         handleBeforeURLs: [],
         handleAfterURLs: [],
@@ -149,6 +151,8 @@ export default {
     getAddress(row, index) {
       this.changeId = index;
       this.formMessage.handleAddr = row.address;
+      this.formMessage.longitude = row.point.lng;
+      this.formMessage.latitude = row.point.lat;
       this.popupVisible = false;
     },
     getMap() {
@@ -167,6 +171,8 @@ export default {
             console.log(rs);
             this.placeData = rs.surroundingPois;
             this.formMessage.handleAddr = this.placeData[0].address;
+            this.formMessage.longitude = this.placeData[0].point.lng;
+            this.formMessage.latitude = this.placeData[0].point.lat;
             let addComp = rs.addressComponents;
           },
           { poiRadius: 200, numPois: 20 }
@@ -187,10 +193,6 @@ export default {
       this.downPictur("bikeImg");
     },
     getImage(val, row) {
-      // MessageBox.alert("", {
-      //   message: row,
-      //   title: "提示"
-      // }).then(action => {});
       if (this.imageStatus == 1) {
         this.formMessage.handleBefore.push(val);
         this.formMessage.handleBeforeURLs.push(row);
@@ -321,12 +323,12 @@ export default {
 
 <style lang="scss" scoped>
 input {
-  width: 80%;
+  width: 100%;
   margin: 0 1rem;
   text-align: right;
 }
 textarea {
-  width: 80%;
+  width: 100%;
   margin: 0rem 1rem 0 0rem;
   text-align: right;
 }
@@ -430,7 +432,7 @@ textarea {
           color: #282828;
           font-size: 0.4rem;
           text-align: left;
-          width: 22%;
+          width: 25%;
         }
       }
     }

@@ -136,6 +136,8 @@ export default {
         handleAddr: "点击获取当前位置",
         remark: "",
         orgId: "",
+        longitude:"",
+        latitude:"",
         dispachPhoto: []
       }
     };
@@ -158,6 +160,8 @@ export default {
     getAddress(row, index) {
       this.changeId = index;
       this.formMessage.handleAddr = row.address;
+       this.formMessage.longitude = row.point.lng;
+      this.formMessage.latitude = row.point.lat;
       this.popupVisible = false;
     },
     handOpen(val) {
@@ -192,6 +196,8 @@ export default {
             console.log(rs);
             this.placeData = rs.surroundingPois;
             this.formMessage.handleAddr = this.placeData[0].address;
+            this.formMessage.longitude = this.placeData[0].point.lng;
+            this.formMessage.latitude = this.placeData[0].point.lat;
             let addComp = rs.addressComponents;
           },
           { poiRadius: 200, numPois: 20 }
