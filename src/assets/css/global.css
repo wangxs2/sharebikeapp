@@ -21,7 +21,7 @@ body,
     flex-wrap: wrap;
     width: 100%;
     box-sizing: border-box;
-    padding-top: 0.5rem;
+    padding-top: 0.2rem;
   }
 .imageClean >div{
     width: 100%;

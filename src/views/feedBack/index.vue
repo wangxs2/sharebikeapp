@@ -28,13 +28,14 @@
             <span style="padding-left:0.2rem">核实照片</span>
           </p>
            <div class="imageList">
-              <img v-for="(iteam,index) in formMessage.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage">
+              <!-- <img v-for="(iteam,index) in formMessage.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage"> -->
+               <div v-for="(iteam,index) in formMessage.handleAfterURLs" class="detailIcon">
+                  <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
+                  <span class="iconfont icon-shanchu1" @click="detailImage(index)"></span>
+              </div>             
+              <img src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">       
           </div>          
-          <!-- <p class="imageClean">
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
-               <vue-preview :slides="slide" @close="handleClose"></vue-preview>             
-          </p> -->
         </div>
         <div class="iteamImage">
           <p>
@@ -76,7 +77,7 @@ export default {
       formMessage: {
         dealCondition: "",
         sheetCode: "",
-        handleAfterURLs:[],
+        handleAfterURLs: []
       }
     };
   },
@@ -124,7 +125,16 @@ export default {
     },
     getImage(val, row) {
       this.dispachPhoto.push(val);
-      this.formMessage.handleAfterURLs.push(row)
+      this.formMessage.handleAfterURLs.push(row);
+    },
+    detailImage(id) {
+      MessageBox.confirm("是否确认删除图片?").then(action => {
+        if (action == "confirm") {
+          //确认的回调
+          this.formMessage.handleAfterURLs.splice(id, 1);
+          this.dispachPhoto.splice(id, 1);
+        }
+      });
     },
     handleClose() {
       console.log("close event");
@@ -136,7 +146,7 @@ export default {
           message: "请输入处理情况",
           title: "提示"
         }).then(action => {});
-      } else if (this.dispachPhoto == []) {
+      } else if (this.dispachPhoto.length==0) {
         MessageBox.alert("", {
           message: "请上传核实照片",
           title: "提示"
@@ -306,10 +316,15 @@ textarea {
         flex-wrap: wrap;
         box-sizing: border-box;
         padding-left: 0.4rem;
-        img {
-          margin-right: 5px;
-          margin-bottom: 10px;
-          box-shadow: 0 0 010px #ccc;
+        padding-top: 0.2rem;
+        .detailIcon {
+          position: relative;
+          margin-right: 0.2rem;
+          span {
+            position: absolute;
+            right: -5px;
+            top: -8px;
+          }
         }
       }
       img {

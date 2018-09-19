@@ -40,7 +40,7 @@
             <span style="padding-left:0.2rem">派单照片</span>
           </p>
           <div class="imageList">
-            <img v-for="(iteam,index) in formMessage.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+            <img v-for="(iteam,index) in formMessage.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
           </div>
         </div>
         <div class="iteamImage">
@@ -49,13 +49,12 @@
             <span style="padding-left:0.2rem">整理前</span>
           </p>
           <div class="imageList">
-              <img v-for="(iteam,index) in formMessage.handleBeforeURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage">
+               <div v-for="(iteam,index) in formMessage.handleBeforeURLs" class="detailIcon">
+                  <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
+                  <span class="iconfont icon-shanchu1" @click="detailImage(1,index)"></span>
+              </div>             
+              <img src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">
           </div>
-          <!-- <p class="imageClean">
-             <i class="iconfont icon-xiangji" style="color:#e6e6e6;padding-left:1rem;font-size:50px" @click="clickImage"></i>
-               <vue-preview :slides="slide" @close="handleClose"></vue-preview>            
-          </p> -->
         </div>
         <div class="iteamImage">
           <p>
@@ -63,8 +62,12 @@
             <span style="padding-left:0.2rem">整理后</span>
           </p>
           <div class="imageList">
-              <img v-for="(iteam,index) in formMessage.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage">
+             <div v-for="(iteam,index) in formMessage.handleAfterURLs" class="detailIcon">
+                  <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
+                  <span class="iconfont icon-shanchu1" @click="detailImage(1,index)"></span>
+              </div>             
+              <img src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage1">
+             
           </div>
         </div>
         <div class="iteamForm">
@@ -113,8 +116,8 @@ export default {
         handleTime: Date.now(),
         handleAddr: "",
         arrangeNum: "",
-        handleBeforeURLs:[],
-        handleAfterURLs:[],
+        handleBeforeURLs: [],
+        handleAfterURLs: [],
         cleanNum: ""
       }
     };
@@ -149,12 +152,7 @@ export default {
       this.bigImage = val;
     },
     getImage(val, row) {
-       
       if (this.imageStatus == 1) {
-        MessageBox.alert("", {
-          message:row,
-          title: "提示"
-        }).then(action => {});
         this.handleBefore.push(val);
         this.formMessage.handleBeforeURLs.push(row);
       }
@@ -162,6 +160,20 @@ export default {
         this.handleAfter.push(val);
         this.formMessage.handleAfterURLs.push(row);
       }
+    },
+    detailImage(index, id) {
+      MessageBox.confirm("是否确认删除图片?").then(action => {
+        if (action == "confirm") {
+          //确认的回调
+          if (index == 1) {
+            this.handleBefore.splice(id, 1);
+            this.formMessage.handleBeforeURLs.splice(id, 1);
+          } else {
+            this.handleAfter.splice(id, 1);
+            this.formMessage.handleAfterURLs.splice(id, 1);
+          }
+        }
+      });
     },
     clickImage1() {
       this.imageStatus = 2;
@@ -357,10 +369,14 @@ textarea {
         box-sizing: border-box;
         padding-left: 0.4rem;
         padding-top: 0.2rem;
-        img {
-          margin-right: 5px;
-          margin-bottom: 10px;
-          box-shadow: 0 0 010px #ccc;
+        .detailIcon {
+          position: relative;
+          margin-right: 0.2rem;
+          span {
+            position: absolute;
+            right: -5px;
+            top: -8px;
+          }
         }
       }
       img {

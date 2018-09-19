@@ -173,7 +173,7 @@ export default {
     // overflow: hidden;
     overflow-y: scroll;
     box-sizing: border-box;
-    // padding-top: 0.2rem;
+    padding-top: 0.2rem;
     .noneList {
       flex: 1;
       line-height: 1;

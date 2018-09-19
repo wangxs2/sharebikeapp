@@ -36,10 +36,13 @@
             <span><img src="../../assets/image/supervise/icon_3_picture@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">现场照</span>
           </p>
-          <p class="imageClean">
-              <img v-for="(iteam,index) in dispachPhotoUrls" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-              <img src="../../assets/image/login/cramer.svg" style="margin-top:50px;box-shadow:none" alt="" srcset="" @click="clickImage">        
-          </p>
+          <div class="imageList">
+              <div v-for="(iteam,index) in dispachPhotoUrls" class="detailIcon">
+                  <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
+                  <span class="iconfont icon-shanchu1" @click="detailImage(index)"></span>
+              </div>             
+              <img src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">       
+          </div>
         </div>
         <div class="iteamImage">
           <p>
@@ -136,8 +139,8 @@ export default {
         handleAddr: "点击获取当前位置",
         remark: "",
         orgId: "",
-        longitude:"",
-        latitude:"",
+        longitude: "",
+        latitude: "",
         dispachPhoto: []
       }
     };
@@ -160,25 +163,27 @@ export default {
     getAddress(row, index) {
       this.changeId = index;
       this.formMessage.handleAddr = row.address;
-       this.formMessage.longitude = row.point.lng;
+      this.formMessage.longitude = row.point.lng;
       this.formMessage.latitude = row.point.lat;
       this.popupVisible = false;
     },
     handOpen(val) {
       this.popupVisible1 = true;
-      val=val.replace(".400x400.jpg","")
+      val = val.replace(".400x400.jpg", "");
       this.bigImage = val;
     },
     getImage(val, row) {
-      // Indicator.open({
-      //   text: "加载中...",
-      //   spinnerType: "fading-circle"
-      // });
-      // if(row){
-      //   Indicator.close();
-      // }
       this.dispachPhotoUrls.push(row);
       this.formMessage.dispachPhoto.push(val);
+    },
+    detailImage(index, id) {
+      MessageBox.confirm("是否确认删除图片?").then(action => {
+        if (action == "confirm") {
+          //确认的回调
+            this.formMessage.dispachPhoto.splice(id, 1);
+            this.dispachPhotoUrls.splice(id, 1);         
+        }
+      });
     },
     getMap() {
       this.myMap = new BMap.Map("myMap", { enableMapClick: false });
@@ -186,7 +191,6 @@ export default {
       let geoc = new BMap.Geocoder();
       myCity.getCurrentPosition(rs => {
         let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
-        // this.myMap.setCenter(ggPoint);
         var marker = new BMap.Marker(ggPoint); // 创建标注
         this.myMap.addOverlay(marker);
         this.myMap.centerAndZoom(ggPoint, 16);
@@ -256,7 +260,7 @@ export default {
           message: "请选择待清理地点",
           title: "提示"
         }).then(action => {});
-      } else if (this.formMessage.dispachPhoto == []) {
+      } else if (this.dispachPhotoUrls.length == 0) {
         MessageBox.alert("", {
           message: "请上传现场照片",
           title: "提示"
@@ -427,13 +431,30 @@ textarea {
       flex-direction: column;
       box-sizing: border-box;
       padding-top: 0.5rem;
+      padding-left: 0.2rem;
+      .imageList{
+        display: flex;
+        flex-wrap: wrap;
+        box-sizing: border-box;
+        padding-left: 0.4rem;
+        padding-top: 0.4rem;
+        .detailIcon {
+          position: relative;
+          margin-right: 0.2rem;
+          span {
+            position: absolute;
+            right: -5px;
+            top: -8px;
+          }
+        }
+      }
       p {
         display: flex;
         justify-content: flex-start;
         width: 100%;
         margin: 0;
         padding: 0;
-        padding: 0 0 0 0.2rem;
+        // padding: 0 0 0 0.2rem;
         img {
           margin-top: -0.1rem;
           margin-left: 0.2rem;
