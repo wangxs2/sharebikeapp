@@ -26,6 +26,7 @@ body,
 .imageClean >div{
     width: 100%;
 }
+
 .mint-loadmore{
     height: 100%;
     overflow: hidden;
@@ -42,6 +43,7 @@ body,
     color: #5076FF;
   }
   .mint-header-title{
+    overflow: visible;
     font-size: .48rem;
   }
   .mintui{
@@ -53,6 +55,7 @@ body,
   .mint-header {
     height: 1.173333rem;
     font-size: 16px;
+    line-height: none;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
   }
   input ,textarea ,button{

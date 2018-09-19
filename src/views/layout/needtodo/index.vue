@@ -16,12 +16,16 @@
         <v-loadmore style="height:92%" v-if="!noneList" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" bottomPullText="已加载全部数据" :auto-fill="false" ref="loadmore">
           <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
               <div class="left">                  
-                  <img :src="iteam.status == 2 ?Ip + iteam.handleAfterURLs[0]:Ip + iteam.dispachPhotoURLs[0]" alt="" width="90" height="90" srcset="">
-              </div>
+                  <img v-if="iteam.dispachPhotoURLs.length!==0" :src="iteam.status == 2 ?Ip + iteam.handleAfterURLs[0]:Ip + iteam.dispachPhotoURLs[0]" alt="" width="90" height="90" srcset="">
+                  <img v-if="iteam.status !== 2&&iteam.dispachPhotoURLs.length==0" src="../../../assets/image/selfcheck/image_no data@3x.png" alt="" width="90" height="90" srcset="">
+              </div>              
               <div class="right">
                   <div class="topRight">
                       <span>{{FormatDate(iteam.dispatchTime)}}</span> 
-                      <span style="margin-left:1rem" :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"已转派":"已完成"}}</span>
+                      <span style="margin-left:1rem" :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"处理中":"已完成"}}</span>
+                  </div>
+                  <div class="center">
+                      当前处理人：{{iteam.currentHandler}}
                   </div>
                   <div class="bottomRight">
                       <span class="iconfont icon-weizhi"></span>
@@ -70,8 +74,8 @@ export default {
     // 推荐应用组件时用a-b形式起名
   },
   created() {
-     if (this.$route.query.name=="2") {
-      this.activeComany=2
+    if (this.$route.query.name == "2") {
+      this.activeComany = 2;
       this.searchCondition.status = 2;
     }
   },

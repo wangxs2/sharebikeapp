@@ -6,7 +6,8 @@
           v-model="popupVisible1"
           position="right">
           <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible1=false"></span>
-          <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+          <img :src="Ip+bigImage" alt="" srcset="" width="100%" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" @click="popupVisible1=false">
+          <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:50%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">
         <mt-header title="添加企业自查">   
@@ -74,7 +75,7 @@
            <span><img src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span style="width:15%">备注</span>
-            <textarea cols="50" rows="10" placeholder="请输入备注" style="margin-top:0rem" v-model="formMessage.remark"></textarea>
+            <textarea maxlength="180" cols="50" rows="10" placeholder="请输入备注(最多输入180个文字)" style="margin-top:0rem" v-model="formMessage.remark"></textarea>
           </p>
         </div>
         </form>
@@ -112,6 +113,7 @@ export default {
   data() {
     return {
       changeId: 0,
+      rotateS:0,
       popupVisible1: false,
       popupVisible: false,
       bigImage: "",
@@ -167,6 +169,9 @@ export default {
           }
         }
       });
+    },
+    rotate(){
+      this.rotateS=this.rotateS+90;
     },
     getAddress(row, index) {
       this.changeId = index;

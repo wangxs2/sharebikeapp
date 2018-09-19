@@ -6,7 +6,8 @@
         v-model="popupVisible"
         position="right">
         <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
-        <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+        <img :src="Ip+bigImage" alt="" srcset="" width="100%" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" @click="popupVisible=false">
+         <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:50%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">
         <mt-header title="派单处理">   
@@ -103,6 +104,7 @@ export default {
       time: "",
       popupVisible: false,
       bigImage: "",
+      rotateS: 0,
       roleCode: "",
       slide1: [],
       slide2: [],
@@ -137,6 +139,9 @@ export default {
     clickImage() {
       this.imageStatus = 1;
       this.downPictur("bikeImg");
+    },
+    rotate() {
+      this.rotateS = this.rotateS + 90;
     },
     iconClick() {
       this.$router.push({
