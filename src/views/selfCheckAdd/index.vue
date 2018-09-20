@@ -52,7 +52,7 @@
            <div class="imageList">
               <div v-for="(iteam,index) in formMessage.handleAfterURLs" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" @click="detailImage(1,index)"></span>
+                  <span class="iconfont icon-shanchu1" @click="detailImage(2,index)"></span>
               </div>             
               <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage1">                         
           </div>
@@ -113,7 +113,7 @@ export default {
   data() {
     return {
       changeId: 0,
-      rotateS:0,
+      rotateS: 0,
       popupVisible1: false,
       popupVisible: false,
       bigImage: "",
@@ -157,6 +157,7 @@ export default {
       this.popupVisible = true;
     },
     detailImage(index, id) {
+      console.log(index)
       MessageBox.confirm("是否确认删除图片?").then(action => {
         if (action == "confirm") {
           //确认的回调
@@ -164,14 +165,15 @@ export default {
             this.formMessage.handleBefore.splice(id, 1);
             this.formMessage.handleBeforeURLs.splice(id, 1);
           } else {
+            console.log("进入整理后")
             this.formMessage.handleAfter.splice(id, 1);
             this.formMessage.handleAfterURLs.splice(id, 1);
           }
         }
       });
     },
-    rotate(){
-      this.rotateS=this.rotateS+90;
+    rotate() {
+      this.rotateS = this.rotateS + 90;
     },
     getAddress(row, index) {
       this.changeId = index;
@@ -242,16 +244,16 @@ export default {
         .catch(res => {});
     },
     save() {
-      //  MessageBox.alert("", {
-      //     message: "点击",
-      //     title: "提示"
-      //   }).then(action => {});
+      MessageBox.alert("", {
+        message: this.formMessage.handleAfter,
+        title: "提示"
+      }).then(action => {});
       if (this.formMessage.handleAddr == "点击获取当前位置") {
         MessageBox.alert("", {
           message: "请选择清理地点",
           title: "提示"
         }).then(action => {});
-      } else if (this.formMessage.handleBefore.length == 0) {
+      } else if (this.formMessage.handleBefore=="") {
         MessageBox.alert("", {
           message: "请上传整理前照片",
           title: "提示"
@@ -293,12 +295,12 @@ export default {
           message: "请选择清理地点",
           title: "提示"
         }).then(action => {});
-      } else if (this.formMessage.handleBefore == []) {
+      } else if (this.formMessage.handleBefore == "") {
         MessageBox.alert("", {
           message: "请上传整理前照片",
           title: "提示"
         }).then(action => {});
-      } else if (this.formMessage.handleAfter == []) {
+      } else if (this.formMessage.handleAfter == "") {
         MessageBox.alert("", {
           message: "请上传整理后照片",
           title: "提示"
@@ -312,34 +314,45 @@ export default {
           title: "提示"
         }).then(action => {});
       } else {
-        let obj = {};
-        this.formMessage.handleBefore;
-        obj.selfCheck = this.formMessage;
-        obj.selfCheck.handleBefore = this.formMessage.handleBefore.join(";");
-        obj.selfCheck.handleAfter = this.formMessage.handleAfter.join(";");
-        obj.finish = 1;
-        this.$fetchPost("selfcheck", obj, "json")
-          .then(res => {
-            if (res.status == -1) {
-              MessageBox.alert("", {
-                message: res.message,
-                title: "提示"
-              }).then(action => {});
-            } else {
-              MessageBox.alert("", {
-                message: "保存成功",
-                title: "提示"
-              }).then(action => {
-                this.$router.push("/layout/selfCheck");
+        MessageBox.confirm("", {
+          message: "是否确认提交",
+          title: "提示"
+        }).then(action => {
+          if (action == "confirm") {
+            let obj = {};
+            this.formMessage.handleBefore;
+            obj.selfCheck = this.formMessage;
+            obj.selfCheck.handleBefore = this.formMessage.handleBefore.join(
+              ";"
+            );
+            obj.selfCheck.handleAfter = this.formMessage.handleAfter.join(";");
+            obj.finish = 1;
+            this.$fetchPost("selfcheck", obj, "json")
+              .then(res => {
+                if (res.status == -1) {
+                  MessageBox.alert("", {
+                    message: res.message,
+                    title: "提示"
+                  }).then(action => {});
+                } else {
+                  MessageBox.alert("", {
+                    message: "保存成功",
+                    title: "提示"
+                  }).then(action => {
+                    this.$router.push("/layout/selfCheck");
+                  });
+                }
+              })
+              .catch(res => {
+                MessageBox.alert("", {
+                  message: "请求超时",
+                  title: "提示"
+                }).then(action => {});
               });
-            }
-          })
-          .catch(res => {
-            MessageBox.alert("", {
-              message: "请求超时",
-              title: "提示"
-            }).then(action => {});
-          });
+          } else {
+            return;
+          }
+        });
       }
     }
   }

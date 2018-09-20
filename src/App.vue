@@ -11,7 +11,8 @@ export default {
   name: "App",
   // watch:
   mounted() {
-    window.watchBackWXS = this.watchBackWXS;
+    // window.watchBackWXS = this.watchBackWXS;
+    console.log(this.$route.path);
   },
   created() {
     window.getPush = this.getPush;
@@ -23,19 +24,26 @@ export default {
     //   });
   },
   methods: {
-    watchBackWXS() {
-      console.log("点击了返回键");
-      console.log(this.$route.path);
-      if(this.$route.path=="/login"||this.$route.path=="/layout/selfCheck"||this.$route.path=="/layout/supervise"||this.$route.path=="/layout/needtodo"||this.$route.path=="/layout/count"||this.$route.path=="/layout/warning"||this.$route.path=="/layout/me"){
-        return
-      }else{
-        this.$router.go(-1)
-      }
+    // watchBackWXS() {
+    //   console.log("点击了返回键");
 
-    },
+    //   if (
+    //     this.$route.path == "/" ||
+    //     this.$route.path == "/login" ||
+    //     this.$route.path == "/layout/selfCheck" ||
+    //     this.$route.path == "/layout/supervise" ||
+    //     this.$route.path == "/layout/needtodo" ||
+    //     this.$route.path == "/layout/count" ||
+    //     this.$route.path == "/layout/warning" ||
+    //     this.$route.path == "/layout/me"
+    //   ) {
+    //     return;
+    //   } else {
+    //     this.$router.go(-1);
+    //   }
+    // },
     getPush(userName, password, url) {
-      // console.log(655555);
-
+      
       if (userName) {
         let b = new base64();
         let data = {
@@ -51,10 +59,22 @@ export default {
                 res.info.roleCode == "clean" ||
                 res.info.roleCode == "manage"
               ) {
-                // console.log("跳转");
-                this.$router.push("/layout/needtodo");
-              } else {
-                this.$router.push("/layout/supervise");
+                this.$router.push({
+                  path: "/needtodoAdd",
+                  query:{
+                    id: url
+                  }
+                });
+              } else if( res.info.roleCode == "admin") {
+                console.log(655555);
+                console.log(url);
+                this.$router.push({
+                  path: "/layout/supervise",
+                  query: {
+                    supervise:url,
+                    statuSa:2
+                  }
+                });
               }
             } else if (res.status == "fail") {
               MessageBox.alert("", {

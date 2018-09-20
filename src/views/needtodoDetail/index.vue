@@ -7,7 +7,8 @@
         v-model="popupVisible"
         position="right">
         <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
-        <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+        <img :src="Ip+bigImage" alt="" srcset="" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" width="100%">
+        <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:50%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">
        
@@ -45,6 +46,15 @@
               </div>
               <div class="imageList">
                 <img v-for="(iteam,index) in iteamList.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+              </div>
+
+        </div>
+        <div class="iteamList">
+              <div>
+                <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span>处理方式：</span>
+                <span>{{iteamList.dealMethod==1?"整理":iteamList.dealMethod==2?"清运":"整理且清运"}}</span>
+                
               </div>
 
         </div>
@@ -97,6 +107,7 @@ export default {
       slide: [],
       slide1: [],
       sheetCode: "",
+      rotateS:0,
       bigImage: "",
       popupVisible: false,
       iteamList: {}
@@ -114,8 +125,11 @@ export default {
   methods: {
     handOpen(val) {
       this.popupVisible = true;
-      val=val.replace(".400x400.jpg","")
+      val = val.replace(".400x400.jpg", "");
       this.bigImage = val;
+    },
+    rotate() {
+      this.rotateS = this.rotateS + 90;
     },
     iconClick() {
       this.$router.push({

@@ -3,7 +3,7 @@
     <div class="header">
       <div class="title">
         <img src="../../assets/image/login/LOGO@3x.png" width="150" height="132" alt="" srcset="">
-        <p>共享单车清运</p>
+        <p>共享单车治理</p>
       </div>
     </div>
     <div class="content">
@@ -46,49 +46,6 @@ export default {
     getLogin(val) {
       this.loginId = val;
       
-    },
-    getPush(userName, password, url) {
-      MessageBox.alert("", {
-        message: userName,
-        title: "提示"
-      }).then(action => {});
-      if (userName) {
-        this.getSa(userName,password)
-      } else {
-        return;
-      }
-    },
-    getSa(userName,password) {
-      let b = new base64();
-      let data = {
-        username: userName,
-        password: b.encode(password)
-
-      };
-      this.$fetchPost("login", data)
-        .then(res => {
-          Indicator.close();
-          if (res.status == "success") {
-            localStorage.setItem("roleCode", res.info.roleCode);
-            document.cookie = "userId=" + res.info.id;
-            if(res.info.roleCode=="clean"||res.info.roleCode=="manage"){
-              this.$router.push("/layout/needtodo");
-            }else{
-              this.$router.push("/layout/supervise");
-            }
-          } else if (res.status == "fail") {
-            MessageBox.alert("", {
-              message: res.info,
-              title: "提示"
-            }).then(action => {});
-          }
-        })
-        .catch(res => {
-          MessageBox.alert("", {
-            message: "登录超时",
-            title: "提示"
-          }).then(action => {});
-        });
     },
     submitForm() {
       Indicator.open({

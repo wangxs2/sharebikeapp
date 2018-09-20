@@ -32,17 +32,24 @@
           <p>
             <span>地点</span>
             <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.handleAddr">{{formMessage.handleAddr}}</span>
-            <!-- <input type="text" placeholder="请输入清理地点" disabled="disabled" v-model="formMessage.handleAddr"> -->
           </p>
         </div>
+  
         <div class="iteamImage">
           <p>
             <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">派单照片</span>
           </p>
           <div class="imageList">
-            <img v-for="(iteam,index) in formMessage.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
+            <img v-for="(iteam,index) in formMessage.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
           </div>
+        </div>
+        <div class="iteamForm">
+          <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <p>
+            <span>处理方式</span>
+            <span style="width:100%;text-align:right;margin-right:1rem">{{formMessage.dealMethod==1?"整理":formMessage.dealMethod==2?"清运":"整理且清运"}}</span>
+          </p>
         </div>
         <div class="iteamImage">
           <p>
@@ -75,14 +82,14 @@
           <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>整理数</span>
-            <input type="text" placeholder="请选择整理数" v-model="formMessage.arrangeNum">
+            <input type="number" placeholder="请选择整理数" v-model="formMessage.arrangeNum">
           </p>
         </div>
         <div class="iteamForm">
           <span><img src="../../assets/image/selfcheck/icon_6_num2@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>清运数</span>
-            <input type="text" placeholder="请选择清运数" v-model="formMessage.cleanNum">
+            <input type="number" placeholder="请选择清运数" v-model="formMessage.cleanNum">
           </p>
         </div>
         </form>
@@ -252,7 +259,7 @@ export default {
           title: "提示"
         }).then(action => {});
       } else if (
-        this.formMessage.arrangeNum == "" &&
+        this.formMessage.arrangeNum == ""||
         this.formMessage.cleanNum == ""
       ) {
         MessageBox.alert("", {
@@ -260,34 +267,41 @@ export default {
           title: "提示"
         }).then(action => {});
       } else {
-        let obj = {};
-        this.formMessage.handleBefore;
-        obj.dispatchDetail = this.formMessage;
-        obj.dispatchDetail.handleBefore = this.handleBefore.join(";");
-        obj.dispatchDetail.handleAfter = this.handleAfter.join(";");
-        obj.finish = 1;
-        this.$fetchPost("dispatch/saveDispatchDetail", obj, "json")
-          .then(res => {
-            if (res.status == -1) {
-              MessageBox.alert("", {
-                message: res.message,
-                title: "提示"
-              }).then(action => {});
-            } else {
-              MessageBox.alert("", {
-                message: "保存成功",
-                title: "提示"
-              }).then(action => {
-                this.$router.push("/layout/needtodo");
+        MessageBox.confirm("", {
+          message: "是否确认处理完成",
+          title: "提示"
+        }).then(action => {
+          if (action == "confirm") {
+            let obj = {};
+            this.formMessage.handleBefore;
+            obj.dispatchDetail = this.formMessage;
+            obj.dispatchDetail.handleBefore = this.handleBefore.join(";");
+            obj.dispatchDetail.handleAfter = this.handleAfter.join(";");
+            obj.finish = 1;
+            this.$fetchPost("dispatch/saveDispatchDetail", obj, "json")
+              .then(res => {
+                if (res.status == -1) {
+                  MessageBox.alert("", {
+                    message: res.message,
+                    title: "提示"
+                  }).then(action => {});
+                } else {
+                  MessageBox.alert("", {
+                    message: "保存成功",
+                    title: "提示"
+                  }).then(action => {
+                    this.$router.push("/layout/needtodo");
+                  });
+                }
+              })
+              .catch(res => {
+                MessageBox.alert("", {
+                  message: "请求超时",
+                  title: "提示"
+                }).then(action => {});
               });
-            }
-          })
-          .catch(res => {
-            MessageBox.alert("", {
-              message: "请求超时",
-              title: "提示"
-            }).then(action => {});
-          });
+          }
+        });
       }
     }
   }
@@ -358,7 +372,7 @@ textarea {
           color: #282828;
           font-size: 0.4rem;
           text-align: left;
-          width: 22%;
+          width: 28%;
         }
       }
     }

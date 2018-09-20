@@ -69,6 +69,15 @@
                 </div>
                 <div class="iteamList">
                     <div>
+                        <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+                        <span>处理方式：</span>
+                        <span>{{iteam.dealMethod==1?"整理":iteam.dealMethod==2?"清运":"整理且清运"}}</span>
+                        
+                    </div>
+
+                </div>
+                <div class="iteamList">
+                    <div>
                         <span><img src="../../assets/image/supervise/icon_4_company@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>企业：</span>
                         <span>{{iteam.orgName}}</span>
@@ -79,7 +88,7 @@
                 <div class="imageClean" style="padding:0.3rem 0.213333rem">
                     <div>
                         <span><img src="../../assets/image/supervise/icon_3_picture@3x.png" width="22" height="22" alt="" srcset=""></span>
-                        <span>派单前</span>                                
+                        <span>派单照片</span>                                
                     </div>
                     <div class="imageList">
                         <img v-for="(iteam,index) in iteam.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
@@ -175,10 +184,10 @@ export default {
   mounted() {},
   created() {
     this.roleCode = localStorage.roleCode;
-    console.log(this.roleCode);
-    if (this.$route.query.message) {
-      this.sheetCode = this.$route.query.message;
-      this.status = this.$route.query.status;
+    if (this.$route.query.supervise) {
+    console.log("sjsdjdsj")
+      this.sheetCode = this.$route.query.supervise;
+      this.status = this.$route.query.statuSa;
       this.getMessage(this.sheetCode);
     }
   },
@@ -198,7 +207,11 @@ export default {
     iconClick() {
       this.$router.push({
         path: "/feedBack",
-        query: this.$store.getters.query
+        query: {
+            message:this.sheetCode,
+            dealMethod:this.iteamList[0].dealMethod,
+            statuSa:this.iteamList[0].status
+        }
       });
     },
     getMessage(val) {
