@@ -79,7 +79,6 @@
         </form>       
       </div>
       <div class="bottom">
-          <!-- <button type="button" class="buttonSa" @click.native="save()">暂存</button> -->
           <button type="button" class="buttonSa1" @click="submit()">派单</button>
       </div>
       <mt-popup v-model="popupVisible" class="mapwhere" position="right">

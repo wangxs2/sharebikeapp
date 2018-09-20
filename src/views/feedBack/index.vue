@@ -143,7 +143,6 @@ export default {
       console.log("close event");
     },
     save() {
-      alert(this.dispachPhoto);
       if (this.formMessage.dealCondition == "") {
         MessageBox.alert("", {
           message: "请输入处理情况",
@@ -168,7 +167,6 @@ export default {
         obj.finish = 0;
         this.$fetchPost("dispatch/saveDispatchFeedBack", obj, "json")
           .then(res => {
-            alert(res);
             if (res.status == -1) {
               MessageBox.alert("", {
                 message: res.message,
@@ -203,7 +201,6 @@ export default {
           title: "提示"
         }).then(action => {});
       } else {
-        alert("进入");
         let obj = {};
         obj.dispatch = this.formMessage;
         obj.dispatch.dispachPhoto = this.dispachPhoto.join(";");

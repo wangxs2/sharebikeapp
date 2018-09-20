@@ -65,7 +65,7 @@
           <div class="imageList">
              <div v-for="(iteam,index) in formMessage.handleAfterURLs" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" @click="detailImage(1,index)"></span>
+                  <span class="iconfont icon-shanchu1" @click="detailImage(2,index)"></span>
               </div>             
               <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage1">
              
