@@ -244,10 +244,6 @@ export default {
         .catch(res => {});
     },
     save() {
-      MessageBox.alert("", {
-        message: this.formMessage.handleAfter,
-        title: "提示"
-      }).then(action => {});
       if (this.formMessage.handleAddr == "点击获取当前位置") {
         MessageBox.alert("", {
           message: "请选择清理地点",

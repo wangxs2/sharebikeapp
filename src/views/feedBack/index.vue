@@ -178,7 +178,7 @@ export default {
           title: "提示"
         }).then(action => {});
       } else {
-        MessageBox.alert("", {
+        MessageBox.confirm("", {
           message: "是否确认重新派单",
           title: "提示"
         }).then(action => {
@@ -227,7 +227,7 @@ export default {
           title: "提示"
         }).then(action => {});
       } else {
-        MessageBox.alert("", {
+        MessageBox.confirm("", {
           message: "是否确认提交",
           title: "提示"
         }).then(action => {
