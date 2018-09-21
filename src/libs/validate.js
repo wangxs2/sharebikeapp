@@ -71,5 +71,14 @@ export function validatePhoneNum(phoneNum) {
   const re = /^1[0-9]{10}$/
   return re.test(phoneNum)
 }
+/**
+ * 验证姓名（中文、英文、数字）
+ * @param name
+ * @returns {boolean}
+ */
+export function validateName(name) {
+  const re = /^[\u4E00-\u9FA5A-Za-z0-9_]+$/
+  return re.test(name)
+}
 
 

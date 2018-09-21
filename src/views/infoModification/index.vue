@@ -56,7 +56,11 @@
 import { mapGetters } from "vuex";
 import { MessageBox, Toast } from "mint-ui";
 import { userInfo } from "os";
-import { validatePhoneNum, validateEmail } from "@/libs/validate.js";
+import {
+  validatePhoneNum,
+  validateEmail,
+  validateName
+} from "@/libs/validate.js";
 
 export default {
   computed: {
@@ -108,7 +112,8 @@ export default {
           //姓名为空或超过32位
           if (
             this.userInfoNew.realName.length > 32 ||
-            this.userInfoNew.realName.length <= 0
+            this.userInfoNew.realName.length <= 0 ||
+            validateName(this.userInfoNew.realName) === false
           ) {
             MessageBox("提示", "姓名输入错误！");
             return;
