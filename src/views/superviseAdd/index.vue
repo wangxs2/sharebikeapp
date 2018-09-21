@@ -6,7 +6,8 @@
           v-model="popupVisible1"
           position="right">
           <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible1=false"></span>
-          <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+          <img :src="Ip+bigImage" alt="" srcset="" width="100%" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" @click="popupVisible1=false">
+          <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:50%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">
       
@@ -39,7 +40,7 @@
           <div class="imageList">
               <div v-for="(iteam,index) in dispachPhotoUrls" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" @click="detailImage(index)"></span>
+                  <span class="iconfont icon-shanchu" @click="detailImage(index)"></span>
               </div>             
               <img v-if="dispachPhotoUrls.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">       
           </div>
@@ -62,23 +63,22 @@
             <span style="padding-left:0.2rem">处理方式</span>
           </p>
           <p class="imageClean">
-                <mt-checklist
-                    v-model="value1"
-                    :options="options1" @change="getCompany1">
-                </mt-checklist>
+              <mt-checklist
+                  v-model="value1"
+                  :options="options1" @change="getCompany1">
+              </mt-checklist>
           </p>
         </div>
         <div class="iteamForm" style="height:100px">
           <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p style="border:none">
             <span>备注</span>
-            <textarea cols="50" rows="10" placeholder="请输入派单备注" style="margin-top:0rem" v-model="formMessage.remark"></textarea>
+            <textarea maxlength="180" cols="50" rows="10" placeholder="请输入备注(最多输入180个文字)" style="margin-top:0rem" v-model="formMessage.remark"></textarea>
           </p>
         </div>
         </form>       
       </div>
       <div class="bottom">
-          <!-- <button type="button" class="buttonSa" @click.native="save()">暂存</button> -->
           <button type="button" class="buttonSa1" @click="submit()">派单</button>
       </div>
       <mt-popup v-model="popupVisible" class="mapwhere" position="right">
@@ -110,6 +110,7 @@ export default {
     return {
       time: "",
       changeId: 0,
+      rotateS: 0,
       dealMethod: "",
       popupVisible: false,
       popupVisible1: false,
@@ -155,6 +156,9 @@ export default {
     clickImage() {
       this.downPictur("bikeImg");
     },
+    rotate() {
+      this.rotateS = this.rotateS + 90;
+    },
     placeClick() {
       this.getMap();
       this.popupVisible = true;
@@ -179,8 +183,8 @@ export default {
       MessageBox.confirm("是否确认删除图片?").then(action => {
         if (action == "confirm") {
           //确认的回调
-            this.formMessage.dispachPhoto.splice(id, 1);
-            this.dispachPhotoUrls.splice(id, 1);         
+          this.formMessage.dispachPhoto.splice(id, 1);
+          this.dispachPhotoUrls.splice(id, 1);
         }
       });
     },
@@ -270,35 +274,43 @@ export default {
           title: "提示"
         }).then(action => {});
       } else {
-        let obj = {};
-        this.formMessage.handleBefore;
-        obj.dispatch = this.formMessage;
-        obj.dispatch.dispachPhoto = this.formMessage.dispachPhoto.join(";");
-        obj.dispatch.dealMethod = this.dealMethod;
-        obj.orgIdList = this.value;
-        obj.finish = 1;
-        this.$fetchPost("dispatch/saveDispatch", obj, "json")
-          .then(res => {
-            if (res.status == -1) {
-              MessageBox.alert("", {
-                message: res.message,
-                title: "提示"
-              }).then(action => {});
-            } else {
-              MessageBox.alert("", {
-                message: "保存成功",
-                title: "提示"
-              }).then(action => {
-                this.$router.push("/layout/supervise");
-              });
-            }
-          })
-          .catch(res => {
-            MessageBox.alert("", {
-              message: "请求超时",
-              title: "提示"
-            }).then(action => {});
-          });
+        MessageBox.confirm("", {
+          message: "是否确认派单",
+          title: "提示"
+        }).then(action => {
+          if(action == "confirm"){
+              let obj = {};
+              this.formMessage.handleBefore;
+              obj.dispatch = this.formMessage;
+              obj.dispatch.dispachPhoto = this.formMessage.dispachPhoto.join(";");
+              obj.dispatch.dealMethod = this.dealMethod;
+              obj.orgIdList = this.value;
+              obj.finish = 1;
+              this.$fetchPost("dispatch/saveDispatch", obj, "json")
+                .then(res => {
+                  if (res.status == -1) {
+                    MessageBox.alert("", {
+                      message: res.message,
+                      title: "提示"
+                    }).then(action => {});
+                  } else {
+                    MessageBox.alert("", {
+                      message: "保存成功",
+                      title: "提示"
+                    }).then(action => {
+                      this.$router.push("/layout/supervise");
+                    });
+                  }
+                })
+                .catch(res => {
+                  MessageBox.alert("", {
+                    message: "请求超时",
+                    title: "提示"
+                  }).then(action => {});
+                });
+          }
+        });
+       
       }
     }
   }
@@ -431,7 +443,7 @@ textarea {
       box-sizing: border-box;
       padding-top: 0.5rem;
       padding-left: 0.2rem;
-      .imageList{
+      .imageList {
         display: flex;
         flex-wrap: wrap;
         box-sizing: border-box;
@@ -442,7 +454,7 @@ textarea {
           margin-right: 0.2rem;
           span {
             position: absolute;
-            right: -5px;
+            right: -7px;
             top: -8px;
           }
         }

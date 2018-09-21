@@ -180,7 +180,7 @@ export default {
           width: "90%",
           right: 0,
           align: "left",
-          selectedMode: false,
+          selectedMode: true,
           itemWidth: 10,
           itemHeight: 10,
           textStyle: {

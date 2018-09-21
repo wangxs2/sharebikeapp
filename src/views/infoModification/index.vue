@@ -119,7 +119,7 @@ export default {
             return;
           }
           //手机号不为空
-          if (this.userInfoNew.phoneNum.length !== 0) {
+          if (this.userInfoNew.phoneNum!=="") {
             let phoneNumCheck = validatePhoneNum(this.userInfoNew.phoneNum);
             if (phoneNumCheck === false) {
               MessageBox("提示", "手机号格式错误！");

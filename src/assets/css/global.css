@@ -26,6 +26,7 @@ body,
 .imageClean >div{
     width: 100%;
 }
+
 .mint-loadmore{
     height: 100%;
     overflow: hidden;
@@ -35,13 +36,20 @@ body,
     color: #AAAAAA;
   }
   .mint-swipe-indicator.is-active{
-    background: #41cd76;
+    background: #ec160e;
+  }
+  .mint-swipe-indicator{
+    opacity: 0.6;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
   }
   .mint-tabbar > .mint-tab-item.is-selected {
     background: #fff;
     color: #5076FF;
   }
   .mint-header-title{
+    overflow: visible;
     font-size: .48rem;
   }
   .mintui{
@@ -53,6 +61,7 @@ body,
   .mint-header {
     height: 1.173333rem;
     font-size: 16px;
+    line-height: none;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
   }
   input ,textarea ,button{

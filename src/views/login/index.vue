@@ -3,7 +3,7 @@
     <div class="header">
       <div class="title">
         <img src="../../assets/image/login/LOGO@3x.png" width="150" height="132" alt="" srcset="">
-        <p>共享单车清运</p>
+        <p>共享单车治理</p>
       </div>
     </div>
     <div class="content">
@@ -36,26 +36,16 @@ export default {
     };
   },
   beforeCreate() {},
-  mounted() {
-  },
+  mounted() {},
   created() {
     this.downApp();
     window.getLogin = this.getLogin;
-    window.getTest = this.getTest;
+    
   },
   methods: {
     getLogin(val) {
       this.loginId = val;
-      //   MessageBox.alert("", {
-      //   message: val,
-      //   title: "提示"
-      // }).then(action => {});
-    },
-    getTest() {
-      MessageBox.alert("", {
-        message: "测试",
-        title: "提示"
-      }).then(action => {});
+      
     },
     submitForm() {
       Indicator.open({
@@ -114,7 +104,7 @@ export default {
     box-sizing: border-box;
     .title {
       width: 100%;
-      height:5.6rem;
+      height: 5.6rem;
       padding-top: 0.2rem;
       box-sizing: border-box;
       background: -webkit-linear-gradient(left, #6698ff, #5076ff);

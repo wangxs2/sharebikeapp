@@ -6,7 +6,8 @@
         v-model="popupVisible"
         position="right">
         <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
-        <img :src="Ip+bigImage" alt="" srcset="" width="100%">
+        <img :src="Ip+bigImage" alt="" srcset="" width="100%" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" @click="popupVisible=false">
+        <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:50%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">  
         <mt-header title="处理情况反馈">  
@@ -15,6 +16,20 @@
         </mt-header>
       </div>
       <div class="content">
+        <div class="iteamForm">
+          <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <p>
+            <span>单号</span>
+            <span style="width:100%;text-align:right;margin-right:1rem">{{formMessage.sheetCode}}</span>
+          </p>
+        </div>
+        <div class="iteamForm">
+          <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <p>
+            <span>处理方式</span>
+            <span style="width:100%;text-align:right;margin-right:1rem">{{dealMethod==1?"整理":dealMethod==2?"清运":"整理且清运"}}</span>
+          </p>
+        </div>
         <div class="iteamForm" style="height:100px">
           <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
@@ -63,7 +78,10 @@ export default {
   data() {
     return {
       time: "",
+      statuSa: "",
       popupVisible: false,
+      dealMethod: "",
+      rotateS: 0,
       bigImage: "",
       slide1: [],
       slide: [],
@@ -85,6 +103,8 @@ export default {
     this.getAll();
     if (this.$route.query.message) {
       this.formMessage.sheetCode = this.$route.query.message;
+      this.dealMethod = this.$route.query.dealMethod;
+      this.statuSa = this.$route.query.statuSa;
     }
     window.getImage = this.getImage;
   },
@@ -102,6 +122,9 @@ export default {
         });
       });
     },
+    rotate() {
+      this.rotateS = this.rotateS + 90;
+    },
     getCompany(val) {
       this.value = val;
       console.log(this.value);
@@ -114,7 +137,8 @@ export default {
       this.$router.push({
         path: "/superviseDetail",
         query: {
-          message: this.formMessage.sheetCode
+          supervise: this.formMessage.sheetCode,
+          statuSa: this.statuSa
         }
       });
     },
@@ -138,13 +162,12 @@ export default {
       console.log("close event");
     },
     save() {
-      alert(this.dispachPhoto);
       if (this.formMessage.dealCondition == "") {
         MessageBox.alert("", {
           message: "请输入处理情况",
           title: "提示"
         }).then(action => {});
-      } else if (this.dispachPhoto.length==0) {
+      } else if (this.dispachPhoto.length == 0) {
         MessageBox.alert("", {
           message: "请上传核实照片",
           title: "提示"
@@ -155,35 +178,41 @@ export default {
           title: "提示"
         }).then(action => {});
       } else {
-        let obj = {};
-        this.formMessage.handleBefore;
-        obj.dispatch = this.formMessage;
-        obj.dispatch.dealPhoto = this.dispachPhoto.join(";");
-        obj.orgIdList = this.value;
-        obj.finish = 0;
-        this.$fetchPost("dispatch/saveDispatchFeedBack", obj, "json")
-          .then(res => {
-            alert(res);
-            if (res.status == -1) {
-              MessageBox.alert("", {
-                message: res.message,
-                title: "提示"
-              }).then(action => {});
-            } else {
-              MessageBox.alert("", {
-                message: "保存成功",
-                title: "提示"
-              }).then(action => {
-                this.$router.push("/layout/supervise");
+        MessageBox.confirm("", {
+          message: "是否确认重新派单",
+          title: "提示"
+        }).then(action => {
+          if (action == "confirm") {
+            let obj = {};
+            this.formMessage.handleBefore;
+            obj.dispatch = this.formMessage;
+            obj.dispatch.dealPhoto = this.dispachPhoto.join(";");
+            obj.orgIdList = this.value;
+            obj.finish = 0;
+            this.$fetchPost("dispatch/saveDispatchFeedBack", obj, "json")
+              .then(res => {
+                if (res.status == -1) {
+                  MessageBox.alert("", {
+                    message: res.message,
+                    title: "提示"
+                  }).then(action => {});
+                } else {
+                  MessageBox.alert("", {
+                    message: "保存成功",
+                    title: "提示"
+                  }).then(action => {
+                    this.$router.push("/layout/supervise");
+                  });
+                }
+              })
+              .catch(res => {
+                MessageBox.alert("", {
+                  message: "请求超时",
+                  title: "提示"
+                }).then(action => {});
               });
-            }
-          })
-          .catch(res => {
-            MessageBox.alert("", {
-              message: "请求超时",
-              title: "提示"
-            }).then(action => {});
-          });
+          }
+        });
       }
     },
     submit() {
@@ -198,34 +227,40 @@ export default {
           title: "提示"
         }).then(action => {});
       } else {
-        alert("进入");
-        let obj = {};
-        obj.dispatch = this.formMessage;
-        obj.dispatch.dispachPhoto = this.dispachPhoto.join(";");
-        obj.orgIdList = this.value;
-        obj.finish = 1;
-        this.$fetchPost("dispatch/saveDispatchFeedBack", obj, "json")
-          .then(res => {
-            if (res.status == -1) {
-              MessageBox.alert("", {
-                message: res.message,
-                title: "提示"
-              }).then(action => {});
-            } else {
-              MessageBox.alert("", {
-                message: "保存成功",
-                title: "提示"
-              }).then(action => {
-                this.$router.push("/layout/supervise");
+        MessageBox.confirm("", {
+          message: "是否确认提交",
+          title: "提示"
+        }).then(action => {
+          if (action == "confirm") {
+            let obj = {};
+            obj.dispatch = this.formMessage;
+            obj.dispatch.dealPhoto = this.dispachPhoto.join(";");
+            obj.orgIdList = this.value;
+            obj.finish = 1;
+            this.$fetchPost("dispatch/saveDispatchFeedBack", obj, "json")
+              .then(res => {
+                if (res.status == -1) {
+                  MessageBox.alert("", {
+                    message: res.message,
+                    title: "提示"
+                  }).then(action => {});
+                } else {
+                  MessageBox.alert("", {
+                    message: "保存成功",
+                    title: "提示"
+                  }).then(action => {
+                    this.$router.push("/layout/supervise");
+                  });
+                }
+              })
+              .catch(res => {
+                MessageBox.alert("", {
+                  message: "请求超时",
+                  title: "提示"
+                }).then(action => {});
               });
-            }
-          })
-          .catch(res => {
-            MessageBox.alert("", {
-              message: "请求超时",
-              title: "提示"
-            }).then(action => {});
-          });
+          }
+        });
       }
     }
   }

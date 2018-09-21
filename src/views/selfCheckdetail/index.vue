@@ -6,7 +6,8 @@
         v-model="popupVisible"
         position="right">
         <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
-        <img :v-lazy="Ip+bigImage" alt="" srcset="" width="100%">
+        <img :src="Ip+bigImage" alt="" srcset="" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" width="100%">
+        <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:50%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">
        
@@ -53,7 +54,7 @@
         <div class="imageClean" style="padding:0.3rem 0.213333rem">
               <div>
                 <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>整理前</span>                                
+                <span>处理前</span>                                
               </div>
               <div class="imageList">
                 <img v-for="(iteam,index) in iteamList.handleBeforeURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
@@ -63,7 +64,7 @@
         <div class="imageClean" style="padding:0.3rem 0.213333rem">
               <div>
                 <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>整理后</span>                                
+                <span>处理后</span>                                
               </div>
               <div class="imageList">
                 <img v-for="(iteam,index) in iteamList.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
@@ -121,6 +122,7 @@ export default {
       slide: [],
       slide1: [],
       sheetCode: "",
+      rotateS: 0,
       bigImage: "",
       popupVisible: false,
       iteamList: {}
@@ -136,6 +138,9 @@ export default {
   },
   mounted() {},
   methods: {
+    rotate() {
+      this.rotateS = this.rotateS + 90;
+    },
     handOpen(val) {
       this.popupVisible = true;
       val = val.replace(".400x400.jpg", "");

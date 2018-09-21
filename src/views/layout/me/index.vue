@@ -164,14 +164,14 @@ export default {
       }
       .user-enterprise {
         margin-top: 0.36rem;
-        width: 1.973333rem;
+        // width: 1.973333rem;
         height: 0.48rem;
         background: rgba(255, 255, 255, 1);
         border-radius: 18px;
         color: #537bff;
         font-size: 0.32rem;
         text-align: center;
-        line-height: 0.48rem;
+        line-height: 0.54rem;
       }
       .user-email {
         margin-top: 0.36rem;

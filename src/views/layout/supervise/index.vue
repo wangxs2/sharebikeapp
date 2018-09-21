@@ -65,20 +65,28 @@ export default {
   },
   mounted() {
     this.loadPageList(); //初次访问查询列表
-  },
-  created() {},
-  methods: {
-    detailClick(row) {
-      this.$store.commit("SET_QUERY", {
-        message: row.sheetCode,
-        status:row.status
-      });
-      console.log(this.$store.getters.query);
+     if (this.$route.query.supervise) {
       this.$router.push({
         path: "/superviseDetail",
-        query: this.$store.getters.query
+        query: {
+          supervise: this.$route.query.supervise,
+          statuSa: 2
+        }
       });
-
+    }
+  },
+  created() {
+   
+  },
+  methods: {
+    detailClick(row) {
+      this.$router.push({
+        path: "/superviseDetail",
+        query: {
+          supervise: row.sheetCode,
+          statuSa: row.status
+        }
+      });
     },
     iconClick() {
       this.$router.push("/superviseAdd");
