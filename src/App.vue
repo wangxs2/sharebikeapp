@@ -26,7 +26,6 @@ export default {
   methods: {
     // watchBackWXS() {
     //   console.log("点击了返回键");
-
     //   if (
     //     this.$route.path == "/" ||
     //     this.$route.path == "/login" ||

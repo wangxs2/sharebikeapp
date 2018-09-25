@@ -25,11 +25,12 @@
           </p>
         </div>
         <div class="iteamForm">
-          <span @click="placeClick"><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <span><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
-            <span style="width:10%">地点</span>
-            <textarea style="width:80%;text-align:right;margin-right:1rem;white-space:normal; word-break:break-all;overflow:hidden" v-model="formMessage.handleAddr"></textarea>
+            <span style="width:12%">地点</span>
+            <textarea style="width:80%;text-align:right;" placeholder="点击图标获取当前位置" v-model="formMessage.handleAddr"></textarea>
           </p>
+          <span class="iconfont icon-dingwei1" style="font-size:20px;margin-top:0.1rem;margin-right:0.1rem" @click="placeClick"></span>
         </div>
         <div class="iteamImage">
           <p>
@@ -128,7 +129,7 @@ export default {
       imageName: "",
       formMessage: {
         createTime: Date.now(),
-        handleAddr: "点击获取当前位置",
+        handleAddr: "",
         arrangeNum: "",
         cleanNum: "",
         remark: "",
@@ -153,8 +154,16 @@ export default {
   mounted() {},
   methods: {
     placeClick() {
+      if(this.downAddress()==false){
+        MessageBox.alert("", {
+          message: "请在权限管理里面打开定位权限",
+          title: "提示"
+        }).then(action => {});
+      }else{
         this.getMap();
         this.popupVisible = true;
+      }
+        
     },
     detailImage(index, id) {
       console.log(index)
@@ -188,7 +197,6 @@ export default {
       let geoc = new BMap.Geocoder();
       myCity.getCurrentPosition(rs => {
         let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
-        // this.myMap.setCenter(ggPoint);
         var marker = new BMap.Marker(ggPoint); // 创建标注
         this.myMap.addOverlay(marker);
         this.myMap.centerAndZoom(ggPoint, 16);
@@ -244,7 +252,7 @@ export default {
         .catch(res => {});
     },
     save() {
-      if (this.formMessage.handleAddr == "点击获取当前位置") {
+      if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择清理地点",
           title: "提示"
@@ -363,7 +371,6 @@ input {
 }
 textarea {
   width: 100%;
-  margin: 0rem 1rem 0 0rem;
   text-align: right;
 }
 .container {

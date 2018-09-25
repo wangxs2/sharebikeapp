@@ -26,11 +26,12 @@
           </p>
         </div>
         <div class="iteamForm">
-          <span @click="placeClick"><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <span><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>地点</span>
-            <textarea style="width:80%;text-align:right;margin-right:1rem;white-space:normal; word-break:break-all;overflow:hidden" v-model="formMessage.handleAddr"></textarea>
+            <textarea style="width:80%;text-align:right;margin-right:1rem;white-space:normal; word-break:break-all;overflow:hidden" placeholder="点击图标获取当前位置" v-model="formMessage.handleAddr"></textarea>
           </p>
+           <span class="iconfont icon-dingwei1" style="font-size:20px;margin-top:0.1rem;margin-right:0.1rem" @click="placeClick"></span>
         </div>
         <div class="iteamImage">
           <p>
@@ -136,7 +137,7 @@ export default {
       placeData: [],
       formMessage: {
         dispatchTime: Date.now(),
-        handleAddr: "点击获取当前位置",
+        handleAddr: "",
         remark: "",
         orgId: "",
         longitude: "",
@@ -259,7 +260,7 @@ export default {
     },
     submit() {
       console.log(this.value)
-      if (this.formMessage.handleAddr == "点击获取当前位置") {
+      if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择待清理地点",
           title: "提示"

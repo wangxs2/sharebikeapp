@@ -114,6 +114,16 @@ export default {
         Android.requestPicture(val);
       }
     };
+    Vue.prototype.downAddress = function () {
+      let ua = navigator.userAgent.toLowerCase();
+      let isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1; //Ios终端
+      let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+        // window.webkit.messageHandlers.photo.postMessage({ body: val });
+      } else if (/(Android)/i.test(navigator.userAgent)) {       
+        return  Android.onPositioning();
+      }
+    };
     Vue.prototype.downApp = function () {
       let ua = navigator.userAgent.toLowerCase();
       let isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1; //Ios终端
