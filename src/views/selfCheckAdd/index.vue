@@ -154,15 +154,19 @@ export default {
   mounted() {},
   methods: {
     placeClick() {
-      if(this.downAddress()==false){
-        MessageBox.alert("", {
-          message: "请在权限管理里面打开定位权限",
+       MessageBox.alert("", {
+          message: window.webkit.messageHandlers.isLocation.postMessage({body: 'Location'}),
           title: "提示"
         }).then(action => {});
-      }else{
-        this.getMap();
-        this.popupVisible = true;
-      }
+      // if(this.downAddress()==false){
+      //   MessageBox.alert("", {
+      //     message: "请在权限管理里面打开定位权限",
+      //     title: "提示"
+      //   }).then(action => {});
+      // }else{
+      //   this.getMap();
+      //   this.popupVisible = true;
+      // }
         
     },
     detailImage(index, id) {

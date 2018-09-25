@@ -7,6 +7,7 @@ const user = {
   state: {
     userId: "",
     userName: '',
+    password:'',
     userRole: [], //用户角色
     userOrg: [], //用户组织
     btnAuth: '', //按钮权限
@@ -15,6 +16,9 @@ const user = {
   mutations: {
     SET_USERINFO: (state, userInfo) => { //用户信息
       state.userInfo = userInfo
+    },
+    SET_PASSWORD: (state, password) => { //用户密码
+      state.password = password
     },
     SET_BTNAUTH: (state, btnAuth) => { //按钮权限
       state.btnAuth = btnAuth

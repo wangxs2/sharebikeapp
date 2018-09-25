@@ -11,6 +11,7 @@ const getters = {
   addRouters: state => state.permission.addRouters,
   imageUrl:state => state.app.imageUrl,
   userInfo:state => state.user.userInfo,
+  password:state => state.user.password,
   query:state => state.app.query
 }
 export default getters

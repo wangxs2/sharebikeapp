@@ -12,6 +12,14 @@
         <mt-field label="用户名" placeholder="请输入用户名" v-model="loginMess.username"></mt-field>
         <mt-field label="密码" placeholder="请输入密码" type="password" v-model="loginMess.password"></mt-field>
       </div>
+      <div class="forget">
+        <p>
+          <span v-if="forget==1" class="iconfont icon-bugouxuan" @click="forget=2"></span>
+          <span v-if="forget!==1" class="iconfont icon-fangkuaigouxuan" @click="forget=1"></span>
+          记住密码
+        </p>
+        <p>忘记密码?</p>
+      </div>
       <div style="width:100%">
         <mt-button @click="submitForm()" class="btn">登 录 </mt-button>
       </div>
@@ -29,6 +37,7 @@ export default {
   data() {
     return {
       loginId: "",
+      forget: 1,
       loginMess: {
         username: "",
         password: ""
@@ -36,22 +45,37 @@ export default {
     };
   },
   beforeCreate() {},
-  mounted() {},
+  mounted() {
+    console.log(this.$store.getters.password);
+    if (localStorage.getItem("passWord")) {
+      this.loginMess.password = localStorage.getItem("passWord");
+      this.loginMess.username = localStorage.getItem("userName");
+      this.forget=2
+    }
+    // if()
+  },
   created() {
     this.downApp();
     window.getLogin = this.getLogin;
-    
   },
   methods: {
     getLogin(val) {
       this.loginId = val;
-      
     },
     submitForm() {
       Indicator.open({
         text: "登录...",
         spinnerType: "fading-circle"
       });
+      if (this.forget == 2) {
+        localStorage.setItem("passWord", this.loginMess.password);
+        localStorage.setItem("userName", this.loginMess.username);
+        localStorage.setItem("forget", this.forget);
+      }else{
+        localStorage.setItem("passWord", "");
+        localStorage.setItem("userName", "");
+      }
+
       let timeNumber = new Date().getTime();
       let b = new base64();
       let data = {
@@ -123,9 +147,14 @@ export default {
     flex: 1;
     .formList {
       margin: 0.5rem;
+      margin-bottom: 0;
     }
     .forget {
-      margin: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 0 0.5rem;
+      color: #5076ff;
       .forgetps {
         width: 1rem;
         height: 1rem;
