@@ -24,7 +24,7 @@
               <div class="right">
                   <div class="topRight">
                       <span>{{FormatDate(iteam.dispatchTime)}}</span>
-                       <span style="margin-left:1rem" :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
+                       <span style="margin-left:1rem" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="bottomRight">
@@ -204,6 +204,12 @@ export default {
         justify-content: flex-start;
         .green {
           color: #ffc000;
+        }
+        .blue{
+          color:red;
+        }
+        .pink{
+          color:blue
         }
         .red {
           color: #41cd76;

@@ -24,11 +24,11 @@
             <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.createTime">{{FormatDate(formMessage.createTime)}}</span>
           </p>
         </div>
-        <div class="iteamForm" @click="placeClick">
-          <span><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
+        <div class="iteamForm">
+          <span @click="placeClick"><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span style="width:10%">地点</span>
-            <span style="width:80%;text-align:right;margin-right:1rem;white-space:normal; word-break:break-all;overflow:hidden" v-model="formMessage.handleAddr">{{formMessage.handleAddr}}</span>
+            <textarea style="width:80%;text-align:right;margin-right:1rem;white-space:normal; word-break:break-all;overflow:hidden" v-model="formMessage.handleAddr"></textarea>
           </p>
         </div>
         <div class="iteamImage">
@@ -153,8 +153,8 @@ export default {
   mounted() {},
   methods: {
     placeClick() {
-      this.getMap();
-      this.popupVisible = true;
+        this.getMap();
+        this.popupVisible = true;
     },
     detailImage(index, id) {
       console.log(index)

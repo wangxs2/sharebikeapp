@@ -25,11 +25,11 @@
             <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.dispatchTime">{{FormatDate(formMessage.dispatchTime)}}</span>
           </p>
         </div>
-        <div class="iteamForm" @click="placeClick">
-          <span><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
+        <div class="iteamForm">
+          <span @click="placeClick"><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>地点</span>
-            <span style="width:80%;text-align:right;margin-right:1rem;white-space:normal; word-break:break-all;overflow:hidden" v-model="formMessage.handleAddr">{{formMessage.handleAddr}}</span>
+            <textarea style="width:80%;text-align:right;margin-right:1rem;white-space:normal; word-break:break-all;overflow:hidden" v-model="formMessage.handleAddr"></textarea>
           </p>
         </div>
         <div class="iteamImage">
@@ -258,6 +258,7 @@ export default {
         });
     },
     submit() {
+      console.log(this.value)
       if (this.formMessage.handleAddr == "点击获取当前位置") {
         MessageBox.alert("", {
           message: "请选择待清理地点",
@@ -268,7 +269,7 @@ export default {
           message: "请上传现场照片",
           title: "提示"
         }).then(action => {});
-      } else if (this.value == []) {
+      } else if (this.value.length == 0) {
         MessageBox.alert("", {
           message: "请选择派单企业",
           title: "提示"
