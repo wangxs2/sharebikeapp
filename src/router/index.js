@@ -119,6 +119,10 @@ export const constantRouterMap = [{
     path: '/needtodoDetail',
     name: '待办详情',
     component: _import('needtodoDetail/index')
+  },{
+    path: '/forget',
+    name: '忘记密码',
+    component: _import('forget/index')
   }
 ]
 

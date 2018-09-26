@@ -149,25 +149,27 @@ export default {
       this.sheetCode = this.$route.query.message;
       this.getMessage(this.sheetCode);
     }
+    this.downAddress();
     window.getImage = this.getImage;
+    window.getLocation = this.getLocation;
   },
-  mounted() {},
+  mounted() {
+    
+  },
   methods: {
-    placeClick() {
-       MessageBox.alert("", {
-          message: window.webkit.messageHandlers.isLocation.postMessage({body: 'Location'}),
+     getLocation(val){
+      return val
+     },
+    placeClick() {      
+      if(this.downAddress()==false||this.getLocation()==false){
+        MessageBox.alert("", {
+          message: "请在权限管理里面打开定位权限",
           title: "提示"
         }).then(action => {});
-      // if(this.downAddress()==false){
-      //   MessageBox.alert("", {
-      //     message: "请在权限管理里面打开定位权限",
-      //     title: "提示"
-      //   }).then(action => {});
-      // }else{
-      //   this.getMap();
-      //   this.popupVisible = true;
-      // }
-        
+      }else{
+        this.getMap();
+        this.popupVisible = true;
+      }      
     },
     detailImage(index, id) {
       console.log(index)

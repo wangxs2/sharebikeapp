@@ -149,7 +149,7 @@
                     <div>
                         <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>处理时间：</span>
-                        <span>{{FormatDate(iteam.updateTime)}}</span>                       
+                        <span>{{FormatDate(iteam.handelTime)}}</span>                       
                     </div>
 
                 </div>

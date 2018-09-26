@@ -18,7 +18,7 @@
           <span v-if="forget!==1" class="iconfont icon-fangkuaigouxuan" @click="forget=1"></span>
           记住密码
         </p>
-        <p>忘记密码?</p>
+        <p @click="iconReturn()">忘记密码?</p>
       </div>
       <div style="width:100%">
         <mt-button @click="submitForm()" class="btn">登 录 </mt-button>
@@ -61,6 +61,9 @@ export default {
   methods: {
     getLogin(val) {
       this.loginId = val;
+    },
+    iconReturn(){
+      this.$router.push({path: "/forget"});
     },
     submitForm() {
       Indicator.open({

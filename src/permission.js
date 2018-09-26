@@ -5,17 +5,22 @@ import {
   delCookie
 } from './libs/util'
 router.beforeEach((to, from, next) => {
+  console.log(to.path)
   if (to.path === "/login") {
     delCookie('userId');
-    store.commit("SET_ID","");
+    store.commit("SET_ID", "");
     store.commit("SET_USERINFO", {});
+    next();
+    return;
+  }
+  if (to.path == '/forget') {//注册
     next();
     return;
   }
   if (to.path !== "/login" && !getCookie('userId')) {
     next('/login');
     return;
-  } else if (getCookie('userId')) {
+  }else if (getCookie('userId')) {
     if (getCookie('userId') == (store.getters.userId + '')) {
       next();
     } else {
@@ -23,10 +28,11 @@ router.beforeEach((to, from, next) => {
         if (to.path == '/') {
           next("/layout/selfCheck")
         } else {
-          next({ ...to,
+          next({
+            ...to,
             replace: true
           })
-         
+
         }
       })
     }
@@ -34,4 +40,4 @@ router.beforeEach((to, from, next) => {
 
 })
 
-router.afterEach((to, from) => {})
+router.afterEach((to, from) => { })

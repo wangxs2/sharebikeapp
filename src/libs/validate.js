@@ -39,7 +39,7 @@ export function validateEmail(email) {
  * @returns {boolean}
  */
 export function validatePwd(Pwd) {
-  const re = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?_&])[A-Za-z\d$@$!%*#?_&]{8,}$/
+  const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
   return re.test(Pwd)
 }
 /**
