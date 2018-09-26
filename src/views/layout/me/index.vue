@@ -146,6 +146,7 @@ export default {
         width: 8rem;
         justify-content: center;
         margin-top: 0.293333rem;
+        align-items: center;
         .user-name {
           font-size: 0.426667rem;
           overflow: hidden;
@@ -165,6 +166,7 @@ export default {
       .user-enterprise {
         margin-top: 0.36rem;
         // width: 1.973333rem;
+        padding: 0 0.3rem;
         height: 0.48rem;
         background: rgba(255, 255, 255, 1);
         border-radius: 18px;
