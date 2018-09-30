@@ -25,11 +25,11 @@
         <div v-if="order==2" class="formList">
             <p class="top">
               <span>新密码</span>
-              <input type="text" placeholder="请输入新密码" v-model="newPwd">
+              <input type="password" placeholder="请输入新密码" v-model="newPwd">
             </p>
             <p class="top">
               <span>确认密码</span>
-              <input type="email" placeholder="请输入再次输入新密码" v-model="newPwd1">
+              <input type="password" placeholder="请输入再次输入新密码" v-model="newPwd1">
             </p>
             
         </div>

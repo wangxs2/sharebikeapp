@@ -151,6 +151,7 @@ export default {
   created() {
     this.getAll();
     window.getImage = this.getImage;
+    window.getLocation = this.getLocation;
   },
   mounted() {},
   methods: {
@@ -161,8 +162,16 @@ export default {
       this.rotateS = this.rotateS + 90;
     },
     placeClick() {
-      this.getMap();
-      this.popupVisible = true;
+      
+      if (this.downAddress() == false || this.getLocation() == false) {
+        MessageBox.alert("", {
+          message: "请在权限管理里面打开定位权限",
+          title: "提示"
+        }).then(action => {});
+      } else {
+        this.getMap();
+        this.popupVisible = true;
+      }
     },
     getAddress(row, index) {
       this.changeId = index;
@@ -259,7 +268,7 @@ export default {
         });
     },
     submit() {
-      console.log(this.value)
+      console.log(this.value);
       if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择待清理地点",
@@ -280,39 +289,38 @@ export default {
           message: "是否确认派单",
           title: "提示"
         }).then(action => {
-          if(action == "confirm"){
-              let obj = {};
-              this.formMessage.handleBefore;
-              obj.dispatch = this.formMessage;
-              obj.dispatch.dispachPhoto = this.formMessage.dispachPhoto.join(";");
-              obj.dispatch.dealMethod = this.dealMethod;
-              obj.orgIdList = this.value;
-              obj.finish = 1;
-              this.$fetchPost("dispatch/saveDispatch", obj, "json")
-                .then(res => {
-                  if (res.status == -1) {
-                    MessageBox.alert("", {
-                      message: res.message,
-                      title: "提示"
-                    }).then(action => {});
-                  } else {
-                    MessageBox.alert("", {
-                      message: "保存成功",
-                      title: "提示"
-                    }).then(action => {
-                      this.$router.push("/layout/supervise");
-                    });
-                  }
-                })
-                .catch(res => {
+          if (action == "confirm") {
+            let obj = {};
+            this.formMessage.handleBefore;
+            obj.dispatch = this.formMessage;
+            obj.dispatch.dispachPhoto = this.formMessage.dispachPhoto.join(";");
+            obj.dispatch.dealMethod = this.dealMethod;
+            obj.orgIdList = this.value;
+            obj.finish = 1;
+            this.$fetchPost("dispatch/saveDispatch", obj, "json")
+              .then(res => {
+                if (res.status == -1) {
                   MessageBox.alert("", {
-                    message: "请求超时",
+                    message: res.message,
                     title: "提示"
                   }).then(action => {});
-                });
+                } else {
+                  MessageBox.alert("", {
+                    message: "保存成功",
+                    title: "提示"
+                  }).then(action => {
+                    this.$router.push("/layout/supervise");
+                  });
+                }
+              })
+              .catch(res => {
+                MessageBox.alert("", {
+                  message: "请求超时",
+                  title: "提示"
+                }).then(action => {});
+              });
           }
         });
-       
       }
     }
   }
