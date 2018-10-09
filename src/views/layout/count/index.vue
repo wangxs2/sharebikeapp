@@ -99,14 +99,14 @@ export default {
         this.dateData = res.timeArea;
         this.tabData = res.table;
         let dataxItem = "",
-          nowDate =
-            this.dateType == "week"
-              ? new Date().Format("MM-dd")
-              : new Date().Format("dd");
-        let datax = res.timeArea.map(item => {
+          nowDate =new Date().Format("MM-dd")
+            // this.dateType == "week"
+            //   ? new Date().Format("MM-dd")
+            //   : new Date().Format("MM-dd");
+        let datax = res.timeArea.map(item =>{
           dataxItem =
-            this.dateType == "week" ? item.substring(5) : item.substring(8);
-          if (nowDate == dataxItem) {
+          this.dateType == "week" ? item.substring(5) : item.substring(5);
+          if (nowDate == dataxItem){
             dataxItem = "今天";
           }
           return dataxItem;
@@ -123,7 +123,6 @@ export default {
                   }
                 : ""
           });
-
           item.symbol = "none";
           item.type = "line";
           item.smooth = true;

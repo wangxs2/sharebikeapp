@@ -142,6 +142,7 @@ export default {
       this.rotateS = this.rotateS + 90;
     },
     handOpen(val) {
+      this.rotateS=0;
       this.popupVisible = true;
       val = val.replace(".400x400.jpg", "");
       this.bigImage = val;

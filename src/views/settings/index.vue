@@ -3,7 +3,7 @@
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt="" @click="toUserInfo">
       <div class="header-title">设置</div>
-      <img src="" alt="">
+      <div></div>
 
     </div>
     <div class="content">

@@ -3,7 +3,8 @@
     <div class="header">
       <img src="@/assets/image/warningDetail/nav_1_back@2x.png" alt="" @click="iconReturn()">
       <div class="header-title">找回密码</div>
-      <img src="" alt="" srcset="">
+      <div></div>
+      <!-- <img src="" alt="" srcset=""> -->
     </div>
     <div class="content">
         <div v-if="order==1" class="formList">
@@ -15,12 +16,12 @@
               <span>邮箱</span>
               <input type="email" placeholder="请输入邮箱" v-model="emailAddr">
             </p>
-            <p class="bottom">
-              <span>验证码</span>
+            <div class="bottomSa">
+              <p style="80%">验证码</p>
               <input type="text" placeholder="请输入验证码" v-model="checkCode">
-              <span v-if="sendFlag" class="Messagecode">{{sendTime}}s重新获取</span>
-              <span v-else @click="getCode()" class="Messagecode">获取验证码</span>
-            </p>
+              <p v-if="sendFlag" class="Messagecode">{{sendTime}}s重新</p>
+              <span v-else @click="getCode()" class="Messagecode">点击获取</span>
+            </div>
         </div>
         <div v-if="order==2" class="formList">
             <p class="top">
@@ -36,14 +37,15 @@
         <div v-if="order==3" class="formList">
           <img src="../../assets/image/login/achieve.png" width="60" height="60" style="margin-left:40%">         
         </div>
-        <div>
+        
+    </div>
+    <div>
           <mt-button @click="submitForm()" :disabled="disabled" class="btn">{{order==1?"下一步":order==2?"提交":"返回登录"}}</mt-button>
         </div>
         <div class="have-login">
           已有账号，
-          <span class="go-login" @click="iconReturn()">马上登陆</span>
+          <span class="go-login" @click="iconReturn()">马上登录</span>
         </div>
-    </div>
   </div>
 </template>
 <script>
@@ -65,7 +67,7 @@ export default {
       timer: null, //定时器
       order: 1, //步骤
       userName: "",
-      disabled:false,
+      disabled: false,
       lawInfo: "",
       emailAddr: "",
       checkCode: "",
@@ -134,7 +136,6 @@ export default {
       }
     },
     submitForm() {
-      
       if (this.order == 1) {
         if (this.userName == "") {
           MessageBox.alert("", {
@@ -152,17 +153,16 @@ export default {
             title: "提示"
           }).then(action => {});
         } else {
-          this.disabled=true
+          this.disabled = true;
           let subData = {
             userName: this.userName,
             emailAddr: this.emailAddr,
             checkCode: this.checkCode
           };
           this.$fetchGet("user/checkInLaw", subData).then(res => {
-            this.disabled=false
+            this.disabled = false;
             if (res.status == 0) {
-              
-              this.lawInfo=res.lawInfo
+              this.lawInfo = res.lawInfo;
               MessageBox.alert("", {
                 message: res.message,
                 title: "提示"
@@ -195,18 +195,17 @@ export default {
               MessageBox("提示", "密码至少包含8个字符，至少1个字母和1个数字！");
               return;
             } else {
-              this.disabled=true
+              this.disabled = true;
               let subData = {
                 userName: this.userName,
                 emailAddr: this.emailAddr,
                 checkCode: this.checkCode,
                 lawInfo: this.lawInfo,
-                newPwd: this.newPwd,
+                newPwd: this.newPwd
               };
               this.$fetchPut("user/updatePwdByEmailCode", subData).then(res => {
-                this.disabled=false
+                this.disabled = false;
                 if (res.status == 0) {
-                  
                   MessageBox.alert("", {
                     message: res.message,
                     title: "提示"
@@ -223,10 +222,9 @@ export default {
             }
           }
         }
-      }else{
+      } else {
         // this.disabled=false
-        this.iconReturn()
-        
+        this.iconReturn();
       }
     }
   }
@@ -237,8 +235,25 @@ export default {
 .container {
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  .have-login {
+      text-align: center;
+      padding-top: 0.5rem;
+      .go-login {
+        color: #5076ff;
+      }
+    }
+  .btn {
+      width: 100%;
+      height: 1.173333rem;
+      // margin-left: 6%;
+      margin-top: 1.333333rem;
+      border-radius: 0.586667rem;
+      background: #5076ff;
+      color: #fff;
+    }
   .header {
     height: 1.173333rem;
     display: flex;
@@ -257,40 +272,43 @@ export default {
     }
   }
   .content {
-    height: 100%;
+    // height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     padding: 0.626667rem;
+    padding-top: 0.1rem;
     box-sizing: border-box;
-    .have-login{
-      text-align: center;
-      padding-top: 0.5rem;
-      .go-login{
-        color: #5076ff;
-      }
-    }
+    
     .formList {
       display: flex;
       flex-direction: column;
-      .bottom {
+      .bottomSa {
         display: flex;
         margin: 0;
-        padding: 0.72rem 0;
+        padding: 0;
+        height: 1.72rem;
+        line-height: 1.72rem;
         box-sizing: border-box;
         border-bottom: 1px solid #eeeeee;
         color: #282828;
-        justify-content: space-between;
+        justify-content: flex-end;
         input {
           text-indent: 0.4rem;
         }
+        p{
+          margin: 0;
+          padding: 0;
+          width: 80%;
+        }
         .Messagecode {
+          width: 100%;
           position: relative;
           color: #5076ff;
           &::before {
             content: "";
             position: absolute;
-            left: -0.306667rem;
+            left: 0;
             top: 0;
             width: 1px;
             height: 100%;
@@ -301,7 +319,9 @@ export default {
       .top {
         display: flex;
         margin: 0;
-        padding: 0.72rem 0;
+        height: 1.72rem;
+        line-height: 1.72rem;
+        padding: 0;
         box-sizing: border-box;
         border-bottom: 1px solid #eeeeee;
         color: #282828;
@@ -311,15 +331,7 @@ export default {
         }
       }
     }
-    .btn {
-      width: 100%;
-      height: 1.173333rem;
-      // margin-left: 6%;
-      margin-top: 1.333333rem;
-      border-radius: 0.586667rem;
-      background: #5076ff;
-      color: #fff;
-    }
+    
   }
 }
 </style>

@@ -149,7 +149,8 @@
                     <div>
                         <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>处理时间：</span>
-                        <span>{{FormatDate(iteam.handelTime)}}</span>                       
+                        <span v-if="iteam.handleTime!==undefined">{{FormatDate(iteam.handleTime)}}</span>
+                        <!-- <span v-if="iteam.handleTime==null||iteam.handleTime==undefined"></span>                            -->
                     </div>
 
                 </div>
@@ -185,7 +186,6 @@ export default {
   created() {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.supervise) {
-    console.log("sjsdjdsj")
       this.sheetCode = this.$route.query.supervise;
       this.status = this.$route.query.statuSa;
       this.getMessage(this.sheetCode);
@@ -200,6 +200,7 @@ export default {
       this.rotateS = this.rotateS + 90;
     },
     handOpen(val) {
+    this.rotateS=0;
       this.popupVisible = true;
       val = val.replace(".400x400.jpg", "");
       this.bigImage = val;
@@ -229,7 +230,7 @@ export default {
         .then(res => {
           Indicator.close();
           this.iteamList = res;
-          console.log(this.iteamList);
+          console.log(res[0].handleTime)
         })
         .catch(res => {});
     }

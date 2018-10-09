@@ -221,6 +221,7 @@ export default {
       });
     },
     handOpen(val) {
+      this.rotateS=0;
       this.popupVisible1 = true;
       val = val.replace(".400x400.jpg", "");
       this.bigImage = val;

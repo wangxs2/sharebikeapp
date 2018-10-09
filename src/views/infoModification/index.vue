@@ -3,7 +3,8 @@
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt="" @click="toUserInfo">
       <div class="header-title">个人信息修改</div>
-      <img src="" alt="">
+      <div></div>
+      <!-- <img src="" alt=""> -->
 
     </div>
     <div class="content">
