@@ -23,7 +23,7 @@
         </mt-header>
       </div>
       <div class="content">
-        <mt-swipe :auto="0" :continuous="false">
+        <mt-swipe :auto="0" :continuous="false" :showIndicators="showIndicators" @change="handleChange">
             <mt-swipe-item v-for="(iteam,index) in iteamList" :key="index">
                 <div class="iteamList">
                       <div>
@@ -171,6 +171,7 @@ export default {
       imgArray: [],
       rotateS:0,
       popupVisible: false,
+      showIndicators: false,
       title: "",
       bigImage: "",
       roleCode: "",
@@ -198,6 +199,9 @@ export default {
     },
     rotate() {
       this.rotateS = this.rotateS + 90;
+    },
+    handleChange(val){
+        // console.log(val)
     },
     handOpen(val) {
     this.rotateS=0;
@@ -229,6 +233,11 @@ export default {
       })
         .then(res => {
           Indicator.close();
+          if(res.length==1){
+              this.showIndicators=false
+          }else{
+              this.showIndicators=true
+          }
           this.iteamList = res;
           console.log(res[0].handleTime)
         })

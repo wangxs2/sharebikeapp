@@ -15,7 +15,7 @@
             <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt="">
             <p style="color:#989898">暂时没有自查数据哦~</p>
           </div>
-          <v-loadmore v-if="!noneList" :bottom-method="loadBottom" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+          <v-loadmore v-if="!noneList" :bottom-method="loadBottom" bottomDropText="释放更新" :bottomPullText="bottomPullText" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
             <div class="iteamList" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
                 <div class="left">                
                     <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="90" height="90" srcset="">
@@ -54,11 +54,11 @@ export default {
       searchCondition: {
         //分页属性
         page: "1",
-        pageSize: "10"
+        pageSize: "100"
       },
       pageList: [],
       allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
-      scrollMode: "auto" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
+      scrollMode: "touch" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
     };
   },
   components: {
@@ -131,9 +131,14 @@ export default {
     },
     more() {
       // 分页查询
+       Indicator.open({
+        text: "加载中...",
+        spinnerType: "fading-circle"
+      });
       this.searchCondition.page = parseInt(this.searchCondition.page) + 1;
       this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
         data => {
+          Indicator.close();
           this.pageList = this.pageList.concat(data.list);
           this.isHaveMore(data.hasNextPage);
         }

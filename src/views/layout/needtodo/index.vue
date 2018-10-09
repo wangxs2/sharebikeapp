@@ -50,7 +50,7 @@ export default {
       searchCondition: {
         //分页属性
         page: "1",
-        pageSize: "10",
+        pageSize: "100",
         status: ""
       },
       company: [
@@ -66,7 +66,7 @@ export default {
       activeComany: 1,
       pageList: [],
       allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
-      scrollMode: "auto" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
+      scrollMode: "touch" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
     };
   },
   components: {
@@ -157,9 +157,14 @@ export default {
     },
     more() {
       // 分页查询
+       Indicator.open({
+        text: "加载中...",
+        spinnerType: "fading-circle"
+      });
       this.searchCondition.page = parseInt(this.searchCondition.page) + 1;
       this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
         data => {
+          Indicator.close();
           this.pageList = this.pageList.concat(data.list);
           this.isHaveMore(data.hasNextPage);
         }

@@ -161,8 +161,10 @@ export default {
     rotate() {
       this.rotateS = this.rotateS + 90;
     },
+    getLocation(val){
+      return val
+     },
     placeClick() {
-      
       if (this.downAddress() == false || this.getLocation() == false) {
         MessageBox.alert("", {
           message: "请在权限管理里面打开定位权限",
