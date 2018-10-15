@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="content">
-      <p style="height:0.8rem;"></p>
+      <p style="height:0.3rem;"></p>
       <div class="formList">
         <mt-field label="用户名" placeholder="请输入用户名" v-model="loginMess.username"></mt-field>
         <mt-field label="密码" placeholder="请输入密码" type="password" v-model="loginMess.password"></mt-field>
@@ -100,10 +100,12 @@ export default {
             document.cookie = "userId=" + res.info.id;
             this.$router.push("/layout/selfCheck");
           } else if (res.status == "fail") {
+            localStorage.clear("passWord")
             MessageBox.alert("", {
               message: res.info,
               title: "提示"
             }).then(action => {});
+
           }
         })
         .catch(res => {
@@ -168,7 +170,7 @@ export default {
       width: 88%;
       height: 1.173333rem;
       margin-left: 6%;
-      margin-top: 1.333333rem;
+      margin-top: 0.6rem;
       border-radius: 20px;
       background: #5076ff;
       color: #fff;
@@ -177,7 +179,9 @@ export default {
   .bottom {
     text-align: center;
     color: #aeaeae;
-    height: 2rem;
+    box-sizing: border-box;
+    padding-bottom: 2rem;
+    // height: 2rem;
   }
 }
 </style>

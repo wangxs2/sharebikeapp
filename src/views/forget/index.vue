@@ -54,7 +54,7 @@ import {
   validatePhoneNum,
   validateEmail,
   validateName,
-  validatePwd
+  LvalidatePwd
 } from "@/libs/validate.js";
 
 const TIME_COUNT = 60;
@@ -190,9 +190,9 @@ export default {
           }).then(action => {});
         } else {
           if (this.newPwd !== "") {
-            let newPwdCheck = validatePwd(this.newPwd);
+            let newPwdCheck = LvalidatePwd(this.newPwd);
             if (newPwdCheck === false) {
-              MessageBox("提示", "密码至少包含8个字符，至少1个字母和1个数字！");
+              MessageBox("提示", "新密码必须为6-16位，且不能含有特殊字符");
               return;
             } else {
               this.disabled = true;
@@ -287,8 +287,8 @@ export default {
         display: flex;
         margin: 0;
         padding: 0;
-        height: 1.72rem;
-        line-height: 1.72rem;
+        height: 60px;
+        line-height: 60px;
         box-sizing: border-box;
         border-bottom: 1px solid #eeeeee;
         color: #282828;
@@ -303,6 +303,8 @@ export default {
         }
         .Messagecode {
           width: 100%;
+          box-sizing: border-box;
+          text-align: center;
           position: relative;
           color: #5076ff;
           &::before {
@@ -319,8 +321,8 @@ export default {
       .top {
         display: flex;
         margin: 0;
-        height: 1.72rem;
-        line-height: 1.72rem;
+        height: 60px;
+        line-height: 60px;
         padding: 0;
         box-sizing: border-box;
         border-bottom: 1px solid #eeeeee;

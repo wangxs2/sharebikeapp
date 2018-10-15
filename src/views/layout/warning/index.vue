@@ -3,81 +3,55 @@
     <div class="header">
       <div class="header-title">预警</div>
     </div>
-    <div style="text-align:center;padding-top:.33rem;color:#aaa">开发中</div>
-    <!-- <div class="content">
-      <div class="warning-box">
+    <!-- <div style="text-align:center;padding-top:.33rem;color:#aaa">开发中</div> -->
+    <div class="content">
+      <div class="warning-box" v-for="(iteam,index) in warningData">
         <div class="warning-box-top">
           <div class="warning-info">
             <div class="warning-info-top">
-              <div class="warning-info-date">2018-08-28</div>
-              <div class="warning-info-status">未处理</div>
+              <div class="warning-info-date">{{FormatDate(iteam.createTime)}}</div>
+              <div class="warning-info-status">{{iteam.companyName}}</div>
             </div>
             <div class="warning-info-bottom">
               <img class="addr-icon" src="@/assets/image/warning/icon_address@2x.png" alt="">
-              <div class="warning-info-address">世纪大道两侧(浦东南路-东方路)世纪大道两侧</div>
+              <div class="warning-info-address">{{iteam.regionalName}}</div>
             </div>
           </div>
           <div class="warning-btn">
-            <div class="warning-btn-detail" @click="detailClick">详情</div>
-            <div class="warning-btn-ignore">忽略</div>
+            <!-- <div class="warning-btn-detail" @click="detailClick">详情</div> -->
+            <!-- <div class="warning-btn-ignore">忽略</div> -->
           </div>
         </div>
         <div class="warning-total">
           <div class="warning-total-box warning-total-cars">
             <span class="warning-total-title">总车辆数</span>
-            <span class="warning-total-data">520</span>
+            <span class="warning-total-data">{{iteam.lockActiveNums+iteam.lockNoActiveNums}}</span>
           </div>
           <div class="warning-total-box warning-total-parking">
-            <span class="warning-total-title">总泊位数</span>
-            <span class="warning-total-data">100</span>
+            <span class="warning-total-title">预警数</span>
+            <span class="warning-total-data">{{iteam.regionalWarningNumber}}</span>
           </div>
         </div>
       </div>
-      <div class="warning-box">
-        <div class="warning-box-top">
-          <div class="warning-info">
-            <div class="warning-info-top">
-              <div class="warning-info-date">2018-08-28</div>
-              <div class="warning-info-status">未处理</div>
-            </div>
-            <div class="warning-info-bottom">
-              <img class="addr-icon" src="@/assets/image/warning/icon_address@2x.png" alt="">
-              <div class="warning-info-address">世纪大道两侧(浦东南路-东方路)世纪大道两侧</div>
-            </div>
-          </div>
-          <div class="warning-btn">
-            <div class="warning-btn-detail" @click="detailClick">详情</div>
-            <div class="warning-btn-ignore">忽略</div>
-          </div>
-        </div>
-        <div class="warning-total">
-          <div class="warning-total-box warning-total-cars">
-            <span class="warning-total-title">总车辆数</span>
-            <span class="warning-total-data">520</span>
-          </div>
-          <div class="warning-total-box warning-total-parking">
-            <span class="warning-total-title">总泊位数</span>
-            <span class="warning-total-data">100</span>
-          </div>
-        </div>
-      </div>
-    </div> -->
+      
+    </div>
   </div>
 </template>
 
 <script>
 import { Loadmore } from "mint-ui";
+import { Indicator } from "mint-ui";
 export default {
   computed: {},
   data() {
     return {
-      warningData: {}
+      warningData: []
     };
   },
   components: {},
   mounted() {},
   created() {
-        this.getData();
+    this.getData();
   },
   mounted() {},
   methods: {
@@ -87,7 +61,12 @@ export default {
     },
     //获取派单数据
     getData() {
-      this.$fetchGet("count/countByUser").then(res => {
+       Indicator.open({
+        text: "加载中...",
+        spinnerType: "fading-circle"
+      });
+      this.$fetchGet("warn/getWarning").then(res => {
+        Indicator.close();
         this.warningData = res;
       });
     }
@@ -113,12 +92,16 @@ export default {
     flex-shrink: 0;
   }
   .content {
-    height: 100%;
+    // height: 100%;
     background-color: #f2f2f2;
+    box-sizing: border-box;
     padding: 0 0.32rem;
     box-sizing: border-box;
     display: flex;
+    flex: 1;
     flex-direction: column;
+    overflow: hidden;
+    overflow-y: scroll;
     .warning-box {
       margin-top: 0.32rem;
       height: 2.986667rem;
@@ -152,7 +135,7 @@ export default {
               height: 0.586667rem;
               line-height: 0.586667rem;
               text-align: center;
-              border: 1px solid rgba(255, 17, 17, 1);
+              // border: 1px solid rgba(255, 17, 17, 1);
               border-radius: 0.106667rem;
               font-size: 0.373333rem;
               font-weight: 500;

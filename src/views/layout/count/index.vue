@@ -315,11 +315,11 @@ export default {
       align-items: center;
       .tab-btns {
         display: flex;
-        margin: 0.4rem 0 0.466667rem 0;
+        margin: 10px 0 10px 0;
         .btn-left {
           box-sizing: border-box;
-          padding: 0.16rem 0.626667rem;
-          line-height: normal;
+          padding: 6px 20px;
+          // line-height: normal;
           font-size: 0.373333rem;
           color: #5076ff;
           border-top-left-radius: 0.5rem;
@@ -329,8 +329,8 @@ export default {
         }
         .btn-right {
           box-sizing: border-box;
-          padding: 0.16rem 0.626667rem;
-          line-height: normal;
+          padding: 6px 20px;
+          // line-height: normal;
           font-size: 0.373333rem;
           color: #5076ff;
           border-top-right-radius: 0.5rem;
