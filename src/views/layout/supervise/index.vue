@@ -27,6 +27,10 @@
                        <span style="margin-left:1rem" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
+                  <div class="center">
+                    <span>{{iteam.dispatchReceive}}</span>
+                    <span>{{iteam.dealTime}}</span>
+                  </div>
                   <div class="bottomRight">
                       <span class="iconfont icon-weizhi"></span>
                       <span class="moreFont">{{iteam.handleAddr}}</span>
@@ -219,6 +223,14 @@ export default {
         .red {
           color: #41cd76;
         }
+      }
+      .center {
+        width: 100%;
+        display: flex;
+        flex: 1;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding-top: 0.2rem;
       }
       .bottomRight {
         display: flex;

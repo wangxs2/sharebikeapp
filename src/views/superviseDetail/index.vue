@@ -25,6 +25,9 @@
       <div class="content">
         <mt-swipe :auto="0" :continuous="false" :showIndicators="showIndicators" @change="handleChange">
             <mt-swipe-item v-for="(iteam,index) in iteamList" :key="index">
+                <div style="color:rgb(102, 204, 0)" class="iteamList">
+                        派单信息
+                </div>
                 <div class="iteamList">
                       <div>
                         <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
@@ -88,7 +91,7 @@
                 <div class="imageClean" style="padding:0.3rem 0.213333rem">
                     <div>
                         <span><img src="../../assets/image/supervise/icon_3_picture@3x.png" width="22" height="22" alt="" srcset=""></span>
-                        <span>派单照片</span>                                
+                        <span>派单照片：</span>                                
                     </div>
                     <div class="imageList">
                         <img v-for="(iteam,index) in iteam.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
@@ -104,10 +107,67 @@
                         <span class="textFont">{{iteam.dispatchRemark}}</span>                
                     </div>
                 </div>
+                <div style="color:rgb(102, 204, 0)" class="iteamList">
+                        转派记录
+                </div>
+                <div v-for="(item,index) in iteam.sendRecordList" :key="index">
+                    <div class="iteamList">
+                        <div>
+                            <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
+                            <span>转派时间：</span>
+                            <span>{{item.sendTime}}</span>
+                        </div>
+                    </div>
+                    <div class="iteamList">
+                        <div>
+                            <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
+                            <span>转派人 ：</span>
+                            <span>{{item.sendMan}}</span>
+                        </div>
+                    </div>
+                    <div class="iteamList">
+                        <div>
+                            <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
+                            <span>接单人：</span>
+                            <span>{{item.receiveMan}}</span>
+                        </div>
+                    </div>
+                    <div class="iteamList">
+                        <div class="moreText">
+                            <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
+                            <span style="width:17%;margin-left:0.1rem">备注：</span>
+                            <span class="textFont">{{item.sendRemark}}</span>                
+                        </div>
+                    </div>
+                </div>
+                <div style="color:rgb(102, 204, 0)" class="iteamList">
+                    处理信息
+                </div>
+                 <div class="iteamList">
+                    <div>
+                        <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
+                        <span>处理人：</span>
+                        <span>{{iteam.handleUserName}}</span>                
+                    </div>
+                </div>
+                <div class="iteamList">
+                    <div>
+                        <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
+                        <span>处理时间：</span>
+                        <span v-if="iteam.handleTime!==undefined">{{FormatDate(iteam.handleTime)}}</span>
+                    </div>
+                </div>
+                <div class="iteamList">
+                    <div>
+                        <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
+                        <span>处理时长：</span>
+                        <span>{{iteam.dealTime}}</span>
+                    </div>
+                </div>
                 <div class="imageClean" style="padding:0.3rem 0.213333rem">
                     <div>
                         <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-                        <span>处理前</span>                                
+                        <span>处理前：</span>                                
                     </div>
                      <div class="imageList">
                         <img v-for="(iteam,index) in iteam.handleBeforeURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
@@ -116,7 +176,7 @@
                 <div class="imageClean" style="padding:0.3rem 0.213333rem">
                     <div>
                         <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-                        <span>处理后</span>                                
+                        <span>处理后：</span>                                
                     </div>
                      <div class="imageList">
                         <img v-for="(iteam,index) in iteam.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
@@ -138,21 +198,31 @@
                     </div>
 
                 </div>
-                <div class="iteamList">
-                    <div>
-                        <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
-                        <span>处理人：</span>
-                        <span>{{iteam.handleUserName}}</span>                
-                    </div>
+               <div style="color:rgb(102, 204, 0)" class="iteamList">
+                        反馈信息
                 </div>
                 <div class="iteamList">
                     <div>
                         <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
-                        <span>处理时间：</span>
-                        <span v-if="iteam.handleTime!==undefined">{{FormatDate(iteam.handleTime)}}</span>
-                        <!-- <span v-if="iteam.handleTime==null||iteam.handleTime==undefined"></span>                            -->
+                        <span>反馈时间：</span>
+                        <span v-if="iteam.handleTime!==undefined">{{FormatDate(iteam.feedbackTime)}}</span>
                     </div>
-
+                </div>
+                <div class="imageClean" style="padding:0.3rem 0.213333rem">
+                    <div>
+                        <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+                        <span>反馈照片：</span>                                
+                    </div>
+                     <div class="imageList">
+                        <img v-for="(iteam,index) in iteam.dealPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                    </div>
+                </div>
+                <div class="iteamList">
+                    <div>
+                        <span><img src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
+                        <span>处理情况：</span>
+                        <span>{{iteam.dealCondition}}</span>
+                    </div>
                 </div>
             </mt-swipe-item>
         </mt-swipe>
@@ -169,7 +239,7 @@ export default {
     return {
       slide: [],
       imgArray: [],
-      rotateS:0,
+      rotateS: 0,
       popupVisible: false,
       showIndicators: false,
       title: "",
@@ -200,11 +270,11 @@ export default {
     rotate() {
       this.rotateS = this.rotateS + 90;
     },
-    handleChange(val){
-        // console.log(val)
+    handleChange(val) {
+      // console.log(val)
     },
     handOpen(val) {
-    this.rotateS=0;
+      this.rotateS = 0;
       this.popupVisible = true;
       val = val.replace(".400x400.jpg", "");
       this.bigImage = val;
@@ -213,9 +283,9 @@ export default {
       this.$router.push({
         path: "/feedBack",
         query: {
-            message:this.sheetCode,
-            dealMethod:this.iteamList[0].dealMethod,
-            statuSa:this.iteamList[0].status
+          message: this.sheetCode,
+          dealMethod: this.iteamList[0].dealMethod,
+          statuSa: this.iteamList[0].status
         }
       });
     },
@@ -233,13 +303,13 @@ export default {
       })
         .then(res => {
           Indicator.close();
-          if(res.length==1){
-              this.showIndicators=false
-          }else{
-              this.showIndicators=true
+          if (res.length == 1) {
+            this.showIndicators = false;
+          } else {
+            this.showIndicators = true;
           }
           this.iteamList = res;
-          console.log(res[0].handleTime)
+          console.log(res[0].handleTime);
         })
         .catch(res => {});
     }
@@ -293,7 +363,7 @@ export default {
       display: flex;
       width: 100%;
       box-sizing: border-box;
-      padding: 0.3rem 0.213333rem;
+      padding: 0.15rem 0.213333rem;
       justify-content: space-between;
       .moreText {
         display: flex;

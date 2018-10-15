@@ -151,7 +151,7 @@ export default {
             }
             .warning-info-address {
               margin-left: 0.16rem;
-              width: 6rem;
+              width: 100%;
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
