@@ -5,12 +5,16 @@
     </div>
     <!-- <div style="text-align:center;padding-top:.33rem;color:#aaa">开发中</div> -->
     <div class="content">
+      <div class="noneList" v-if="warningData.length==0">
+        <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt="">
+        <p style="color:#989898">没有数据~</p>
+      </div>
       <div class="warning-box" v-for="(iteam,index) in warningData">
         <div class="warning-box-top">
           <div class="warning-info">
             <div class="warning-info-top">
               <div class="warning-info-date">{{FormatDate(iteam.createTime)}}</div>
-              <div class="warning-info-status">{{iteam.companyName}}</div>
+              <div class="warning-info-status">{{iteam.CompanyShortName}}</div>
             </div>
             <div class="warning-info-bottom">
               <img class="addr-icon" src="@/assets/image/warning/icon_address@2x.png" alt="">
@@ -61,7 +65,7 @@ export default {
     },
     //获取派单数据
     getData() {
-       Indicator.open({
+      Indicator.open({
         text: "加载中...",
         spinnerType: "fading-circle"
       });
@@ -80,6 +84,13 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  .noneList {
+      flex: 1;
+      line-height: 1;
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 16px;
+    }
   .header {
     height: 1.173333rem;
     display: flex;

@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div id="allmap"></div>
     <router-view/>
   </div>
 </template>
@@ -9,19 +10,16 @@ import { MessageBox } from "mint-ui";
 import base64 from "@/libs/base.js";
 export default {
   name: "App",
+  return: {
+    
+  },
   // watch:
   mounted() {
-    // window.watchBackWXS = this.watchBackWXS;
-    console.log(this.$route.path);
+
+    
   },
   created() {
     window.getPush = this.getPush;
-    // MessageBox.alert("", {
-    //     message: "跳转进来了登录页面",
-    //     title: "提示"
-    //   }).then(action => {
-
-    //   });
   },
   methods: {
     // watchBackWXS() {
@@ -41,8 +39,8 @@ export default {
     //     this.$router.go(-1);
     //   }
     // },
+    // getMap1() {},
     getPush(userName, password, url) {
-      
       if (userName) {
         let b = new base64();
         let data = {
@@ -60,18 +58,18 @@ export default {
               ) {
                 this.$router.push({
                   path: "/needtodoAdd",
-                  query:{
+                  query: {
                     id: url
                   }
                 });
-              } else if( res.info.roleCode == "admin") {
+              } else if (res.info.roleCode == "admin") {
                 console.log(655555);
                 console.log(url);
                 this.$router.push({
                   path: "/layout/supervise",
                   query: {
-                    supervise:url,
-                    statuSa:2
+                    supervise: url,
+                    statuSa: 2
                   }
                 });
               }

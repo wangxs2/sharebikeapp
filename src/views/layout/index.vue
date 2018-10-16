@@ -41,6 +41,8 @@ export default {
   computed: {},
   data() {
     return {
+      longitude: "",
+      latitude: "",
       selected: "",
       roleCode: "",
       imgUrl: [
@@ -54,7 +56,7 @@ export default {
     };
   },
   mounted() {
-    
+    this.getMap();
   },
   created() {
     this.roleCode = localStorage.roleCode;
@@ -75,7 +77,30 @@ export default {
     // this
   },
   methods: {
-
+    getMap() {
+      let that=this
+      var geolocation = new BMap.Geolocation();
+      geolocation.getCurrentPosition(
+        function(r) {
+          if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            var mk = new BMap.Marker(r.point);
+            that.$fetchPut("user/updateByUser", {
+              longitude: r.point.lng,
+              latitude: r.point.lat
+            }).then(data => {});
+          } else {
+            MessageBox.alert("", {
+              message: "failed" + this.getStatus(),
+              title: "提示"
+            }).then(action => {});
+          }
+        },
+        { enableHighAccuracy: true }
+      );
+      setTimeout(() => {
+        this.getMap();
+      }, 5000);
+    },
     changeImage(val) {
       if (val == "/layout/selfCheck") {
         this.imgUrl[0] = require("../../assets/image/login/icon_tab_1_pre@3x.png");
