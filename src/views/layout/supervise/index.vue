@@ -28,8 +28,8 @@
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="center">
-                    {{iteam.dispatchReceive}}
-                    {{iteam.dealTime}}
+                    <span>{{iteam.dispatchReceive}}</span>
+                    <span v-if="iteam.status == 2||iteam.status==4" style="margin-left:0.1rem">【{{iteam.dealTime}}】</span>
                   </div>
                   <div class="bottomRight">
                       <span class="iconfont icon-weizhi"></span>
@@ -228,7 +228,7 @@ export default {
         width: 100%;
         display: flex;
         flex: 1;
-        justify-content: space-between;
+        justify-content: flex-start;
         box-sizing: border-box;
       }
       .bottomRight {

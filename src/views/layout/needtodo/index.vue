@@ -25,7 +25,8 @@
                       <span style="margin-left:1rem" :class="iteam.status == 2 ? 'red' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"处理中":"已完成"}}</span>
                   </div>
                   <div class="center">
-                      当前处理人：{{iteam.currentHandler}}
+                      <span>处理人：{{iteam.currentHandler}}</span>
+                      <span v-if="iteam.status == 2" style="margin-left:0.1rem">【{{iteam.dealTime}}】</span>
                   </div>
                   <div class="bottomRight">
                       <span class="iconfont icon-weizhi"></span>

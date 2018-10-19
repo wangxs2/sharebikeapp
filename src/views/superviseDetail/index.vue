@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 <div v-if="iteam.sendRecordList.length!==0" style="color:rgb(102, 204, 0)" class="iteamList">
-                        转派记录
+                    转派记录
                 </div>
                 <div v-for="(item,index) in iteam.sendRecordList" :key="index">
                     <div class="iteamList">

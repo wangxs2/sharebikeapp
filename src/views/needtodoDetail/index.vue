@@ -20,6 +20,9 @@
         </mt-header>
       </div>
       <div class="content" >
+        <div style="color:rgb(102, 204, 0)" class="iteamList">
+                        派单信息
+        </div>
         <div class="iteamList">
               <div>
                 <span><img src="../../assets/image/selfcheck/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
@@ -93,6 +96,97 @@
               </div>
 
         </div>
+         <div v-if="iteamList.sendRecordList.length!==0" style="color:rgb(102, 204, 0)" class="iteamList">
+                    转派记录
+        </div>
+        <div v-for="(item,index) in iteamList.sendRecordList" :key="index">
+            <div class="iteamList">
+                <div>
+                    <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
+                    <span>转派时间：</span>
+                    <span>{{item.sendTime}}</span>
+                </div>
+            </div>
+            <div class="iteamList">
+                <div>
+                    <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
+                    <span>转派人 ：</span>
+                    <span>{{item.sendMan}}</span>
+                </div>
+            </div>
+            <div class="iteamList">
+                <div>
+                    <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
+                    <span>接单人：</span>
+                    <span>{{item.receiveMan}}</span>
+                </div>
+            </div>
+            <div class="iteamList">
+                <div class="moreText">
+                    <span><img style="margin-top:-0.1rem" src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
+                    <span style="width:17%;margin-left:0.1rem">备注：</span>
+                    <span class="textFont">{{item.sendRemark}}</span>                
+                </div>
+            </div>
+        </div>
+        <div style="color:rgb(102, 204, 0)" class="iteamList">
+            处理信息
+        </div>
+          <div class="iteamList">
+            <div>
+                <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span>处理人：</span>
+                <span>{{iteamList.handleUserName}}</span>                
+            </div>
+        </div>
+        <div class="iteamList">
+            <div>
+                <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span>处理时间：</span>
+                <span v-if="iteamList.handleTime!==undefined">{{FormatDate(iteamList.handleTime)}}</span>
+            </div>
+        </div>
+        <div class="iteamList">
+            <div>
+                <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span>处理时长：</span>
+                <span>{{iteamList.dealTime}}</span>
+            </div>
+        </div>
+        <div class="imageClean" style="padding:0.3rem 0.213333rem">
+            <div>
+                <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span>处理前：</span>                                
+            </div>
+              <div class="imageList">
+                <img v-for="(iteam,index) in iteamList.handleBeforeURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+            </div>
+        </div>
+        <div class="imageClean" style="padding:0.3rem 0.213333rem">
+            <div>
+                <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span>处理后：</span>                                
+            </div>
+              <div class="imageList">
+                <img v-for="(iteam,index) in iteamList.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+            </div>
+        </div>
+        <div class="iteamList">
+            <div>
+                <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span>整理数：</span>
+                <span>{{iteamList.arrangeNum}}</span>                
+            </div>
+        </div>
+        <div class="iteamList">
+            <div>
+                <span><img src="../../assets/image/selfcheck/icon_6_num2@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span>清运数：</span>
+                <span>{{iteamList.cleanNum}}</span>
+                
+            </div>
+
+        </div>
       </div>
   </div>
 </template>
@@ -107,7 +201,7 @@ export default {
       slide: [],
       slide1: [],
       sheetCode: "",
-      rotateS:0,
+      rotateS: 0,
       bigImage: "",
       popupVisible: false,
       iteamList: {}
@@ -124,7 +218,7 @@ export default {
   mounted() {},
   methods: {
     handOpen(val) {
-      this.rotateS=0;
+      this.rotateS = 0;
       this.popupVisible = true;
       val = val.replace(".400x400.jpg", "");
       this.bigImage = val;
@@ -151,6 +245,7 @@ export default {
         .then(res => {
           Indicator.close();
           //   var obj = {};
+          res.dispatchDetail.sendRecordList.splice(0, 1);
           this.iteamList = res.dispatchDetail;
         })
         .catch(res => {});
@@ -206,7 +301,7 @@ export default {
       display: flex;
       width: 100%;
       box-sizing: border-box;
-      padding: 0.3rem 0.213333rem;
+      padding: 0.1rem 0.213333rem;
       justify-content: space-between;
       .moreText {
         display: flex;

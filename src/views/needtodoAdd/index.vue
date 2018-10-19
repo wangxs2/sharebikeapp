@@ -20,6 +20,9 @@
         </mt-header>
       </div>
       <div class="content">
+        <div  style="color:rgb(102, 204, 0);padding-left:0.4rem">
+              派单信息
+        </div>
         <div class="iteamForm">
           <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
@@ -45,11 +48,58 @@
           </div>
         </div>
         <div class="iteamForm">
+          <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <p>
+            <span>派单备注</span>
+            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.dispachRemark">{{formMessage.dispachRemark}}</span>
+          </p>
+        </div>
+        <div class="iteamForm">
           <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>处理方式</span>
             <span style="width:100%;text-align:right;margin-right:1rem">{{formMessage.dealMethod==1?"整理":formMessage.dealMethod==2?"清运":"整理且清运"}}</span>
           </p>
+        </div>
+        <div v-if="formMessage.sendRecordList.length!==0" style="color:rgb(102, 204, 0);padding-left:0.4rem" class="iteamList">
+                转派记录
+        </div>
+        <div v-for="(item,index) in formMessage.sendRecordList" :key="index">
+            <div class="iteamForm">
+                    <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
+                    <p>
+                      <span>转派时间</span>
+                      <span style="width:100%;text-align:right;margin-right:1rem">{{item.sendTime}}</span>
+                    </p>
+                    
+            </div>
+            <div class="iteamForm">
+                    <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
+                    <p>
+                      <span>转派人</span>
+                    <span style="width:100%;text-align:right;margin-right:1rem">{{item.sendMan}}</span>
+                    </p>
+                    
+            </div>
+            <div class="iteamForm">
+                    <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
+                    <p>
+                      <span>接单人</span>
+                    <span style="width:100%;text-align:right;margin-right:1rem">{{item.receiveMan}}</span>
+                    </p>
+                    
+            </div>
+            <div class="iteamForm">
+                    <span><img style="margin-top:-0.1rem" src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
+                    <p>
+                      <span>备注</span>
+                      <span style="width:100%;text-align:right;margin-right:1rem">{{item.sendRemark}}</span>   
+                    </p>
+                                 
+            </div>
+        </div>
+        <div  style="color:rgb(102, 204, 0);padding-left:0.4rem">
+              处理信息
         </div>
         <div class="iteamImage">
           <p>
@@ -127,7 +177,8 @@ export default {
         arrangeNum: "",
         handleBeforeURLs: [],
         handleAfterURLs: [],
-        cleanNum: ""
+        cleanNum: "",
+        remark: ""
       }
     };
   },
@@ -159,7 +210,7 @@ export default {
       });
     },
     handOpen(val) {
-      this.rotateS=0;
+      this.rotateS = 0;
       this.popupVisible = true;
       val = val.replace(".400x400.jpg", "");
       this.bigImage = val;
@@ -201,6 +252,7 @@ export default {
       })
         .then(res => {
           if (res.status == 1) {
+            res.dispatchDetail.sendRecordList.splice(0, 1);
             this.formMessage = res.dispatchDetail;
             if (this.formMessage.handleTime == undefined) {
               this.formMessage.handleTime = Date.now();
@@ -260,8 +312,12 @@ export default {
           title: "提示"
         }).then(action => {});
       } else if (
-        this.formMessage.arrangeNum == ""||
-        this.formMessage.cleanNum == ""||this.formMessage.arrangeNum<0||this.formMessage.cleanNum<0||this.formMessage.arrangeNum==0||this.formMessage.cleanNum==0
+        this.formMessage.arrangeNum == "" ||
+        this.formMessage.cleanNum == "" ||
+        this.formMessage.arrangeNum < 0 ||
+        this.formMessage.cleanNum < 0 ||
+        this.formMessage.arrangeNum == 0 ||
+        this.formMessage.cleanNum == 0
       ) {
         MessageBox.alert("", {
           message: "整理或清运数量有误",
