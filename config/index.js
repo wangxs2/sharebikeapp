@@ -6,7 +6,6 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'sharebikesclean',
     assetsPublicPath: '/',
@@ -14,11 +13,11 @@ module.exports = {
       '/sharebikesclean': {
         // target: 'http://10.1.30.94:8888/babyrobot',
         // target: 'http://10.1.4.163:8888/babyrobot',
-        // target: 'http://10.1.4.40:8888/babyrobot',
+        target: 'http://10.1.4.42:8090/sharebikesclean',
         // target: 'http://10.1.30.188:8090/sharebikesclean',
-         target: 'http://10.1.4.37:8090/sharebikesclean',
+        //  target: 'http://10.1.30.67:8090/sharebikesclean',
         //  target: 'http://10.1.30.202:18181/sharebikesclean',
-        // target: 'http://101.132.164.97:8888/babyrobot/',
+        // target: 'http://106.14.198.128:18181/sharebikesclean/',
         changeOrigin: true,
         pathRewrite: {
           '^/sharebikesclean': '/'

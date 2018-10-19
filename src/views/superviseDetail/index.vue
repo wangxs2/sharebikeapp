@@ -104,10 +104,10 @@
                     <div class="moreText">
                         <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span style="width:17%;margin-left:0.1rem">备注：</span>
-                        <span class="textFont">{{iteam.dispatchRemark}}</span>                
+                        <span class="textFont">{{iteam.dispachRemark}}</span>                
                     </div>
                 </div>
-                <div style="color:rgb(102, 204, 0)" class="iteamList">
+                <div v-if="iteam.sendRecordList.length!==0" style="color:rgb(102, 204, 0)" class="iteamList">
                         转派记录
                 </div>
                 <div v-for="(item,index) in iteam.sendRecordList" :key="index">
@@ -198,14 +198,14 @@
                     </div>
 
                 </div>
-               <div style="color:rgb(102, 204, 0)" class="iteamList">
+               <!-- <div style="color:rgb(102, 204, 0)" class="iteamList">
                         反馈信息
                 </div>
                 <div class="iteamList">
                     <div>
                         <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
                         <span>反馈时间：</span>
-                        <span v-if="iteam.handleTime!==undefined">{{FormatDate(iteam.feedbackTime)}}</span>
+                        <span v-if="iteam.feedbackTime!==undefined">{{FormatDate(iteam.feedbackTime)}}</span>
                     </div>
                 </div>
                 <div class="imageClean" style="padding:0.3rem 0.213333rem">
@@ -223,7 +223,7 @@
                         <span>处理情况：</span>
                         <span>{{iteam.dealCondition}}</span>
                     </div>
-                </div>
+                </div> -->
             </mt-swipe-item>
         </mt-swipe>
       </div>
@@ -308,8 +308,11 @@ export default {
           } else {
             this.showIndicators = true;
           }
+          res.forEach(iteam => {
+            iteam.sendRecordList.splice(0, 1);
+          });
+          console.log(res);
           this.iteamList = res;
-          console.log(res[0].handleTime);
         })
         .catch(res => {});
     }

@@ -99,7 +99,7 @@ export default {
       );
       setTimeout(() => {
         this.getMap();
-      }, 5000);
+      }, 300000);
     },
     changeImage(val) {
       if (val == "/layout/selfCheck") {

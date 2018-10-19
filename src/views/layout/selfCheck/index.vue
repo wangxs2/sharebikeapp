@@ -226,7 +226,6 @@ export default {
         display: flex;
         flex: 1;
         box-sizing: border-box;
-        padding-top: 0.2rem;
       }
       .bottomRight {
         display: flex;

@@ -13,7 +13,6 @@ export default {
   return: {
     
   },
-  // watch:
   mounted() {
 
     
@@ -22,24 +21,6 @@ export default {
     window.getPush = this.getPush;
   },
   methods: {
-    // watchBackWXS() {
-    //   console.log("点击了返回键");
-    //   if (
-    //     this.$route.path == "/" ||
-    //     this.$route.path == "/login" ||
-    //     this.$route.path == "/layout/selfCheck" ||
-    //     this.$route.path == "/layout/supervise" ||
-    //     this.$route.path == "/layout/needtodo" ||
-    //     this.$route.path == "/layout/count" ||
-    //     this.$route.path == "/layout/warning" ||
-    //     this.$route.path == "/layout/me"
-    //   ) {
-    //     return;
-    //   } else {
-    //     this.$router.go(-1);
-    //   }
-    // },
-    // getMap1() {},
     getPush(userName, password, url) {
       if (userName) {
         let b = new base64();

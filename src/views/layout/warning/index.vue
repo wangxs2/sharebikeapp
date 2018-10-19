@@ -14,17 +14,17 @@
           <div class="warning-info">
             <div class="warning-info-top">
               <div class="warning-info-date">{{FormatDate(iteam.createTime)}}</div>
-              <div class="warning-info-status">{{iteam.CompanyShortName}}</div>
+              <div class="warning-info-status">{{iteam.companyShortName}}</div>
             </div>
             <div class="warning-info-bottom">
               <img class="addr-icon" src="@/assets/image/warning/icon_address@2x.png" alt="">
               <div class="warning-info-address">{{iteam.regionalName}}</div>
             </div>
           </div>
-          <div class="warning-btn">
+          <!-- <div class="warning-btn"> -->
             <!-- <div class="warning-btn-detail" @click="detailClick">详情</div> -->
             <!-- <div class="warning-btn-ignore">忽略</div> -->
-          </div>
+          <!-- </div> -->
         </div>
         <div class="warning-total">
           <div class="warning-total-box warning-total-cars">
@@ -142,7 +142,7 @@ export default {
               margin-left: 0.066667rem;
             }
             .warning-info-status {
-              width: 1.573333rem;
+              width: 4rem;
               height: 0.586667rem;
               line-height: 0.586667rem;
               text-align: center;
@@ -150,8 +150,11 @@ export default {
               border-radius: 0.106667rem;
               font-size: 0.373333rem;
               font-weight: 500;
-              color: rgba(255, 17, 17, 1);
+              // color: rgba(255, 17, 17, 1);
               margin-left: 0.48rem;
+               overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             }
           }
           .warning-info-bottom {

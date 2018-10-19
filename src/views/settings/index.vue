@@ -18,7 +18,7 @@
           <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
         </div>
         <div class="info-box" @click="popupVisible = true">
-          <div class="info-title">版本更新V1.0</div>
+          <div class="info-title">版本更新{{version}}</div>
           <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
         </div>
       </div>
@@ -33,23 +33,21 @@
         <img class="close-popup" src="@/assets/image/settings/icon_close@2x.png" alt="" @click="popupVisible = false">
           <div class="version-popup-top">
             <img class="logo" src="@/assets/image/settings/ios-template-120.png" alt="">
-            <div class="cur-version">版本V1.0 2018-09-13</div>
+            <div class="cur-version">版本{{version}} {{versionTime}}</div>
             <div class="new-version">当前版本已是最新版本</div>
           </div>
           <div class="version-popup-bottom">
             <ul class="version-detail" v-for="(item,index) in versionDetail" :key="item.index">
               <li class="version-detail-li">
                 <span class="dot"></span>
-                <span>{{index+1}}、{{item}}</span>
+                <span>{{item}}</span>
               </li>
             </ul>
           </div>
         </div>
       </mt-popup>
       <!-- 版本信息弹框↑ -->
-
     </div>
-
   </div>
 </template>
 
@@ -62,23 +60,36 @@ export default {
   data() {
     return {
       popupVisible: false,
-      versionDetail: [
-        "开放企业自查功能",
-        "开放派单、派单处理功能",
-        "开放统计页面",
-        "个人中心页面优化",
-        "性能优化",
-        "修复bug"
-      ]
+      version:"",
+      versionTime:"",
+      versionDetail: []
     };
   },
   components: {},
   mounted() {},
-  created() {},
+  created() {
+    this.getVersion()
+  },
   methods: {
     //返回个人中心
     toUserInfo() {
       this.$router.push("/layout/me");
+    },
+    //获取版本号
+    getVersion(){
+      this.$fetchGet("sysInfo/getAPPversion").then(data=>{
+        if(data.status==0){
+          this.version=data.version;
+          this.versionTime=data.list[0].split("：")[1]
+          this.versionDetail=data.list.splice(1)
+        }
+      })
+      // .catch(res => {
+      //     MessageBox.alert("", {
+      //       message: "请求超时",
+      //       title: "提示"
+      //     }).then(action => {});
+      //   });
     },
     //去修改密码
     toPassword() {
@@ -230,7 +241,7 @@ export default {
         }
       }
       .version-popup-bottom {
-        padding: 0.8rem 1.533333rem;
+        padding: 0.8rem 0.4rem;
         flex: 1;
         font-size: 0.4rem;
         overflow: scroll;
@@ -244,11 +255,11 @@ export default {
             align-items: center;
             .dot {
               display: inline-block;
-              width: 0.16rem;
-              height: 0.16rem;
+              width: 8px;
+              height: 8px;
               background: rgba(255, 174, 31, 1);
               border-radius: 50%;
-              margin-right: 0.3rem;
+              margin-right: 0.4rem;
             }
           }
         }

@@ -28,8 +28,8 @@
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="center">
-                    <span>{{iteam.dispatchReceive}}</span>
-                    <span>{{iteam.dealTime}}</span>
+                    {{iteam.dispatchReceive}}
+                    {{iteam.dealTime}}
                   </div>
                   <div class="bottomRight">
                       <span class="iconfont icon-weizhi"></span>
@@ -230,7 +230,6 @@ export default {
         flex: 1;
         justify-content: space-between;
         box-sizing: border-box;
-        padding-top: 0.2rem;
       }
       .bottomRight {
         display: flex;
