@@ -316,7 +316,12 @@ export default {
           message: "请上传整理后照片",
           title: "提示"
         }).then(action => {});
-      } else if (
+      }else if(this.formMessage.handleAddr.length>20){
+        MessageBox.alert("", {
+          message: "清理地点长度不能大于20",
+          title: "提示"
+        }).then(action => {});
+      }else if (
         (this.formMessage.arrangeNum == "" &&
         this.formMessage.cleanNum == "")||(this.formMessage.arrangeNum<0||this.formMessage.cleanNum<0)||(this.formMessage.arrangeNum==0&&this.formMessage.cleanNum==0)
       ) {
