@@ -171,12 +171,12 @@ export default {
         this.popupVisible = true;
       }      
     },
-    detailImage(index, id) {
+    detailImage(index, id){
       console.log(index)
       MessageBox.confirm("是否确认删除图片?").then(action => {
         if (action == "confirm") {
           //确认的回调
-          if (index == 1) {
+          if (index == 1){
             this.formMessage.handleBefore.splice(id, 1);
             this.formMessage.handleBeforeURLs.splice(id, 1);
           } else {
@@ -317,8 +317,8 @@ export default {
           title: "提示"
         }).then(action => {});
       } else if (
-        this.formMessage.arrangeNum == "" ||
-        this.formMessage.cleanNum == ""||this.formMessage.arrangeNum<0||this.formMessage.cleanNum<0||this.formMessage.arrangeNum==0||this.formMessage.cleanNum==0
+        (this.formMessage.arrangeNum == "" &&
+        this.formMessage.cleanNum == "")||(this.formMessage.arrangeNum<0||this.formMessage.cleanNum<0)||(this.formMessage.arrangeNum==0&&this.formMessage.cleanNum==0)
       ) {
         MessageBox.alert("", {
           message: "整理或清运数量有误",

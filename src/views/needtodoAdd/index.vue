@@ -312,12 +312,12 @@ export default {
           title: "提示"
         }).then(action => {});
       } else if (
-        this.formMessage.arrangeNum == "" ||
-        this.formMessage.cleanNum == "" ||
-        this.formMessage.arrangeNum < 0 ||
-        this.formMessage.cleanNum < 0 ||
-        this.formMessage.arrangeNum == 0 ||
-        this.formMessage.cleanNum == 0
+        (this.formMessage.arrangeNum == "" &&
+        this.formMessage.cleanNum == "") ||
+        (this.formMessage.arrangeNum < 0 ||
+        this.formMessage.cleanNum < 0) ||
+        (this.formMessage.arrangeNum == 0&&
+        this.formMessage.cleanNum == 0)
       ) {
         MessageBox.alert("", {
           message: "整理或清运数量有误",

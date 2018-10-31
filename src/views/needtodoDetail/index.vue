@@ -61,41 +61,6 @@
               </div>
 
         </div>
-        <div class="imageClean" style="padding:0.3rem 0.213333rem">
-              <div>
-                <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>整理前</span>                                
-              </div>
-              <div class="imageList">
-                <img v-for="(iteam,index) in iteamList.handleBeforeURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-              </div>
-
-        </div>
-        <div class="imageClean" style="padding:0.3rem 0.213333rem">
-              <div>
-                <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>整理后</span>                                
-              </div>
-              <div class="imageList">
-                <img v-for="(iteam,index) in iteamList.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-              </div>
-        </div>
-        <div class="iteamList">
-              <div>
-                <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>整理数：</span>
-                <span>{{iteamList.arrangeNum}}</span>                
-              </div>
-        </div>
-        <div class="iteamList">
-              <div>
-                <span><img src="../../assets/image/selfcheck/icon_6_num2@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>清运数：</span>
-                <span>{{iteamList.cleanNum}}</span>
-                
-              </div>
-
-        </div>
          <div v-if="iteamList.sendRecordList.length!==0" style="color:rgb(102, 204, 0)" class="iteamList">
                     转派记录
         </div>

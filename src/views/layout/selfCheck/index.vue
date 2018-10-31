@@ -50,11 +50,11 @@ export default {
     return {
       selected: "/layout/selfCheck",
       noneList: false,
-      bottomPullText: "已加载全部数据",
+      bottomPullText: "上拉加载",
       searchCondition: {
         //分页属性
         page: "1",
-        pageSize: "100"
+        pageSize: "15"
       },
       pageList: [],
       allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
@@ -99,6 +99,7 @@ export default {
     // },
     loadBottom() {
       // 上拉加载
+      this.isHaveMore(isHaveMore)
       this.more(); // 上拉触发的分页查询
       this.$refs.loadmore.onBottomLoaded(); // 固定方法，查询完要调用一次，用于重新定位
     },
@@ -131,7 +132,7 @@ export default {
     },
     more() {
       // 分页查询
-       Indicator.open({
+      Indicator.open({
         text: "加载中...",
         spinnerType: "fading-circle"
       });
@@ -146,12 +147,12 @@ export default {
     },
     isHaveMore(isHaveMore) {
       // 是否还有下一页，如果没有就禁止上拉刷新
-      this.bottomPullText = "已加载全部数据";
-      this.allLoaded = true; //true是禁止上拉加载
-
-      if (isHaveMore) {
-        this.bottomPullText = "已加载全部数据";
+      if (isHaveMore == true){
+        this.bottomPullText = "上拉加载";
         this.allLoaded = false;
+      } else {
+        this.bottomPullText = "已加载全部数据";
+        this.allLoaded = true; //true是禁止上拉加载
       }
     }
   }
@@ -187,7 +188,6 @@ export default {
     }
   }
 }
-
 </style>
 <style  lang="scss">
 .containerSa {
