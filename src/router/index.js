@@ -123,6 +123,14 @@ export const constantRouterMap = [{
     path: '/forget',
     name: '忘记密码',
     component: _import('forget/index')
+  },{
+    path: '/test',
+    name: '测试',
+    component: _import('test/index')
+  },{
+    path: '/test1',
+    name: '测试1',
+    component: _import('test1/index')
   }
 ]
 
