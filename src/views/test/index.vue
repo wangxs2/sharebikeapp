@@ -1,481 +1,182 @@
+
 <template>
-
-  <p class="loadmore">
-
-    <slot></slot>
-
-    <slot name="bottom">
-
-    </slot>
-
-  </p>
-
+  <div class="containerSa">
+      <div class="header">
+        <mt-header title="派单">
+            <mt-button class="iconfont icon-gengduo" style="font-size:24px" slot="right" @click="iconClick">
+                
+            </mt-button>
+        </mt-header>
+      </div>
+      <!-- <div class="noneList" v-if="noneList">
+            <img src="../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt="">
+            <p style="color:#989898">暂时没有自查数据哦~</p>
+      </div> -->
+      <scroller style="top: 1.25rem;bottom:55px;height:82%" v-if="!noneList" :on-infinite="infinite" :on-refresh="refresh" infiniteText="上拉加载" noDataText="--我也是有底线的--" ref="my_scroller">
+            <div class="iteamListSa" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
+              <div class="leftSa">                  
+                  <img v-if="iteam.dispachPhotoURLs.length!==0" :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="90" height="90" srcset="">
+                  <img v-if="iteam.dispachPhotoURLs.length==0" src="../../assets/image/selfcheck/image_no data@3x.png" alt="" width="90" height="90" srcset="">
+              </div>
+              <div class="rightSa">
+                  <div class="topRight">
+                      <span>{{FormatDate(iteam.dispatchTime)}}</span>
+                       <span style="margin-left:1rem" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
+                      <!-- <p style="width:0.1rem"></p> -->
+                  </div>
+                  <div class="center">
+                    <span>{{iteam.dispatchReceive}}</span>
+                    <span v-if="iteam.status == 2||iteam.status==4" style="margin-left:0.1rem">【{{iteam.dealTime}}】</span>
+                  </div>
+                  <div class="bottomRight">
+                      <span class="iconfont icon-weizhi"></span>
+                      <span class="moreFont">{{iteam.handleAddr}}</span>
+                  </div>
+              </div>
+          </div>
+        </scroller>
+  </div>
 </template>
 
- 
-
-<style>
-
-  .loadmore{
-
-    width:100%;
-
+<script>
+import { Loadmore } from "mint-ui";
+import { Toast } from "mint-ui";
+import { Indicator } from "mint-ui";
+export default {
+  computed: {},
+  data() {
+    return {
+      selected: "/layout/supervise",
+      noneList: false,
+      searchCondition: {
+        page: 0,
+        pageSize: 15
+      },
+      pageList: []
+    };
+  },
+  components: {},
+  mounted() {
+    // this.loadPageList();
+    if (this.$route.query.supervise) {
+      this.$router.push({
+        path: "/superviseDetail",
+        query: {
+          supervise: this.$route.query.supervise,
+          statuSa: 2
+        }
+      });
+    }
+  },
+  created() {},
+  methods: {
+    detailClick(row) {
+      this.$router.push({
+        path: "/superviseDetail",
+        query: {
+          supervise: row.sheetCode,
+          statuSa: row.status
+        }
+      });
+    },
+    iconClick() {
+      this.$router.push("/superviseAdd");
+    },
+    infinite(done) {
+      console.log("infinite");
+      this.searchCondition.page++;
+      this.$fetchGet("dispatch/pageDispatch", this.searchCondition).then(
+        res => {
+          if (res.list.length !== 0) {
+            this.pageList = this.pageList.concat(res.list);
+            done();
+          } else {
+            done(true);
+          }
+        }
+      );
+    },
+    refresh: function() {
+      //下拉刷新
+      // console.log("refresh");
+      this.timeout = setTimeout(() => {
+        this.$refs.my_scroller.finishPullToRefresh();
+      }, 1500);
+    }
   }
+};
+</script>
 
+<style lang="scss">
+.containerSa {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  .header {
+    width: 100%;
+    height: 1.173333rem;
+    background: -webkit-linear-gradient(left, #6698ff, #5076ff);
+    text-align: center;
+    line-height: 1.173333rem;
+    color: #fff;
+  }
+  .noneList {
+    flex: 1;
+    line-height: 1;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  .iteamListSa {
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding: 0.1rem 0.2rem;
+    border-bottom: 1px solid #eeeeee;
+    .leftSa {
+      display: flex;
+      flex: 1;
+    }
+    .rightSa {
+      width: 100%;
+      display: flex;
+      box-sizing: border-box;
+      padding: 0 0.2rem;
+      flex-direction: column;
+      .topRight {
+        display: flex;
+        flex: 1;
+        justify-content: flex-start;
+        .green {
+          color: #ffc000;
+        }
+        .red {
+          color: #41cd76;
+        }
+      }
+      .center {
+        width: 100%;
+        display: flex;
+        flex: 1;
+        box-sizing: border-box;
+      }
+      .bottomRight {
+        display: flex;
+        width: 100%;
+        height: 20px;
+        color: #989898;
+        justify-content: flex-start;
+        .moreFont {
+          width: 68%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
 </style>
 
- 
 
-<script>
-
-  export default {
-
-    name: 'loadmore',
-
-    props: {
-
-      maxDistance: {
-
-        type: Number,
-
-        default: 0
-
-      },
-
-      autoFill: {
-
-        type: Boolean,
-
-        default: true
-
-      },
-
-      distanceIndex: {
-
-        type: Number,
-
-        default: 2
-
-      },
-
-      bottomPullText: {
-
-        type: String,
-
-        default: '上拉刷新'
-
-      },
-
-      bottomDropText: {
-
-        type: String,
-
-        default: '释放更新'
-
-      },
-
-      bottomLoadingText: {
-
-        type: String,
-
-        default: '加载中...'
-
-      },
-
-      bottomDistance: {
-
-        type: Number,
-
-        default: 70
-
-      },
-
-      bottomMethod: {
-
-        type: Function
-
-      },
-
-      bottomAllLoaded: {
-
-        type: Boolean,
-
-        default: false
-
-      },
-
-    },
-
-    data() {
-
-      return {
-
-        // 最下面出现的p的位移
-
-        translate: 0,
-
-        // 选择滚动事件的监听对象
-
-        scrollEventTarget: null,
-
-        containerFilled: false,
-
-        bottomText: '',
-
-        // class类名
-
-        bottomDropped: false,
-
-        // 获取监听滚动元素的scrollTop
-
-        bottomReached: false,
-
-        // 滑动的方向  down---向下互动；up---向上滑动
-
-        direction: '',
-
-        startY: 0,
-
-        startScrollTop: 0,
-
-        // 实时的clientY位置
-
-        currentY: 0,
-
-        topStatus: '',
-
-        // 上拉加载的状态  ''   pull: 上拉中
-
-        bottomStatus: '',
-
-      };
-
-    },
-
-    watch: {
-
-      // 改变当前加载在状态
-
-      bottomStatus(val) {
-
-        this.$emit('bottom-status-change', val);
-
-        switch (val) {
-
-          case 'pull':
-
-            this.bottomText = this.bottomPullText;
-
-            break;
-
-          case 'drop':
-
-            this.bottomText = this.bottomDropText;
-
-            break;
-
-          case 'loading':
-
-            this.bottomText = this.bottomLoadingText;
-
-            break;
-
-        }
-
-      }
-
-    },
-
-    methods: {
-
-      onBottomLoaded() {
-
-        this.bottomStatus = 'pull';
-
-        this.bottomDropped = false;
-
-        this.$nextTick(() => {
-
-          if (this.scrollEventTarget === window) {
-
-          document.body.scrollTop += 50;
-
-        } else {
-
-          this.scrollEventTarget.scrollTop += 50;
-
-        }
-
-        this.translate = 0;
-
-      });
-
-        // 注释
-
-        if (!this.bottomAllLoaded && !this.containerFilled) {
-
-          this.fillContainer();
-
-        }
-
-      },
-
- 
-
-      getScrollEventTarget(element) {
-
-        let currentNode = element;
-
-        while (currentNode && currentNode.tagName !== 'HTML' &&
-
-        currentNode.tagName !== 'BODY' && currentNode.nodeType === 1) {
-
-          let overflowY = document.defaultView.getComputedStyle(currentNode).overflowY;
-
-          if (overflowY === 'scroll' || overflowY === 'auto') {
-
-            return currentNode;
-
-          }
-
-          currentNode = currentNode.parentNode;
-
-        }
-
-        return window;
-
-      },
-
-      // 获取scrollTop
-
-      getScrollTop(element) {
-
-        if (element === window) {
-
-          return Math.max(window.pageYOffset || 0, document.documentElement.scrollTop);
-
-        } else {
-
-          return element.scrollTop;
-
-        }
-
-      },
-
-      bindTouchEvents() {
-
-        this.$el.addEventListener('touchstart', this.handleTouchStart);
-
-        this.$el.addEventListener('touchmove', this.handleTouchMove);
-
-        this.$el.addEventListener('touchend', this.handleTouchEnd);
-
-      },
-
-      init() {
-
-        this.bottomStatus = 'pull';
-
-        // 选择滚动事件的监听对象
-
-        this.scrollEventTarget = this.getScrollEventTarget(this.$el);
-
-        if (typeof this.bottomMethod === 'function') {
-
-          // autoFill 属性的实现  注释
-
-          this.fillContainer();
-
-          // 绑定滑动事件
-
-          this.bindTouchEvents();
-
-        }
-
-      },
-
-      // autoFill 属性的实现  注释
-
-      fillContainer() {
-
-        if (this.autoFill) {
-
-          this.$nextTick(() => {
-
-            if (this.scrollEventTarget === window) {
-
-            this.containerFilled = this.$el.getBoundingClientRect().bottom >=
-
-                document.documentElement.getBoundingClientRect().bottom;
-
-          } else {
-
-            this.containerFilled = this.$el.getBoundingClientRect().bottom >=
-
-                this.scrollEventTarget.getBoundingClientRect().bottom;
-
-          }
-
-          if (!this.containerFilled) {
-
-            this.bottomStatus = 'loading';
-
-            this.bottomMethod();
-
-          }
-
-        });
-
-        }
-
-      },
-
-      // 获取监听滚动元素的scrollTop
-
-      checkBottomReached() {
-
-        if (this.scrollEventTarget === window) {
-
-          return document.body.scrollTop + document.documentElement.clientHeight >= document.body.scrollHeight;
-
-        } else {
-
-          // getBoundingClientRect用于获得页面中某个元素的左，上，右和下分别相对浏览器视窗的位置。 right是指元素右边界距窗口最左边的距离，bottom是指元素下边界距窗口最上面的距离。
-
-          return this.$el.getBoundingClientRect().bottom <= this.scrollEventTarget.getBoundingClientRect().bottom + 1;
-
-        }
-
-      },
-
-      // ontouchstart 事件
-
-      handleTouchStart(event) {
-
-        // 获取起点的y坐标
-
-        this.startY = event.touches[0].clientY;
-
-        this.startScrollTop = this.getScrollTop(this.scrollEventTarget);
-
-        this.bottomReached = false;
-
-        if (this.bottomStatus !== 'loading') {
-
-          this.bottomStatus = 'pull';
-
-          this.bottomDropped = false;
-
-        }
-
-      },
-
-      // ontouchmove事件
-
-      handleTouchMove(event) {
-
-        if (this.startY < this.$el.getBoundingClientRect().top && this.startY > this.$el.getBoundingClientRect().bottom) {
-
-          // 没有在需要滚动的范围内滚动，不再监听scroll
-
-          return;
-
-        }
-
-        // 实时的clientY位置
-
-        this.currentY = event.touches[0].clientY;
-
-        // distance 移动位置和开始位置的差值    distanceIndex---
-
-        let distance = (this.currentY - this.startY) / this.distanceIndex;
-
-        // 根据 distance 判断滑动的方向 并赋予变量  direction down---向下互动；up---向上滑动
-
-        this.direction = distance > 0 ? 'down' : 'up';
-
-        if (this.direction === 'up') {
-
-          // 获取监听滚动元素的scrollTop
-
-          this.bottomReached = this.bottomReached || this.checkBottomReached();
-
-        }
-
-        if (typeof this.bottomMethod === 'function' && this.direction === 'up' &&
-
-            this.bottomReached && this.bottomStatus !== 'loading' && !this.bottomAllLoaded) {
-
-          // 有加载函数，是向上拉，有滚动距离，不是正在加载ajax，没有加载到最后一页
-
-          event.preventDefault();
-
-          event.stopPropagation();
-
-          if (this.maxDistance > 0) {
-
-            this.translate = Math.abs(distance) <= this.maxDistance
-
-                ? this.getScrollTop(this.scrollEventTarget) - this.startScrollTop + distance : this.translate;
-
-          } else {
-
-            this.translate = this.getScrollTop(this.scrollEventTarget) - this.startScrollTop + distance;
-
-          }
-
-          if (this.translate > 0) {
-
-            this.translate = 0;
-
-          }
-
-          this.bottomStatus = -this.translate >= this.bottomDistance ? 'drop' : 'pull';
-
-        }
-
-      },
-
-      // ontouchend事件
-
-      handleTouchEnd() {
-
-        if (this.direction === 'up' && this.bottomReached && this.translate < 0) {
-
-          this.bottomDropped = true;
-
-          this.bottomReached = false;
-
-          if (this.bottomStatus === 'drop') {
-
-            this.translate = '-50';
-
-            this.bottomStatus = 'loading';
-
-            this.bottomMethod();
-
-          } else {
-
-            this.translate = '0';
-
-            this.bottomStatus = 'pull';
-
-          }
-
-        }
-
-        this.direction = '';
-
-      }
-
-    },
-
-    mounted() {
-
-      this.init();
-
-    }
-
-  };
-
-</script>

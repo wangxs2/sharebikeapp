@@ -16,6 +16,8 @@ import Vconsole from "vconsole"
 import VuePreview from 'vue-preview'
 import { Swipe, SwipeItem } from "mint-ui";
 import VueLazyLoad from 'vue-lazyload'
+import VueScroller from 'vue-scroller'
+Vue.use(VueScroller)
 Vue.use(VueLazyLoad, {
   preLoad: 1,
   error: require('./assets/image/error.svg'),

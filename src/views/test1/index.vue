@@ -1,137 +1,51 @@
+
 <template>
-
- <section class="finan">
-
-  <!-- 上拉加载更多 -->
-
-  <load-more
-
-  :bottom-method="loadBottom"
-
-  :bottom-all-loaded="allLoaded"
-
-  :bottomPullText='bottomText'
-
-  :auto-fill="false"
-
-  @bottom-status-change="handleBottomChange"
-
-  ref="loadmore">
-
-    <p>
-
-        这里写你需要的另外的模块
-
-    </p>
-
-    <p v-show="loading" slot="bottom" class="loading">
-
-     <img src="../../assets/image/test.gif">
-
-    </p>
-
-  </load-more>
-
- </section>
-
+<scroller :on-infinite="infinite"
+            :on-refresh="refresh"
+　　         ref="my_scroller">
+       <!-- 项目内容 -->
+</scroller>
 </template>
+
 <script>
-import LoadMore from '../test/index.vue'
 export default {
-      name: 'FinancialGroup',
-
-  props:{
-
- 
-
-  },
-
-  data () {
-
-    return {
-
-      // 上拉加载数据
-
-      scrollHeight: 0,
-
-      scrollTop: 0,
-
-      containerHeight: 0,
-
-      loading: false,
-
-      allLoaded: false,
-
-      bottomText: '上拉加载更多...',
-
-      bottomStatus: '',
-
-      pageNo: 1,
-
-      totalCount: '',
+  data: {
+    return: {
 
     }
-
   },
-
   methods: {
+    infinite(done) {
+      //上拉加载
+      if (this.noData) {
+        setTimeout(() => {
+          this.$refs.my_scroller.finishInfinite(2);
+        });
+        return;
+      }
+      let self = this;
+      let i = 1;
 
-  /* 下拉加载 */
-
-    _scroll: function(ev) {
-
-        ev = ev || event;
-
-        this.scrollHeight = this.$refs.innerScroll.scrollHeight;
-
-        this.scrollTop = this.$refs.innerScroll.scrollTop;
-
-        this.containerHeight = this.$refs.innerScroll.offsetHeight;
-
-    },
-
-    loadBottom: function() {
-
-        this.loading = true;
-
-        this.pageNo += 1;  // 每次更迭加载的页数
-
-        if (this.pageNo == this.totalGetCount) {
-
-        // 当allLoaded = true时上拉加载停止
-
-        this.loading = false;
-
-        this.allLoaded = true;
-
+      let start = this.list.length;
+      setTimeout(() => {
+        for (var k = 0; k < 9; k++) {
+          self.list.push(k);
         }
-
-    //     api.commonApi(后台接口，请求参数) 这个api是封装的axios有不懂的可以看vue2+vuex+axios那篇文章
-
-    //         .then(res => {
-
-    //     setTimeout(() => {
-
-    //     要使用的后台返回的数据写在setTimeout里面
-
-    //     this.$nextTick(() => {
-
-    //         this.loading = false;
-
-    //     })
-
-    //     }, 1000)
-
-    // });
-
+        i++;
+        if (start / i < 9) {
+          self.noData = "没有更多数据";
+        }
+        self.$refs.my_scroller.resize();
+        done();
+      }, 1500);
     },
-
-    handleBottomChange(status) {
-
-        this.bottomStatus = status;
-
-    },
-
+    refresh: function() {
+      //下拉刷新
+      console.log("refresh");
+      this.timeout = setTimeout(() => {
+        this.$refs.my_scroller.finishPullToRefresh();
+      }, 1500);
     }
-}
-</script>
+  }
+};
+</script>               
