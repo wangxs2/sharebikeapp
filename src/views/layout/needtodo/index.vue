@@ -102,12 +102,13 @@ export default {
     selectComany(e) {
       let id = e.target.getAttribute("companyId");
       this.activeComany = id;
+      this.pageList=[]
       if (id == 1) {
-        this.searchCondition.page = "1";
+        this.searchCondition.page = 0;
         this.searchCondition.status = "";
         this.infinite();
       } else if (id == 2) {
-        this.searchCondition.page = "1";
+        this.searchCondition.page = 0;
         this.searchCondition.status = 2;
         this.infinite();
       }
@@ -121,11 +122,11 @@ export default {
       this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
         res => {
           if (res.list.length !== 0) {
-            this.noneList=false
+            // this.noneList=false
             this.pageList = this.pageList.concat(res.list);
             done();
           } else {
-            this.noneList=true
+            // this.noneList=true
             done(true);
           }
         }

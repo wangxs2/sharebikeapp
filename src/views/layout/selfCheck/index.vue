@@ -79,7 +79,6 @@ export default {
       this.$router.push("/selfCheckAdd");
     },
     infinite(done) {
-      console.log("infinite");
       this.searchCondition.page++;
       this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
         res => {

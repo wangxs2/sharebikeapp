@@ -83,16 +83,15 @@ export default {
       this.$router.push("/superviseAdd");
     },
     infinite(done) {
-      console.log("infinite");
       this.searchCondition.page++;
       this.$fetchGet("dispatch/pageDispatch", this.searchCondition).then(
         res => {
           if (res.list.length !== 0) {
-            this.noneList=false
+            // this.noneList=false
             this.pageList = this.pageList.concat(res.list);
             done();
           } else {
-            this.noneList=true
+            // this.noneList=true
             done(true);
           }
         }
