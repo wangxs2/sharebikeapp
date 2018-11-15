@@ -7,7 +7,7 @@
           position="right">
           <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible1=false"></span>
           <img :src="Ip+bigImage" alt="" srcset="" width="100%" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" @click="popupVisible1=false">
-          <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:50%;bottom:15px;" @click="rotate()">
+          <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:44%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">
         <mt-header title="添加企业自查">   
@@ -40,7 +40,7 @@
           <div class="imageList">
               <div v-for="(iteam,index) in formMessage.handleBeforeURLs" :key="index" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" @click="detailImage(1,index)"></span>
+                  <span class="iconfont icon-shanchu1" style="font-size:20px" @click="detailImage(1,index)"></span>
               </div>             
               <img v-if="formMessage.handleBeforeURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">
           </div>
@@ -53,7 +53,7 @@
            <div class="imageList">
               <div v-for="(iteam,index) in formMessage.handleAfterURLs" :key="index" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" @click="detailImage(2,index)"></span>
+                  <span class="iconfont icon-shanchu1" style="font-size:20px" @click="detailImage(2,index)"></span>
               </div>             
               <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage1">                         
           </div>

@@ -135,7 +135,7 @@ export default {
     },
     message() {
       if (
-        (this.roleCode == "clean") &&
+        (this.roleCode == "clean" || this.roleCode == "manage") &&
         this.selected == "/layout/supervise"
       ) {
         this.changeImage("/layout/needtodo");

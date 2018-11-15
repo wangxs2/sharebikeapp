@@ -7,7 +7,7 @@
           position="right">
           <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible1=false"></span>
           <img :src="Ip+bigImage" alt="" srcset="" width="100%" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" @click="popupVisible1=false">
-          <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:50%;bottom:15px;" @click="rotate()">
+          <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:44%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">
       
@@ -41,7 +41,7 @@
           <div class="imageList">
               <div v-for="(iteam,index) in dispachPhotoUrls" :key="index" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu" @click="detailImage(index)"></span>
+                  <span class="iconfont icon-shanchu" style="font-size:20px" @click="detailImage(index)"></span>
               </div>             
               <img v-if="dispachPhotoUrls.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">       
           </div>

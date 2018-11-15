@@ -7,7 +7,7 @@
         position="right">
         <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
         <img :src="Ip+bigImage" alt="" srcset="" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" width="100%">
-        <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:50%;bottom:15px;" @click="rotate()">
+        <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:44%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">
        
@@ -57,7 +57,7 @@
                 <span>处理前</span>                                
               </div>
               <div class="imageList">
-                <img v-for="(iteam,index) in iteamList.handleBeforeURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                <img v-for="(iteam,index) in iteamList.handleBeforeURLs" :src="Ip+iteam" :key="index" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
               </div>
 
         </div>
@@ -67,7 +67,7 @@
                 <span>处理后</span>                                
               </div>
               <div class="imageList">
-                <img v-for="(iteam,index) in iteamList.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                <img v-for="(iteam,index) in iteamList.handleAfterURLs" :src="Ip+iteam" :key="index" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
               </div>
         </div>
         <div class="iteamList">

@@ -7,7 +7,7 @@
         position="right">
         <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
         <img :src="Ip+bigImage" alt="" srcset="" width="100%" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" @click="popupVisible=false">
-         <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:50%;bottom:15px;" @click="rotate()">
+         <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:44%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">
         <mt-header title="派单处理">   
@@ -51,7 +51,7 @@
           <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>派单备注</span>
-            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.dispachRemark">{{formMessage.dispachRemark}}</span>
+            <span style="width:100%;text-align:right;margin-right:1rem" v-model='formMessage.dispachRemark'>{{formMessage.dispachRemark}}</span>
           </p>
         </div>
         <div class="iteamForm">
@@ -109,7 +109,7 @@
           <div class="imageList">
                <div v-for="(iteam,index) in formMessage.handleBeforeURLs" :key="index" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" @click="detailImage(1,index)"></span>
+                  <span class="iconfont icon-shanchu1" style="font-size:20px" @click="detailImage(1,index)"></span>
               </div>             
               <img v-if="formMessage.handleBeforeURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">
           </div>
@@ -122,7 +122,7 @@
           <div class="imageList">
              <div v-for="(iteam,index) in formMessage.handleAfterURLs" :key="index" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" @click="detailImage(2,index)"></span>
+                  <span class="iconfont icon-shanchu1" style="font-size:20px" @click="detailImage(2,index)"></span>
               </div>             
               <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage1">
              
@@ -142,8 +142,6 @@
             <input type="number" placeholder="请选择清运数" v-model="formMessage.cleanNum">
           </p>
         </div>
-        </form>
-       
       </div>
       <div class="bottom">
           <button type="button" class="buttonSa" @click="save()">暂存</button>
@@ -177,6 +175,7 @@ export default {
         arrangeNum: "",
         gpsLongitude: "",
         gpsLatitude: "",
+        dispachRemark:'',
         handleBeforeURLs: [],
         handleAfterURLs: [],
         cleanNum: "",

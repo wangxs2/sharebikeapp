@@ -8,7 +8,7 @@
         position="right">
         <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
         <img :src="Ip+bigImage" alt="" srcset="" width="100%" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" @click="popupVisible=false">
-         <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:50%;bottom:15px;" @click="rotate()">
+         <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:44%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">
        
@@ -94,7 +94,7 @@
                         <span>派单照片：</span>                                
                     </div>
                     <div class="imageList">
-                        <img v-for="(iteam,index) in iteam.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                        <img v-for="(iteam,index) in iteam.dispachPhotoURLs" :src="Ip+iteam" :key="index" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
                     </div>
                     <!-- <div>
                         <vue-preview :slides="slide2" @close="handleClose"></vue-preview>
@@ -170,7 +170,7 @@
                         <span>处理前：</span>                                
                     </div>
                      <div class="imageList">
-                        <img v-for="(iteam,index) in iteam.handleBeforeURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                        <img v-for="(iteam,index) in iteam.handleBeforeURLs" :src="Ip+iteam" :key="index" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
                     </div>
                 </div>
                 <div class="imageClean" style="padding:0.3rem 0.213333rem">
@@ -179,7 +179,7 @@
                         <span>处理后：</span>                                
                     </div>
                      <div class="imageList">
-                        <img v-for="(iteam,index) in iteam.handleAfterURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                        <img v-for="(iteam,index) in iteam.handleAfterURLs" :src="Ip+iteam" :key="index" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
                     </div>
                 </div>
                 <div class="iteamList">
