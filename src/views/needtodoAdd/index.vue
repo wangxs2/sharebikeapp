@@ -44,7 +44,7 @@
             <span style="padding-left:0.2rem">派单照片</span>
           </p>
           <div class="imageList">
-            <img v-for="(iteam,index) in formMessage.dispachPhotoURLs" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+            <img v-for="(iteam,index) in formMessage.dispachPhotoURLs" :key="index" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
           </div>
         </div>
         <div class="iteamForm">
@@ -107,7 +107,7 @@
             <span style="padding-left:0.2rem">整理前</span>
           </p>
           <div class="imageList">
-               <div v-for="(iteam,index) in formMessage.handleBeforeURLs" class="detailIcon">
+               <div v-for="(iteam,index) in formMessage.handleBeforeURLs" :key="index" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
                   <span class="iconfont icon-shanchu1" @click="detailImage(1,index)"></span>
               </div>             
@@ -120,7 +120,7 @@
             <span style="padding-left:0.2rem">整理后</span>
           </p>
           <div class="imageList">
-             <div v-for="(iteam,index) in formMessage.handleAfterURLs" class="detailIcon">
+             <div v-for="(iteam,index) in formMessage.handleAfterURLs" :key="index" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
                   <span class="iconfont icon-shanchu1" @click="detailImage(2,index)"></span>
               </div>             
@@ -175,6 +175,8 @@ export default {
         handleTime: Date.now(),
         handleAddr: "",
         arrangeNum: "",
+        gpsLongitude: "",
+        gpsLatitude: "",
         handleBeforeURLs: [],
         handleAfterURLs: [],
         cleanNum: "",
@@ -183,7 +185,9 @@ export default {
     };
   },
   components: {},
-  mounted() {},
+  mounted() {
+    this.getMap();
+  },
   created() {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.id) {
@@ -192,7 +196,6 @@ export default {
     }
     window.getImage = this.getImage;
   },
-  mounted() {},
   methods: {
     clickImage() {
       this.imageStatus = 1;
@@ -200,6 +203,29 @@ export default {
     },
     rotate() {
       this.rotateS = this.rotateS + 90;
+    },
+    getMap() {
+      this.myMap = new BMap.Map("myMap", { enableMapClick: false });
+      let myCity = new BMap.Geolocation();
+      let geoc = new BMap.Geocoder();
+      myCity.getCurrentPosition(rs => {
+        let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
+        var marker = new BMap.Marker(ggPoint); // 创建标注
+        this.myMap.addOverlay(marker);
+        this.myMap.centerAndZoom(ggPoint, 16);
+        geoc.getLocation(
+          ggPoint,
+          rs => {
+            console.log(rs);
+            // this.placeData = rs.surroundingPois;
+            // this.formMessage.handleAddr = this.placeData[0].address;
+            this.formMessage.gpsLongitude = rs.surroundingPois[0].point.lng;
+            this.formMessage.gpsLatitude = rs.surroundingPois[0].point.lat;
+            let addComp = rs.addressComponents;
+          },
+          { poiRadius: 200, numPois: 20 }
+        );
+      });
     },
     iconClick() {
       this.$router.push({
@@ -313,11 +339,9 @@ export default {
         }).then(action => {});
       } else if (
         (this.formMessage.arrangeNum == "" &&
-        this.formMessage.cleanNum == "") ||
-        (this.formMessage.arrangeNum < 0 ||
-        this.formMessage.cleanNum < 0) ||
-        (this.formMessage.arrangeNum == 0&&
-        this.formMessage.cleanNum == 0)
+          this.formMessage.cleanNum == "") ||
+        (this.formMessage.arrangeNum < 0 || this.formMessage.cleanNum < 0) ||
+        (this.formMessage.arrangeNum == 0 && this.formMessage.cleanNum == 0)
       ) {
         MessageBox.alert("", {
           message: "整理或清运数量有误",

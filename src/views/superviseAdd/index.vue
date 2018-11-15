@@ -39,7 +39,7 @@
             <span style="padding-left:0.2rem">现场照</span>
           </p>
           <div class="imageList">
-              <div v-for="(iteam,index) in dispachPhotoUrls" class="detailIcon">
+              <div v-for="(iteam,index) in dispachPhotoUrls" :key="index" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
                   <span class="iconfont icon-shanchu" @click="detailImage(index)"></span>
               </div>             
@@ -90,7 +90,7 @@
           <div id="myMap">
           </div>
           <div class="placeList">
-                <div v-for="(iteam,index) in placeData" class="address" @click="getAddress(iteam,index)">
+                <div v-for="(iteam,index) in placeData" :key="index" class="address" @click="getAddress(iteam,index)">
                   <div>
                     <h5>{{iteam.title}}</h5>
                     <p>{{iteam.city}}&nbsp;&nbsp;{{iteam.address}}</p>
@@ -140,8 +140,8 @@ export default {
         handleAddr: "",
         remark: "",
         orgId: "",
-        longitude: "",
-        latitude: "",
+        gpsLongitude: "",
+        gpsLatitude: "",
         dispachPhoto: []
       }
     };
@@ -178,8 +178,8 @@ export default {
     getAddress(row, index) {
       this.changeId = index;
       this.formMessage.handleAddr = row.address;
-      this.formMessage.longitude = row.point.lng;
-      this.formMessage.latitude = row.point.lat;
+      this.formMessage.gpsLongitude = row.point.lng;
+      this.formMessage.gpsLatitude = row.point.lat;
       this.popupVisible = false;
     },
     handOpen(val) {
@@ -216,8 +216,8 @@ export default {
             console.log(rs);
             this.placeData = rs.surroundingPois;
             this.formMessage.handleAddr = this.placeData[0].address;
-            this.formMessage.longitude = this.placeData[0].point.lng;
-            this.formMessage.latitude = this.placeData[0].point.lat;
+            this.formMessage.gpsLongitude = this.placeData[0].point.lng;
+            this.formMessage.gpsLatitude = this.placeData[0].point.lat;
             let addComp = rs.addressComponents;
           },
           { poiRadius: 200, numPois: 20 }

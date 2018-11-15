@@ -40,8 +40,8 @@ Vue.use(VuePreview, {
 Vue.use(common)
 Vue.use(mintUI)
 // Vue.prototype.Ip = process.env.API_HOST + '';
-// Vue.prototype.Ip = 'http://10.1.4.42';
-Vue.prototype.Ip = 'http://10.1.30.202';
+Vue.prototype.Ip = 'http://10.1.4.42';
+// Vue.prototype.Ip = 'http://10.1.30.202';
 // Vue.prototype.Ip = 'http://106.14.198.128';
 Vue.config.productionTip = false
 /* eslint-disable no-new */

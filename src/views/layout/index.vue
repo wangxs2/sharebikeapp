@@ -56,7 +56,7 @@ export default {
     };
   },
   mounted() {
-    this.getMap();
+    // this.getMap();
   },
   created() {
     this.roleCode = localStorage.roleCode;
@@ -135,7 +135,7 @@ export default {
     },
     message() {
       if (
-        (this.roleCode == "clean" || this.roleCode == "manage") &&
+        (this.roleCode == "clean") &&
         this.selected == "/layout/supervise"
       ) {
         this.changeImage("/layout/needtodo");

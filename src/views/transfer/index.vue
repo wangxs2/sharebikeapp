@@ -76,6 +76,8 @@ export default {
         createTime: Date.now(),
         handleAddr: "",
         id: "",
+        gpsLongitude: "",
+        gpsLatitude: "",
         userId: "",
         remark: "",
         radio: ""
@@ -84,7 +86,9 @@ export default {
     };
   },
   components: {},
-  mounted() {},
+  mounted() {
+    this.getMap();
+  },
   created() {
     this.getAll();
     if (this.$route.query.message) {
@@ -92,7 +96,6 @@ export default {
       this.getMessage(this.sheetCode);
     }
   },
-  mounted() {},
   methods: {
     iconClick() {
       this.$router.push({
@@ -104,6 +107,29 @@ export default {
     },
     getCompany(val) {
       console.log(val);
+    },
+    getMap() {
+      this.myMap = new BMap.Map("myMap", { enableMapClick: false });
+      let myCity = new BMap.Geolocation();
+      let geoc = new BMap.Geocoder();
+      myCity.getCurrentPosition(rs => {
+        let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
+        var marker = new BMap.Marker(ggPoint); // 创建标注
+        this.myMap.addOverlay(marker);
+        this.myMap.centerAndZoom(ggPoint, 16);
+        geoc.getLocation(
+          ggPoint,
+          rs => {
+            console.log(rs);
+            // this.placeData = rs.surroundingPois;
+            // this.formMessage.handleAddr = this.placeData[0].address;
+            this.formMessage.gpsLongitude = rs.surroundingPois[0].point.lng;
+            this.formMessage.gpsLatitude = rs.surroundingPois[0].point.lat;
+            let addComp = rs.addressComponents;
+          },
+          { poiRadius: 200, numPois: 20 }
+        );
+      });
     },
     getAll() {
       this.$fetchGet("user/listUser").then(res => {
@@ -175,7 +201,7 @@ input {
   text-align: right;
 }
 textarea {
-  width:100%;
+  width: 100%;
   margin: 0rem 1rem 0 0rem;
   text-align: right;
 }
