@@ -166,6 +166,8 @@ export default {
   }
   .content {
     flex: 1;
+    overflow-x: hidden;
+    overflow-y: scroll;
     .formList {
       margin: 0.5rem;
       margin-bottom: 0;
@@ -196,7 +198,7 @@ export default {
     text-align: center;
     color: #aeaeae;
     box-sizing: border-box;
-    padding-bottom: 2rem;
+    padding-bottom: 0.5rem;
     // height: 2rem;
   }
 }

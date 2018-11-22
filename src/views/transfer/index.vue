@@ -68,6 +68,7 @@ export default {
       slide2: [],
       slide: [],
       sheetCode: "",
+      sheetCode1:"",
       imageStatus: 0,
       iteamList: {},
       handleBefore: [],
@@ -90,10 +91,12 @@ export default {
     this.getMap();
   },
   created() {
-    this.getAll();
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
-      this.getMessage(this.sheetCode);
+      this.sheetCode1 = this.$route.query.sheetCode1;
+      this.getMessage();
+      this.getAll();
+      
     }
   },
   methods: {
@@ -121,8 +124,6 @@ export default {
           ggPoint,
           rs => {
             console.log(rs);
-            // this.placeData = rs.surroundingPois;
-            // this.formMessage.handleAddr = this.placeData[0].address;
             this.formMessage.gpsLongitude = rs.surroundingPois[0].point.lng;
             this.formMessage.gpsLatitude = rs.surroundingPois[0].point.lat;
             let addComp = rs.addressComponents;
@@ -132,19 +133,21 @@ export default {
       });
     },
     getAll() {
-      this.$fetchGet("user/listUser").then(res => {
+      this.$fetchGet("dispatch/listUser",{
+        sheetCode:this.sheetCode1
+      }).then(res => {
         res.forEach(iteam => {
           let obj = {};
-          obj.label = iteam.realName;
+          obj.label = iteam.realName+"（"+iteam.areas+"）";
           obj.value = iteam.id.toString();
           this.options.push(obj);
         });
         this.value = res[0].id.toString();
       });
     },
-    getMessage(val) {
-      this.$fetchGet("dispatch/dispatchDetail", {
-        id: val
+    getMessage() {
+      this.$fetchGet("dispatch/dispatchDetail",{
+        id: this.sheetCode
       })
         .then(res => {
           if (res.status == 1) {

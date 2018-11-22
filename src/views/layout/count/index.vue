@@ -284,9 +284,15 @@ export default {
       // border-bottom: 1px solid #ddd;
       display: flex;
       align-items: center;
+      overflow-y: hidden;
+      overflow-x: scroll;
+      box-sizing: border-box;
+      // padding:0 0.2rem;
       justify-content: space-between;
       .nav-item {
-        flex: 1;
+        // flex: 1;
+        width:100%;
+        height: 100%;
         text-align: center;
         color: #656565;
         font-size: 0.426667rem;
@@ -319,7 +325,6 @@ export default {
         .btn-left {
           box-sizing: border-box;
           padding: 6px 20px;
-          // line-height: normal;
           font-size: 0.373333rem;
           color: #5076ff;
           border-top-left-radius: 0.5rem;

@@ -18,6 +18,7 @@
         </div>
         <div class="user-enterprise" v-text="'企业：'+ userInfo.orgName"></div>
         <div class="user-email" v-text="'email: ' + userInfo.emailAddr"></div>
+        <!-- <div class="user-email" style="margin-top: 0.1rem;" v-text="'区域: ' + userInfo.areas"></div> -->
       </div>
     </div>
     <div class="content">

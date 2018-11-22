@@ -51,7 +51,7 @@
           <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>派单备注</span>
-            <span style="width:100%;text-align:right;margin-right:1rem" v-model='formMessage.dispachRemark'>{{formMessage.dispachRemark}}</span>
+            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.dispachRemark">{{formMessage.dispachRemark}}</span>
           </p>
         </div>
         <div class="iteamForm">
@@ -179,6 +179,7 @@ export default {
         handleBeforeURLs: [],
         handleAfterURLs: [],
         cleanNum: "",
+        sheetCode1:"",
         remark: ""
       }
     };
@@ -191,6 +192,8 @@ export default {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.id) {
       this.sheetCode = this.$route.query.id;
+      this.sheetCode1 = this.$route.query.sheetCode;
+      
       this.getMessage(this.sheetCode);
     }
     window.getImage = this.getImage;
@@ -230,6 +233,7 @@ export default {
       this.$router.push({
         path: "/transfer",
         query: {
+          sheetCode1:this.sheetCode1,
           message: this.sheetCode
         }
       });

@@ -5,7 +5,6 @@
 
         <mt-header title="自查">
             <mt-button class="iconfont icon-gengduo" style="font-size:24px" slot="right" @click="iconClick">
-                
             </mt-button>
         </mt-header>
       </div>
