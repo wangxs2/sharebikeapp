@@ -13,7 +13,7 @@
             <p style="color:#989898">暂时没有自查数据哦~</p>
       </div>
       <scroller style="top: 1.25rem;bottom:55px;height:82%" v-if="!noneList" :on-infinite="infinite" :on-refresh="refresh" infiniteText="上拉加载" noDataText="--我也是有底线的--" ref="my_scroller">
-            <div class="iteamListSa" v-for="(iteam, index) in pageList" @click="detailClick(iteam)">
+            <div class="iteamListSa" v-for="(iteam, index) in pageList" :key="index" @click="detailClick(iteam)">
                 <div class="leftSa">                
                     <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]" alt="" width="90" height="90" srcset="">
                 </div>
@@ -93,9 +93,17 @@ export default {
     refresh: function() {
       //下拉刷新
       // console.log("refresh");
+      this.$fetchGet("selfcheck/pageSelfCheck",{
+        page: 1,
+        pageSize: 15
+      }).then(
+        res => {
+          this.pageList=res.list
+        }
+      );
       this.timeout = setTimeout(() => {
         this.$refs.my_scroller.finishPullToRefresh();
-      }, 1500);
+      }, 1000);
     },
   }
 };

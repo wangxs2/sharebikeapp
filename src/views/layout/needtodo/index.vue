@@ -137,9 +137,18 @@ export default {
     refresh: function() {
       //下拉刷新
       // console.log("refresh");
+      this.$fetchGet("dispatch/pageDispatchToDo",{
+        page: 1,
+        pageSize: 15
+      }).then(
+        res => {
+          this.pageList=res.list
+          
+        }
+      );
       this.timeout = setTimeout(() => {
         this.$refs.my_scroller.finishPullToRefresh();
-      }, 1500);
+      }, 1000);
     }
   }
 };
