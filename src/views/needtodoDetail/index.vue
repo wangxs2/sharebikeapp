@@ -185,7 +185,7 @@ export default {
     handOpen(val) {
       this.rotateS = 0;
       this.popupVisible = true;
-      val = val.replace(".400x400.jpg", "");
+      val = val.replace(".400x400.jpg", ".square.jpg");
       this.bigImage = val;
     },
     rotate() {
@@ -210,7 +210,7 @@ export default {
         .then(res => {
           Indicator.close();
           //   var obj = {};
-          res.dispatchDetail.sendRecordList.splice(0, 1);
+          // res.dispatchDetail.sendRecordList.splice(0, 1);
           this.iteamList = res.dispatchDetail;
         })
         .catch(res => {});

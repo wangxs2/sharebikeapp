@@ -241,7 +241,7 @@ export default {
     handOpen(val) {
       this.rotateS = 0;
       this.popupVisible = true;
-      val = val.replace(".400x400.jpg", "");
+      val = val.replace(".400x400.jpg", ".square.jpg");
       this.bigImage = val;
     },
     getImage(val, row) {

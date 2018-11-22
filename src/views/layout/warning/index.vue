@@ -69,10 +69,17 @@ export default {
         text: "加载中...",
         spinnerType: "fading-circle"
       });
-      this.$fetchGet("warn/getWarning").then(res => {
-        Indicator.close();
-        this.warningData = res;
-      });
+      this.$fetchGet("warn/getWarning")
+        .then(res => {
+          Indicator.close();
+          this.warningData = res;
+        })
+        .catch(() => {
+          Indicator.open({
+            text: "请求超时",
+            spinnerType: "fading-circle"
+          });
+        });
     }
   }
 };
@@ -85,12 +92,12 @@ export default {
   display: flex;
   flex-direction: column;
   .noneList {
-      flex: 1;
-      line-height: 1;
-      text-align: center;
-      margin-top: 2rem;
-      font-size: 16px;
-    }
+    flex: 1;
+    line-height: 1;
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 16px;
+  }
   .header {
     height: 1.173333rem;
     display: flex;
@@ -152,7 +159,7 @@ export default {
               font-weight: 500;
               // color: rgba(255, 17, 17, 1);
               margin-left: 0.48rem;
-               overflow: hidden;
+              overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
             }

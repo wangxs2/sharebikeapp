@@ -77,10 +77,9 @@
             <textarea maxlength="180" cols="50" rows="10" placeholder="请输入备注(最多输入180个文字)" style="margin-top:0rem" v-model="formMessage.remark"></textarea>
           </p>
         </div>
-        </form>       
       </div>
       <div class="bottom">
-          <button type="button" class="buttonSa1" @click="submit()">派单</button>
+          <button type="button" :class="isDisable==false?'buttonSa1 buttonSa2': 'buttonSa1 buttonSa3'" @click="submit()" :disabled="isDisable">派单</button>
       </div>
       <mt-popup v-model="popupVisible" class="mapwhere" position="right">
           <div class="header">
@@ -110,6 +109,7 @@ export default {
   data() {
     return {
       time: "",
+      isDisable: false,
       changeId: 0,
       rotateS: 0,
       dealMethod: "",
@@ -161,9 +161,9 @@ export default {
     rotate() {
       this.rotateS = this.rotateS + 90;
     },
-    getLocation(val){
-      return val
-     },
+    getLocation(val) {
+      return val;
+    },
     placeClick() {
       if (this.downAddress() == false || this.getLocation() == false) {
         MessageBox.alert("", {
@@ -183,9 +183,9 @@ export default {
       this.popupVisible = false;
     },
     handOpen(val) {
-      this.rotateS=0;
+      this.rotateS = 0;
       this.popupVisible1 = true;
-      val = val.replace(".400x400.jpg", "");
+      val = val.replace(".400x400.jpg", ".square.jpg");
       this.bigImage = val;
     },
     getImage(val, row) {
@@ -213,7 +213,7 @@ export default {
         geoc.getLocation(
           ggPoint,
           rs => {
-            console.log(rs);
+            // console.log(rs);
             this.placeData = rs.surroundingPois;
             this.formMessage.handleAddr = this.placeData[0].address;
             this.formMessage.gpsLongitude = this.placeData[0].point.lng;
@@ -248,7 +248,7 @@ export default {
       } else {
         this.dealMethod = "3";
       }
-      console.log(this.dealMethod);
+      // console.log(this.dealMethod);
     },
     getAll() {
       this.$fetchGet("count/bikeCompany").then(res => {
@@ -271,15 +271,15 @@ export default {
         });
     },
     submit() {
-      console.log(this.value);
+      // console.log(this.value);
       if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择待清理地点",
           title: "提示"
         }).then(action => {});
-      }else if(this.formMessage.handleAddr.length>20){
+      } else if (this.formMessage.handleAddr.length > 60) {
         MessageBox.alert("", {
-          message: "清理地点长度不能大于20",
+          message: "清理地点长度不能大于60",
           title: "提示"
         }).then(action => {});
       } else if (this.dispachPhotoUrls.length == 0) {
@@ -298,6 +298,8 @@ export default {
           title: "提示"
         }).then(action => {
           if (action == "confirm") {
+            // console.log(1);
+            this.isDisable = true;
             let obj = {};
             this.formMessage.handleBefore;
             obj.dispatch = this.formMessage;
@@ -307,16 +309,20 @@ export default {
             obj.finish = 1;
             this.$fetchPost("dispatch/saveDispatch", obj, "json")
               .then(res => {
+                this.isDisable = false;
                 if (res.status == -1) {
                   MessageBox.alert("", {
                     message: res.message,
-                    title: "提示"
-                  }).then(action => {});
+                    title: "派单失败"
+                  }).then(action => {
+                    this.$router.push("/superviseAdd");
+                  });
                 } else {
                   MessageBox.alert("", {
                     message: "保存成功",
                     title: "提示"
                   }).then(action => {
+                    
                     this.$router.push("/layout/supervise");
                   });
                 }
@@ -327,6 +333,8 @@ export default {
                   title: "提示"
                 }).then(action => {});
               });
+          } else {
+            console.log(2);
           }
         });
       }
@@ -517,7 +525,12 @@ textarea {
       color: #fff;
       line-height: 1.5rem;
       font-size: 0.5rem;
+    }
+    .buttonSa2 {
       background: -webkit-linear-gradient(left, #6698ff, #5076ff);
+    }
+    .buttonSa3 {
+      background: #aeaeae;
     }
   }
 }

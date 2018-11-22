@@ -276,7 +276,7 @@ export default {
     handOpen(val) {
       this.rotateS = 0;
       this.popupVisible = true;
-      val = val.replace(".400x400.jpg", "");
+      val = val.replace(".400x400.jpg", ".square.jpg");
       this.bigImage = val;
     },
     iconClick() {
@@ -308,9 +308,9 @@ export default {
           } else {
             this.showIndicators = true;
           }
-          res.forEach(iteam => {
-            iteam.sendRecordList.splice(0, 1);
-          });
+        //   res.forEach(iteam => {
+        //     iteam.sendRecordList.splice(0, 1);
+        //   });
           console.log(res);
           this.iteamList = res;
         })

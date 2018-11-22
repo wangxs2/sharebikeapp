@@ -144,12 +144,12 @@ export default {
   flex-direction: column;
   .header {
     width: 100%;
-    line-height: 1;
+    // line-height: 1;
     flex-direction: column;
     box-sizing: border-box;
     .title {
       width: 100%;
-      height: 5.6rem;
+      height: 4.7rem;
       padding-top: 0.2rem;
       box-sizing: border-box;
       background: -webkit-linear-gradient(left, #6698ff, #5076ff);

@@ -223,7 +223,7 @@ export default {
     handOpen(val) {
       this.rotateS=0;
       this.popupVisible1 = true;
-      val = val.replace(".400x400.jpg", "");
+      val = val.replace(".400x400.jpg", ".square.jpg");
       this.bigImage = val;
     },
     clickImage() {
@@ -316,9 +316,9 @@ export default {
           message: "请上传整理后照片",
           title: "提示"
         }).then(action => {});
-      }else if(this.formMessage.handleAddr.length>20){
+      }else if(this.formMessage.handleAddr.length>60){
         MessageBox.alert("", {
-          message: "清理地点长度不能大于20",
+          message: "清理地点长度不能大于60",
           title: "提示"
         }).then(action => {});
       }else if (
