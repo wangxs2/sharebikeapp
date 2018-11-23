@@ -44,8 +44,6 @@
             <textarea cols="50" rows="10" placeholder="请输入派单备注"  v-model="formMessage.remark"></textarea>
           </p>
         </div>
-        </form>
-       
       </div>
       <div class="bottom">
           <!-- <button type="button" class="buttonSa" @click="save()">暂存</button> -->
@@ -104,7 +102,8 @@ export default {
       this.$router.push({
         path: "/needtodoAdd",
         query: {
-          id: this.sheetCode
+          id: this.sheetCode,
+          sheetCode1:this.sheetCode1
         }
       });
     },

@@ -297,16 +297,17 @@ export default {
           message: "是否确认派单",
           title: "提示"
         }).then(action => {
+          let obj = {};
+          let arrsa=[]
           if (action == "confirm") {
-            // console.log(1);
             this.isDisable = true;
-            let obj = {};
-            this.formMessage.handleBefore;
+            arrsa=this.formMessage.dispachPhoto;
             obj.dispatch = this.formMessage;
-            obj.dispatch.dispachPhoto = this.formMessage.dispachPhoto.join(";");
+            obj.dispatch.dispachPhoto = arrsa.join(";");
             obj.dispatch.dealMethod = this.dealMethod;
             obj.orgIdList = this.value;
             obj.finish = 1;
+            
             this.$fetchPost("dispatch/saveDispatch", obj, "json")
               .then(res => {
                 this.isDisable = false;
@@ -315,6 +316,7 @@ export default {
                     message: res.message,
                     title: "派单失败"
                   }).then(action => {
+                    this.formMessage.dispachPhoto=this.formMessage.dispachPhoto.split(";");
                     this.$router.push("/superviseAdd");
                   });
                 } else {

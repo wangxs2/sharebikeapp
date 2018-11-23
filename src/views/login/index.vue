@@ -125,6 +125,7 @@ export default {
           }
         })
         .catch(res => {
+          Indicator.close();
           MessageBox.alert("", {
             message: "登录超时",
             title: "提示"
@@ -199,6 +200,8 @@ export default {
     color: #aeaeae;
     box-sizing: border-box;
     padding-bottom: 0.5rem;
+    // position: fixed;
+    // bottom: 0;
     // height: 2rem;
   }
 }

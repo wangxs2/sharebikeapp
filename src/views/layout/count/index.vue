@@ -192,7 +192,7 @@ export default {
           trigger: "axis"
         },
         grid: {
-          left: "3%",
+          left: "4%",
           right: "3%",
           bottom: "3%",
           containLabel: true

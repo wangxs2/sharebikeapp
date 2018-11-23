@@ -75,6 +75,7 @@ export default {
           this.warningData = res;
         })
         .catch(() => {
+          Indicator.close();
           Indicator.open({
             text: "请求超时",
             spinnerType: "fading-circle"

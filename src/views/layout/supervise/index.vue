@@ -12,7 +12,7 @@
             <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt="">
             <p style="color:#989898">暂时没有数据哦~</p>
       </div>
-      <scroller style="top: 1.25rem;bottom:55px;height:82%" v-if="!noneList" :on-infinite="infinite" :on-refresh="refresh" infiniteText="上拉加载" noDataText="--我也是有底线的--" ref="my_scroller">
+      <scroller style="top: 1.25rem;bottom:55px;height:82%;overflow:hidden" v-if="!noneList" :on-infinite="infinite" :on-refresh="refresh" infiniteText="上拉加载" noDataText="--我也是有底线的--" ref="my_scroller">
             <div class="iteamListSa" v-for="(iteam, index) in pageList" :key="index" @click="detailClick(iteam)">
               <div class="leftSa">                  
                   <img v-if="iteam.dispachPhotoURLs.length!==0" :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="90" height="90" srcset="">
@@ -117,6 +117,9 @@ export default {
 </script>
 
 <style lang="scss">
+._v-container{
+  height: 84% !important;
+}
 .containerSa {
   width: 100%;
   height: 100%;

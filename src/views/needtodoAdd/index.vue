@@ -192,8 +192,12 @@ export default {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.id) {
       this.sheetCode = this.$route.query.id;
-      this.sheetCode1 = this.$route.query.sheetCode;
-      
+      if(this.$route.query.sheetCode){
+        this.sheetCode1 = this.$route.query.sheetCode;
+      }
+      if(this.$route.query.sheetCode1){
+        this.sheetCode1 = this.$route.query.sheetCode1;
+      }
       this.getMessage(this.sheetCode);
     }
     window.getImage = this.getImage;
