@@ -33,7 +33,7 @@
           <p class="imageClean">
                 <mt-radio
                     v-model="value"
-                    :options="options" @change="getCompany">
+                    :options="options" @change="getCompany" :class="valuesa==value?value:valuesa">
                 </mt-radio>
           </p>
         </div>
@@ -59,6 +59,7 @@ export default {
   data() {
     return {
       time: "",
+      valuesa:"",
       roleCode: "",
       options: [],
       value: "",
@@ -132,12 +133,18 @@ export default {
       });
     },
     getAll() {
+      this.valuesa='';
       this.$fetchGet("dispatch/listUser",{
         sheetCode:this.sheetCode1
       }).then(res => {
-        res.forEach(iteam => {
+        res.forEach((iteam,index) => {
           let obj = {};
-          obj.label = iteam.realName+"（"+iteam.areas+"）";
+          if(iteam.areas==''){
+            obj.label = iteam.realName+"（无负责区域）";
+            this.valuesa=iteam.id.toString();
+          }else{
+            obj.label = iteam.realName+"（"+iteam.areas+"）";
+          }
           obj.value = iteam.id.toString();
           this.options.push(obj);
         });
@@ -195,6 +202,14 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+  .value{
+    color: black;
+  }
+  .valuesa{
+    color: red;
+  }
+</style>
 
 <style lang="scss" scoped>
 input {

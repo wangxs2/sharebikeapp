@@ -24,6 +24,13 @@
               派单信息
         </div>
         <div class="iteamForm">
+          <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <p>
+            <span>单号</span>
+            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.sheetCode">{{formMessage.sheetCode}}</span>
+          </p>
+        </div>
+        <div class="iteamForm">
           <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>时间</span>
@@ -285,7 +292,6 @@ export default {
       })
         .then(res => {
           if (res.status == 1) {
-            res.dispatchDetail.sendRecordList.splice(0, 1);
             this.formMessage = res.dispatchDetail;
             if (this.formMessage.handleTime == undefined) {
               this.formMessage.handleTime = Date.now();

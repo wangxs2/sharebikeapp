@@ -25,12 +25,22 @@
         </div>
         <div class="iteamList">
               <div>
+                <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+                <span>单号：</span>
+                <span>{{(iteamList.sheetCode)}}</span>
+                
+              </div>
+              <div style="margin-top:0.2rem" :class="iteamList.status == 1 ? 'green' : 'red'">{{iteamList.status == 1 ? '处理中' : "已处理"}}</div>
+
+        </div>
+        <div class="iteamList">
+              <div>
                 <span><img src="../../assets/image/selfcheck/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
                 <span>时间：</span>
                 <span>{{FormatDate(iteamList.updateTime)}}</span>
                 
               </div>
-              <div style="margin-top:0.2rem" :class="iteamList.status == 1 ? 'green' : 'red'">{{iteamList.status == 1 ? '处理中' : "已处理"}}</div>
+              <!-- <div style="margin-top:0.2rem" :class="iteamList.status == 1 ? 'green' : 'red'">{{iteamList.status == 1 ? '处理中' : "已处理"}}</div> -->
 
         </div>
         <div class="iteamList">
