@@ -62,23 +62,23 @@ export default {
     getLogin(val) {
       this.loginId = val;
     },
-    getMap(user) {
-      var geolocation = new BMap.Geolocation();
-      geolocation.getCurrentPosition(
-        function(r) {
-          if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-            var mk = new BMap.Marker(r.point);
-            this.$fetchPut("user/updateByUser", {
-              longitude: r.point.lng,
-              latitude: r.point.lat
-            }).then(data => {
-            });
-          } else {
-          }
-        },
-        { enableHighAccuracy: true }
-      );
-    },
+    // getMap(user) {
+    //   var geolocation = new BMap.Geolocation();
+    //   geolocation.getCurrentPosition(
+    //     function(r) {
+    //       if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+    //         var mk = new BMap.Marker(r.point);
+    //         this.$fetchPut("user/updateByUser", {
+    //           longitude: r.point.lng,
+    //           latitude: r.point.lat
+    //         }).then(data => {
+    //         });
+    //       } else {
+    //       }
+    //     },
+    //     { enableHighAccuracy: true }
+    //   );
+    // },
     iconReturn(){
       this.$router.push({path: "/forget"});
     },
@@ -112,8 +112,7 @@ export default {
           Indicator.close();
           if (res.status == "success") {
             localStorage.setItem("roleCode", res.info.roleCode);
-            document.cookie = "userId=" + res.info.id;
-             
+            document.cookie = "userId=" + res.info.id;           
             this.$router.push("/layout/selfCheck");
           } else if (res.status == "fail") {
             localStorage.clear("passWord")

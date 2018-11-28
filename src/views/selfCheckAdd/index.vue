@@ -33,29 +33,31 @@
           <span class="iconfont icon-dingwei1" style="font-size:20px;margin-top:0.1rem;margin-right:0.1rem" @click="placeClick"></span>
         </div>
         <div class="iteamImage">
-          <p>
-            <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">整理前</span>
-          </p>
+          <div>
+            <!-- <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+            <span style="padding-left:0.2rem">整理前</span> -->
+            <img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""><span>整理前</span>
+          </div>
           <div class="imageList">
               <div v-for="(iteam,index) in formMessage.handleBeforeURLs" :key="index" class="detailIcon">
-                  <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" style="font-size:20px" @click="detailImage(1,index)"></span>
+                  <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                  <span @click="detailImage(1,index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
               </div>             
-              <img v-if="formMessage.handleBeforeURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">
+              <img v-if="formMessage.handleBeforeURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="100px" height="100px" alt="" srcset="" @click="clickImage">
           </div>
         </div>
-        <div class="iteamImage">
-          <p>
-            <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">整理后</span>
-          </p>
+        <div class="iteamImage" style="padding-top: 0.4rem;">
+          <div>
+            <!-- <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+            <span style="padding-left:0.2rem">整理后</span> -->
+            <img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""><span>整理后</span>
+          </div>
            <div class="imageList">
               <div v-for="(iteam,index) in formMessage.handleAfterURLs" :key="index" class="detailIcon">
-                  <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" style="font-size:20px" @click="detailImage(2,index)"></span>
+                  <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                  <span @click="detailImage(2,index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
               </div>             
-              <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage1">                         
+              <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="100px" height="100px" alt="" srcset="" @click="clickImage1">                         
           </div>
         </div>
         <div class="iteamForm">
@@ -259,6 +261,7 @@ export default {
         .catch(res => {});
     },
     save() {
+      this.formMessage.createTime=this.FormatDate1(this.formMessage.createTime);
       if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择清理地点",
@@ -301,6 +304,8 @@ export default {
       }
     },
     submit() {
+      this.formMessage.createTime=this.FormatDate1(this.formMessage.createTime);
+      console.log(this.formMessage.createTime);
       if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择清理地点",
@@ -336,8 +341,9 @@ export default {
         }).then(action => {
           if (action == "confirm") {
             let obj = {};
-            this.formMessage.handleBefore;
+            
             obj.selfCheck = this.formMessage;
+            // obj.selfCheck.createTime=this.FormatDate(this.formMessage.createTime);
             obj.selfCheck.handleBefore = this.formMessage.handleBefore.join(
               ";"
             );
@@ -494,32 +500,38 @@ textarea {
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
-      padding-top: 0.4rem;
+      padding-top: 0.1rem;
       .imageList {
         display: flex;
         flex-wrap: wrap;
         box-sizing: border-box;
         padding-left: 0.4rem;
-        padding-top: 0.4rem;
+        padding-top: 0.1rem;
         .detailIcon {
           position: relative;
           margin-right: 0.2rem;
           span {
             position: absolute;
-            right: -5px;
-            top: -8px;
+            right: 0px;
+            top: 0px;
           }
         }
       }
-      p {
-        display: flex;
-        justify-content: flex-start;
-        width: 100%;
-        margin: 0;
-        padding: 0;
+      div {
+        img{
+          border: none;
+          margin-bottom:-0.1rem;
+        }
+        vertical-align:middle;
+        // display: flex;
+        // justify-content: flex-start;
+        // width: 100%;
+        // margin: 0;
+        // padding: 0;
         padding: 0 0 0 0.4rem;
         span {
           font-size: 0.4rem;
+          margin-left: 0.2rem;
         }
       }
     }

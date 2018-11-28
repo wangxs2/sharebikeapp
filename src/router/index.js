@@ -131,6 +131,10 @@ export const constantRouterMap = [{
     path: '/test1',
     name: '测试1',
     component: _import('test1/index')
+  },{
+    path: '/downloadmode',
+    name: '下载方式',
+    component: _import('downloadmode/index')
   }
 ]
 

@@ -1,6 +1,7 @@
 
 <template>
   <div class="container">
+    <div id="myMap"></div>
         <mt-popup
       class="imgMask"
         v-model="popupVisible"
@@ -115,10 +116,10 @@
           </p>
           <div class="imageList">
                <div v-for="(iteam,index) in formMessage.handleBeforeURLs" :key="index" class="detailIcon">
-                  <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" style="font-size:20px" @click="detailImage(1,index)"></span>
+                  <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                  <span @click="detailImage(1,index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
               </div>             
-              <img v-if="formMessage.handleBeforeURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">
+              <img v-if="formMessage.handleBeforeURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="100px" height="100px" alt="" srcset="" @click="clickImage">
           </div>
         </div>
         <div class="iteamImage">
@@ -128,10 +129,10 @@
           </p>
           <div class="imageList">
              <div v-for="(iteam,index) in formMessage.handleAfterURLs" :key="index" class="detailIcon">
-                  <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" style="font-size:20px" @click="detailImage(2,index)"></span>
+                  <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                  <span @click="detailImage(2,index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
               </div>             
-              <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage1">
+              <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="100px" height="100px" alt="" srcset="" @click="clickImage1">
              
           </div>
         </div>
@@ -168,9 +169,11 @@ export default {
       bigImage: "",
       rotateS: 0,
       roleCode: "",
+      myMap: null,
       slide1: [],
       slide2: [],
       slide: [],
+      placeData: [],
       sheetCode: "",
       imageStatus: 0,
       iteamList: {},
@@ -193,21 +196,22 @@ export default {
   },
   components: {},
   mounted() {
-    this.getMap();
+    
   },
   created() {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.id) {
       this.sheetCode = this.$route.query.id;
-      if(this.$route.query.sheetCode){
-        this.sheetCode1 = this.$route.query.sheetCode;
-      }
-      if(this.$route.query.sheetCode1){
-        this.sheetCode1 = this.$route.query.sheetCode1;
-      }
+      // if(this.$route.query.sheetCode){
+      //   this.sheetCode1 = this.$route.query.sheetCode;
+      // }
+      // if(this.$route.query.sheetCode1){
+      //   this.sheetCode1 = this.$route.query.sheetCode1;
+      // }
       this.getMessage(this.sheetCode);
     }
     window.getImage = this.getImage;
+    
   },
   methods: {
     clickImage() {
@@ -230,11 +234,11 @@ export default {
           ggPoint,
           rs => {
             console.log(rs);
-            // this.placeData = rs.surroundingPois;
+            this.placeData = rs.surroundingPois;
             // this.formMessage.handleAddr = this.placeData[0].address;
-            this.formMessage.gpsLongitude = rs.surroundingPois[0].point.lng;
-            this.formMessage.gpsLatitude = rs.surroundingPois[0].point.lat;
-            let addComp = rs.addressComponents;
+            this.formMessage.gpsLongitude = this.placeData[0].point.lng;
+            this.formMessage.gpsLatitude = this.placeData[0].point.lat;
+            // let addComp = rs.addressComponents;
           },
           { poiRadius: 200, numPois: 20 }
         );
@@ -292,6 +296,8 @@ export default {
       })
         .then(res => {
           if (res.status == 1) {
+            this.sheetCode1=res.dispatchDetail.sheetCode;
+            console.log(this.sheetCode1);
             this.formMessage = res.dispatchDetail;
             if (this.formMessage.handleTime == undefined) {
               this.formMessage.handleTime = Date.now();
@@ -303,6 +309,7 @@ export default {
         .catch(res => {});
     },
     save() {
+      this.getMap();
       if (this.formMessage.handleBeforeURLs.length == 0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
@@ -340,6 +347,7 @@ export default {
       }
     },
     submit() {
+      this.getMap();
       if (this.formMessage.handleBeforeURLs.length == 0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
@@ -487,8 +495,8 @@ textarea {
           margin-right: 0.2rem;
           span {
             position: absolute;
-            right: -5px;
-            top: -8px;
+            right: 0px;
+            top: 0px;
           }
         }
       }

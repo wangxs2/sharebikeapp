@@ -21,6 +21,10 @@
           <div class="info-title">版本更新{{version}}</div>
           <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
         </div>
+        <div class="info-box" @click="todownload">
+          <div class="info-title">下载方式</div>
+          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
+        </div>
       </div>
       <div class="content-bottom">
         <div class="bottom-btn">
@@ -39,8 +43,7 @@
           <div class="version-popup-bottom">
             <ul class="version-detail" v-for="(item,index) in versionDetail" :key="item.index">
               <li class="version-detail-li">
-                <span class="dot"></span>
-                <span>{{item}}</span>
+                <span style="text-indent: -0.6rem;margin-left: 0.6rem;">{{item}}</span>
               </li>
             </ul>
           </div>
@@ -98,6 +101,9 @@ export default {
     //去意见反馈
     toProblemFeedback() {
       this.$router.push("/problemFeedback");
+    },
+    todownload(){
+      this.$router.push("/downloadmode");
     },
     //退出登录
     logOut() {
@@ -241,7 +247,7 @@ export default {
         }
       }
       .version-popup-bottom {
-        padding: 0.8rem 0.4rem;
+        padding: 0.2rem 0.4rem;
         flex: 1;
         font-size: 0.4rem;
         overflow: scroll;

@@ -247,6 +247,7 @@ export default {
     // 打开时间选择框
     openPicker() {
       this.$refs.picker.open();
+      this.eachartNode.dispatchAction({type: 'hideTip'});
     }
   }
 };
@@ -316,6 +317,7 @@ export default {
     section {
       width: 100%;
       flex: 1;
+      height:1px;
       display: flex;
       flex-direction: column;
       align-items: center;

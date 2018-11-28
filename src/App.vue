@@ -31,21 +31,23 @@ export default {
         this.$fetchPost("login", data)
           .then(res => {
             if (res.status == "success") {
+              console.log(12)
               localStorage.setItem("roleCode", res.info.roleCode);
               document.cookie = "userId=" + res.info.id;
               if (
                 res.info.roleCode == "clean" ||
                 res.info.roleCode == "manage"
               ) {
+                console.log(13)
                 this.$router.push({
                   path: "/needtodoAdd",
                   query: {
                     id: url
                   }
                 });
-              } else if (res.info.roleCode == "admin") {
-                console.log(655555);
-                console.log(url);
+              } else if (res.info.roleCode == "admin"||res.info.roleCode == "global"||res.info.roleCode == "dispatch") {
+                // console.log(655555);
+                // console.log(url);
                 this.$router.push({
                   path: "/layout/supervise",
                   query: {
@@ -53,7 +55,13 @@ export default {
                     statuSa: 2
                   }
                 });
+              }else{
+                console.log(14)
+                this.$router.push({
+                  path: "/layout/selfCheck"
+                });
               }
+
             } else if (res.status == "fail") {
               MessageBox.alert("", {
                 message: res.info,
@@ -77,4 +85,7 @@ export default {
 </script>
 
 <style>
+.mint-cell{
+  background-color: transparent;
+}
 </style>

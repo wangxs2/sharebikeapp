@@ -147,7 +147,16 @@ export default {
         // let now_second=nstr.getSeconds()<10?'0'+nstr.getSeconds():nstr.getSeconds() //秒
         return now_year + "-" + now_month + "-" + now_day+ " " +now_hours+":" + now_minut
       };
-
+      Vue.prototype.FormatDate1 = function (date) {
+        let nstr = new Date(date)//当天时间  
+        let now_year = nstr.getFullYear() //年份  
+        let now_month = (nstr.getMonth() + 1) < 10 ? '0' + (nstr.getMonth() + 1) : nstr.getMonth() + 1 //月份 
+        let now_day = nstr.getDate() < 10 ? '0' + nstr.getDate() : nstr.getDate() //日期  
+        let now_hours=nstr.getHours()<10?'0'+nstr.getHours():nstr.getHours() //时 
+        let now_minut=nstr.getMinutes()<10?'0'+nstr.getMinutes():nstr.getMinutes() //分
+        let now_second=nstr.getSeconds()<10?'0'+nstr.getSeconds():nstr.getSeconds() //秒
+        return now_year + "-" + now_month + "-" + now_day+ " " +now_hours+":" + now_minut+":"+now_second
+      };
     Vue.filter('FormatTime', (value, arg) => {
       if (value) {
         return new Date(value).Format(arg)

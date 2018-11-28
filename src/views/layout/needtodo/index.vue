@@ -94,7 +94,6 @@ export default {
         this.$router.push({
           path: "/needtodoAdd",
           query: {
-            sheetCode:row.sheetCode,
             id: row.id
           }
         });

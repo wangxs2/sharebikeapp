@@ -40,10 +40,10 @@
           </p>
           <div class="imageList">
               <div v-for="(iteam,index) in dispachPhotoUrls" :key="index" class="detailIcon">
-                  <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu" style="font-size:20px" @click="detailImage(index)"></span>
+                  <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                  <span @click="detailImage(index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
               </div>             
-              <img v-if="dispachPhotoUrls.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">       
+              <img v-if="dispachPhotoUrls.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="100px" height="100px" alt="" srcset="" @click="clickImage">       
           </div>
         </div>
         <div class="iteamImage">
@@ -482,8 +482,8 @@ textarea {
           margin-right: 0.2rem;
           span {
             position: absolute;
-            right: -7px;
-            top: -8px;
+            right: 0px;
+            top: 0px;
           }
         }
       }

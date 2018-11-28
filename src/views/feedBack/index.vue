@@ -20,14 +20,14 @@
           <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>单号</span>
-            <span style="width:100%;text-align:right;margin-right:1rem">{{formMessage.sheetCode}}</span>
+            <span style="width:100%;text-align:right;margin-right:0.2rem">{{formMessage.sheetCode}}</span>
           </p>
         </div>
         <div class="iteamForm">
           <span><img style="margin-top:-0.1rem" src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
           <p>
             <span>处理方式</span>
-            <span style="width:100%;text-align:right;margin-right:1rem">{{dealMethod==1?"整理":dealMethod==2?"清运":"整理且清运"}}</span>
+            <span style="width:85%;text-align:right;margin-right:0.2rem">{{dealMethod==1?"整理":dealMethod==2?"清运":"整理且清运"}}</span>
           </p>
         </div>
         <div class="iteamForm" style="height:100px">
@@ -43,11 +43,11 @@
             <span style="padding-left:0.2rem">核实照片</span>
           </p>
            <div class="imageList">
-               <div v-for="(iteam,index) in formMessage.handleAfterURLs" class="detailIcon">
-                  <img :src="Ip+iteam" alt="" srcset="" width="50px" height="50px" @click="handOpen(iteam)">
-                  <span class="iconfont icon-shanchu1" @click="detailImage(index)"></span>
+               <div v-for="(iteam,index) in formMessage.handleAfterURLs" :key="index" :class="detailIcon">
+                  <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+                  <span @click="detailImage(index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
               </div>             
-              <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="50px" height="50px" alt="" srcset="" @click="clickImage">       
+              <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="100px" height="100px" alt="" srcset="" @click="clickImage">       
           </div>          
         </div>
         <div class="iteamImage">
@@ -62,7 +62,6 @@
                 </mt-checklist>
           </p>
         </div>
-        </form>      
       </div>
       <div class="bottom">
           <button type="button" class="buttonSa" @click="save()">重新派单</button>
@@ -130,7 +129,7 @@ export default {
       console.log(this.value);
     },
     handOpen(val) {
-      this.popupVisible1 = true;
+      this.popupVisible = true;
       this.bigImage = val;
     },
     iconClick() {
@@ -275,7 +274,7 @@ input {
 }
 textarea {
   width: 80%;
-  margin: 0.733333rem 1rem 0 1rem;
+  margin: 0.7rem 0.2rem 0 0.2rem;
   text-align: right;
 }
 .container {
