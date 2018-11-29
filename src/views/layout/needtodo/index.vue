@@ -154,6 +154,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+._v-container{
+  height: 84% !important;
+  background-color: transparent;
+}
 .containerSa {
   width: 100%;
   height: 100%;

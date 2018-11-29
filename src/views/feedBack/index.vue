@@ -354,8 +354,8 @@ textarea {
           margin-right: 0.2rem;
           span {
             position: absolute;
-            right: -5px;
-            top: -8px;
+            right: 0px;
+            top: 0px;
           }
         }
       }

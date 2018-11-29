@@ -119,6 +119,7 @@ export default {
 <style lang="scss">
 ._v-container{
   height: 84% !important;
+  background-color: transparent;
 }
 .containerSa {
   width: 100%;

@@ -33,7 +33,7 @@
           <span class="iconfont icon-dingwei1" style="font-size:20px;margin-top:0.1rem;margin-right:0.1rem" @click="placeClick"></span>
         </div>
         <div class="iteamImage">
-          <div>
+          <div style="padding-left:0.4rem">
             <!-- <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">整理前</span> -->
             <img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""><span>整理前</span>
@@ -47,7 +47,7 @@
           </div>
         </div>
         <div class="iteamImage" style="padding-top: 0.4rem;">
-          <div>
+          <div style="padding-left:0.4rem">
             <!-- <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
             <span style="padding-left:0.2rem">整理后</span> -->
             <img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""><span>整理后</span>
@@ -520,7 +520,7 @@ textarea {
       div {
         img{
           border: none;
-          margin-bottom:-0.1rem;
+          margin-bottom:-3px;
         }
         vertical-align:middle;
         // display: flex;
@@ -528,7 +528,7 @@ textarea {
         // width: 100%;
         // margin: 0;
         // padding: 0;
-        padding: 0 0 0 0.4rem;
+        // padding: 0 0 0 0.4rem;
         span {
           font-size: 0.4rem;
           margin-left: 0.2rem;

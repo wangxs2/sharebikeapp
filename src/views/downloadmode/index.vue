@@ -10,8 +10,8 @@
       <p>1、IOS版下载</p>
       <p style="text-indent: 1rem;">在APPStore里面搜索“单车治理”下载即可。</p>
       <p style="padding-top:0.4rem">2、Android版下载</p>
-      <p style="text-indent: 1rem;">扫面右侧二维码下载即可。</p>
-      <img src="@/assets/image/infoModification/download.png" alt="" style="margin-left:1rem" width="260" height="360" srcset="">
+      <p style="text-indent: 1rem;">扫描下方二维码下载即可。</p>
+      <img src="@/assets/image/infoModification/download.png" alt="" style="margin-left:1rem" width="260" height="309" srcset="">
     </div>
 
   </div>
