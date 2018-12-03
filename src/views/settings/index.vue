@@ -199,19 +199,20 @@ export default {
     }
   }
   .version-popup-box {
-    height: 11.466667rem;
+    height: 14rem;
     width: 100%;
     background: transparent;
     color: #282828;
     .version-popup {
       margin: 0 auto;
       background: #fff;
-      height: 11.466667rem;
-      width: 8.72rem;
+      height: 14rem;
+      width: 7.72rem;
       border-radius: 0.16rem;
       display: flex;
       flex-direction: column;
       position: relative;
+      padding: 0.4rem;
       .close-popup {
         position: absolute;
         right: .32rem;

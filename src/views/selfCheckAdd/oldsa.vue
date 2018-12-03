@@ -17,81 +17,69 @@
         </mt-header>
       </div>
       <div class="content">
-        <div class="witeSa">
-          <div class="iteamForm">
-            <img src="../../assets/image/selfcheck/icon_1_time@3x.png" width="24" height="24" alt="" srcset="">
-            <div class="rightsa">
-              <span>时间</span>
-              <span  v-model="formMessage.createTime" style="text-align:right;margin-right:0.3rem">{{FormatDate(formMessage.createTime)}}</span>
-            </div>
-          </div>
-          <div class="iteamForm" style="padding-bottom:0.4rem">
-            <img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="24" height="24" alt="" srcset="">
-            <div class="rightsa1">
-              <span style="margin-top:0.1rem;">地点</span>
-              <input style="width:80%;text-align:right;word-break:break-all" placeholder="点击图标获取当前位置" v-model="formMessage.handleAddr"></input>
-              <img src="../../assets/image/icon_2_address2.png" width="24" height="24" alt="" srcset="" @click="placeClick">
-            </div>
-          </div>
+        <div class="iteamForm">
+          <span><img src="../../assets/image/selfcheck/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <p>
+            <span>时间</span>
+            <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.createTime">{{FormatDate(formMessage.createTime)}}</span>
+          </p>
         </div>
-        
+        <div class="iteamForm">
+          <span><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <p>
+            <span style="width:12%">地点</span>
+            <textarea style="width:80%;text-align:right;" placeholder="点击图标获取当前位置" v-model="formMessage.handleAddr"></textarea>
+          </p>
+          <span class="iconfont icon-dingwei1" style="font-size:20px;margin-top:0.1rem;margin-right:0.1rem" @click="placeClick"></span>
+        </div>
         <div class="iteamImage">
           <div style="padding-left:0.3rem">
-            <img src="../../assets/image/selfcheck/icon_4_picture.png" width="24" height="24" alt="" srcset=""><span>整理前</span>
+            <img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""><span>整理前</span>
           </div>
           <div class="imageList">
               <div v-for="(iteam,index) in formMessage.handleBeforeURLs" :key="index" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
                   <span @click="detailImage(1,index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
-              </div>
-              <div v-if="formMessage.handleBeforeURLs.length<5" style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px" @click="clickImage">
-                  <img  src="../../assets/image/icon_add.png" width="52px" height="52px" alt="" srcset="" >
               </div>             
-              
+              <img v-if="formMessage.handleBeforeURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="100px" height="100px" alt="" srcset="" @click="clickImage">
           </div>
         </div>
-        <div class="iteamImage">
-          <div style="padding-left:0.3rem">
-            <img src="../../assets/image/selfcheck/icon_4_picture.png" width="22" height="22" alt="" srcset=""><span>整理后</span>
+        <div class="iteamImage" style="padding-top: 0.4rem;">
+          <div style="padding-left:0.4rem">
+            <!-- <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
+            <span style="padding-left:0.2rem">整理后</span> -->
+            <img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""><span>整理后</span>
           </div>
            <div class="imageList">
               <div v-for="(iteam,index) in formMessage.handleAfterURLs" :key="index" class="detailIcon">
                   <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
                   <span @click="detailImage(2,index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
-              </div> 
-               <div v-if="formMessage.handleBeforeURLs.length<5" style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px" @click="clickImage1">
-                  <img  src="../../assets/image/icon_add.png" width="52px" height="52px" alt="" srcset="" >
-              </div>               
+              </div>             
+              <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="100px" height="100px" alt="" srcset="" @click="clickImage1">                         
           </div>
         </div>
-        <div class="witeSa" style="margin-top:0.2rem;">
-          <div class="iteamForm">
-            <img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="24" height="24" alt="" srcset="">
-            <div class="rightsa">
-              <span>整理数</span>
-              <input style="text-align:right;" type="number" placeholder="请输入整理数" v-model="formMessage.arrangeNum">
-            </div>
-          </div>
-          <div class="iteamForm">
-            <img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="24" height="24" alt="" srcset="">
-            <div class="rightsa" style="border:none">
-              <span>清运数</span>
-              <input style="text-align:right;" type="number" placeholder="请输入清运数" v-model="formMessage.cleanNum">
-            </div>
-          </div>
+        <div class="iteamForm">
+           <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <p>
+            <span>整理数</span>
+            <input type="number" placeholder="请选择整理数" v-model="formMessage.arrangeNum">
+          </p>
         </div>
-        <div class="witeSa" style="margin-top:0.2rem;padding-left:0.3rem;margin-bottom:0.3rem;padding-top:0.2rem">
-          <div class="topsa">
-            <img src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset="">
-            <div style="width:100%;margin-top:0.05rem;padding-left:0.3rem;display:flex;justify-content: space-between">
-              <span>备注</span>
-              <span style="text-align:right;margin-right:0.3rem;color:#757575">最多输入180个文字</span>
-            </div>
-          </div>
-          <div class="bottomsa" style="padding-top:0.2rem;padding-right:0.2rem">
-            <textarea maxlength="180" style="width:100%;" rows="8" placeholder="请输入备注" v-model="formMessage.remark"></textarea>
-          </div>
+        <div class="iteamForm">
+           <span><img src="../../assets/image/selfcheck/icon_6_num2@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <p>
+            <span>清运数</span>
+            <input type="number" placeholder="请选择清运数" v-model="formMessage.cleanNum">
+          </p>
         </div>
+        <div class="iteamForm" style="height:100px">
+           <span><img src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt="" srcset=""></span>
+          <p>
+            <span style="width:15%">备注</span>
+            <textarea maxlength="180" cols="50" rows="10" placeholder="请输入备注(最多输入180个文字)" style="margin-top:0rem" v-model="formMessage.remark"></textarea>
+          </p>
+        </div>
+        </form>
       </div>
       <div class="bottom">
           <button type="button" class="buttonSa" @click="save()">暂存</button>
@@ -392,23 +380,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// input {
-//   width: 100%;
-//   margin: 0 1rem;
-//   text-align: right;
-// }
-// textarea {
-//   width: 100%;
-//   text-align: right;
-// }
+input {
+  width: 100%;
+  margin: 0 1rem;
+  text-align: right;
+}
+textarea {
+  width: 100%;
+  text-align: right;
+}
 .container {
   width: 100%;
   height: 100%;
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  color: #333333;
-  background-color: #f2f2f2;
   .imgMask {
     width: 100%;
     height: 100%;
@@ -435,7 +421,6 @@ export default {
       p {
         margin: 0;
         padding: 0;
-        
       }
     }
     #myMap {
@@ -472,8 +457,10 @@ export default {
   }
   .header {
     width: 100%;
+    height: 1rem;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     text-align: center;
+    line-height: 1rem;
     color: #fff;
   }
   .content {
@@ -481,66 +468,43 @@ export default {
     overflow: hidden;
     overflow-y: scroll;
     box-sizing: border-box;
-    .witeSa{
-      background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      .topsa{
-        display: flex;
-        justify-content: flex-start;
-        border-bottom: 1px solid #eeeeee;
-        padding-bottom:0.2rem
-      }
-    }
+    padding-top: 0.4rem;
     .iteamForm {
       display: flex;
       justify-content: flex-start;
       width: 100%;
       box-sizing: border-box;
-      padding: 0.4rem 0rem 0rem 0.3rem;
-      .rightsa{
+      padding: 0.2rem 0 0.2rem 0.4rem;
+      p {
+        display: flex;
+        justify-content: flex-start;
         width: 100%;
         margin: 0;
         padding: 0;
-        margin-left: 0.3rem;
+        padding-top: 0.1rem;
         border-bottom: 1px solid #eeeeee;
-        height: 1rem;
-        line-height: 0.6rem;
-        display: flex;
-        justify-content: space-between;
-        // text-align:right;
-        padding-right: 0.3rem;
-        input{
-          margin-bottom: 0.4rem;
+        box-sizing: border-box;
+        padding-left: 0.2rem;
+        span {
+          color: #282828;
+          font-size: 0.4rem;
+          text-align: left;
+          width: 25%;
         }
-      }
-      .rightsa1{
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        margin-left: 0.3rem;
-        display: flex;
-        justify-content: space-between;
-        padding-right: 0.3rem;
       }
     }
     .iteamImage {
       width: 100%;
       display: flex;
-      background-color: #ffffff;
       flex-direction: column;
       box-sizing: border-box;
-      margin-top: 0.2rem;
-      padding-top: 0.2rem;
-      padding-bottom: 0.2rem;
+      padding-top: 0.1rem;
       .imageList {
         display: flex;
         flex-wrap: wrap;
         box-sizing: border-box;
-        padding-left: 0.3rem;
-        padding-top: 0.2rem;
+        padding-left: 0.4rem;
+        padding-top: 0.1rem;
         .detailIcon {
           position: relative;
           margin-right: 0.2rem;
@@ -554,8 +518,7 @@ export default {
       div {
         img{
           border: none;
-          margin-bottom:-4px;
-          
+          margin-bottom:-3px;
         }
         vertical-align:middle;
         // display: flex;
@@ -566,8 +529,7 @@ export default {
         // padding: 0 0 0 0.4rem;
         span {
           font-size: 0.4rem;
-          margin-left: 0.3rem;
-          // margin-left: 0.1rem;
+          margin-left: 0.2rem;
         }
       }
     }

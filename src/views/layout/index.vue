@@ -170,6 +170,7 @@ export default {
     display: flex;
     width: 100%;
     height: 55px;
+    border-top: 1px solid #f6f6f6;
     // position: fixed;
     // left: 0;
     // bottom: 0;

@@ -155,7 +155,7 @@ export default {
 
 <style lang="scss" scoped>
 ._v-container{
-  height: 84% !important;
+  height: 88% !important;
   background-color: transparent;
 }
 .containerSa {
