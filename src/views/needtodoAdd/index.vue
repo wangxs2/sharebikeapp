@@ -202,12 +202,6 @@ export default {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.id) {
       this.sheetCode = this.$route.query.id;
-      // if(this.$route.query.sheetCode){
-      //   this.sheetCode1 = this.$route.query.sheetCode;
-      // }
-      // if(this.$route.query.sheetCode1){
-      //   this.sheetCode1 = this.$route.query.sheetCode1;
-      // }
       this.getMessage(this.sheetCode);
     }
     window.getImage = this.getImage;
@@ -235,10 +229,8 @@ export default {
           rs => {
             console.log(rs);
             this.placeData = rs.surroundingPois;
-            // this.formMessage.handleAddr = this.placeData[0].address;
             this.formMessage.gpsLongitude = this.placeData[0].point.lng;
             this.formMessage.gpsLatitude = this.placeData[0].point.lat;
-            // let addComp = rs.addressComponents;
           },
           { poiRadius: 200, numPois: 20 }
         );

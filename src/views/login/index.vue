@@ -2,7 +2,7 @@
   <div class="login">
     <div class="header">
       <div class="title">
-        <img src="../../assets/image/login/LOGO@3x.png" width="150" height="132" alt="" srcset="">
+        <img src="../../assets/image/login/LOGO@3x.png" width="150" height="132" alt srcset>
         <p>共享单车治理</p>
       </div>
     </div>
@@ -21,12 +21,10 @@
         <p @click="iconReturn()">忘记密码?</p>
       </div>
       <div style="width:100%">
-        <mt-button @click="submitForm()" class="btn">登 录 </mt-button>
+        <mt-button @click="submitForm()" class="btn">登 录</mt-button>
       </div>
     </div>
-    <div class="bottom">
-      上海产业技术研究院
-    </div>
+    <div class="bottom">上海产业技术研究院</div>
   </div>
 </template>
 <script>
@@ -107,6 +105,17 @@ export default {
             timeNumber
         )
       };
+      // this.$axios({
+      //     method: 'post',
+      //     withCredentials: true, // 是否允许带cookie这些
+      //     headers: {
+      //       "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+      //     },
+      //     url:'http://10.1.4.42:8090/sharebikesclean',
+      //     params: data
+      // }).then((res)=>{
+
+      // })
       this.$fetchPost("login", data)
         .then(res => {
           Indicator.close();

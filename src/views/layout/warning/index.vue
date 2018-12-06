@@ -9,7 +9,7 @@
         <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt="">
         <p style="color:#989898">没有数据~</p>
       </div>
-      <div class="warning-box" v-for="(iteam,index) in warningData">
+      <div class="warning-box" v-for="(iteam,index) in warningData" :key="index">
         <div class="warning-box-top">
           <div class="warning-info">
             <div class="warning-info-top">

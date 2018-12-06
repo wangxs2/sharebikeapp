@@ -1,54 +1,107 @@
 
 <template>
   <div class="container">
-      <div class="header">
-        <mt-header title="转派">   
-                <mt-button icon="back" slot="left" style="font-size:24px" @click="iconClick"></mt-button>
-             <!-- <mt-button style="font-size:18px" slot="right" @click="iconClick">
-                {{roleCode=="manage"?"转派":""}}
-            </mt-button>           -->
-        </mt-header>
-      </div>
-      <div class="content">
+    <div class="header">
+      <mt-header title="转派">
+        <mt-button icon="back" slot="left" style="font-size:24px" @click="iconClick"></mt-button>
+      </mt-header>
+    </div>
+    <div class="content">
+      <div class="witeSa">
         <div class="iteamForm">
-          <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
-            <span>时间</span>
-            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.createTime">{{FormatDate(formMessage.createTime)}}</span>
-          </p>
-        </div>
-        <div class="iteamForm">
-          <span><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
-            <span>地点</span>
-            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.handleAddr">{{formMessage.handleAddr}}</span>
-            <!-- <input type="text" placeholder="请输入清理地点" disabled="disabled" v-model="formMessage.handleAddr"> -->
-          </p>
-        </div>
-        <div class="iteamImage">
-          <p>
-            <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">转派</span>
-          </p>
-          <p class="imageClean">
-                <mt-radio
-                    v-model="value"
-                    :options="options" @change="getCompany" :class="valuesa==value?value:valuesa">
-                </mt-radio>
-          </p>
-        </div>
-        <div class="iteamForm" style="height:100px">
-          <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
-            <span>备注</span>
-            <textarea cols="50" rows="10" placeholder="请输入派单备注"  v-model="formMessage.remark"></textarea>
-          </p>
+          <img
+            src="../../assets/image/selfcheck/icon_2_address@3x.png"
+            width="24"
+            height="24"
+            alt
+            srcset
+          >
+          <div class="rightsa">
+            <p style="display:flex:flex:1">地点</p>
+            <p
+              v-model="formMessage.dispatchTime"
+              style="text-align:right;word-break:break-all;"
+            >{{formMessage.handleAddr}}</p>
+          </div>
         </div>
       </div>
-      <div class="bottom">
-          <!-- <button type="button" class="buttonSa" @click="save()">暂存</button> -->
-          <button type="button" class="buttonSa1" @click="submit()">转派</button>
+      <!-- <div class="iteamForm">
+        <span>
+          <img
+            src="../../assets/image/supervise/icon_1_time@3x.png"
+            width="22"
+            height="22"
+            alt
+            srcset
+          >
+        </span>
+        <p>
+          <span>时间</span>
+          <span
+            style="width:100%;text-align:right;margin-right:1rem"
+            v-model="formMessage.createTime"
+          >{{FormatDate(formMessage.createTime)}}</span>
+        </p>
       </div>
+      <div class="iteamForm">
+        <span>
+          <img
+            src="../../assets/image/supervise/icon_2_address@3x.png"
+            width="22"
+            height="22"
+            alt
+            srcset
+          >
+        </span>
+        <p>
+          <span>地点</span>
+          <span
+            style="width:100%;text-align:right;margin-right:1rem"
+            v-model="formMessage.handleAddr"
+          >{{formMessage.handleAddr}}</span>
+        </p>
+      </div>
+      <div class="iteamImage">
+        <p>
+          <span>
+            <img
+              src="../../assets/image/selfcheck/icon_8_processor@3x.png"
+              width="22"
+              height="22"
+              alt
+              srcset
+            >
+          </span>
+          <span style="padding-left:0.2rem">转派</span>
+        </p>
+        <p class="imageClean">
+          <mt-radio
+            v-model="value"
+            :options="options"
+            @change="getCompany"
+            :class="valuesa==value?value:valuesa"
+          ></mt-radio>
+        </p>
+      </div>
+      <div class="iteamForm" style="height:100px">
+        <span>
+          <img
+            src="../../assets/image/supervise/icon_5_note@3x.png"
+            width="22"
+            height="22"
+            alt
+            srcset
+          >
+        </span>
+        <p>
+          <span>备注</span>
+          <textarea cols="50" rows="10" placeholder="请输入派单备注" v-model="formMessage.remark"></textarea>
+        </p>
+      </div> -->
+    </div>
+    <div class="bottom">
+      <button type="button" class="buttonSa1" @click="submit()">转派</button>
+    </div>
   </div>
 </template>
 
@@ -59,7 +112,7 @@ export default {
   data() {
     return {
       time: "",
-      valuesa:"",
+      valuesa: "",
       roleCode: "",
       options: [],
       value: "",
@@ -67,7 +120,7 @@ export default {
       slide2: [],
       slide: [],
       sheetCode: "",
-      sheetCode1:"",
+      sheetCode1: "",
       imageStatus: 0,
       iteamList: {},
       handleBefore: [],
@@ -87,7 +140,7 @@ export default {
   },
   components: {},
   mounted() {
-    this.getMap();
+    // this.getMap();
   },
   created() {
     if (this.$route.query.message) {
@@ -95,7 +148,6 @@ export default {
       this.sheetCode1 = this.$route.query.sheetCode1;
       this.getMessage();
       this.getAll();
-      
     }
   },
   methods: {
@@ -104,7 +156,7 @@ export default {
         path: "/needtodoAdd",
         query: {
           id: this.sheetCode,
-          sheetCode1:this.sheetCode1
+          sheetCode1: this.sheetCode1
         }
       });
     },
@@ -133,17 +185,17 @@ export default {
       });
     },
     getAll() {
-      this.valuesa='';
-      this.$fetchGet("dispatch/listUser",{
-        sheetCode:this.sheetCode1
+      this.valuesa = "";
+      this.$fetchGet("dispatch/listUser", {
+        sheetCode: this.sheetCode1
       }).then(res => {
-        res.forEach((iteam,index) => {
+        res.forEach((iteam, index) => {
           let obj = {};
-          if(iteam.areas==''){
-            obj.label = iteam.realName+"（无负责区域）";
-            this.valuesa=iteam.id.toString();
-          }else{
-            obj.label = iteam.realName+"（"+iteam.areas+"）";
+          if (iteam.areas == "") {
+            obj.label = iteam.realName + "（无负责区域）";
+            this.valuesa = iteam.id.toString();
+          } else {
+            obj.label = iteam.realName + "（" + iteam.areas + "）";
           }
           obj.value = iteam.id.toString();
           this.options.push(obj);
@@ -152,7 +204,7 @@ export default {
       });
     },
     getMessage() {
-      this.$fetchGet("dispatch/dispatchDetail",{
+      this.$fetchGet("dispatch/dispatchDetail", {
         id: this.sheetCode
       })
         .then(res => {
@@ -203,12 +255,12 @@ export default {
 };
 </script>
 <style lang="scss">
-  .value{
-    color: black;
-  }
-  .valuesa{
-    color: red;
-  }
+.value {
+  color: black;
+}
+.valuesa {
+  color: red;
+}
 </style>
 
 <style lang="scss" scoped>
@@ -228,12 +280,13 @@ textarea {
   display: flex;
   overflow: hidden;
   flex-direction: column;
+  background-color: #f2f2f2;
   .header {
     width: 100%;
-    height: 1rem;
+    height: 1.173333rem;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     text-align: center;
-    line-height: 1rem;
+    line-height: 1.173333rem;
     color: #fff;
   }
   .content {
@@ -241,56 +294,59 @@ textarea {
     overflow: hidden;
     overflow-y: scroll;
     box-sizing: border-box;
-    padding-top: 0.4rem;
-    .iteamForm {
-      display: flex;
-      justify-content: flex-start;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0.2rem 0 0.2rem 0.4rem;
-      img {
-        margin-top: 0.4rem;
-      }
-      p {
+    .witeSa {
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      .topsa {
         display: flex;
         justify-content: flex-start;
-        width: 100%;
-        margin: 0;
-        padding: 0;
         border-bottom: 1px solid #eeeeee;
-        box-sizing: border-box;
-        padding-left: 0.2rem;
-        padding-top: 0.6rem;
-        // .imageSa{
-        //   display: flex;
-        //   flex-direction:row;
-        // }
-        span {
-          color: #282828;
-          font-size: 0.4rem;
-          text-align: left;
-          width: 22%;
-        }
+        padding-bottom: 0.2rem;
       }
-    }
-    .iteamImage {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      box-sizing: border-box;
-      padding-top: 0.5rem;
-      img {
-        margin-top: -0.1rem;
-      }
-      p {
+      .iteamForm {
         display: flex;
         justify-content: flex-start;
         width: 100%;
-        margin: 0;
-        padding: 0;
-        padding: 0 0 0 0.4rem;
-        span {
-          font-size: 0.4rem;
+        box-sizing: border-box;
+        align-items: center;
+        padding: 0.3rem;
+        .detail-btn {
+          width: 1.8rem;
+          height: 0.9rem;
+          margin: 0;
+          line-height: 0.9rem;
+          text-align: center;
+          box-sizing: border-box;
+          padding: 0rem;
+          border-radius: 0.5rem;
+          color: #666666;
+          margin-right: 0.3rem;
+          border: 1px solid #dddddd;
+        }
+        .detail-selected {
+          background: #5076ff;
+          color: #ffffff;
+          border: none;
+        }
+        .rightsa {
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          margin-left: 0.3rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .rightsa1 {
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          margin-left: 0.3rem;
+          line-height: 0.6rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
         }
       }
     }

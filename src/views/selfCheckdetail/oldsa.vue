@@ -1,7 +1,7 @@
 
 <template>
   <div class="container">
-      <mt-popup
+      <!-- <mt-popup
       class="imgMask"
         v-model="popupVisible"
         position="right">
@@ -43,13 +43,6 @@
                 <span style="width:17%;margin-left:0.1rem">地点：</span>
                 <span class="textFont">{{iteamList.handleAddr}}</span>                
             </div>
-              <!-- <div>
-                <span><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>地点：</span>
-                <span>{{iteamList.handleAddr}}</span>
-                
-              </div> -->
-
         </div>
         <div class="imageClean" style="padding:0.3rem 0.213333rem">
               <div>
@@ -108,7 +101,7 @@
               </div>
 
         </div>
-      </div>
+      </div> -->
   </div>
 </template>
 
@@ -167,78 +160,78 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.green {
-  color: #ffc000;
-}
-.red {
-  color: #41cd76;
-}
+// .green {
+//   color: #ffc000;
+// }
+// .red {
+//   color: #41cd76;
+// }
 
-.container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  .imgMask {
-    width: 100%;
-    height: 100%;
-    line-height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .header {
-    width: 100%;
-    height: 1.173333rem;
-    background: -webkit-linear-gradient(left, #6698ff, #5076ff);
-    text-align: center;
-    line-height: 1.173333rem;
-    color: #fff;
-  }
-  .content {
-    flex: 1;
-    overflow: hidden;
-    overflow-y: scroll;
-    .iteamImage {
-      box-sizing: border-box;
-      display: flex;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0.3rem 0.213333rem;
-      flex-direction: column;
-    }
-    .iteamList {
-      display: flex;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0.3rem 0.213333rem;
-      justify-content: space-between;
-      .moreText {
-        display: flex;
-        flex: 1;
-        justify-content: flex-start;
-        .textFont {
-          width: 100%;
-          display: flex;
-          flex-wrap: wrap;
-        }
-      }
-    }
-    .imageList {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 0.2rem;
-      img {
-        margin-right: 5px;
-        box-shadow: 0 0 010px #ccc;
+// .container {
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   overflow: hidden;
+//   .imgMask {
+//     width: 100%;
+//     height: 100%;
+//     line-height: 100%;
+//     background: rgba(0, 0, 0, 0.7);
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//   }
+//   .header {
+//     width: 100%;
+//     height: 1.173333rem;
+//     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
+//     text-align: center;
+//     line-height: 1.173333rem;
+//     color: #fff;
+//   }
+//   .content {
+//     flex: 1;
+//     overflow: hidden;
+//     overflow-y: scroll;
+//     .iteamImage {
+//       box-sizing: border-box;
+//       display: flex;
+//       width: 100%;
+//       box-sizing: border-box;
+//       padding: 0.3rem 0.213333rem;
+//       flex-direction: column;
+//     }
+//     .iteamList {
+//       display: flex;
+//       width: 100%;
+//       box-sizing: border-box;
+//       padding: 0.3rem 0.213333rem;
+//       justify-content: space-between;
+//       .moreText {
+//         display: flex;
+//         flex: 1;
+//         justify-content: flex-start;
+//         .textFont {
+//           width: 100%;
+//           display: flex;
+//           flex-wrap: wrap;
+//         }
+//       }
+//     }
+//     .imageList {
+//       display: flex;
+//       flex-wrap: wrap;
+//       margin-top: 0.2rem;
+//       img {
+//         margin-right: 5px;
+//         box-shadow: 0 0 010px #ccc;
         
         
-      }
-    }
-  }
-}
+//       }
+//     }
+//   }
+// }
 </style>
 
 

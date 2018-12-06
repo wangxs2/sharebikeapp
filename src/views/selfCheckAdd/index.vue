@@ -29,7 +29,7 @@
             <img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="24" height="24" alt="" srcset="">
             <div class="rightsa1">
               <span style="margin-top:0.1rem;">地点</span>
-              <input style="width:80%;text-align:right;word-break:break-all" placeholder="点击图标获取当前位置" v-model="formMessage.handleAddr"></input>
+              <input style="width:80%;text-align:right;word-break:break-all" maxlength="60" placeholder="点击图标获取当前位置" v-model="formMessage.handleAddr"></input>
               <img src="../../assets/image/icon_2_address2.png" width="24" height="24" alt="" srcset="" @click="placeClick">
             </div>
           </div>
@@ -59,7 +59,7 @@
                   <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
                   <span @click="detailImage(2,index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
               </div> 
-               <div v-if="formMessage.handleBeforeURLs.length<5" style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px" @click="clickImage1">
+               <div v-if="formMessage.handleAfterURLs.length<5" style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px" @click="clickImage1">
                   <img  src="../../assets/image/icon_add.png" width="52px" height="52px" alt="" srcset="" >
               </div>               
           </div>

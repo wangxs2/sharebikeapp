@@ -1,104 +1,230 @@
 
 <template>
   <div class="container">
-       <mt-popup
-        class="imgMask"
-          v-model="popupVisible1"
-          position="right">
-          <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible1=false"></span>
-          <img :src="Ip+bigImage" alt="" srcset="" width="100%" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" @click="popupVisible1=false">
-          <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:44%;bottom:15px;" @click="rotate()">
-      </mt-popup>
-      <div class="header">
-      
-        <mt-header title="派单">   
-            <mt-button class="iconfont icon-fanhui" style="font-size:24px;color:#fff" slot="left" @click="iconClick">                
-            </mt-button>         
-        </mt-header>
-      </div>
-      <div class="content">
+    <mt-popup class="imgMask" v-model="popupVisible1" position="right">
+      <span
+        class="iconfont icon-guandiao"
+        style="color:#fff;position:fixed;right:15px;top:15px"
+        @click="popupVisible1=false"
+      ></span>
+      <img
+        :src="Ip+bigImage"
+        alt
+        srcset
+        width="100%"
+        v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
+        @click="popupVisible1=false"
+      >
+      <img
+        src="../../assets/image/login/rotate.svg"
+        alt
+        srcset
+        width="50"
+        height="50"
+        style="position:fixed;right:44%;bottom:15px;"
+        @click="rotate()"
+      >
+    </mt-popup>
+    <div class="header">
+      <mt-header title="派单">
+        <mt-button
+          class="iconfont icon-fanhui"
+          style="font-size:24px;color:#fff"
+          slot="left"
+          @click="iconClick"
+        ></mt-button>
+      </mt-header>
+    </div>
+    <div class="content">
+      <div class="witeSa">
         <div class="iteamForm">
-          <!-- <i class="iconfont icon-zihangche1" style="color:#6698FF"></i> -->
-          <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
+          <img
+            src="../../assets/image/selfcheck/icon_1_time@3x.png"
+            width="24"
+            height="24"
+            alt
+            srcset
+          >
+          <div class="rightsa">
             <span>时间</span>
-            <span style="width:80%;text-align:right;margin-right:1rem" v-model="formMessage.dispatchTime">{{FormatDate(formMessage.dispatchTime)}}</span>
-          </p>
+            <span
+              v-model="formMessage.dispatchTime"
+              style="text-align:right;"
+            >{{FormatDate(formMessage.dispatchTime)}}</span>
+          </div>
         </div>
+      </div>
+      <div class="witeSa" style="margin-top:0.2rem">
+        <div class="iteamForm" style="0.4rem 0.3rem">
+          <img
+            src="../../assets/image/selfcheck/icon_2_address@3x.png"
+            width="24"
+            height="24"
+            alt
+            srcset
+          >
+          <div class="rightsa1">
+            <span style="width:20%">地点</span>
+            <input
+              style="width:100%;text-align:right;word-break:break-all"
+              maxlength="60"
+              placeholder="点击图标获取当前位置"
+              v-model="formMessage.handleAddr"
+            >
+            <img
+              src="../../assets/image/icon_2_address2.png"
+              width="24"
+              height="24"
+              alt
+              srcset
+              @click="placeClick"
+            >
+          </div>
+        </div>
+      </div>
+      <div class="iteamImage">
+        <div style="padding-left:0.3rem">
+          <img
+            src="../../assets/image/selfcheck/icon_4_picture.png"
+            width="24"
+            height="24"
+            alt
+            srcset
+          >
+          <span>现场照片</span>
+        </div>
+        <div class="imageList">
+          <div v-for="(iteam,index) in dispachPhotoUrls" :key="index" class="detailIcon">
+            <img :src="Ip+iteam" alt srcset width="100px" height="100px" @click="handOpen(iteam)">
+            <span @click="detailImage(1,index)">
+              <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
+            </span>
+          </div>
+          <div
+            v-if="dispachPhotoUrls.length<5"
+            style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
+            @click="clickImage"
+          >
+            <img src="../../assets/image/icon_add.png" width="52px" height="52px" alt srcset>
+          </div>
+        </div>
+      </div>
+      <div class="witeSa" style="margin-top:0.2rem;padding:0.3rem;padding-bottom:0">
+        <div
+          class="iteamForm"
+          style="border-bottom:1px solid #f2f2f2;padding:0;padding-bottom:0.3rem"
+        >
+          <img
+            src="../../assets/image/supervise/icon_4_company@3x.png"
+            width="24"
+            height="24"
+            alt
+            srcset
+          >
+          <div class="rightsa">派单</div>
+        </div>
+      </div>
+      <div class="witeSa">
         <div class="iteamForm">
-          <span><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
-            <span>地点</span>
-            <textarea style="width:80%;text-align:right;margin-right:1rem;white-space:normal; word-break:break-all;overflow:hidden" placeholder="点击图标获取当前位置" v-model="formMessage.handleAddr"></textarea>
-          </p>
-           <span class="iconfont icon-dingwei1" style="font-size:20px;margin-top:0.1rem;margin-right:0.1rem" @click="placeClick"></span>
+          <p
+            class="detail-btn"
+            v-for="(item,index) in options"
+            :key="index"
+            :viewType="item.id"
+            @click="chooseOrder($event)"
+          >{{item.name}}</p>
         </div>
-        <div class="iteamImage">
-          <p>
-            <span><img src="../../assets/image/supervise/icon_3_picture@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">现场照</span>
-          </p>
-          <div class="imageList">
-              <div v-for="(iteam,index) in dispachPhotoUrls" :key="index" class="detailIcon">
-                  <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-                  <span @click="detailImage(index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
-              </div>             
-              <img v-if="dispachPhotoUrls.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="100px" height="100px" alt="" srcset="" @click="clickImage">       
-          </div>
+      </div>
+      <div class="witeSa" style="margin-top:0.2rem;padding:0.3rem;padding-bottom:0">
+        <div
+          class="iteamForm"
+          style="border-bottom:1px solid #f2f2f2;padding:0;padding-bottom:0.3rem"
+        >
+          <img
+            src="../../assets/image/selfcheck/icon_3_before processing@3x.png"
+            width="24"
+            height="24"
+            alt
+            srcset
+          >
+          <div class="rightsa">处理方式</div>
         </div>
-        <div class="iteamImage">
-          <p>
-            <span><img src="../../assets/image/supervise/icon_4_company@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">派单</span>
-          </p>
-          <p class="imageClean">
-                <mt-checklist
-                    v-model="value"
-                    :options="options" @change="getCompany">
-                </mt-checklist>
-          </p>
+      </div>
+      <div class="witeSa">
+        <div class="iteamForm">
+          <p
+            style="width:1.7rem;height:0.85rem;line-height:0.85rem"
+            class="detail-btn"
+            v-for="(item,index) in options1"
+            :key="index"
+            :viewType="item.value"
+            @click="chooseOrder1($event)"
+          >{{item.label}}</p>
         </div>
-        <div class="iteamImage">
-          <p>
-            <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">处理方式</span>
-          </p>
-          <p class="imageClean">
-              <mt-checklist
-                  v-model="value1"
-                  :options="options1" @change="getCompany1">
-              </mt-checklist>
-          </p>
-        </div>
-        <div class="iteamForm" style="height:100px">
-          <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p style="border:none">
+      </div>
+      <div
+        class="witeSa"
+        style="margin-top:0.2rem;padding-left:0.3rem;margin-bottom:0.3rem;padding-top:0.2rem"
+      >
+        <div class="topsa">
+          <img
+            src="../../assets/image/selfcheck/icon_7_note@3x.png"
+            width="22"
+            height="22"
+            alt
+            srcset
+          >
+          <div
+            style="width:100%;margin-top:0.05rem;padding-left:0.3rem;display:flex;justify-content: space-between"
+          >
             <span>备注</span>
-            <textarea maxlength="180" cols="50" rows="10" placeholder="请输入备注(最多输入180个文字)" style="margin-top:0rem" v-model="formMessage.remark"></textarea>
-          </p>
+            <span style="text-align:right;margin-right:0.3rem;color:#757575">最多输入180个文字</span>
+          </div>
+        </div>
+        <div class="bottomsa" style="padding-top:0.2rem;padding-right:0.2rem">
+          <textarea
+            maxlength="180"
+            style="width:100%;"
+            rows="8"
+            placeholder="请输入备注"
+            v-model="formMessage.remark"
+          ></textarea>
         </div>
       </div>
-      <div class="bottom">
-          <button type="button" :class="isDisable==false?'buttonSa1 buttonSa2': 'buttonSa1 buttonSa3'" @click="submit()" :disabled="isDisable">派单</button>
+    </div>
+    <div class="bottom">
+      <button
+        type="button"
+        :class="isDisable==false?'buttonSa1 buttonSa2': 'buttonSa1 buttonSa3'"
+        @click="submit()"
+        :disabled="isDisable"
+      >派单</button>
+    </div>
+    <mt-popup v-model="popupVisible" class="mapwhere" position="right">
+      <div class="header">
+        <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
+        <p>位置</p>
       </div>
-      <mt-popup v-model="popupVisible" class="mapwhere" position="right">
-          <div class="header">
-            <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
-            <p>位置</p>
+      <div id="myMap"></div>
+      <div class="placeList">
+        <div
+          v-for="(iteam,index) in placeData"
+          :key="index"
+          class="address"
+          @click="getAddress(iteam,index)"
+        >
+          <div>
+            <h5>{{iteam.title}}</h5>
+            <p>{{iteam.city}}&nbsp;&nbsp;{{iteam.address}}</p>
           </div>
-          <div id="myMap">
-          </div>
-          <div class="placeList">
-                <div v-for="(iteam,index) in placeData" :key="index" class="address" @click="getAddress(iteam,index)">
-                  <div>
-                    <h5>{{iteam.title}}</h5>
-                    <p>{{iteam.city}}&nbsp;&nbsp;{{iteam.address}}</p>
-                  </div>
-                     <span v-if="changeId==index" class="iconfont icon-xuanzhong" style="font-size:22px;color:#1caa20"></span>
-                </div>
-             
-          </div>
-      </mt-popup>
+          <span
+            v-if="changeId==index"
+            class="iconfont icon-xuanzhong"
+            style="font-size:22px;color:#1caa20"
+          ></span>
+        </div>
+      </div>
+    </mt-popup>
   </div>
 </template>
 <script>
@@ -227,37 +353,63 @@ export default {
     handleClose() {
       // console.log("close event");
     },
+    chooseOrder(e) {
+      if (e.target.className.indexOf("detail-selected") == -1) {
+        e.target.className = "detail-btn detail-selected"; //切换按钮样式
+        //写逻辑
+        this.value.push(e.target.getAttribute("viewType"));
+      } else {
+        e.target.className = "detail-btn"; //切换按钮样式
+        let index = this.value.indexOf(e.target.getAttribute("viewType"));
+        if (index > -1) {
+          this.value.splice(index, 1);
+        }
+      }
+      // console.log(this.value);
+    },
+    chooseOrder1(e) {
+      let arr = ["1"];
+      let arr1 = ["2"];
+      let arr2 = ["1","2"];
+      // console.log(e.target.getAttribute("viewType"))
+      if (e.target.className.indexOf("detail-selected") == -1) {
+        e.target.className = "detail-btn detail-selected"; //切换按钮样式
+        //写逻辑
+        this.value1.push(e.target.getAttribute("viewType"));
+      } else {
+        e.target.className = "detail-btn"; //切换按钮样式
+        let index = this.value1.indexOf(e.target.getAttribute("viewType"));
+        if (index > -1) {
+          this.value1.splice(index, 1);
+        }
+      }
+      if (this.value1.length==1&&this.value1[0] == 1) {
+        this.dealMethod = "1";
+      } else if (this.value1.length==1&&this.value1[0] == 2) {
+        this.dealMethod = "2";
+      } else {
+        this.dealMethod = "3";
+      } 
+      console.log(this.dealMethod)
+    },
     iconClick() {
       this.$router.push("/layout/supervise");
     },
-    getCompany(val) {
-      this.value = val;
-      // console.log(this.value);
-    },
-    getCompany1(val) {
-      this.value1 = val;
-      // console.log(this.value1.toString())
-      let arr = "1";
-      let arr1 = "2";
-      if (this.value1.toString() == arr) {
-        this.dealMethod = "1";
-      } else if (this.value1.toString() == arr1) {
-        this.dealMethod = "2";
-      } else if (this.value1.toString() == "") {
-        this.dealMethod = "";
-      } else {
-        this.dealMethod = "3";
-      }
-      // console.log(this.dealMethod);
-    },
+    // getCompany1(val) {
+    //   this.value1 = val;
+    //   let arr = "1";
+    //   let arr1 = "2";
+    //
+    // },
     getAll() {
       this.$fetchGet("count/bikeCompany").then(res => {
-        res.forEach(iteam => {
-          let obj = {};
-          obj.label = iteam.name;
-          obj.value = iteam.id;
-          this.options.push(obj);
-        });
+        this.options = res;
+        // res.forEach(iteam => {
+        //   let obj = {};
+        //   obj.label = iteam.name;
+        //   obj.value = iteam.id;
+        //   this.options.push(obj);
+        // });
       });
     },
     save() {
@@ -271,7 +423,6 @@ export default {
         });
     },
     submit() {
-      // console.log(this.value);
       if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择待清理地点",
@@ -282,7 +433,12 @@ export default {
           message: "清理地点长度不能大于60",
           title: "提示"
         }).then(action => {});
-      } else if (this.dispachPhotoUrls.length == 0) {
+      } else if (this.dealMethod == "") {
+        MessageBox.alert("", {
+          message: "请选择清运方式",
+          title: "提示"
+        }).then(action => {});
+      }else if (this.dispachPhotoUrls.length == 0) {
         MessageBox.alert("", {
           message: "请上传现场照片",
           title: "提示"
@@ -298,16 +454,16 @@ export default {
           title: "提示"
         }).then(action => {
           let obj = {};
-          let arrsa=[]
+          let arrsa = [];
           if (action == "confirm") {
             this.isDisable = true;
-            arrsa=this.formMessage.dispachPhoto;
+            arrsa = this.formMessage.dispachPhoto;
             obj.dispatch = this.formMessage;
             obj.dispatch.dispachPhoto = arrsa.join(";");
             obj.dispatch.dealMethod = this.dealMethod;
             obj.orgIdList = this.value;
             obj.finish = 1;
-            
+
             this.$fetchPost("dispatch/saveDispatch", obj, "json")
               .then(res => {
                 this.isDisable = false;
@@ -316,7 +472,9 @@ export default {
                     message: res.message,
                     title: "派单失败"
                   }).then(action => {
-                    this.formMessage.dispachPhoto=this.formMessage.dispachPhoto.split(";");
+                    this.formMessage.dispachPhoto = this.formMessage.dispachPhoto.split(
+                      ";"
+                    );
                     this.$router.push("/superviseAdd");
                   });
                 } else {
@@ -324,7 +482,6 @@ export default {
                     message: "保存成功",
                     title: "提示"
                   }).then(action => {
-                    
                     this.$router.push("/layout/supervise");
                   });
                 }
@@ -347,14 +504,11 @@ export default {
 
 <style lang="scss" scoped>
 input {
-  width: 80%;
-  margin: 0 1rem;
-  text-align: right;
 }
 textarea {
   width: 80%;
   margin: 0rem 1rem 0 0rem;
-  text-align: right;
+  text-align: left;
 }
 .container {
   width: 100%;
@@ -362,6 +516,7 @@ textarea {
   display: flex;
   overflow: hidden;
   flex-direction: column;
+  background: #f2f2f2;
   .imgMask {
     width: 100%;
     height: 100%;
@@ -424,10 +579,10 @@ textarea {
   }
   .header {
     width: 100%;
-    height: 1rem;
+    height: 1.173333rem;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     text-align: center;
-    line-height: 1rem;
+    line-height: 1.173333rem;
     color: #fff;
   }
   .content {
@@ -435,48 +590,85 @@ textarea {
     overflow: hidden;
     overflow-y: scroll;
     box-sizing: border-box;
-    padding-top: 0.4rem;
-    .iteamForm {
-      display: flex;
-      justify-content: flex-start;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0.2rem 0 0.2rem 0.4rem;
-      p {
+    .witeSa {
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      .topsa {
+        display: flex;
+        justify-content: flex-start;
+        border-bottom: 1px solid #eeeeee;
+        padding-bottom: 0.2rem;
+      }
+      .iteamForm {
         display: flex;
         justify-content: flex-start;
         width: 100%;
-        margin: 0;
-        padding: 0;
-        padding-top: 0.1rem;
-        border-bottom: 1px solid #eeeeee;
         box-sizing: border-box;
-        padding-left: 0.2rem;
-        // .imageSa{
-        //   display: flex;
-        //   flex-direction:row;
-        // }
-        span {
-          color: #282828;
-          font-size: 0.4rem;
-          text-align: left;
-          width: 22%;
+        align-items: center;
+        // background-color: #ffffff;
+        // margin: 0.3rem;
+        padding: 0.3rem;
+        .detail-btn {
+          width: 1.8rem;
+          height: 0.9rem;
+          margin: 0;
+          line-height: 0.9rem;
+          text-align: center;
+          box-sizing: border-box;
+          padding: 0rem;
+          border-radius: 0.5rem;
+          color: #666666;
+          margin-right: 0.3rem;
+          border: 1px solid #dddddd;
+        }
+        .detail-selected {
+          background: #5076ff;
+          color: #ffffff;
+          border: none;
+        }
+        .rightsa {
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          margin-left: 0.3rem;
+          // height: 1rem;
+          // line-height: 0.6rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          // text-align:right;
+          input {
+            margin-bottom: 0.4rem;
+          }
+        }
+        .rightsa1 {
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          margin-left: 0.3rem;
+          line-height: 0.6rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
         }
       }
     }
     .iteamImage {
       width: 100%;
       display: flex;
+      background-color: #ffffff;
       flex-direction: column;
       box-sizing: border-box;
-      padding-top: 0.5rem;
-      padding-left: 0.2rem;
+      margin-top: 0.2rem;
+      padding-top: 0.2rem;
+      padding-bottom: 0.2rem;
       .imageList {
         display: flex;
         flex-wrap: wrap;
         box-sizing: border-box;
-        padding-left: 0.4rem;
-        padding-top: 0.4rem;
+        padding-left: 0.3rem;
+        padding-top: 0.2rem;
         .detailIcon {
           position: relative;
           margin-right: 0.2rem;
@@ -487,19 +679,22 @@ textarea {
           }
         }
       }
-      p {
-        display: flex;
-        justify-content: flex-start;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        // padding: 0 0 0 0.2rem;
+      div {
         img {
-          margin-top: -0.1rem;
-          margin-left: 0.2rem;
+          border: none;
+          margin-bottom: -4px;
         }
+        vertical-align: middle;
+        // display: flex;
+        // justify-content: flex-start;
+        // width: 100%;
+        // margin: 0;
+        // padding: 0;
+        // padding: 0 0 0 0.4rem;
         span {
           font-size: 0.4rem;
+          margin-left: 0.3rem;
+          // margin-left: 0.1rem;
         }
       }
     }
