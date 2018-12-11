@@ -365,12 +365,11 @@ export default {
           this.value.splice(index, 1);
         }
       }
-      // console.log(this.value);
     },
     chooseOrder1(e) {
       let arr = ["1"];
       let arr1 = ["2"];
-      let arr2 = ["1","2"];
+      let arr2 = ["1", "2"];
       // console.log(e.target.getAttribute("viewType"))
       if (e.target.className.indexOf("detail-selected") == -1) {
         e.target.className = "detail-btn detail-selected"; //切换按钮样式
@@ -383,14 +382,14 @@ export default {
           this.value1.splice(index, 1);
         }
       }
-      if (this.value1.length==1&&this.value1[0] == 1) {
+      if (this.value1.length == 1 && this.value1[0] == 1) {
         this.dealMethod = "1";
-      } else if (this.value1.length==1&&this.value1[0] == 2) {
+      } else if (this.value1.length == 1 && this.value1[0] == 2) {
         this.dealMethod = "2";
       } else {
         this.dealMethod = "3";
-      } 
-      console.log(this.dealMethod)
+      }
+      console.log(this.dealMethod);
     },
     iconClick() {
       this.$router.push("/layout/supervise");
@@ -438,7 +437,7 @@ export default {
           message: "请选择清运方式",
           title: "提示"
         }).then(action => {});
-      }else if (this.dispachPhotoUrls.length == 0) {
+      } else if (this.dispachPhotoUrls.length == 0) {
         MessageBox.alert("", {
           message: "请上传现场照片",
           title: "提示"
@@ -606,8 +605,6 @@ textarea {
         width: 100%;
         box-sizing: border-box;
         align-items: center;
-        // background-color: #ffffff;
-        // margin: 0.3rem;
         padding: 0.3rem;
         .detail-btn {
           width: 1.8rem;

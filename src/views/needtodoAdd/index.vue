@@ -2,110 +2,238 @@
 <template>
   <div class="container">
     <div id="myMap"></div>
-        <mt-popup
-      class="imgMask"
-        v-model="popupVisible"
-        position="right">
-        <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible=false"></span>
-        <img :src="Ip+bigImage" alt="" srcset="" width="100%" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" @click="popupVisible=false">
-         <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:44%;bottom:15px;" @click="rotate()">
-      </mt-popup>
-      <div class="header">
-        <mt-header title="派单处理">   
-            <router-link to="/layout/needtodo" slot="left">
-                <mt-button icon="back" style="font-size:24px"></mt-button>
-            </router-link>
-             <mt-button style="font-size:18px" slot="right" @click="iconClick">
-                {{roleCode=="manage"?"转派":""}}
-            </mt-button>          
-        </mt-header>
+    <mt-popup class="imgMask" v-model="popupVisible" position="right">
+      <span
+        class="iconfont icon-guandiao"
+        style="color:#fff;position:fixed;right:15px;top:15px"
+        @click="popupVisible=false"
+      ></span>
+      <img
+        :src="Ip+bigImage"
+        alt
+        srcset
+        width="100%"
+        v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
+        @click="popupVisible=false"
+      >
+      <img
+        src="../../assets/image/login/rotate.svg"
+        alt
+        srcset
+        width="50"
+        height="50"
+        style="position:fixed;right:44%;bottom:15px;"
+        @click="rotate()"
+      >
+    </mt-popup>
+    <div class="header">
+      <mt-header title="派单处理">
+        <router-link to="/layout/needtodo" slot="left">
+          <mt-button icon="back" style="font-size:24px"></mt-button>
+        </router-link>
+        <mt-button
+          style="font-size:18px"
+          slot="right"
+          @click="iconClick"
+        >{{roleCode=="manage"?"转派":""}}</mt-button>
+      </mt-header>
+    </div>
+    <div class="content">
+      <div class="superList">
+        <div class="topsa" style="margin-top:0.3rem">
+          <div class="fontext">派单信息</div>
+          <div
+            :class="formMessage.status == 2 ? 'red' : 'green'"
+          >{{formMessage.status == 0 ? '未处理' : formMessage.status == 1 ?"处理中":formMessage.status == 2 ?"已处理":formMessage.status == 3 ?"已转派":"已完成"}}</div>
+        </div>
       </div>
-      <div class="content">
-        <div  style="color:rgb(102, 204, 0);padding-left:0.4rem">
-              派单信息
-        </div>
-        <div class="iteamForm">
-          <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
-            <span>单号</span>
-            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.sheetCode">{{formMessage.sheetCode}}</span>
-          </p>
-        </div>
-        <div class="iteamForm">
-          <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
-            <span>时间</span>
-            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.handleTime">{{FormatDate(formMessage.handleTime)}}</span>
-          </p>
-        </div>
-        <div class="iteamForm">
-          <span><img src="../../assets/image/supervise/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
-            <span>地点</span>
-            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.handleAddr">{{formMessage.handleAddr}}</span>
-          </p>
-        </div>
-  
-        <div class="iteamImage">
-          <p>
-            <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">派单照片</span>
-          </p>
-          <div class="imageList">
-            <img v-for="(iteam,index) in formMessage.dispachPhotoURLs" :key="index" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
+      <div class="superList">
+        <div class="topcloum">
+          <div class="topcloumson">
+            <p class="leftfont">单号</p>
+            <p class="leftfont1">{{formMessage.sheetCode}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">时间</p>
+            <p class="leftfont1">{{FormatDate(formMessage.dispatchTime)}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">地点</p>
+            <p class="leftfont1">{{formMessage.handleAddr}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">派单人</p>
+            <p class="leftfont1">{{formMessage.dispatchUserName}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">处理方式</p>
+            <p
+              class="leftfont1"
+            >{{formMessage.dealMethod==1?"整理":formMessage.dealMethod==2?"清运":"整理且清运"}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">企业</p>
+            <p class="leftfont1">{{formMessage.orgName}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">派单照片</p>
+            <p class="leftfont1">
+              <img
+                v-for="(iteam,index) in formMessage.dispachPhotoURLs"
+                :src="Ip+iteam"
+                :key="index"
+                alt
+                srcset
+                @click="handOpen(iteam)"
+              >
+            </p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">备注</p>
+            <p class="leftfont1">{{formMessage.dispachRemark}}</p>
           </div>
         </div>
-        <div class="iteamForm">
-          <span><img src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
-            <span>派单备注</span>
-            <span style="width:100%;text-align:right;margin-right:1rem" v-model="formMessage.dispachRemark">{{formMessage.dispachRemark}}</span>
-          </p>
+      </div>
+      <div class="superList">
+        <div class="topsa" style="margin-top:0.3rem">
+          <div class="fontext">转派记录</div>
+          <div></div>
         </div>
-        <div class="iteamForm">
-          <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
-            <span>处理方式</span>
-            <span style="width:100%;text-align:right;margin-right:1rem">{{formMessage.dealMethod==1?"整理":formMessage.dealMethod==2?"清运":"整理且清运"}}</span>
-          </p>
+      </div>
+      <div class="superList">
+        <div class="topsa" style="height:0.3rem;border:none;border-radius:0">
+          <div></div>
+          <div></div>
         </div>
-        <div v-if="formMessage.sendRecordList.length!==0" style="color:rgb(102, 204, 0);padding-left:0.4rem" class="iteamList">
-                转派记录
+      </div>
+      <div class="superList">
+        <div
+          class="topcloum"
+          style="padding:0 0.3rem"
+          v-for="(item,index) in formMessage.sendRecordList"
+          :key="index"
+        >
+          <div class="topcloumson" style="padding-bottom:0">
+            <div style="margin-top:-0.1rem">
+              <span>{{splitsa1(item.sendTime)}}</span>
+              <br>
+              <span
+                style="display: block;margin-top:0.1rem;font-size:0.3rem;color:#555555;margin-left:0.09rem"
+              >{{splitsa(item.sendTime)}}</span>
+            </div>
+            <div
+              class="topcloum"
+              style="margin:0;padding:0;align-items: center;padding-top:0rem;padding-left:0.2rem"
+            >
+              <p style="width:0.26rem;height:0.26rem;border-radius:50%;background:#5076ff;"></p>
+              <p
+                v-if="index!==formMessage.sendRecordList.length-1"
+                style="display:flex;flex:1;width:1px;border-left: 1px dashed #5076ff;"
+              ></p>
+            </div>
+            <div
+              class="topcloum"
+              style="margin:0;padding:0;flex:1;padding-left:0.2rem;margin-top:-0.1rem"
+            >
+              <div class="topcloumson">
+                <p class="leftfont" style="width:22%">转派人</p>
+                <p class="leftfont1" style="width:78%">{{item.sendMan}}</p>
+              </div>
+              <div class="topcloumson">
+                <p class="leftfont" style="width:22%">接单人</p>
+                <p class="leftfont1" style="width:78%">{{item.receiveMan}}</p>
+              </div>
+              <div class="topcloumson">
+                <p class="leftfont" style="width:22%">备注</p>
+                <p class="leftfont1" style="width:78%">{{item.sendRemark}}</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div v-for="(item,index) in formMessage.sendRecordList" :key="index">
-            <div class="iteamForm">
-                    <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
-                    <p>
-                      <span>转派时间</span>
-                      <span style="width:100%;text-align:right;margin-right:1rem">{{item.sendTime}}</span>
-                    </p>
-                    
+      </div>
+      <div class="superList">
+        <div class="iteamImage">
+          <div style="padding-left:0.3rem">
+            <img
+              src="../../assets/image/selfcheck/icon_4_picture.png"
+              width="24"
+              height="24"
+              alt
+              srcset
+            >
+            <span>整理前</span>
+          </div>
+          <div class="imageList">
+            <div
+              v-for="(iteam,index) in formMessage.handleBeforeURLs"
+              :key="index"
+              class="detailIcon"
+            >
+              <img :src="Ip+iteam" alt srcset width="100px" height="100px" @click="handOpen(iteam)">
+              <span @click="detailImage(1,index)">
+                <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
+              </span>
             </div>
-            <div class="iteamForm">
-                    <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
-                    <p>
-                      <span>转派人</span>
-                    <span style="width:100%;text-align:right;margin-right:1rem">{{item.sendMan}}</span>
-                    </p>
-                    
+            <div
+              v-if="formMessage.handleBeforeURLs.length<5"
+              style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
+              @click="clickImage"
+            >
+              <img src="../../assets/image/icon_add.png" width="52px" height="52px" alt srcset>
             </div>
-            <div class="iteamForm">
-                    <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
-                    <p>
-                      <span>接单人</span>
-                    <span style="width:100%;text-align:right;margin-right:1rem">{{item.receiveMan}}</span>
-                    </p>
-                    
-            </div>
-            <div class="iteamForm">
-                    <span><img style="margin-top:-0.1rem" src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
-                    <p>
-                      <span>备注</span>
-                      <span style="width:100%;text-align:right;margin-right:1rem">{{item.sendRemark}}</span>   
-                    </p>
-                                 
-            </div>
+          </div>
         </div>
+      </div>
+      <div class="superList">
+        <div class="iteamImage">
+          <div style="padding-left:0.3rem">
+            <img
+              src="../../assets/image/selfcheck/icon_4_picture.png"
+              width="22"
+              height="22"
+              alt
+              srcset
+            >
+            <span>整理后</span>
+          </div>
+          <div class="imageList">
+            <div
+              v-for="(iteam,index) in formMessage.handleAfterURLs"
+              :key="index"
+              class="detailIcon"
+            >
+              <img :src="Ip+iteam" alt srcset width="100px" height="100px" @click="handOpen(iteam)">
+              <span @click="detailImage(2,index)">
+                <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
+              </span>
+            </div>
+            <div
+              v-if="formMessage.handleAfterURLs.length<5"
+              style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
+              @click="clickImage1"
+            >
+              <img src="../../assets/image/icon_add.png" width="52px" height="52px" alt srcset>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="superList" style="margin-top:0.2rem">
+          <div class="iteamForm">
+            <img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="24" height="24" alt="" srcset="">
+            <div class="rightsa">
+              <span>整理数</span>
+              <input style="text-align:right;" type="number" placeholder="请输入整理数" v-model="formMessage.arrangeNum">
+            </div>
+          </div>
+          <div class="iteamForm">
+            <img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="24" height="24" alt="" srcset="">
+            <div class="rightsa" style="border:none">
+              <span>清运数</span>
+              <input style="text-align:right;" type="number" placeholder="请输入清运数" v-model="formMessage.cleanNum">
+            </div>
+          </div>
+      </div>
+      <!-- 
         <div  style="color:rgb(102, 204, 0);padding-left:0.4rem">
               处理信息
         </div>
@@ -149,12 +277,12 @@
             <span>清运数</span>
             <input type="number" placeholder="请选择清运数" v-model="formMessage.cleanNum">
           </p>
-        </div>
-      </div>
-      <div class="bottom">
-          <button type="button" class="buttonSa" @click="save()">暂存</button>
-          <button type="button" class="buttonSa1" @click="submit()">完成</button>
-      </div>
+      </div>-->
+    </div>
+    <div class="bottom">
+      <button type="button" class="buttonSa" @click="save()">暂存</button>
+      <button type="button" class="buttonSa1" @click="submit()">完成</button>
+    </div>
   </div>
 </template>
 
@@ -185,19 +313,17 @@ export default {
         arrangeNum: "",
         gpsLongitude: "",
         gpsLatitude: "",
-        dispachRemark:'',
+        dispachRemark: "",
         handleBeforeURLs: [],
         handleAfterURLs: [],
         cleanNum: "",
-        sheetCode1:"",
+        sheetCode1: "",
         remark: ""
       }
     };
   },
   components: {},
-  mounted() {
-    
-  },
+  mounted() {},
   created() {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.id) {
@@ -205,7 +331,6 @@ export default {
       this.getMessage(this.sheetCode);
     }
     window.getImage = this.getImage;
-    
   },
   methods: {
     clickImage() {
@@ -240,7 +365,7 @@ export default {
       this.$router.push({
         path: "/transfer",
         query: {
-          sheetCode1:this.sheetCode1,
+          sheetCode1: this.sheetCode1,
           message: this.sheetCode
         }
       });
@@ -282,13 +407,23 @@ export default {
     handleClose() {
       // console.log("close event");
     },
+    splitsa(val) {
+      return (
+        val.split(" ")[0].split("-")[1] + "-" + val.split(" ")[0].split("-")[2]
+      );
+    },
+    splitsa1(val) {
+      return (
+        val.split(" ")[1].split(":")[0] + ":" + val.split(" ")[1].split(":")[1]
+      );
+    },
     getMessage(val) {
       this.$fetchGet("dispatch/dispatchDetail", {
         id: val
       })
         .then(res => {
           if (res.status == 1) {
-            this.sheetCode1=res.dispatchDetail.sheetCode;
+            this.sheetCode1 = res.dispatchDetail.sheetCode;
             console.log(this.sheetCode1);
             this.formMessage = res.dispatchDetail;
             if (this.formMessage.handleTime == undefined) {
@@ -403,15 +538,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-input {
-  width: 80%;
-  margin: 0 1rem;
-  text-align: right;
-}
-textarea {
-  width: 80%;
-  margin: 0.733333rem 1rem 0 1rem;
-  text-align: right;
+// input {
+//   width: 80%;
+//   margin: 0 1rem;
+//   text-align: right;
+// }
+// textarea {
+//   width: 80%;
+//   margin: 0.733333rem 1rem 0 1rem;
+//   text-align: right;
+// }
+p {
+  margin: 0;
+  padding: 0;
 }
 .container {
   width: 100%;
@@ -419,6 +558,7 @@ textarea {
   display: flex;
   overflow: hidden;
   flex-direction: column;
+  background-color: #f2f2f2;
   .imgMask {
     width: 100%;
     height: 100%;
@@ -430,80 +570,150 @@ textarea {
   }
   .header {
     width: 100%;
-    height: 1rem;
+    height: 1.173333rem;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     text-align: center;
-    line-height: 1rem;
+    line-height: 1.173333rem;
     color: #fff;
   }
   .content {
+    width: 100%;
     flex: 1;
-    overflow: hidden;
+    height: 1px;
+    display: flex;
+    flex-direction: column;
     overflow-y: scroll;
-    box-sizing: border-box;
-    padding-top: 0.4rem;
-    .iteamForm {
+    align-items: center;
+    margin-bottom: 0.2rem;
+    .superList {
+      width: 100%;
+      box-sizing: border-box;
+
+      border-radius: 2px;
+      .iteamForm {
       display: flex;
       justify-content: flex-start;
       width: 100%;
       box-sizing: border-box;
-      padding: 0.2rem 0 0.2rem 0.4rem;
-      p {
-        display: flex;
-        justify-content: flex-start;
+      padding: 0.4rem 0rem 0rem 0.3rem;
+      background-color: #ffffff;
+      .rightsa{
         width: 100%;
         margin: 0;
         padding: 0;
-        padding-top: 0.1rem;
+        margin-left: 0.3rem;
         border-bottom: 1px solid #eeeeee;
-        box-sizing: border-box;
-        padding-left: 0.2rem;
-        // .imageSa{
-        //   display: flex;
-        //   flex-direction:row;
-        // }
-        span {
-          color: #282828;
-          font-size: 0.4rem;
-          text-align: left;
-          width: 28%;
+        height: 1rem;
+        line-height: 0.6rem;
+        display: flex;
+        justify-content: space-between;
+        // text-align:right;
+        padding-right: 0.3rem;
+        input{
+          margin-bottom: 0.4rem;
         }
       }
-    }
-    .iteamImage {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      box-sizing: border-box;
-      padding-top: 0.4rem;
-      .imageList {
+      .rightsa1{
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        margin-left: 0.3rem;
         display: flex;
-        flex-wrap: wrap;
+        justify-content: space-between;
+        padding-right: 0.3rem;
+      }
+    }
+      .iteamImage {
+        width: 100%;
+        display: flex;
+        background-color: #ffffff;
+        flex-direction: column;
         box-sizing: border-box;
-        padding-left: 0.4rem;
+        margin-top: 0.2rem;
         padding-top: 0.2rem;
-        .detailIcon {
-          position: relative;
-          margin-right: 0.2rem;
+        padding-bottom: 0.2rem;
+        .imageList {
+          display: flex;
+          flex-wrap: wrap;
+          box-sizing: border-box;
+          padding-left: 0.3rem;
+          padding-top: 0.2rem;
+          .detailIcon {
+            position: relative;
+            margin-right: 0.2rem;
+            span {
+              position: absolute;
+              right: 0px;
+              top: 0px;
+            }
+          }
+        }
+        div {
+          img {
+            border: none;
+            margin-bottom: -4px;
+          }
+          vertical-align: middle;
           span {
-            position: absolute;
-            right: 0px;
-            top: 0px;
+            font-size: 0.4rem;
+            margin-left: 0.3rem;
           }
         }
       }
-      img {
-        margin-top: -0.1rem;
-      }
-      p {
+      .topsa {
         display: flex;
-        justify-content: flex-start;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        padding: 0 0 0 0.4rem;
-        span {
-          font-size: 0.4rem;
+        justify-content: space-between;
+        box-sizing: border-box;
+        margin: 0 0.3rem;
+        background: #fff;
+        padding: 0.3rem;
+        border-top-left-radius: 0.12rem;
+        border-top-right-radius: 0.12rem;
+        border-bottom: 1px solid #f2f2f2;
+        .fontext {
+          position: relative;
+          margin-left: 0.3rem;
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0.015rem;
+            left: 0px;
+            width: 0.1rem;
+            height: 0.4rem;
+
+            background: #5076ff;
+            margin-left: -0.25rem;
+          }
+        }
+      }
+      .topcloum {
+        background: #fff;
+
+        display: flex;
+        box-sizing: border-box;
+        margin: 0 0.3rem;
+        padding: 0.3rem;
+        flex-direction: column;
+        border-bottom-left-radius: 0.12rem;
+        border-bottom-right-radius: 0.12rem;
+        .topcloumson {
+          display: flex;
+          justify-content: flex-start;
+          padding-bottom: 0.3rem;
+
+          .leftfont {
+            width: 25%;
+            color: #999999;
+            font-size: 0.37rem;
+          }
+          .leftfont1 {
+            width: 75%;
+            img {
+              margin-right: 0.2rem;
+              width: 2.5rem;
+              height: 2.5rem;
+            }
+          }
         }
       }
     }

@@ -14,7 +14,7 @@ import 'lib-flexible'
 // Vue.prototype.$axios = axios
 import $ from 'zepto'
 import common from './libs/common.js'
-// import Vconsole from "vconsole"
+import Vconsole from "vconsole"
 import VuePreview from 'vue-preview'
 import { Swipe, SwipeItem } from "mint-ui";
 import VueLazyLoad from 'vue-lazyload'
@@ -28,7 +28,7 @@ Vue.use(VueLazyLoad,{
 })
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
-// let vConsole = new Vconsole()
+let vConsole = new Vconsole()
 Vue.use(VuePreview, {
   mainClass: 'pswp--minimal--dark',
   barsSize: { top: 0, bottom: 0 },
