@@ -22,17 +22,25 @@
           <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-show="!downIcon"></span>
         </div>
         <div @click="sort1">
-          <span class="version-popup-font">{{companyname}}</span>
+          <span class="version-popup-font"  :class="[companyname.name == '单车企业' ? '' : 'version-popup-font-active']">{{companyname.name}}</span>
           <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-show="downIcon1"></span>
           <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-show="!downIcon1"></span>
         </div>
-        <div style="border:none" @click="sort2">
+        <div @click="sort2">
           <span
             class="version-popup-font"
-            :class="[menname == '处理人' ? '' : 'version-popup-font-active']"
-          >{{menname}}</span>
+            :class="[menname.name == '处理人' ? '' : 'version-popup-font-active']"
+          >{{menname.name}}</span>
           <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-show="downIcon2"></span>
           <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-show="!downIcon2"></span>
+        </div>
+        <div style="border:none" @click="sort3">
+          <span
+            class="version-popup-font"
+            :class="[statusname.name == '状态' ? '' : 'version-popup-font-active']"
+          >{{statusname.name}}</span>
+          <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-show="downIcon3"></span>
+          <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-show="!downIcon3"></span>
         </div>
       </div>
     </div>
@@ -41,7 +49,9 @@
       <div class="version-popup">
         <div class="variable">
           <div class="menself">
+            <p v-if="areakids.length==0" style="color:#999999;text-align:center">暂无数据</p>
             <div style="padding:0rem;background: #f2f2f2;">
+              
               <div class="areacheck" v-if="areaarr.length>0">
                 <p
                   class="areachecklist"
@@ -76,12 +86,13 @@
       <div class="version-popup">
         <div class="variable">
           <div class="menself">
-            <p class="menselflist" v-for="(iteam, index) in company" :key="index">{{iteam.name}}</p>
+            <p v-if="company.length==0" style="color:#999999;text-align:center">暂无数据</p>
+            <p class="menselflist" @click="clickCompany(iteam)" v-for="(iteam, index) in company" :class="[viewType2 == iteam.id ? 'menselflist-active' : '']" :key="index">{{iteam.name}}</p>
           </div>
         </div>
         <div class="bottomsa">
-          <p>重置</p>
-          <p style="border:none">确定</p>
+          <p @click="menReset1()">重置</p>
+          <p @click="submit1()" style="border:none">确定</p>
         </div>
       </div>
     </div>
@@ -91,6 +102,7 @@
       <div class="version-popup">
         <div class="variable">
           <div class="menself">
+            <p v-if="menData.length==0" style="color:#999999;text-align:center">暂无数据</p>
             <p
               class="menselflist"
               v-for="(iteam, index) in menData"
@@ -101,12 +113,33 @@
           </div>
         </div>
         <div class="bottomsa">
-          <p @click="menReset()">重置</p>
-          <p  style="border:none">确定</p>
+          <p @click="menReset2()">重置</p>
+          <p @click="submit2()" style="border:none">确定</p>
         </div>
       </div>
     </div>
     <!-- 处理人弹框 -->
+    <!-- 状态弹框 -->
+    <div class="version-popup-box1" v-show="!downIcon3">
+      <div class="version-popup">
+        <div class="variable">
+          <div class="menself">
+            <p
+              class="menselflist"
+              v-for="(iteam, index) in statusData"
+              :key="index"
+              @click="statusclick(iteam)"
+              :class="[viewType3 == iteam.id ? 'menselflist-active' : '']"
+            >{{iteam.name}}</p>
+          </div>
+        </div>
+        <div class="bottomsa">
+          <p @click="menReset3()">重置</p>
+          <p @click="submit3()" style="border:none">确定</p>
+        </div>
+      </div>
+    </div>
+    <!-- 状态弹框 -->
     <div class="noneList" v-if="noneList">
       <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt>
       <p style="color:#989898">暂时没有自查数据哦~</p>
@@ -120,13 +153,10 @@
       noDataText="--我也是有底线的--"
       ref="my_scroller"
     >
-      <div
-        class="iteamsa"
-        v-for="(iteam, index) in pageList"
-        :key="index"
-        @click="detailClick(iteam)"
-      >
-        <div class="iteamListSa">
+      <div class="iteamsa">
+        <div class="iteamListSa" v-for="(iteam, index) in pageList"
+            :key="index"
+            @click="detailClick(iteam)">
           <div class="leftSa">
             <img
               :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]"
@@ -137,14 +167,16 @@
             >
           </div>
           <div class="rightSa">
-            <div class="topRight">
-              <span>{{FormatDate(iteam.updateTime)}}</span>
-              <span
-                style="margin-left:1rem"
-                :class="iteam.status == 1 ? 'green' : 'red'"
-              >{{iteam.status == 1 ? '处理中' : "已处理"}}</span>
+            <div style="display:flex;flex-direction: column;flex:1;max-width: 100%;">
+              <div class="topRight">
+                <p>{{FormatDate(iteam.updateTime)}}</p>
+                <p
+                  style="font-size:0.36rem"
+                  :class="iteam.status == 1 ? 'green' : 'red'"
+                >{{iteam.status == 1 ? '处理中' : "已处理"}}</p>
+              </div>
+              <div class="centersa"><span style="" :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'">{{iteam.orgName}}</span> <span style="color:#666666;margin-left:0.2rem">整理</span><span style="color:#5076FF;margin-left:0.1rem">{{iteam.arrangeNum==0?'-':iteam.arrangeNum}}</span><span style="color:#666666;margin-left:0.2rem">清运</span><span style="color:#5076FF;margin-left:0.1rem">{{iteam.cleanNum==0?'-':iteam.cleanNum}}</span></div>
             </div>
-            <div class="center">{{iteam.orgName}}： 整理{{iteam.arrangeNum}}辆，清运{{iteam.cleanNum}}辆</div>
             <div class="bottomRight">
               <span class="iconfont icon-weizhi"></span>
               <span class="moreFont">{{iteam.handleAddr}}</span>
@@ -167,22 +199,50 @@ export default {
       selected: "/layout/selfCheck",
       viewType: "",
       viewType1: "",
+      viewType2: "",
+      viewType3: "",
       popupVisible: true,
       areaflag: true, //是否包含flag
       menType: "",
       downIcon: true,
       downIcon1: true,
       downIcon2: true,
+      downIcon3: true,
+      statusData:[ 
+        {
+        name: "处理中",
+        id: 1
+        },
+        {
+        name: "已处理",
+        id: 2
+        },
+      ],
       areaname: {
         name: "区域",
         id: ""
       },
-      companyname: "单车企业",
-      menname: "处理人",
+      companyname:  {
+        name: "单车企业",
+        id: ""
+      },
+      statusname:   {
+        name:"状态",
+        id: ""
+      },
+      menname:  {
+        name: "处理人",
+        id: ""
+      },
       noneList: false,
       searchCondition: {
         page: "0",
-        pageSize: "15"
+        pageSize: "15",
+        handleBy:"",
+        areaId:"",
+        orgId:'',
+        status:"",
+
       },
       UserArea: [],
       pageList: [],
@@ -221,9 +281,20 @@ export default {
     iconClick() {
       this.$router.push("/selfCheckAdd");
     },
+    clickCompany(val){
+      this.viewType2 = val.id;
+      this.companyname.name=val.name;
+      this.companyname.id=val.id;
+    },
     menTypeclick(val) {
       this.menType = val.id;
-      this.menname = val.name;
+      this.menname.name = val.realName;
+      this.menname.id = val.id;
+    },
+    statusclick(val){
+      this.viewType3 = val.id;
+      this.statusname.name = val.name;
+      this.statusname.id = val.id;
     },
     areaTypeclick(val, index) {
       this.areaflag = false;
@@ -232,25 +303,9 @@ export default {
       this.areaname.name = val.name;
       this.areaname.id = val.id;
       this.areakids = val.children;
-      // this.UserArea.forEach((iteam, index) => {
-      //   if (val.pid == iteam.pid) {
-      //     this.areakids.push(iteam);
-      //   }
-      // });
       this.areaarr = this.areaarr.slice(0, index + 1);
-      // console.log(this.areaarr);
-    },
-    uniq(array) {
-      var temp = []; //一个新的临时数组
-      for (var i = 0; i < array.length; i++) {
-        if (temp.indexOf(array[i].name) == -1) {
-          temp.push(array[i]);
-        }
-      }
-      return temp;
     },
     areaTypeclick1(val) {
-      // console.log(this.areakids);
       this.viewType1 = val.id;
       this.areaname.name = val.name;
       this.areaname.id = val.id;
@@ -265,27 +320,102 @@ export default {
       }
     },
     menReset() {
-      this.menType = "";
-      this.menname = "处理人";
+      this.viewType='';
+      this.viewType1='';
+      this.areaname.name = "区域";
+      this.pageList=[];
+      this.searchCondition.areaId='';
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
+      this.downIcon=true;
+    },
+    menReset1() {
+      this.viewType2='';
+      this.companyname.name = "单车企业";
+      this.pageList=[];
+      this.searchCondition.orgId='';
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
+      this.downIcon1=true;
+    },
+    menReset2() {
+      this.menType='';
+      this.menname.name = "处理人";
+      this.pageList=[];
+      this.searchCondition.handleBy='';
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
+      this.downIcon2=true;
+    },
+    menReset3() {
+      this.viewType3='';
+      this.statusname.name = "状态";
+      this.pageList=[];
+      this.searchCondition.status='';
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
+      this.downIcon3=true;
     },
     submit(){
-      console.log(this.areaname);
+      this.pageList=[];
+      this.searchCondition.areaId=this.areaname.id;
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
+      this.downIcon=true;
+    },
+    submit1(){
+      this.pageList=[];
+      this.searchCondition.orgId=this.companyname.id;
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
+      this.downIcon1=true;
+    },
+    submit2(){
+      this.pageList=[];
+      this.searchCondition.handleBy=this.menname.id;
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
+      this.downIcon2=true;
+    },
+    submit3(){
+      this.pageList=[];
+      this.searchCondition.status=this.statusname.id;
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
+      this.downIcon3=true;
     },
     //切换图片；
     sort() {
       this.downIcon = !this.downIcon;
       this.downIcon1 = true;
       this.downIcon2 = true;
+      this.downIcon3 = true;
     },
     sort1() {
       this.downIcon1 = !this.downIcon1;
       this.downIcon = true;
       this.downIcon2 = true;
+      this.downIcon3 = true;
     },
     sort2() {
       this.downIcon2 = !this.downIcon2;
       this.downIcon1 = true;
       this.downIcon = true;
+      this.downIcon3 = true;
+    },
+    sort3() {
+      this.downIcon3 = !this.downIcon3;
+      this.downIcon1 = true;
+      this.downIcon = true;
+      this.downIcon2 = true;
     },
     getorgsTree() {
       //获取组织树数据
@@ -293,7 +423,6 @@ export default {
         this.UserArea = res;
         let originTree = this.parseChildren(1, res.slice(0));
         this.deleteChildren(originTree);
-        // console.log(originTree);
         this.areakids = originTree;
       });
     },
@@ -351,7 +480,11 @@ export default {
       // console.log("refresh");
       this.$fetchGet("selfcheck/pageSelfCheck", {
         page: 1,
-        pageSize: 15
+        pageSize: 15,
+        handleBy:this.searchCondition.handleBy,
+        areaId:this.searchCondition.areaId,
+        orgId:this.searchCondition.orgId,
+        status:this.searchCondition.status,
       }).then(res => {
         this.pageList = res.list;
       });
@@ -362,12 +495,17 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
+<style>
+._v-container>._v-content>.loading-layer>.no-data-text[data-v-ecaca2b0]{
+  top:-0.3rem !important;
+}
+</style>
+<style lang="scss" scoped>
 ._v-container {
   height: 84% !important;
   background-color: transparent;
 }
+
 .containerSa {
   width: 100%;
   height: 100%;
@@ -528,50 +666,121 @@ export default {
     margin-top: 2rem;
   }
   .iteamsa {
-    background: #ffffff;
-    margin-bottom: 0.2rem;
+    max-width:100%;
+    box-sizing: border-box;
     .iteamListSa {
       display: flex;
-      justify-content: flex-start;
+      max-width:100%;
+      background: #ffffff;
+    margin-bottom: 0.2rem;
+      justify-content: space-between;
       box-sizing: border-box;
-      padding: 0.1rem 0.2rem;
+      padding: 0.3rem;
       border-bottom: 1px solid #eeeeee;
+      // flex-wrap:nowrap;
 
       .leftSa {
-        display: flex;
-        flex: 1;
+        // display: flex;
+         
       }
       .rightSa {
-        width: 100%;
+        width: 0;
         display: flex;
         box-sizing: border-box;
-        padding: 0 0.2rem;
+        padding: 0rem;
+       flex: 1;
+        padding-left: 0.2rem;
         flex-direction: column;
         .topRight {
+          p{
+            margin: 0;
+            padding:0;
+          }
           display: flex;
-          flex: 1;
-          justify-content: flex-start;
+          max-width: 100%;
+          // flex: 1;
+          justify-content: space-between;
+          align-items: center;
           .green {
             color: #ffc000;
+            border: 1px solid #ffc000;
+            box-sizing: border-box;
+            padding: 0.06rem;
+            border-radius: 5px;
           }
           .red {
             color: #41cd76;
+            border: 1px solid #41cd76;
+            padding: 0.06rem;
+            box-sizing: border-box;
+            border-radius: 5px;
           }
         }
-        .center {
+        .centersa {
           width: 100%;
           display: flex;
-          flex: 1;
+          // flex: 1;
           box-sizing: border-box;
+          padding-top: 0.2rem;
+          align-items: center;
+          .mobike{
+            background: #F25B4A;
+            padding: 0.06rem 0.2rem;
+            box-sizing: border-box;
+            border-radius: 12px;
+            color:#ffffff;
+            font-size: 0.35rem;
+          }
+          .ofo{
+            background: #FBC303;
+            padding: 0.06rem 0.2rem;
+            box-sizing: border-box;
+            border-radius: 12px;
+            color:#333333;
+            font-size: 0.35rem;
+          }
+          .haluo{
+            background: #01A1FF;
+            padding: 0.06rem 0.2rem;
+            box-sizing: border-box;
+            border-radius: 12px;
+            color:#ffffff;
+            font-size: 0.35rem;
+          }
+          .jiujiu{
+            background: #fd3121;
+            padding: 0.06rem 0.2rem;
+            box-sizing: border-box;
+            border-radius: 12px;
+            color:#ffffff;
+            font-size: 0.35rem;
+          }
+          .xiangqi{
+            background: #00cb4b;
+            padding: 0.06rem 0.2rem;
+            box-sizing: border-box;
+            border-radius: 12px;
+            color:#ffffff;
+            font-size: 0.35rem;
+          }
+          .other{
+            background: #9a6eff;
+            color: #ffffff;
+            padding: 0.06rem 0.2rem;
+            box-sizing: border-box;
+            border-radius: 12px;
+            font-size: 0.35rem;
+          }
         }
         .bottomRight {
           display: flex;
-          width: 100%;
-          height: 20px;
+          max-width: 100%;
+          
+          height: 0.4rem;
           color: #989898;
           justify-content: flex-start;
           .moreFont {
-            width: 68%;
+            max-width: 90%;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;

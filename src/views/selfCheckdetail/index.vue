@@ -36,7 +36,10 @@
         <div class="iteamsa">
           <img v-if="iteamList.orgId==1007" src="../../assets/image/OFO.png" width="59" height="58">
           <img v-if="iteamList.orgId==1006" src="../../assets/image/mobike.png" width="59" height="58">
-          <img v-if="iteamList.orgId!==1006&&iteamList.orgId!==1007&&iteamList.orgId!==1014&&iteamList.orgId!==1015&&iteamList.orgId!==1059" src="../../assets/image/other.png" width="59" height="58">
+          <img v-if="iteamList.orgId==1014" src="../../assets/image/jiujiu.png" width="59" height="58">
+          <img v-if="iteamList.orgId==1015" src="../../assets/image/haluo.png" width="59" height="58">
+          <img v-if="iteamList.orgId==1059" src="../../assets/image/xiangqi.png" width="59" height="58">
+          <img v-if="iteamList.orgId!==1006&&iteamList.orgId!==1007&&iteamList.orgId!==1014&&iteamList.orgId!==1015&&iteamList.orgId!==1059" src="../../assets/image/jiedao.png" width="59" height="58">
           <div style="width:70%;margin-left:0.3rem;display: flex;flex-direction:column;">
             <p style="display: flex;justify-content: space-between;width:100%;flex:1">
               <span>{{iteamList.orgName}}</span>

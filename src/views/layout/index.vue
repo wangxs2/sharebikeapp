@@ -171,10 +171,7 @@ export default {
     width: 100%;
     height: 55px;
     border-top: 1px solid #f6f6f6;
-    // position: fixed;
-    // left: 0;
-    // bottom: 0;
-    //   background: red;
+    z-index:8887;
   }
 }
 </style>
