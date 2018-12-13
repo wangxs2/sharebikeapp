@@ -2,11 +2,12 @@
 <template>
   <div class="containerSa1">
       <div class="header">
-        <mt-header title="派单">
-            <mt-button class="iconfont icon-gengduo" style="font-size:24px" slot="right" @click="iconClick">
-                
-            </mt-button>
-        </mt-header>
+        <div>
+          <span style="font-size:24px" class="iconfont icon-location"></span>
+          <span>上海</span>
+        </div>
+        <div>督办</div>
+        <span style="font-size:24px" class="iconfont icon-gengduo" @click="iconClick"></span>
       </div>
       <div class="version-popup-box">
       <div class="version-popup">
@@ -146,25 +147,25 @@
             <div class="iteamListSa" v-for="(iteam, index) in pageList"
         :key="index"
         @click="detailClick(iteam)">
-              <div class="leftSa">                  
-                  <img v-if="iteam.dispachPhotoURLs.length!==0" :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="90" height="90" srcset="">
-                  <img v-if="iteam.dispachPhotoURLs.length==0" src="../../../assets/image/selfcheck/image_no data@3x.png" alt="" width="90" height="90" srcset="">
+              <div class="leftSa" style="width:120px;height:120px">                  
+                  <img v-if="iteam.dispachPhotoURLs.length!==0" :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="120" height="120" srcset="">
+                  <img v-if="iteam.dispachPhotoURLs.length==0" src="../../../assets/image/selfcheck/image_no data@3x.png" alt="" width="120" height="120" srcset="">
               </div>
               <div class="rightSa">
                   <div class="topRight">
                       <span>{{FormatDate(iteam.dispatchTime)}}</span>
-                       <span style="font-size:0.36rem" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
+                       <span style="font-size:0.36rem;height:100%;line-height:100%;" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="centersa">
-                    <div class="centersalist" v-for="(item, index) in iteam.finishDetailList">
-                      <p :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'">{{item.orgName}}</p>
+                    <div class="centersalist" v-for="(item, index) in iteam.finishDetailList" :key="index">
+                      <p style="line-height:1.5;text-align:center" :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'">{{item.orgName}}</p>
                       <p style="flex:1;padding-top:0.2rem">{{item.dealTime}}</p>
                     </div>
                     
                   </div>
                   <div class="bottomRight">
-                      <span class="iconfont icon-weizhi"></span>
+                      <span class="iconfont icon-location"></span>
                       <span class="moreFont">{{iteam.handleAddr}}</span>
                   </div>
               </div>
@@ -644,12 +645,17 @@ export default {
     }
   }
   .header {
-    width: 100%;
     height: 1.173333rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
-    text-align: center;
-    line-height: 1.173333rem;
     color: #fff;
+    font-size: 0.48rem;
+    padding: 0 0.32rem;
+    box-sizing: border-box;
+    flex-shrink: 0;
   }
   .noneList {
     flex: 1;
@@ -660,8 +666,7 @@ export default {
   .iteamsa{
     max-width:100%;
     box-sizing: border-box;
-    background: #ffffff;
-   
+    background: #f2f2f2;
     .iteamListSa {
       max-width:100%;
       display: flex;
@@ -669,6 +674,7 @@ export default {
       justify-content: space-between;
       box-sizing: border-box;
       padding: 0.3rem;
+       background: #ffffff;
       border-bottom: 1px solid #eeeeee;
       .rightSa {
         width: 0;
@@ -776,8 +782,9 @@ export default {
         .bottomRight {
           display: flex;
           width: 100%;
-          color: #989898;
+          color: #666666;
           justify-content: flex-start;
+          align-items:flex-end;
           .moreFont {
             width: 68%;
             overflow: hidden;

@@ -2,15 +2,13 @@
 <template>
   <div class="containerSaone">
     <div class="header">
-      <mt-header title="自查">
-        <mt-button
-          class="iconfont icon-gengduo"
-          style="font-size:24px"
-          slot="right"
-          @click="iconClick"
-        ></mt-button>
-      </mt-header>
-    </div>
+        <div>
+          <span style="font-size:24px" class="iconfont icon-location"></span>
+          <span>上海</span>
+        </div>
+        <div>自查</div>
+        <span style="font-size:24px" class="iconfont icon-gengduo" @click="iconClick"></span>
+      </div>
     <div class="version-popup-box">
       <div class="version-popup">
         <div @click="sort">
@@ -168,27 +166,27 @@
           :key="index"
           @click="detailClick(iteam)"
         >
-          <div class="leftSa">
+          <div class="leftSa" style="width:120px;height:120px">
             <img
               :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]"
               alt
-              width="90"
-              height="90"
+              width="120"
+              height="120"
               srcset
             >
           </div>
           <div class="rightSa">
             <div style="display:flex;flex-direction: column;flex:1;max-width: 100%;">
               <div class="topRight">
-                <p>{{FormatDate(iteam.updateTime)}}</p>
+                <p style="flex:1;">{{FormatDate(iteam.updateTime)}}</p>
                 <p
-                  style="font-size:0.36rem"
+                  style="font-size:0.36rem;height:100%;line-height:100%;"
                   :class="iteam.status == 1 ? 'green' : 'red'"
                 >{{iteam.status == 1 ? '处理中' : "已处理"}}</p>
               </div>
               <div class="centersa">
                 <span
-                  style
+                  style='height:100%;line-height:100%;'
                   :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'"
                 >{{iteam.orgName}}</span>
                 <span style="color:#666666;margin-left:0.2rem">整理</span>
@@ -677,12 +675,17 @@ export default {
     }
   }
   .header {
-    width: 100%;
     height: 1.173333rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
-    text-align: center;
-    line-height: 1.173333rem;
     color: #fff;
+    font-size: 0.48rem;
+    padding: 0 0.32rem;
+    box-sizing: border-box;
+    flex-shrink: 0;
   }
   .noneList {
     flex: 1;
@@ -796,8 +799,9 @@ export default {
           max-width: 100%;
 
           height: 0.4rem;
-          color: #989898;
+          color: #666666;
           justify-content: flex-start;
+          align-items:flex-end;
           .moreFont {
             max-width: 90%;
             overflow: hidden;

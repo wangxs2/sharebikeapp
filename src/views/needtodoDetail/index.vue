@@ -86,7 +86,7 @@
         </div>
         <div class="superList" style="">
           <div class="topsa">
-            <div class="fontext">转派记录</div>
+            <div class="fontext">派单/转派记录</div>
             <div></div>
           </div>
         </div>
@@ -126,7 +126,7 @@
                 style="margin:0;padding:0;flex:1;padding-left:0.2rem;margin-top:-0.1rem"
               >
                 <div class="topcloumson">
-                  <p class="leftfont" style="width:22%">转派人</p>
+                  <p class="leftfont" style="width:22%">{{index==0?'派单人':'转派人'}}</p>
                   <p class="leftfont1" style="width:78%">{{item.sendMan}}</p>
                 </div>
                 <div class="topcloumson">
@@ -159,7 +159,7 @@
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理时长</p>
-              <p class="leftfont1">{{iteamList.dealTime}}</p>
+              <p class="leftfont1">{{iteamList.dealTimeHour}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理前</p>

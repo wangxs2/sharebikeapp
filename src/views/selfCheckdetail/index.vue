@@ -64,8 +64,11 @@
         </div>
       </div>
       <p
+        style="background: #fff;box-sizing: border-box;padding:0.2rem 0.3rem;"
+      >处理人：{{iteamList.handleUserName}}</p>
+      <p
         style="background: #fff;box-sizing: border-box;padding:0.2rem 0.3rem;border-bottom:1px solid #f2f2f2"
-      >处理时长：{{iteamList.dealTime}}</p>
+      >处理时长：{{iteamList.dealTimeHour}}</p>
       <div class="selfcheckList" style="margin-bottom:0.3rem">
         <div class="iteamsa">
           <div class="timesa">

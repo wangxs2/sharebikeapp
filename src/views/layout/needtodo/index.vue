@@ -3,20 +3,12 @@
   <div class="containerSa2">
       <div class="header">
         <div>
-          <!-- <img
-            src="../../../assets/image/selfcheck/icon_2_address@3x.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          > -->
         </div>
         <div class="tab-btns" @click="selectView">
           <div class="btn-left" viewType="1" :class="[viewTypesa == 1 ? 'tab-active' : '']">待办</div>
           <div class="btn-right" viewType="2" :class="[viewTypesa == 2 ? 'tab-active' : '']">已办</div>
         </div>
         <div>
-
         </div>
       </div>
       <div class="content">
@@ -97,22 +89,23 @@
         <scroller style="top: 2.4rem;bottom:55px;height:82%;overflow:hidden" v-if="!noneList" :on-infinite="infinite" :on-refresh="refresh" infiniteText="上拉加载" noDataText="--我也是有底线的--" ref="my_scroller">
           <div class="iteamsa">
             <div class="iteamListSa" v-for="(iteam, index) in pageList" :key="index" @click="detailClick(iteam)">
-              <div class="leftSa">                  
-                  <img v-if="iteam.dispachPhotoURLs.length!==0" :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="90" height="90" srcset="">
-                  <img v-if="iteam.dispachPhotoURLs.length==0" src="../../../assets/image/selfcheck/image_no data@3x.png" alt="" width="90" height="90" srcset="">
+              <div class="leftSa" style="width:120px;height:120px">                  
+                  <img v-if="iteam.dispachPhotoURLs.length!==0&&iteam.status!==2" :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="120" height="120" srcset="">
+                  <img v-if="iteam.dispachPhotoURLs.length==0" src="../../../assets/image/selfcheck/image_no data@3x.png" alt="" width="120" height="120" srcset="">
+                  <img v-if="iteam.status==2" :src="Ip + iteam.handleAfterURLs[0]" alt="" width="120" height="120" srcset="">
               </div>
               <div class="rightSa">
                   <div class="topRight">
                       <span>{{FormatDate(iteam.dispatchTime)}}</span>
-                       <span style="font-size:0.36rem" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"已转派":"已完成"}}</span>
+                       <span style="font-size:0.36rem;height:100%;line-height:100%;" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"已转派":"已完成"}}</span>
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="centersa">
                     <p style="margin-top:0.2rem"><span style='color:#666666;'>处理人：</span><span style='color:#5076FF;'>{{iteam.handleUserName}}</span></p>
-                    <p v-if="iteam.status == 2||iteam.status==4"><span style='color:#666666;'>处理时长：</span><span style='color:#5076FF;'>{{iteam.dealTime}}</span></p>
+                    <p v-if="iteam.status == 2||iteam.status==4"><span style='color:#666666;'>处理时长：</span><span style='color:#5076FF;'>{{iteam.dealTimeHour}}</span></p>
                   </div>
                   <div class="bottomRight">
-                      <span class="iconfont icon-weizhi"></span>
+                      <span class="iconfont icon-location"></span>
                       <span class="moreFont">{{iteam.handleAddr}}</span>
                   </div>
               </div>
@@ -504,8 +497,9 @@ export default {
             display: flex;
             width: 100%;
             height: 20px;
-            color: #989898;
+            color: #666666;
             justify-content: flex-start;
+            align-items:flex-end;
             .moreFont {
               width: 68%;
               overflow: hidden;
