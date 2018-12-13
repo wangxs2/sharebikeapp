@@ -2,12 +2,9 @@
 <template>
   <div class="containerSa1">
       <div class="header">
-        <div>
-          <span style="font-size:24px" class="iconfont icon-location"></span>
-          <span>上海</span>
-        </div>
-        <div>督办</div>
-        <span style="font-size:24px" class="iconfont icon-gengduo" @click="iconClick"></span>
+        <span style="font-size:0.48rem;width:2rem;text-align:center" class="iconfont icon-location">上海</span>
+        <span style='width:2rem;text-align:center'>督办</span>
+        <span style="font-size:24px;width:2rem;text-align:center" class="iconfont icon-gengduo" @click="iconClick"></span>
       </div>
       <div class="version-popup-box">
       <div class="version-popup">
@@ -84,7 +81,7 @@
         <div class="variable">
           <div class="menself">
             <p v-if="company.length==0" style="color:#999999;text-align:center">暂无数据</p>
-            <p class="menselflist" v-for="(iteam, index) in company" :key="index" :class="[viewType2 == iteam.id ? 'menselflist-active' : '']">{{iteam.name}}</p>
+            <p class="menselflist" v-for="(iteam, index) in company" @click="clickCompany(iteam)" :key="index" :class="[viewType2 == iteam.id ? 'menselflist-active' : '']">{{iteam.name}}</p>
           </div>
         </div>
         <div class="bottomsa">
@@ -158,6 +155,7 @@
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="centersa">
+                    <p v-if="iteam.status==0">企业：{{iteam.dispatchReceive}}</p>
                     <div class="centersalist" v-for="(item, index) in iteam.finishDetailList" :key="index">
                       <p style="line-height:1.5;text-align:center" :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'">{{item.orgName}}</p>
                       <p style="flex:1;padding-top:0.2rem">{{item.dealTime}}</p>
@@ -336,6 +334,11 @@ export default {
           delete item.children;
         }
       });
+    },
+    clickCompany(val) {
+      this.viewType2 = val.id;
+      this.companyname.name = val.name;
+      this.companyname.id = val.id;
     },
     areaTypeclick(val, index) {
       this.areaflag = false;
@@ -653,7 +656,7 @@ export default {
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     color: #fff;
     font-size: 0.48rem;
-    padding: 0 0.32rem;
+    padding: 0rem;
     box-sizing: border-box;
     flex-shrink: 0;
   }

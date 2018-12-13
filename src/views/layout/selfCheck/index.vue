@@ -2,12 +2,9 @@
 <template>
   <div class="containerSaone">
     <div class="header">
-        <div>
-          <span style="font-size:24px" class="iconfont icon-location"></span>
-          <span>上海</span>
-        </div>
-        <div>自查</div>
-        <span style="font-size:24px" class="iconfont icon-gengduo" @click="iconClick"></span>
+        <span style="font-size:0.48rem;width:2rem;text-align:center" class="iconfont icon-location">上海</span>
+        <span style='width:2rem;text-align:center'>自查</span>
+        <span style="font-size:24px;width:2rem;text-align:center" class="iconfont icon-gengduo" @click="iconClick"></span>
       </div>
     <div class="version-popup-box">
       <div class="version-popup">
@@ -677,15 +674,14 @@ export default {
   .header {
     height: 1.173333rem;
     display: flex;
-    flex-direction: row;
     align-items: center;
+    align-content: center;
     justify-content: space-between;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     color: #fff;
     font-size: 0.48rem;
-    padding: 0 0.32rem;
+    padding: 0rem;
     box-sizing: border-box;
-    flex-shrink: 0;
   }
   .noneList {
     flex: 1;

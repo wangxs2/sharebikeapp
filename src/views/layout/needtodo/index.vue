@@ -101,7 +101,7 @@
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="centersa">
-                    <p style="margin-top:0.2rem"><span style='color:#666666;'>处理人：</span><span style='color:#5076FF;'>{{iteam.handleUserName}}</span></p>
+                    <p style="margin-top:0.2rem"><span style='color:#666666;'>接单人：</span><span style='color:#5076FF;'>{{iteam.handleUserName}}</span></p>
                     <p v-if="iteam.status == 2||iteam.status==4"><span style='color:#666666;'>处理时长：</span><span style='color:#5076FF;'>{{iteam.dealTimeHour}}</span></p>
                   </div>
                   <div class="bottomRight">
@@ -202,6 +202,29 @@ export default {
             id: row.id
           }
         });
+      }
+    },
+    areaTypeclick(val, index) {
+      this.areaflag = false;
+      this.areakids = [];
+      this.viewType = val.id;
+      this.areaname.name = val.name;
+      this.areaname.id = val.id;
+      this.areakids = val.children;
+      this.areaarr = this.areaarr.slice(0, index + 1);
+    },
+    areaTypeclick1(val) {
+      this.viewType1 = val.id;
+      this.areaname.name = val.name;
+      this.areaname.id = val.id;
+      if (val.children) {
+        
+        this.viewType = val.id;
+        if (this.areaflag) {
+          this.areaarr.push({ name: val.name, id: val.id, children: this.areakids });
+        }
+        this.areaflag = true;
+        this.areakids = val.children;
       }
     },
     menReset() {
@@ -319,8 +342,8 @@ export default {
     },
     menTypeclick(val) {
       this.menType = val.id;
-      this.menname.name = val.realName;
-      this.menname.id = val.id;
+      this.companyname.name = val.realName;
+      this.companyname.id = val.id;
     },
     // 导航标签
     selectComany(e) {
