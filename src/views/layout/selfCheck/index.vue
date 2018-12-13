@@ -1,6 +1,6 @@
 
 <template>
-  <div class="containerSa">
+  <div class="containerSaone">
     <div class="header">
       <mt-header title="自查">
         <mt-button
@@ -22,7 +22,10 @@
           <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-show="!downIcon"></span>
         </div>
         <div @click="sort1">
-          <span class="version-popup-font"  :class="[companyname.name == '单车企业' ? '' : 'version-popup-font-active']">{{companyname.name}}</span>
+          <span
+            class="version-popup-font"
+            :class="[companyname.name == '单车企业' ? '' : 'version-popup-font-active']"
+          >{{companyname.name}}</span>
           <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-show="downIcon1"></span>
           <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-show="!downIcon1"></span>
         </div>
@@ -51,7 +54,6 @@
           <div class="menself">
             <p v-if="areakids.length==0" style="color:#999999;text-align:center">暂无数据</p>
             <div style="padding:0rem;background: #f2f2f2;">
-              
               <div class="areacheck" v-if="areaarr.length>0">
                 <p
                   class="areachecklist"
@@ -87,7 +89,13 @@
         <div class="variable">
           <div class="menself">
             <p v-if="company.length==0" style="color:#999999;text-align:center">暂无数据</p>
-            <p class="menselflist" @click="clickCompany(iteam)" v-for="(iteam, index) in company" :class="[viewType2 == iteam.id ? 'menselflist-active' : '']" :key="index">{{iteam.name}}</p>
+            <p
+              class="menselflist"
+              @click="clickCompany(iteam)"
+              v-for="(iteam, index) in company"
+              :class="[viewType2 == iteam.id ? 'menselflist-active' : '']"
+              :key="index"
+            >{{iteam.name}}</p>
           </div>
         </div>
         <div class="bottomsa">
@@ -154,9 +162,12 @@
       ref="my_scroller"
     >
       <div class="iteamsa">
-        <div class="iteamListSa" v-for="(iteam, index) in pageList"
-            :key="index"
-            @click="detailClick(iteam)">
+        <div
+          class="iteamListSa"
+          v-for="(iteam, index) in pageList"
+          :key="index"
+          @click="detailClick(iteam)"
+        >
           <div class="leftSa">
             <img
               :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]"
@@ -175,7 +186,20 @@
                   :class="iteam.status == 1 ? 'green' : 'red'"
                 >{{iteam.status == 1 ? '处理中' : "已处理"}}</p>
               </div>
-              <div class="centersa"><span style="" :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'">{{iteam.orgName}}</span> <span style="color:#666666;margin-left:0.2rem">整理</span><span style="color:#5076FF;margin-left:0.1rem">{{iteam.arrangeNum==0?'-':iteam.arrangeNum}}</span><span style="color:#666666;margin-left:0.2rem">清运</span><span style="color:#5076FF;margin-left:0.1rem">{{iteam.cleanNum==0?'-':iteam.cleanNum}}</span></div>
+              <div class="centersa">
+                <span
+                  style
+                  :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'"
+                >{{iteam.orgName}}</span>
+                <span style="color:#666666;margin-left:0.2rem">整理</span>
+                <span
+                  style="color:#5076FF;margin-left:0.1rem"
+                >{{iteam.arrangeNum==0?'-':iteam.arrangeNum}}</span>
+                <span style="color:#666666;margin-left:0.2rem">清运</span>
+                <span
+                  style="color:#5076FF;margin-left:0.1rem"
+                >{{iteam.cleanNum==0?'-':iteam.cleanNum}}</span>
+              </div>
             </div>
             <div class="bottomRight">
               <span class="iconfont icon-weizhi"></span>
@@ -208,29 +232,29 @@ export default {
       downIcon1: true,
       downIcon2: true,
       downIcon3: true,
-      statusData:[ 
+      statusData: [
         {
-        name: "处理中",
-        id: 1
+          name: "处理中",
+          id: 1
         },
         {
-        name: "已处理",
-        id: 2
-        },
+          name: "已处理",
+          id: 2
+        }
       ],
       areaname: {
         name: "区域",
         id: ""
       },
-      companyname:  {
+      companyname: {
         name: "单车企业",
         id: ""
       },
-      statusname:   {
-        name:"状态",
+      statusname: {
+        name: "状态",
         id: ""
       },
-      menname:  {
+      menname: {
         name: "处理人",
         id: ""
       },
@@ -238,11 +262,10 @@ export default {
       searchCondition: {
         page: "0",
         pageSize: "15",
-        handleBy:"",
-        areaId:"",
-        orgId:'',
-        status:"",
-
+        handleBy: "",
+        areaId: "",
+        orgId: "",
+        status: ""
       },
       UserArea: [],
       pageList: [],
@@ -281,17 +304,17 @@ export default {
     iconClick() {
       this.$router.push("/selfCheckAdd");
     },
-    clickCompany(val){
+    clickCompany(val) {
       this.viewType2 = val.id;
-      this.companyname.name=val.name;
-      this.companyname.id=val.id;
+      this.companyname.name = val.name;
+      this.companyname.id = val.id;
     },
     menTypeclick(val) {
       this.menType = val.id;
       this.menname.name = val.realName;
       this.menname.id = val.id;
     },
-    statusclick(val){
+    statusclick(val) {
       this.viewType3 = val.id;
       this.statusname.name = val.name;
       this.statusname.id = val.id;
@@ -310,87 +333,90 @@ export default {
       this.areaname.name = val.name;
       this.areaname.id = val.id;
       if (val.children) {
-        
         this.viewType = val.id;
         if (this.areaflag) {
-          this.areaarr.push({ name: val.name, id: val.id, children: this.areakids });
+          this.areaarr.push({
+            name: val.name,
+            id: val.id,
+            children: this.areakids
+          });
         }
         this.areaflag = true;
         this.areakids = val.children;
       }
     },
     menReset() {
-      this.viewType='';
-      this.viewType1='';
+      this.viewType = "";
+      this.viewType1 = "";
       this.areaname.name = "区域";
-      this.pageList=[];
-      this.searchCondition.areaId='';
-      this.searchCondition.page= "0",
-      this.searchCondition.pageSize= "15",
-      this.infinite();
-      this.downIcon=true;
+      this.pageList = [];
+      this.searchCondition.areaId = "";
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
+      this.downIcon = true;
     },
     menReset1() {
-      this.viewType2='';
+      this.viewType2 = "";
       this.companyname.name = "单车企业";
-      this.pageList=[];
-      this.searchCondition.orgId='';
-      this.searchCondition.page= "0",
-      this.searchCondition.pageSize= "15",
-      this.infinite();
-      this.downIcon1=true;
+      this.pageList = [];
+      this.searchCondition.orgId = "";
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
+      this.downIcon1 = true;
     },
     menReset2() {
-      this.menType='';
+      this.menType = "";
       this.menname.name = "处理人";
-      this.pageList=[];
-      this.searchCondition.handleBy='';
-      this.searchCondition.page= "0",
-      this.searchCondition.pageSize= "15",
-      this.infinite();
-      this.downIcon2=true;
+      this.pageList = [];
+      this.searchCondition.handleBy = "";
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
+      this.downIcon2 = true;
     },
     menReset3() {
-      this.viewType3='';
+      this.viewType3 = "";
       this.statusname.name = "状态";
-      this.pageList=[];
-      this.searchCondition.status='';
-      this.searchCondition.page= "0",
-      this.searchCondition.pageSize= "15",
-      this.infinite();
-      this.downIcon3=true;
+      this.pageList = [];
+      this.searchCondition.status = "";
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
+      this.downIcon3 = true;
     },
-    submit(){
-      this.pageList=[];
-      this.searchCondition.areaId=this.areaname.id;
-      this.searchCondition.page= "0",
-      this.searchCondition.pageSize= "15",
-      this.infinite();
-      this.downIcon=true;
+    submit() {
+      this.pageList = [];
+      this.searchCondition.areaId = this.areaname.id;
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
+      this.downIcon = true;
     },
-    submit1(){
-      this.pageList=[];
-      this.searchCondition.orgId=this.companyname.id;
-      this.searchCondition.page= "0",
-      this.searchCondition.pageSize= "15",
-      this.infinite();
-      this.downIcon1=true;
+    submit1() {
+      this.pageList = [];
+      this.searchCondition.orgId = this.companyname.id;
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
+      this.downIcon1 = true;
     },
-    submit2(){
-      this.pageList=[];
-      this.searchCondition.handleBy=this.menname.id;
-      this.searchCondition.page= "0",
-      this.searchCondition.pageSize= "15",
-      this.infinite();
-      this.downIcon2=true;
+    submit2() {
+      this.pageList = [];
+      this.searchCondition.handleBy = this.menname.id;
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
+      this.downIcon2 = true;
     },
-    submit3(){
-      this.pageList=[];
-      this.searchCondition.status=this.statusname.id;
-      this.searchCondition.page= "0",
-      this.searchCondition.pageSize= "15",
-      this.infinite();
-      this.downIcon3=true;
+    submit3() {
+      this.pageList = [];
+      this.searchCondition.status = this.statusname.id;
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
+      this.downIcon3 = true;
     },
     //切换图片；
     sort() {
@@ -481,10 +507,10 @@ export default {
       this.$fetchGet("selfcheck/pageSelfCheck", {
         page: 1,
         pageSize: 15,
-        handleBy:this.searchCondition.handleBy,
-        areaId:this.searchCondition.areaId,
-        orgId:this.searchCondition.orgId,
-        status:this.searchCondition.status,
+        handleBy: this.searchCondition.handleBy,
+        areaId: this.searchCondition.areaId,
+        orgId: this.searchCondition.orgId,
+        status: this.searchCondition.status
       }).then(res => {
         this.pageList = res.list;
       });
@@ -496,8 +522,8 @@ export default {
 };
 </script>
 <style>
-._v-container>._v-content>.loading-layer>.no-data-text[data-v-ecaca2b0]{
-  top:-0.3rem !important;
+._v-container > ._v-content > .loading-layer > .no-data-text[data-v-ecaca2b0] {
+  top: -0.3rem !important;
 }
 </style>
 <style lang="scss" scoped>
@@ -505,8 +531,7 @@ export default {
   height: 84% !important;
   background-color: transparent;
 }
-
-.containerSa {
+.containerSaone {
   width: 100%;
   height: 100%;
   display: flex;
@@ -666,35 +691,29 @@ export default {
     margin-top: 2rem;
   }
   .iteamsa {
-    max-width:100%;
+    max-width: 100%;
     box-sizing: border-box;
     .iteamListSa {
       display: flex;
-      max-width:100%;
+      max-width: 100%;
       background: #ffffff;
-    margin-bottom: 0.2rem;
+      margin-bottom: 0.2rem;
       justify-content: space-between;
       box-sizing: border-box;
       padding: 0.3rem;
       border-bottom: 1px solid #eeeeee;
-      // flex-wrap:nowrap;
-
-      .leftSa {
-        // display: flex;
-         
-      }
       .rightSa {
         width: 0;
         display: flex;
         box-sizing: border-box;
         padding: 0rem;
-       flex: 1;
+        flex: 1;
         padding-left: 0.2rem;
         flex-direction: column;
         .topRight {
-          p{
+          p {
             margin: 0;
-            padding:0;
+            padding: 0;
           }
           display: flex;
           max-width: 100%;
@@ -723,47 +742,47 @@ export default {
           box-sizing: border-box;
           padding-top: 0.2rem;
           align-items: center;
-          .mobike{
-            background: #F25B4A;
+          .mobike {
+            background: #f25b4a;
             padding: 0.06rem 0.2rem;
             box-sizing: border-box;
             border-radius: 12px;
-            color:#ffffff;
+            color: #ffffff;
             font-size: 0.35rem;
           }
-          .ofo{
-            background: #FBC303;
+          .ofo {
+            background: #fbc303;
             padding: 0.06rem 0.2rem;
             box-sizing: border-box;
             border-radius: 12px;
-            color:#333333;
+            color: #333333;
             font-size: 0.35rem;
           }
-          .haluo{
-            background: #01A1FF;
+          .haluo {
+            background: #01a1ff;
             padding: 0.06rem 0.2rem;
             box-sizing: border-box;
             border-radius: 12px;
-            color:#ffffff;
+            color: #ffffff;
             font-size: 0.35rem;
           }
-          .jiujiu{
+          .jiujiu {
             background: #fd3121;
             padding: 0.06rem 0.2rem;
             box-sizing: border-box;
             border-radius: 12px;
-            color:#ffffff;
+            color: #ffffff;
             font-size: 0.35rem;
           }
-          .xiangqi{
+          .xiangqi {
             background: #00cb4b;
             padding: 0.06rem 0.2rem;
             box-sizing: border-box;
             border-radius: 12px;
-            color:#ffffff;
+            color: #ffffff;
             font-size: 0.35rem;
           }
-          .other{
+          .other {
             background: #9a6eff;
             color: #ffffff;
             padding: 0.06rem 0.2rem;
@@ -775,7 +794,7 @@ export default {
         .bottomRight {
           display: flex;
           max-width: 100%;
-          
+
           height: 0.4rem;
           color: #989898;
           justify-content: flex-start;

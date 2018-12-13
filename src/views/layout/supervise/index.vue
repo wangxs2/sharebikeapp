@@ -670,16 +670,13 @@ export default {
       box-sizing: border-box;
       padding: 0.3rem;
       border-bottom: 1px solid #eeeeee;
-      .leftSa {
-        // display: flex;
-        // flex: 1;
-      }
       .rightSa {
         width: 0;
         display: flex;
          flex: 1;
         box-sizing: border-box;
-        padding: 0 0.2rem;
+        padding: 0rem;
+        padding-left: 0.2rem;
         flex-direction: column;
         .topRight {
           display: flex;
@@ -714,7 +711,7 @@ export default {
           flex: 1;
           box-sizing: border-box;
           justify-content: flex-start;
-          padding-top:0.2rem;
+          padding-top:0.1rem;
           .centersalist{
             display: flex;
             flex-direction: column;
@@ -779,10 +776,8 @@ export default {
         .bottomRight {
           display: flex;
           width: 100%;
-          height: 0.4rem;
           color: #989898;
           justify-content: flex-start;
-          padding-top:0.2rem;
           .moreFont {
             width: 68%;
             overflow: hidden;

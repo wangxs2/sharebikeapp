@@ -107,9 +107,9 @@
                        <span style="font-size:0.36rem" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"已转派":"已完成"}}</span>
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
-                  <div class="center">
-                    <p>{{iteam.dispatchReceive}}</p>
-                    <p v-if="iteam.status == 2||iteam.status==4" style="margin-left:0.1rem;margin-top:0.2rem"><span style='color:#666666;'>处理时长：</span><span style='color:#5076FF;'>{{iteam.dealTime}}</span></p>
+                  <div class="centersa">
+                    <p style="margin-top:0.2rem"><span style='color:#666666;'>处理人：</span><span style='color:#5076FF;'>{{iteam.handleUserName}}</span></p>
+                    <p v-if="iteam.status == 2||iteam.status==4"><span style='color:#666666;'>处理时长：</span><span style='color:#5076FF;'>{{iteam.dealTime}}</span></p>
                   </div>
                   <div class="bottomRight">
                       <span class="iconfont icon-weizhi"></span>
@@ -489,10 +489,15 @@ export default {
                 border-radius: 5px;
             }
           }
-          .center {
+          .centersa {
             width: 100%;
             display: flex;
+            flex-direction: column;
             flex: 1;
+            p{
+              margin: 0;
+              padding: 0;
+            }
             box-sizing: border-box;
           }
           .bottomRight {

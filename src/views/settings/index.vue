@@ -21,7 +21,7 @@
           <div class="info-title">版本更新{{version}}</div>
           <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
         </div>
-        <div class="info-box" @click="todownload">
+        <div class="info-box" v-if="userInfo.userName!=='caicc'" @click="todownload">
           <div class="info-title">下载方式</div>
           <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
         </div>
@@ -59,7 +59,9 @@ import { mapGetters } from "vuex";
 import { MessageBox } from "mint-ui";
 import { Popup } from "mint-ui";
 export default {
-  computed: {},
+  computed: {
+    ...mapGetters(["userInfo"])
+  },
   data() {
     return {
       popupVisible: false,
