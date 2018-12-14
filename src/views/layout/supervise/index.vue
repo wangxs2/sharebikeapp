@@ -151,13 +151,13 @@
               <div class="rightSa">
                   <div class="topRight">
                       <span>{{FormatDate(iteam.dispatchTime)}}</span>
-                       <span style="font-size:0.36rem;height:100%;line-height:100%;" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
+                       <span style="font-size:0.36rem;line-height:1.5;" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="centersa">
-                    <p v-if="iteam.status==0">企业：{{iteam.dispatchReceive}}</p>
+                    <!-- <p v-if="iteam.status==0">企业：{{iteam.dispatchReceive}}</p> -->
                     <div class="centersalist" v-for="(item, index) in iteam.finishDetailList" :key="index">
-                      <p style="line-height:1.5;text-align:center" :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'">{{item.orgName}}</p>
+                      <p style="line-height:1.15;text-align:center" :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'">{{item.orgName}}</p>
                       <p style="flex:1;padding-top:0.2rem">{{item.dealTime}}</p>
                     </div>
                     

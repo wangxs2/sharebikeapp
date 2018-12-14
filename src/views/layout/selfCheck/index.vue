@@ -177,23 +177,23 @@
               <div class="topRight">
                 <p style="flex:1;">{{FormatDate(iteam.updateTime)}}</p>
                 <p
-                  style="font-size:0.36rem;height:100%;line-height:100%;"
+                  style="font-size:0.36rem;line-height:1.5;"
                   :class="iteam.status == 1 ? 'green' : 'red'"
                 >{{iteam.status == 1 ? '处理中' : "已处理"}}</p>
               </div>
               <div class="centersa">
-                <span
-                  style='height:100%;line-height:100%;'
+                <p
+                  style='line-height:1.5;'
                   :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'"
-                >{{iteam.orgName}}</span>
-                <span style="color:#666666;margin-left:0.2rem">整理</span>
-                <span
+                >{{iteam.orgName}}</p>
+                <p style="color:#666666;margin-left:0.2rem">整理</p>
+                <p
                   style="color:#5076FF;margin-left:0.1rem"
-                >{{iteam.arrangeNum==0?'-':iteam.arrangeNum}}</span>
-                <span style="color:#666666;margin-left:0.2rem">清运</span>
-                <span
+                >{{iteam.arrangeNum==0?'-':iteam.arrangeNum}}</p>
+                <p style="color:#666666;margin-left:0.2rem">清运</p>
+                <p
                   style="color:#5076FF;margin-left:0.1rem"
-                >{{iteam.cleanNum==0?'-':iteam.cleanNum}}</span>
+                >{{iteam.cleanNum==0?'-':iteam.cleanNum}}</p>
               </div>
             </div>
             <div class="bottomRight">
