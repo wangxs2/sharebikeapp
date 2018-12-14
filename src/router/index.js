@@ -10,7 +10,7 @@ Vue.use(Router)
 export const constantRouterMap = [{
     path: '/login',
     name: '登录',
-    component: _import('login/index')
+    component: _import('login/index'),
   },
   {
     path: '/layout',
@@ -21,36 +21,60 @@ export const constantRouterMap = [{
         name: '自查',
         component: () =>
           import('@/views/layout/selfCheck'),
+        // meta: {
+        //   keepAlive: true,
+
+        // }
       },
       {
         path: 'supervise',
         name: '派单',
         component: () =>
           import('@/views/layout/supervise'),
+        // meta: {
+        //   keepAlive: true,
+
+        // }
       },
       {
         path: 'needtodo',
         name: '待办',
         component: () =>
           import('@/views/layout/needtodo'),
+        // meta: {
+        //   keepAlive: true,
+
+        // }
       },
       {
         path: 'count',
         name: '统计',
         component: () =>
-          import('@/views/layout/count'),
+        import('@/views/layout/count'),
+        // meta: {
+        //   keepAlive: true,
+
+        // }
       },
       {
         path: 'warning',
         name: '预警',
         component: () =>
           import('@/views/layout/warning'),
+        // meta: {
+        //   keepAlive: true,
+
+        // }
       },
       {
         path: 'me',
         name: '个人中心',
         component: () =>
           import('@/views/layout/me'),
+        // meta: {
+        //   keepAlive: true,
+
+        // }
       },
     ]
   },
@@ -107,31 +131,31 @@ export const constantRouterMap = [{
     path: '/feedBack',
     name: '添加反馈',
     component: _import('feedBack/index')
-  },{
+  }, {
     path: '/map',
     name: '地图',
     component: _import('map/index')
-  },{
+  }, {
     path: '/transfer',
     name: '转派',
     component: _import('transfer/index')
-  },{
+  }, {
     path: '/needtodoDetail',
     name: '待办详情',
     component: _import('needtodoDetail/index')
-  },{
+  }, {
     path: '/forget',
     name: '忘记密码',
     component: _import('forget/index')
-  },{
+  }, {
     path: '/test',
     name: '测试',
     component: _import('test/index')
-  },{
+  }, {
     path: '/test1',
     name: '测试1',
     component: _import('test1/index')
-  },{
+  }, {
     path: '/downloadmode',
     name: '下载方式',
     component: _import('downloadmode/index')

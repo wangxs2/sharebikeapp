@@ -1,7 +1,16 @@
 <template>
   <div id="app">
-    <div id="allmap"></div>
-    <router-view/>
+    <!-- <div id="allmap"></div>
+    <router-view/> -->
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive">
+        <!-- 这里是会被缓存的视图组件，比如 page1,page2 -->
+      </router-view>
+    </keep-alive>
+
+    <router-view v-if="!$route.meta.keepAlive">
+      <!-- 这里是不被缓存的视图组件，比如 page3 -->
+    </router-view>
   </div>
 </template>
 
@@ -10,13 +19,8 @@ import { MessageBox } from "mint-ui";
 import base64 from "@/libs/base.js";
 export default {
   name: "App",
-  return: {
-    
-  },
-  mounted() {
-
-    
-  },
+  return: {},
+  mounted() {},
   created() {
     window.getPush = this.getPush;
   },
@@ -31,21 +35,25 @@ export default {
         this.$fetchPost("login", data)
           .then(res => {
             if (res.status == "success") {
-              console.log(12)
+              console.log(12);
               localStorage.setItem("roleCode", res.info.roleCode);
               document.cookie = "userId=" + res.info.id;
               if (
                 res.info.roleCode == "clean" ||
                 res.info.roleCode == "manage"
               ) {
-                console.log(13)
+                console.log(13);
                 this.$router.push({
                   path: "/needtodoAdd",
                   query: {
                     id: url
                   }
                 });
-              } else if (res.info.roleCode == "admin"||res.info.roleCode == "global"||res.info.roleCode == "dispatch") {
+              } else if (
+                res.info.roleCode == "admin" ||
+                res.info.roleCode == "global" ||
+                res.info.roleCode == "dispatch"
+              ) {
                 // console.log(655555);
                 // console.log(url);
                 this.$router.push({
@@ -55,13 +63,12 @@ export default {
                     statuSa: 2
                   }
                 });
-              }else{
-                console.log(14)
+              } else {
+                console.log(14);
                 this.$router.push({
                   path: "/layout/selfCheck"
                 });
               }
-
             } else if (res.status == "fail") {
               MessageBox.alert("", {
                 message: res.info,
@@ -85,7 +92,7 @@ export default {
 </script>
 
 <style>
-.mint-cell{
+.mint-cell {
   background-color: transparent;
 }
 </style>

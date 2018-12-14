@@ -470,8 +470,8 @@ export default {
               width: 75%;
               img {
                 margin-right: 0.2rem;
-                width: 2.5rem;
-                height: 2.5rem;
+                width: 2.7rem;
+                height: 2.7rem;
               }
             }
           }

@@ -7,7 +7,7 @@ import {
 
 router.beforeEach((to, from, next) => {
   // alert(getCookie('userId'))
-  console.log(to.path)
+  console.log(to.name)
   if (to.path === "/login") {
     delCookie('userId');
     store.commit("SET_ID", "");

@@ -1,34 +1,34 @@
 <template>
   <div class="layout">
-      <div class="appMain">
-        <appMain></appMain>
-      </div>
-      <div class="bottom">
-        <mt-tabbar v-model="selected" style="background:#fff" @click.native="message">
-            <mt-tab-item id="/layout/selfCheck">
-                <img slot="icon" :src="imgUrl[0]">
-                自查
-            </mt-tab-item>
-            <mt-tab-item id="/layout/supervise">
-                <img slot="icon" :src="imgUrl[1]">
-                督办
-            </mt-tab-item>
-            <mt-tab-item id="/layout/count">
-                <img slot="icon" :src="imgUrl[2]">
-                 统计
-            </mt-tab-item>
-            <mt-tab-item id="/layout/warning">
-                <img slot="icon" :src="imgUrl[3]">
-               预警
-            </mt-tab-item>
-             <mt-tab-item id="/layout/me">
-                <img slot="icon" :src="imgUrl[4]">
-                <!-- <img slot="icon" src="../../assets/image/login/LOGO.png"> -->
-                <!-- <i class="iconfont icon-zhanghao"></i> -->
-               我的
-            </mt-tab-item>
-        </mt-tabbar>
-      </div>
+    <div class="appMain">
+      <appMain></appMain>
+    </div>
+    <div class="bottom">
+      <mt-tabbar v-model="selected" style="background:#fff" @click.native="message">
+        <mt-tab-item id="/layout/selfCheck">
+          <img slot="icon" :src="imgUrl[0]">
+          自查
+        </mt-tab-item>
+        <mt-tab-item id="/layout/supervise">
+          <img slot="icon" :src="imgUrl[1]">
+          督办
+        </mt-tab-item>
+        <mt-tab-item id="/layout/count">
+          <img slot="icon" :src="imgUrl[2]">
+          统计
+        </mt-tab-item>
+        <mt-tab-item id="/layout/warning">
+          <img slot="icon" :src="imgUrl[3]">
+          预警
+        </mt-tab-item>
+        <mt-tab-item id="/layout/me">
+          <img slot="icon" :src="imgUrl[4]">
+          <!-- <img slot="icon" src="../../assets/image/login/LOGO.png"> -->
+          <!-- <i class="iconfont icon-zhanghao"></i> -->
+          我的
+        </mt-tab-item>
+      </mt-tabbar>
+    </div>
   </div>
 </template>
 
@@ -58,6 +58,19 @@ export default {
   mounted() {
     // this.getMap();
   },
+  beforeRouteLeave(to, from, next) {
+    if (to.name == "自查" || to.name == "待办" || to.name == "督办") {
+      if (!from.meta.keepAlive) {
+        from.meta.keepAlive = true;
+      } else {
+        next();
+      }
+    } else {
+      from.meta.keepAlive = false;
+      to.meta.keepAlive = false;
+      next();
+    }
+  },
   created() {
     this.roleCode = localStorage.roleCode;
     this.selected = this.$route.path;
@@ -78,16 +91,18 @@ export default {
   },
   methods: {
     getMap() {
-      let that=this
+      let that = this;
       var geolocation = new BMap.Geolocation();
       geolocation.getCurrentPosition(
         function(r) {
           if (this.getStatus() == BMAP_STATUS_SUCCESS) {
             var mk = new BMap.Marker(r.point);
-            that.$fetchPut("user/updateByUser", {
-              longitude: r.point.lng,
-              latitude: r.point.lat
-            }).then(data => {});
+            that
+              .$fetchPut("user/updateByUser", {
+                longitude: r.point.lng,
+                latitude: r.point.lat
+              })
+              .then(data => {});
           } else {
             MessageBox.alert("", {
               message: "failed" + this.getStatus(),
@@ -171,7 +186,7 @@ export default {
     width: 100%;
     height: 55px;
     border-top: 1px solid #f6f6f6;
-    z-index:8887;
+    z-index: 8887;
   }
 }
 </style>
