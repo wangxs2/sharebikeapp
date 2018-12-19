@@ -23,8 +23,7 @@
         </mt-tab-item>
         <mt-tab-item id="/layout/me">
           <img slot="icon" :src="imgUrl[4]">
-          <!-- <img slot="icon" src="../../assets/image/login/LOGO.png"> -->
-          <!-- <i class="iconfont icon-zhanghao"></i> -->
+          <span class="badge" v-if="ruleStatus"></span>
           我的
         </mt-tab-item>
       </mt-tabbar>
@@ -43,6 +42,7 @@ export default {
     return {
       longitude: "",
       latitude: "",
+      ruleStatus:false,
       selected: "",
       roleCode: "",
       imgUrl: [
@@ -72,13 +72,14 @@ export default {
     }
   },
   created() {
+    this.getRules();
     this.roleCode = localStorage.roleCode;
     this.selected = this.$route.path;
     if (this.$route.path == "/layout/needtodo") {
       this.selected = "/layout/supervise";
       this.changeImage("/layout/needtodo");
     } else {
-      if (this.$route.path == "/layout/supervise") {
+      if (this.$route.path == "/layout/supervise"){
         this.selected = "/layout/supervise";
         this.changeImage("/layout/needtodo");
       } else {
@@ -90,6 +91,12 @@ export default {
     // this
   },
   methods: {
+    getRules(){
+      //获取是否有考评
+      this.$fetchGet("evaluation/currentEvaluationFinishedOrNot").then(res => {
+          this.ruleStatus=res;
+      });
+    },
     getMap() {
       let that = this;
       var geolocation = new BMap.Geolocation();
@@ -187,6 +194,21 @@ export default {
     height: 55px;
     border-top: 1px solid #f6f6f6;
     z-index: 8887;
+    .mint-tabbar {
+      .mint-tab-item {
+        position: relative;
+        .badge{
+          position: absolute;
+          top: 7px;
+          right: 32%;
+          display: block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: red;
+        }
+      }
+    }
   }
 }
 </style>

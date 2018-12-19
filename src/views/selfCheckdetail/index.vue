@@ -84,7 +84,7 @@
           </div>
           <div class="timesa" style="margin-left:0.2rem">
             <p style="display: flex;flex:1;margin-top:0.05rem;">{{FormatDate(iteamList.handleTime)}}</p>
-            <p style="margin-bottom:-0.1rem;">{{FormatDate(iteamList.updateTime)}}</p>
+            <p style="margin-bottom:-0.1rem;">{{FormatDate(iteamList.createTime)}}</p>
           </div>
         </div>
       </div>

@@ -159,6 +159,15 @@ export const constantRouterMap = [{
     path: '/downloadmode',
     name: '下载方式',
     component: _import('downloadmode/index')
+  },
+  {
+    path:'/evaluation',
+    name: '考评',
+    component: _import('evaluation/index')
+  },{
+    path:'/evaluationrules',
+    name: '考评规则',
+    component: _import('evaluationrules/index')
   }
 ]
 
