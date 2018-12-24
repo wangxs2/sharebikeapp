@@ -168,6 +168,18 @@ export const constantRouterMap = [{
     path:'/evaluationrules',
     name: '考评规则',
     component: _import('evaluationrules/index')
+  },{
+    path:'/historicalAppraisal',
+    name:"历史考评",
+    component: _import('historicalAppraisal/index')
+  },{
+    path:'/assessmentDetails',
+    name:"考评详情",
+    component: _import('assessmentDetails/index')
+  },{
+    path:'/noAssessment',
+    name:"未考评",
+    component: _import('noAssessment/index')
   }
 ]
 

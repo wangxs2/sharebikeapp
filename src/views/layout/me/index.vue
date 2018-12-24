@@ -78,7 +78,7 @@
     <div class="content">
       <div class="colorsa"></div>
       <div class="evaluation">
-        <div class="evaluationimg">
+        <div class="evaluationimg" @click="toEvaluation">
           <span
             v-if="ruleStatus"
             style="font-size:0.8rem;font-family:stylefont;color:#FF9600;letter-spacing:-0.1rem"
@@ -88,7 +88,7 @@
             style="font-size:0.8rem;font-family:stylefont;color:#FF9600;letter-spacing:-0.1rem"
           >{{nowData}}月考评已完成</span>
           <img
-            @click="toEvaluation"
+            
             src="@/assets/image/me/go@3x.png"
             style="width:1.3rem;height:0.65rem;margin-left:0.2rem"
             alt
@@ -156,7 +156,7 @@ export default {
   mounted() {},
   created() {
     let myDate = new Date();
-    this.nowData=myDate.getMonth(); //获取当前月份(0-11,0代表1月)
+    this.nowData=(myDate.getMonth()) == 0 ?12: myDate.getMonth(); //获取当前月份(0-11,0代表1月)
     this.getData();
     this.getRules()
   },

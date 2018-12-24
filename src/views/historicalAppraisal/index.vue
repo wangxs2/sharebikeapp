@@ -1,39 +1,27 @@
 <template>
   <div class="container">
+    <!-- 时间选择 -->
+    <mt-datetime-picker year-format="{value} 年" Format='yyyy-MM' month-format="{value} 月" @confirm="selectDate" ref="picker" type="date" v-model="pickerValue"></mt-datetime-picker>
+    <!-- 时间选择 -->
     <div class="header">
       <div class="header-header">
         <div class="header-setting">
           <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toSettings">
         </div>
-        <div class="header-tittle" style="margin-left:0.6rem">{{nowData}}月考评</div>
-        <div class="header-tittle" @click="rulesBox=!rulesBox">更多</div>
+        <div class="header-tittle" style="margin-left:1.39rem">{{nowData}}月考评</div>
+        <div class="header-tittle" @click="openPicker">{{nowData1}}</div>
       </div>
       <div class="header-content">
         <div class="tab-btns" @click="selectView">
           <div class="btn-left" viewType="1" :class="[viewTypesa == 1 ? 'tab-active' : '']">考评</div>
           <div class="btn-right" viewType="2" :class="[viewTypesa == 2 ? 'tab-active' : '']">被考评</div>
         </div>
-        <div class="historical-rules" v-if="rulesBox">
-          <div class="rules-box" @click="toHistory">
-            <img src="@/assets/image/evaluation/history.png" alt srcset>
-            <span>历史考评</span>
-          </div>
-          <div class="rules-box" @click="toRules" style="border:none">
-            <img src="@/assets/image/evaluation/ruls@2x (1).png" alt srcset>
-            <span>考评规则</span>
-          </div>
-        </div>
       </div>
     </div>
     <div class="content">
-      <p v-if="userCount.length==0" style="color:rgb(170, 170, 170);text-align:center">--我也是有底线的--</p>
+        <p v-if="userCount.length==0" style="color:rgb(170, 170, 170);text-align:center">--我也是有底线的--</p>
       <div class="content-box">
-        <div
-          class="content-box-list"
-          v-for="(iteam, index) in userCount"
-          :key="index"
-          @click="toAssessment(iteam)"
-        >
+        <div class="content-box-list" v-for="(iteam, index) in userCount" :key="index">
           <div class="content-box-listop">
             <div style="display:flex;justify-content: flex-start;align-items: center">
               <span
@@ -120,13 +108,14 @@ export default {
   data() {
     return {
       userCount: [],
+      pickerValue: new Date(), // 选择的时间
       viewTypesa: "1",
-      rulesBox: false,
       query: {
         yearMonth: "",
         type: "evaluate"
       },
-      nowData: ""
+      nowData: "",
+      nowData1: "",
     };
   },
   components: {},
@@ -136,12 +125,15 @@ export default {
     let now_year = myDate.getFullYear(); //年份
     let nowData =
       myDate.getMonth() == 0
+        ? 11
+        :myDate.getMonth() == 1
         ? 12
         : myDate.getMonth() < 10
-        ? "0" + myDate.getMonth()
-        : myDate.getMonth(); //获取当前月份(0-11,0代表1月)
+        ? "0" + myDate.getMonth()-1
+        : myDate.getMonth()-1; //获取当前月份(0-11,0代表1月)
     this.query.yearMonth = now_year + "-" + nowData;
     this.nowData = now_year + "年" + nowData;
+    this.nowData1 = now_year + "/" + nowData;
     this.getData();
   },
   methods: {
@@ -151,47 +143,29 @@ export default {
         this.userCount = res;
       });
     },
+    // 打开时间选择框
+    openPicker() {
+      this.$refs.picker.open();
+    },
+    // 选中时间事件
+    selectDate(val) {
+      this.query.yearMonth = val.Format("yyyy-MM");
+      this.getData();
+    },
     //进入个人信息修改
     toUserModi() {
       this.$router.push("/infoModification");
     },
     //进入个人中心
     toSettings() {
-      this.$router.push("/layout/me");
+      this.$router.push("/evaluation");
     },
-    
     //进入考评
     toEvaluation() {
       this.$router.push("/evaluation");
     },
-    //进入考评页面或详情
-    toAssessment(val) {
-      if (val.status == 2) {
-        this.$router.push({
-          path: "/assessmentDetails",
-          query: {
-            assessmentId: val.id,
-            data:val,
-          }
-        });
-      } else {
-        this.$router.push({
-          path: "/noAssessment",
-          query: {
-            assessmentId: val.id,
-            pageSize:val.evaluatedCount,
-            totalPage:val.sheetCount,
-          }
-        });
-      }
-    },
-    //进入考评规则
     toRules() {
       this.$router.push("/evaluationrules");
-    },
-    //进入历史考评
-    toHistory() {
-      this.$router.push("/historicalAppraisal");
     },
     //考评切换
     selectView(e) {
@@ -210,13 +184,20 @@ export default {
   }
 };
 </script>
+<style>
+
+</style>
 
 <style lang="scss" scoped>
+.picker-items:last-child{
+    display: none;
+  }
 .container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  
   .header {
     width: 100%;
     height: 2.273333rem;
@@ -280,34 +261,6 @@ export default {
         .tab-active {
           color: #5076ff;
           background: #ffffff;
-        }
-      }
-      .historical-rules {
-        position: absolute;
-        top: -0.2rem;
-        right: -0.1rem;
-        width: 2.8rem;
-        height: 2rem;
-        background: #ffffff;
-        border-radius: 0.1rem;
-        box-shadow: 0 0 0.1rem #dddddd;
-        display: flex;
-        flex-direction: column;
-        .rules-box {
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          border-bottom: 1px solid #eeeeee;
-          padding: 0.3rem;
-          img {
-            width: 0.5rem;
-            height: 0.5rem;
-            margin-right: 0.1rem;
-          }
-          span {
-            color: #333333;
-            font-size: 0.373333rem;
-          }
         }
       }
     }
