@@ -190,15 +190,14 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.picker-items:last-child{
-    display: none;
-  }
 .container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  
+    .picker-slot:last-child{
+      display:none!important;
+  }
   .header {
     width: 100%;
     height: 2.273333rem;

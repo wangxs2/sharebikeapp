@@ -53,11 +53,11 @@
                   alt
                   srcset
                 >
-                <span style="color:#333333;margin-left:0.1rem">摩拜</span>
+                <span style="color:#333333;margin-left:0.1rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{userInfo.orgName}}</span>
               </div>
               <p
                 style="border:1px solid #5279FF;color:#5279FF;margin:0;padding:0.06rem 0.2rem;border-radius: 0.6rem;"
-              >企业负责人</p>
+              >{{userInfo.roleName}}</p>
             </div>
             <div class="headerbottom-bottom" style="margin-top:0.2rem">
               <img
@@ -69,7 +69,7 @@
               <span style="color:#999999;margin-left:0.1rem">负责区域</span>
               <span
                 style="color:#333333;flex:1;margin-left:0.1rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;text-align:left"
-              >世纪大道禁区世纪大道禁区世纪大道禁区</span>
+              >{{userInfo.areas}}</span>
             </div>
           </div>
         </div>
@@ -97,24 +97,52 @@
         </div>
       </div>
       <div class="static-box">
-        <div class="static-box-left">
+        <div style="display: flex;justify-content:flex-start;align-items: center;border-bottom:1px solid #E1E1E1;padding:0.2rem">
+          <img style='width:22px;height:22px' src="@/assets/image/me/icon_1 @3x.png" alt="" srcset="">
+          <h6 style="font-size:0.33rem;margin:0;margin-left:0.2rem">工单总数</h6>
+        </div>
+        <div style="display: flex;justify-content:space-between;box-sizing: border-box;padding:0.3rem;flex:1">
+          <div style="display: flex;flex-direction: column;padding:0.1rem;">
+            <span style="text-align:center;margin-bottom:0.2rem;color:#A857FB;font-size:0.5rem">{{userCount.dispatch==0?'-':userCount.dispatch}}</span>
+            <span style="text-align:center;color:#666666;font-size:0.3rem">收到派单数(单)</span>
+          </div>
+          <div style="display: flex;flex-direction: column;padding:0.1rem">
+            <span style="text-align:center;margin-bottom:0.2rem;color:#A857FB;font-size:0.5rem">{{userCount.selfCheck==0?'-':userCount.selfCheck}}</span>
+            <span style="text-align:center;color:#666666;font-size:0.3rem">自检次数(次)</span>
+          </div>
+        </div>
+        <!-- <div class="static-box-left">
           <div class="static-img">
             <img src="@/assets/image/me/icon_2@3x.png" alt>
           </div>
           <div class="static-title">收到派单</div>
         </div>
-        <div class="static-data" v-text="userCount.dispatch"></div>
+        <div class="static-data" v-text="userCount.dispatch"></div> -->
       </div>
-      <div class="static-box">
-        <div class="static-box-left">
+      <div class="static-box" style="margin-top:0.3rem">
+        <div style="display: flex;justify-content:flex-start;align-items: center;border-bottom:1px solid #E1E1E1;padding:0.2rem">
+          <img style='width:22px;height:22px' src="@/assets/image/me/icon_2 @3x.png" alt="" srcset="">
+          <h6 style="font-size:0.33rem;margin:0;margin-left:0.2rem">处理总数</h6>
+        </div>
+        <div style="display: flex;justify-content:space-between;box-sizing: border-box;padding:0.3rem;flex:1">
+          <div style="display: flex;flex-direction: column;box-sizing: border-box;padding:0.1rem">
+            <span style="text-align:center;margin-bottom:0.2rem;color:#FF8039;font-size:0.5rem">{{userCount.arrangeNum==0?'-':userCount.arrangeNum}}</span>
+            <span style="text-align:center;color:#666666;font-size:0.3rem">整理车辆数(辆)</span>
+          </div>
+          <div style="display: flex;flex-direction: column;box-sizing: border-box;padding:0.1rem">
+            <span style="text-align:center;margin-bottom:0.2rem;color:#FF8039;font-size:0.5rem">{{userCount.cleanNum==0?'-':userCount.cleanNum}}</span>
+            <span style="text-align:center;color:#666666;font-size:0.3rem">清运车辆数(辆)</span>
+          </div>
+        </div>
+        <!-- <div class="static-box-left">
           <div class="static-img">
             <img src="@/assets/image/me/icon_1@2x.png" alt>
           </div>
           <div class="static-title">自检次数</div>
         </div>
-        <div class="static-data" v-text="userCount.selfCheck"></div>
+        <div class="static-data" v-text="userCount.selfCheck"></div> -->
       </div>
-      <div class="static-box">
+      <!-- <div class="static-box">
         <div class="static-box-left">
           <div class="static-img">
             <img src="@/assets/image/me/icon_1@3x.png" alt>
@@ -131,7 +159,7 @@
           <div class="static-title">清运车辆</div>
         </div>
         <div class="static-data" v-text="userCount.cleanNum"></div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -142,19 +170,21 @@ import { mapGetters } from "vuex";
 import { MessageBox } from "mint-ui";
 import "@/assets/stylefont/iconfont.css";
 export default {
-  computed: {
-    ...mapGetters(["userInfo"])
-  },
+  // computed: {
+  //   ...mapGetters(["userInfo"])
+  // },
   data() {
     return {
       userCount: {},
       ruleStatus: false,
-      nowData: ""
+      nowData: "",
+      userInfo:{},
     };
   },
   components: {},
   mounted() {},
   created() {
+    this.getUser();
     let myDate = new Date();
     this.nowData=(myDate.getMonth()) == 0 ?12: myDate.getMonth(); //获取当前月份(0-11,0代表1月)
     this.getData();
@@ -165,6 +195,11 @@ export default {
     getData() {
       this.$fetchGet("count/countByUser").then(res => {
         this.userCount = res;
+      });
+    },
+    getUser(){
+      this.$fetchGet("user/user").then(res => {
+        this.userInfo = res;
       });
     },
     getRules() {
@@ -195,6 +230,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  background: #f2f2f2;
   .header {
     width: 100%;
     height: 5.173333rem;
@@ -326,35 +362,15 @@ export default {
     }
     .static-box {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      // box-shadow: 0px 1px 0px 0px rgba(221, 221, 221, 0.5);
-      border-bottom: 1px solid #eeeeee;
+      border-radius: 6px;
+      flex-direction: column;
+      box-shadow: 0 0.05rem 0.1rem #f2f2f2;
+      box-shadow:0 2px 6px -1px #f2f2f2; //底部阴影
       margin: 0 0.36rem;
       margin-bottom: 1px;
-      height: 1.4rem;
-      .static-box-left {
-        display: flex;
-        align-items: center;
-        .static-img {
-          height: 0.64rem;
-          width: 0.64rem;
-          border-radius: 50%;
-          img {
-            height: 100%;
-            width: 100%;
-          }
-        }
-        .static-title {
-          margin-left: 0.24rem;
-          color: #282828;
-          font-size: 0.4rem;
-        }
-      }
-      .static-data {
-        color: #282828;
-        font-size: 0.586667rem;
-      }
+      // height: 1.4rem;
+      background: #ffffff;
+      margin-top: 0.1rem;
     }
   }
 }
