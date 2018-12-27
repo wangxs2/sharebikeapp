@@ -1,7 +1,9 @@
 <template>
   <div class="gcontainer">
     <header>
-      <h1>统计</h1>
+      <h1></h1>
+      <h1 style="margin-left:0.96rem">统计</h1>
+      <h1 @click="toDaily">日报</h1>
     </header>
     <main>
       <nav @click="selectComany($event)">
@@ -139,8 +141,12 @@ export default {
         this.getCount();
       }
     },
+    toDaily(){
+      this.$router.push("/statisticsDaily");
+    },
     // 选择视图
     selectView(e) {
+      console.log(e.target)
       let type = e.target.getAttribute("viewType");
       if (type) {
         this.viewType = type;
@@ -264,6 +270,10 @@ export default {
     width: 100%;
     height: 1.173333rem;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 0.3rem;
     h1 {
       font-size: 0.48rem;
       color: #fff;

@@ -7,14 +7,17 @@
       <mt-tabbar v-model="selected" style="background:#fff" @click.native="message">
         <mt-tab-item id="/layout/selfCheck">
           <img slot="icon" :src="imgUrl[0]">
+          <span class="badge1" v-if="ruleStatus1">{{selfCheckNum}}</span>
           自查
         </mt-tab-item>
         <mt-tab-item id="/layout/supervise">
           <img slot="icon" :src="imgUrl[1]">
+          <span class="badge1" v-if="ruleStatus2">{{dispatchkNum}}</span>
           督办
         </mt-tab-item>
         <mt-tab-item id="/layout/count">
           <img slot="icon" :src="imgUrl[2]">
+          <span class="badge" style="right:28%" v-if="ruleStatus3"></span>
           统计
         </mt-tab-item>
         <mt-tab-item id="/layout/warning">
@@ -43,7 +46,12 @@ export default {
       longitude: "",
       latitude: "",
       ruleStatus:false,
+      selfCheckNum:'',
+      dispatchkNum:'',
       selected: "",
+      ruleStatus1:false,
+      ruleStatus2:false,
+      ruleStatus3:false,
       roleCode: "",
       imgUrl: [
         require("../../assets/image/login/icon_tab_1_nor@3x.png"),
@@ -92,9 +100,18 @@ export default {
   },
   methods: {
     getRules(){
-      //获取是否有考评
-      this.$fetchGet("evaluation/currentEvaluationFinishedOrNot").then(res => {
-          this.ruleStatus=res;
+      //获取是否有红点点
+      this.$fetchGet("count/willdo").then(res => {
+          this.ruleStatus=res.evaluation==='false'?this.ruleStatus=false:this.ruleStatus=true;
+          this.ruleStatus3=res.daily==='false'?false:true;
+          if(res.selfCheck>0){
+            this.ruleStatus1=true;
+            this.selfCheckNum=res.selfCheck
+          }
+          if(res.dispatch>0){
+              this.ruleStatus2=true;
+              this.dispatchkNum=res.dispatch;
+          }
       });
     },
     getMap() {
@@ -205,6 +222,20 @@ export default {
           width: 6px;
           height: 6px;
           border-radius: 50%;
+          background: red;
+        }
+        .badge1{
+          position: absolute;
+          top: 2px;
+          right: 20%;
+          display: block;
+          width: 15px;
+          height: 15px;
+          color: #fff;
+          border-radius: 50%;
+          text-align: center;
+          font-size: 0.26rem;
+          line-height: 15px;
           background: red;
         }
       }

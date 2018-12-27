@@ -150,6 +150,7 @@ export default {
     // 选中时间事件
     selectDate(val) {
       this.query.yearMonth = val.Format("yyyy-MM");
+      this.nowData1=val.Format("yyyy/MM")
       this.getData();
     },
     //进入个人信息修改

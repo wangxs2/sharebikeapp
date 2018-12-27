@@ -169,8 +169,8 @@ export default {
     },
     getRules() {
       //获取是否有考评
-      this.$fetchGet("evaluation/currentEvaluationFinishedOrNot").then(res => {
-        this.ruleStatus = res;
+      this.$fetchGet("count/willdo").then(res => {
+        this.ruleStatus = res.evaluation;
       });
     },
     //进入个人信息修改
@@ -241,7 +241,8 @@ export default {
         background: #ffffff;
         width: 94%;
         border-radius: 6px;
-        box-shadow: 0 0.05rem 0.1rem #f5f5f5;
+        box-shadow: 0 0.05rem 0.1rem #f2f2f2;
+        box-shadow:0 2px 6px -1px #f2f2f2; //底部阴影
         display: flex;
         flex-direction: column;
       }
@@ -299,12 +300,12 @@ export default {
     margin-top: 1.4rem;
     flex: 1;
     .colorsa {
-      height: 0.3rem;
+      height: 0.16rem;
       width: 94%;
       margin-left: 3%;
       border-top-left-radius: 2px;
       border-top-right-radius: 2px;
-      background: -webkit-linear-gradient(top, #f5f5f5, #ffffff);
+      // background: -webkit-linear-gradient(top, #f5f5f5, #ffffff);
     }
     .evaluation {
       width: 100%;
@@ -338,6 +339,7 @@ export default {
         .static-img {
           height: 0.64rem;
           width: 0.64rem;
+          border-radius: 50%;
           img {
             height: 100%;
             width: 100%;

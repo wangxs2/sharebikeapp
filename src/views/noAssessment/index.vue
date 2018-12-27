@@ -137,13 +137,6 @@
           <div class="topcloumson" style="padding-bottom:0.16rem">
             <div style="padding-top:0.1rem;font-size: 0.38rem">拍照角度</div>
             <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <!-- <span
-                v-for="(iteam,index) in 5"
-                :key="index"
-                @click="chooseOrder($event)"
-                :viewType="iteam"
-                class="start-img"
-              ></span>-->
               <img
                 v-if="startNumber>index||startNumber==index"
                 v-for="(iteam,index) in 5"
@@ -172,7 +165,6 @@
           <div class="topcloumson" style="padding-bottom:0.16rem">
             <div style="padding-top:0.1rem;font-size: 0.38rem">治理数量</div>
             <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <!-- <span v-for="(iteam,index) in 5" :key="index" class="start-img" ></span> -->
               <img
                 v-if="startNumber1>index||startNumber1==index"
                 v-for="(iteam,index) in 5"
@@ -201,7 +193,6 @@
           <div class="topcloumson" style="padding-bottom:0.16rem">
             <div style="padding-top:0.1rem;font-size: 0.38rem">整理照片</div>
             <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <!-- <span v-for="(iteam,index) in 5" :key="index" class="start-img"></span> -->
               <img
                 v-if="startNumber2>index||startNumber2==index"
                 v-for="(iteam,index) in 5"
@@ -230,7 +221,6 @@
           <div class="topcloumson" style="padding-bottom:0.16rem;">
             <div style="padding-top:0.1rem;font-size: 0.38rem">处理方式</div>
             <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <!-- <span v-for="(iteam,index) in 5" :key="index" class="start-img"></span> -->
               <img
                 v-if="startNumber3>index||startNumber3==index"
                 v-for="(iteam,index) in 5"
@@ -355,7 +345,7 @@ export default {
       if (val == 0) {
         this.prePage = false;
         this.nextPage = true;
-      } else if (val == this.totalSingular-1) {
+      } else if (val == this.totalSingular - 1) {
         this.prePage = true;
         this.nextPage = false;
       } else {
@@ -395,8 +385,7 @@ export default {
         this.achievementTimely3 +
         this.achievementTimely2;
     },
-    achievementTimely: (val, old) => {
-    }
+    achievementTimely: (val, old) => {}
   },
   mounted() {},
   methods: {
@@ -482,6 +471,7 @@ export default {
     },
     //下一单
     Submission() {
+      console.log(this.currentPage);
       if (
         this.startNumber == -1 ||
         this.startNumber1 == -1 ||
@@ -508,22 +498,46 @@ export default {
           "json"
         ).then(res => {
           if (res.status == 0) {
-            this.achievementTimely1 = "";
-            this.achievementTimely2 = "";
-            this.achievementTimely3 = "";
-            this.achievementTimely4 = "";
-            this.remark = "";
-            this.startNumber = -1;
-            this.startNumber1 = -1;
-            this.startNumber2 = -1;
-            this.startNumber3 = -1;
             let number = this.currentPage;
             this.iteamList = this.totalData[number + 1];
             this.currentPage = number + 1;
-            this.achievementTimelysa = this.achievementSa(
-              this.iteamList.costTime
-            );
-            this.achievementTimely = this.achievementTimelysa;
+            if (this.iteamList.evaluationComments) {
+              this.startNumber =
+                this.iteamList.evaluationComments.photoAngle - 1;
+              this.startNumber1 = this.iteamList.evaluationComments.dealNum - 1;
+              this.startNumber2 =
+                this.iteamList.evaluationComments.afterDeal - 1;
+              this.startNumber3 =
+                this.iteamList.evaluationComments.dealMethod - 1;
+              this.remark = this.iteamList.evaluationComments.remark;
+              this.achievementTimely1 = this.achievementSa1(this.startNumber);
+              this.achievementTimely2 = this.achievementSa1(this.startNumber1);
+              this.achievementTimely3 = this.achievementSa1(this.startNumber2);
+              this.achievementTimely4 = this.achievementSa1(this.startNumber3);
+              this.achievementTimelysa = this.achievementSa(
+                this.iteamList.costTime
+              );
+              this.achievementTimely =
+                this.achievementTimelysa +
+                this.achievementTimely1 +
+                this.achievementTimely2 +
+                this.achievementTimely3 +
+                this.achievementTimely4;
+            } else {
+              this.achievementTimely1 = "";
+              this.achievementTimely2 = "";
+              this.achievementTimely3 = "";
+              this.achievementTimely4 = "";
+              this.remark = "";
+              this.startNumber = -1;
+              this.startNumber1 = -1;
+              this.startNumber2 = -1;
+              this.startNumber3 = -1;
+              this.achievementTimelysa = this.achievementSa(
+                this.iteamList.costTime
+              );
+              this.achievementTimely = this.achievementTimelysa;
+            }
           } else {
             MessageBox.alert("", {
               message: res.message,
@@ -535,28 +549,33 @@ export default {
     },
     //上一单
     onSingle() {
-      let number=this.currentPage
-      this.currentPage=number-1;
+      let number = this.currentPage;
+      this.currentPage = number - 1;
       this.$fetchGet("evaluation/monthEvaluationDetail", {
         evaluateId: this.assessmentId
       }).then(res => {
         this.totalData = res;
-        this.iteamList=res[number-1];
-        this.startNumber=this.iteamList.evaluationComments.photoAngle-1;
-        this.startNumber1=this.iteamList.evaluationComments.dealNum-1;
-        this.startNumber2=this.iteamList.evaluationComments.afterDeal-1;
-        this.startNumber3=this.iteamList.evaluationComments.dealMethod-1;
-        this.remark=this.iteamList.evaluationComments.remark;
-        this.achievementTimely1=this.achievementSa1(this.startNumber);
-        this.achievementTimely2=this.achievementSa1(this.startNumber1);
-        this.achievementTimely3=this.achievementSa1(this.startNumber2);
-        this.achievementTimely4=this.achievementSa1(this.startNumber3);
-        this.achievementTimelysa=this.achievementSa(this.iteamList.costTime);
-        this.achievementTimely=this.achievementTimelysa+this.achievementTimely1+this.achievementTimely2+this.achievementTimely3+this.achievementTimely4;
+        this.iteamList = res[number - 1];
+        this.startNumber = this.iteamList.evaluationComments.photoAngle - 1;
+        this.startNumber1 = this.iteamList.evaluationComments.dealNum - 1;
+        this.startNumber2 = this.iteamList.evaluationComments.afterDeal - 1;
+        this.startNumber3 = this.iteamList.evaluationComments.dealMethod - 1;
+        this.remark = this.iteamList.evaluationComments.remark;
+        this.achievementTimely1 = this.achievementSa1(this.startNumber);
+        this.achievementTimely2 = this.achievementSa1(this.startNumber1);
+        this.achievementTimely3 = this.achievementSa1(this.startNumber2);
+        this.achievementTimely4 = this.achievementSa1(this.startNumber3);
+        this.achievementTimelysa = this.achievementSa(this.iteamList.costTime);
+        this.achievementTimely =
+          this.achievementTimelysa +
+          this.achievementTimely1 +
+          this.achievementTimely2 +
+          this.achievementTimely3 +
+          this.achievementTimely4;
       });
     },
     getMessage1() {
-      this.$fetchGet("evaluation/monthEvaluationDetail",{
+      this.$fetchGet("evaluation/monthEvaluationDetail", {
         evaluateId: this.assessmentId
       }).then(res => {
         this.totalData = res;

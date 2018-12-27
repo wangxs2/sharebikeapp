@@ -94,14 +94,16 @@
       </div>
       <div></div>
     </div>
-    <div class="content">
+    <div class="content" ref="menuWrapper">
+      <p
+        v-if="checkData.length==0||dispatchData.length==0"
+        style="color:rgb(170, 170, 170);text-align:center"
+      >--我也是有底线的--</p>
       <div class="superList">
         <div class="pagingSa">
-          <p class="buttontab">上</p>
-          <p
-            style=""
-          >第1单</p>
-          <p class="buttontab">下</p>
+          <p v-show="presa" @click="prePage" class="buttontab">上</p>
+          <p style>第{{currentPage+1}}单</p>
+          <p v-show="nextsa" @click="nextPage" class="buttontab">下</p>
         </div>
       </div>
       <div class="superList">
@@ -333,9 +335,9 @@ export default {
       assessmentId: "",
       totalSingular: "",
       viewType: 1, // 自查/派单显示
-      prePage: true,
-      nextPage: true,
-      currentPage: "",
+      currentPage: 0,
+      nextsa: true,
+      presa: false,
       totalData: [],
       dispatchData: [],
       checkData: [],
@@ -349,7 +351,6 @@ export default {
     };
   },
   components: {},
-  mounted() {},
   created() {
     if (this.$route.query.assessmentId) {
       this.assessmentId = this.$route.query.assessmentId;
@@ -360,16 +361,25 @@ export default {
   computed: {},
   watch: {
     currentPage: function(val, old) {
+      console.log(val, old);
       if (val == 0) {
-        this.prePage = false;
-        this.nextPage = true;
-      } else if (val == this.totalSingular - 1) {
-        this.prePage = true;
-        this.nextPage = false;
-      } else {
-        this.prePage = true;
-        this.nextPage = true;
+        this.presa = false;
+        this.nextsa = true;
       }
+      if (this.checkData.length == 1) {
+        this.presa = false;
+        this.nextsa = false;
+      }
+      // if (val == 0) {
+      //   this.prePage = false;
+      //   this.nextPage = true;
+      // } else if (val == this.totalSingular - 1) {
+      //   this.prePage = true;
+      //   this.nextPage = false;
+      // } else {
+      //   this.prePage = true;
+      //   this.nextPage = true;
+      // }
     },
     achievementTimely1: function(val, old) {
       this.achievementTimely =
@@ -405,7 +415,13 @@ export default {
     },
     achievementTimely: (val, old) => {}
   },
-  mounted() {},
+  mounted() {
+    var that=this
+    this.$nextTick(()=>{
+      console.log(that.$refs.menuWrapper);
+    });
+    window.addEventListener('scroll',this.handleScroll,true)
+  },
   methods: {
     handOpen(val) {
       this.rotateS = 0;
@@ -413,13 +429,89 @@ export default {
       val = val.replace(".400x400.jpg", ".square.jpg");
       this.bigImage = val;
     },
-    // 选择考评类型
+    handleScroll() {
+      var scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      console.log(scrollTop);
+    },
+    // 选择考评类型自查
     selectView(e) {
       this.viewType = 1;
+      this.currentPage = 0;
+      if (this.checkData) {
+        this.iteamList = this.checkData[0];
+      }
     },
-    // 选择考评类型
+    // 选择考评类型派单
     selectView1(e) {
       this.viewType = 2;
+      this.currentPage = 0;
+
+      if (this.dispatchData) {
+        this.iteamList = this.dispatchData[0];
+      }
+      if (this.dispatchData.length == 1) {
+        this.presa = false;
+        this.nextsa = false;
+      }
+    },
+    nextPage() {
+      if (this.viewType == 2) {
+        this.currentPage++;
+        this.presa = true;
+        console.log(this.currentPage);
+        console.log(this.dispatchData);
+        this.iteamList = this.dispatchData[this.currentPage];
+        if (
+          this.currentPage == this.dispatchData.length - 1 ||
+          this.dispatchData.length == 1
+        ) {
+          this.nextsa = false;
+        } else {
+          this.nextsa = true;
+        }
+      } else if (this.viewType == 1) {
+        this.currentPage++;
+        this.presa = true;
+        console.log(this.currentPage);
+        console.log(this.checkData.length - 2);
+        this.iteamList = this.checkData[this.currentPage];
+        if (
+          this.currentPage == this.checkData.length - 1 ||
+          this.checkData.length == 1
+        ) {
+          this.nextsa = false;
+        } else {
+          this.nextsa = true;
+        }
+      }
+    },
+    prePage() {
+      if (this.viewType == 1) {
+        this.currentPage--;
+        this.nextsa = true;
+        console.log(this.currentPage);
+        console.log(this.checkData.length - 2);
+        this.iteamList = this.checkData[this.currentPage];
+        if (this.currentPage == 0 || this.checkData.length == 1) {
+          this.presa = false;
+        } else {
+          this.presa = true;
+        }
+      } else if (this.viewType == 2) {
+        this.currentPage--;
+        this.nextsa = true;
+        console.log(this.currentPage);
+        console.log(this.dispatchData.length - 2);
+        this.iteamList = this.dispatchData[this.currentPage];
+        if (this.currentPage == 0 || this.dispatchData.length == 1) {
+          this.presa = false;
+        } else {
+          this.presa = true;
+        }
+      }
     },
 
     splitsa(val) {
@@ -652,17 +744,17 @@ p {
       width: 100%;
       box-sizing: border-box;
       border-radius: 2px;
-      .pagingSa{
+      .pagingSa {
         display: flex;
         justify-content: space-between;
-        border-bottom:1px solid #eeeeee;
-        margin:0 0.3rem;
-        padding:0.2rem 0.3rem;
-        background:#ffffff;
+        border-bottom: 1px solid #eeeeee;
+        margin: 0 0.3rem;
+        padding: 0.2rem 0.3rem;
+        background: #ffffff;
         border-top-left-radius: 0.12rem;
         border-top-right-radius: 0.12rem;
         align-items: center;
-        .buttontab{
+        .buttontab {
           color: #fff;
           width: 30px;
           height: 30px;

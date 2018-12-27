@@ -41,7 +41,7 @@
             <div class="new-version">当前版本已是最新版本</div>
           </div>
           <div class="version-popup-bottom">
-            <ul class="version-detail" v-for="(item,index) in versionDetail" :key="item.index">
+            <ul class="version-detail" v-for="(item,index) in versionDetail" :key="index">
               <li class="version-detail-li">
                 <span style="text-indent: -0.6rem;margin-left: 0.6rem;">{{item}}</span>
               </li>
