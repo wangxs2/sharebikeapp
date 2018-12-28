@@ -15,27 +15,44 @@
       <img src="@/assets/image/evaluation/nav_1_back@2x.png" alt @click="toUserInfo">
       <div style="color:#333333" class="header-title">治理日报</div>
       <img
-      v-if="!downIcon1"
         style="width:0.48rem;height:0.48rem"
         src="@/assets/image/statisticsDaily/icon_data@3x.png"
         @click="openPicker"
         alt
         srcset
       >
-      <span style="color:#333333" @click="openPicker" v-if="downIcon1">{{dayDate}}</span>
+      <!-- <span style="color:#333333;font-size:0.28rem" @click="openPicker" v-if="downIcon1">{{dayDate.split('-')[1]+'/'+dayDate.split('-')[2]}}</span> -->
     </div>
     <!-- <p v-if="dataDetail.status==0" style="color:rgb(170, 170, 170);text-align:center">暂无日报数据~</p> -->
     <!-- <p v-if="dataDetail.status==0" style="color:rgb(170, 170, 170);text-align:center">可点击右上角选择时间查看以往日报数据</p> -->
     <div class="content">
-      
-      <div class="content-top"> 
-        <div style="display:flex;align-items: center;position:absolute;right:0.3rem;top:0.3rem" v-if="companyDetail.length>1">
+      <div class="content-top">
+        <div
+          style="display:flex;align-items: center;position:absolute;right:0.3rem;top:0.3rem"
+          v-if="companyDetail.length>1"
+        >
           <span style="color:#f9faff">{{areaName}}</span>
-          <span style="color:#f9faff;font-size:0.59rem;margin-left:0.1rem" class="iconfont icon-jiantou" v-show="downIcon" @click="downIcon=!downIcon"></span>
-          <span style="color:#f9faff;font-size:0.59rem;margin-left:0.1rem" class="iconfont icon-arrow-up" v-show="!downIcon" @click="downIcon=!downIcon"></span>
+          <span
+            style="color:#f9faff;font-size:0.59rem;margin-left:0.1rem"
+            class="iconfont icon-jiantou"
+            v-show="downIcon"
+            @click="downIcon=!downIcon"
+          ></span>
+          <span
+            style="color:#f9faff;font-size:0.59rem;margin-left:0.1rem"
+            class="iconfont icon-arrow-up"
+            v-show="!downIcon"
+            @click="downIcon=!downIcon"
+          ></span>
         </div>
         <div class="companyList" v-show="!downIcon">
-          <p style="margin:0;" class="companyList-son" v-for="(iteam,index) in companyDetail" :key="index" @click="changeCompany(iteam)">{{iteam.value}}</p>
+          <p
+            style="margin:0;"
+            class="companyList-son"
+            v-for="(iteam,index) in companyDetail"
+            :key="index"
+            @click="changeCompany(iteam)"
+          >{{iteam.value}}</p>
         </div>
       </div>
       <div class="content-bottom">
@@ -48,7 +65,7 @@
               style="font-size:0.5rem;margin:0;margin-top:0.2rem;text-align:center"
             >{{dataDetail.title}}</h1>
             <p
-              style="font-size:0.3rem;margin:0;color:#afbffe;text-align:center;margin-right:0.6rem"
+              style="font-size:0.4rem;margin:0;color:#afbffe;text-align:center;margin-right:0.6rem"
             >《单车治理》{{FormatDate5(dataDetail.dayDate)}}</p>
           </div>
         </div>
@@ -65,7 +82,10 @@
             alt
             srcset
           >
-          <div class="content-bottom-rules" style="width:100%;margin-top:1.8rem;padding-bottom:0.5rem">
+          <div
+            class="content-bottom-rules"
+            style="width:100%;margin-top:1.8rem;padding-bottom:0.5rem"
+          >
             <div class="content-bottom-list">
               <p
                 style="margin:0;padding:0.3rem;line-height:0.62rem;padding-bottom:0;text-indent:0.8rem"
@@ -76,7 +96,10 @@
                 v-html="dispatchContentSummary1"
               ></p>
             </div>
-            <div class="content-bottom-list" v-if="dataDetail.status==1&&dataDetail.dispatchByAreaList.length!==0">
+            <div
+              class="content-bottom-list"
+              v-if="dataDetail.status==1&&dataDetail.dispatchByAreaList.length!==0"
+            >
               <table class="tableSa" cellspacing="0">
                 <thead>
                   <tr>
@@ -90,21 +113,21 @@
                 </thead>
                 <tbody>
                   <tr v-for="(item,index) in dataDetail.dispatchByAreaList" :key="index">
-                      <td>
-                        <p style="width:2.2rem;">{{item.dispatchUnit}}</p>
-                        
-                        </td>
-                      <td style="color:#3E68FF">{{item.dispatchCount}}</td>
-                      <td>
-                        <p style="width:1.8rem;" v-for="(iteam,index) in item.userList" :key="index">
-                          <span style="width:1.2rem;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;">{{iteam.userName}}:</span>
-                          <span>{{iteam.dispatchCount}}</span>
-                        </p>
-                        
-                      </td>
-                      <td style="color:#09C504">{{item.done}}</td>
-                      <td style="color:#FF7E00">{{item.doing}}</td>
-                      <td style="color:#FF1717">{{item.willdo}}</td>
+                    <td>
+                      <p style="width:2.2rem;">{{item.dispatchUnit}}</p>
+                    </td>
+                    <td style="color:#3E68FF">{{item.dispatchCount}}</td>
+                    <td>
+                      <p style="width:1.8rem;" v-for="(iteam,index) in item.userList" :key="index">
+                        <span
+                          style="width:1.2rem;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;"
+                        >{{iteam.userName}}:</span>
+                        <span>{{iteam.dispatchCount}}</span>
+                      </p>
+                    </td>
+                    <td style="color:#09C504">{{item.done}}</td>
+                    <td style="color:#FF7E00">{{item.doing}}</td>
+                    <td style="color:#FF1717">{{item.willdo}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -139,54 +162,129 @@
                   </div>
                 </div>
                 <div v-for="(item,index) in dataDetail.detailByOrgList" :key="index">
-                  <div style="display:flex;justify-content:flex-start;width:100%;align-items: center;margin-bottom:0.1rem">
-                    <img v-if="item.orgId==1006" class="saDaily" src="@/assets/image/statisticsDaily/icon_1_mobai@3x.png" alt srcset>
-                    <img v-if="item.orgId==1007" class="saDaily" src="@/assets/image/statisticsDaily/icon_2_ofo@3x.png" alt srcset>
-                    <img v-if="item.orgId==1014" class="saDaily" src="@/assets/image/statisticsDaily/赳赳@2x.png" alt srcset>
-                    <img v-if="item.orgId==1015" class="saDaily" src="@/assets/image/statisticsDaily/哈罗@2x.png" alt srcset>
-                    <img v-if="item.orgId==1059" class="saDaily" src="@/assets/image/statisticsDaily/享骑@2x.png" alt srcset>
-                    <p style="margin:0;font-size:0.39rem;margin-left:0.3rem">收到派单：{{item.receiveCount}}单</p>
+                  <div
+                    style="display:flex;justify-content:flex-start;width:100%;align-items: center;margin-bottom:0.1rem"
+                  >
+                    <img
+                      v-if="item.orgId==1006"
+                      class="saDaily"
+                      src="@/assets/image/statisticsDaily/icon_1_mobai@3x.png"
+                      alt
+                      srcset
+                    >
+                    <img
+                      v-if="item.orgId==1007"
+                      class="saDaily"
+                      src="@/assets/image/statisticsDaily/icon_2_ofo@3x.png"
+                      alt
+                      srcset
+                    >
+                    <img
+                      v-if="item.orgId==1014"
+                      class="saDaily"
+                      src="@/assets/image/statisticsDaily/赳赳@2x.png"
+                      alt
+                      srcset
+                    >
+                    <img
+                      v-if="item.orgId==1015"
+                      class="saDaily"
+                      src="@/assets/image/statisticsDaily/哈罗@2x.png"
+                      alt
+                      srcset
+                    >
+                    <img
+                      v-if="item.orgId==1059"
+                      class="saDaily"
+                      src="@/assets/image/statisticsDaily/享骑@2x.png"
+                      alt
+                      srcset
+                    >
+                    <p v-if="item.orgId!==1006&&item.orgId!==1007&&item.orgId!==1014&&item.orgId!==1015&&item.orgId!==1059" class="other">{{item.orgName}}</p>
+                    <!-- <p class="other">产研院</p> -->
+                    <p
+                      style="margin:0;font-size:0.39rem;margin-left:0.3rem"
+                    >收到派单：{{item.receiveCount}}单</p>
                   </div>
-                  <div class="content-bottom-list" style="padding:0.3rem;border-left:1px solid #FEB621">
-                    <div style="display:flex;flex-direction: column;border:1px solid #F2F2F2;width:100%;">
-                      <div style="display:flex;justify-content: space-between;width:100%;border-bottom:1px solid #F2F2F2">
-                        <div style='display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.done==0?'-':item.done}}</span>
+                  <div
+                    class="content-bottom-list"
+                    style="padding:0.3rem;border-left:1px solid #FEB621"
+                  >
+                    <div
+                      style="display:flex;flex-direction: column;border:1px solid #F2F2F2;width:100%;"
+                    >
+                      <div
+                        style="display:flex;justify-content: space-between;width:100%;border-bottom:1px solid #F2F2F2"
+                      >
+                        <div
+                          style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%"
+                        >
+                          <span
+                            :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                            style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
+                          >{{item.done}}</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">已处理</span>
                         </div>
-                        <div style='display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{(item.doing+item.willdo)==0?'-':(item.doing+item.willdo)}}</span>
+                        <div
+                          style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%"
+                        >
+                          <span
+                            :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                            style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
+                          >{{(item.doing+item.willdo)}}</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">未处理</span>
                         </div>
-                        <div style='display:flex;flex-direction: column;justify-content:center;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.doneRate==0?'-':(item.doneRate)*100/100}}%</span>
+                        <div
+                          style="display:flex;flex-direction: column;justify-content:center;padding:0.2rem;margin:0.1rem 0;width:100%"
+                        >
+                          <span
+                            :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                            style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
+                          >{{(item.doneRate)*100}}%</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">完成率</span>
                         </div>
                       </div>
                       <div style="display:flex;justify-content: space-between;width:100%;">
-                        <div style='display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.arrangeNum==0?'-':item.arrangeNum}}</span>
+                        <div
+                          style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%"
+                        >
+                          <span
+                            :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                            style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
+                          >{{item.arrangeNum}}</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">整理数</span>
                         </div>
-                        <div style='display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.cleanNum==0?'-':item.cleanNum}}</span>
+                        <div
+                          style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%"
+                        >
+                          <span
+                            :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                            style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
+                          >{{item.cleanNum}}</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">清运数</span>
                         </div>
-                        <div style='display:flex;flex-direction: column;justify-content:center;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.avgTime==0?'-':item.avgTime}}</span>
+                        <div
+                          style="display:flex;flex-direction: column;justify-content:center;padding:0.2rem;margin:0.1rem 0;width:100%"
+                        >
+                          <span
+                            :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                            style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
+                          >{{item.avgTime}}</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">处理时长</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                
               </div>
             </div>
             <div class="content-bottom-rules-box">
               <div class="content-bottom-rules-box1">各企业自查情况</div>
               <div style="padding-top:0.98rem">
-                <div class="content-bottom-list" style="padding:0.3rem;border-left:1px solid #FEB621">
+                <div
+                  class="content-bottom-list"
+                  style="padding:0.3rem;border-left:1px solid #FEB621"
+                >
                   <h6 style="margin:0;font-size:0.4rem;margin-bottom:0.2rem">当日自查</h6>
                   <div style="display:flex;justify-content: space-between;width:100%;">
                     <p style="margin:0">整理总车辆数：{{dispatchCount1}}</p>
@@ -194,16 +292,54 @@
                   </div>
                 </div>
                 <div v-for="(item,index) in dataDetail.selfCheckByOrgList" :key="index">
-                  <div style="display:flex;justify-content:flex-start;width:100%;align-items: center;margin-bottom:0.1rem">
-                    <img v-if="item.orgId==1006" class="saDaily" src="@/assets/image/statisticsDaily/icon_1_mobai@3x.png" alt srcset>
-                    <img v-if="item.orgId==1007" class="saDaily" src="@/assets/image/statisticsDaily/icon_2_ofo@3x.png" alt srcset>
-                    <img v-if="item.orgId==1014" class="saDaily" src="@/assets/image/statisticsDaily/赳赳@2x.png" alt srcset>
-                    <img v-if="item.orgId==1015" class="saDaily" src="@/assets/image/statisticsDaily/哈罗@2x.png" alt srcset>
-                    <img v-if="item.orgId==1059" class="saDaily" src="@/assets/image/statisticsDaily/享骑@2x.png" alt srcset>
+                  <div
+                    style="display:flex;justify-content:flex-start;width:100%;align-items: center;margin-bottom:0.1rem"
+                  >
+                    <img
+                      v-if="item.orgId==1006"
+                      class="saDaily"
+                      src="@/assets/image/statisticsDaily/icon_1_mobai@3x.png"
+                      alt
+                      srcset
+                    >
+                    <img
+                      v-if="item.orgId==1007"
+                      class="saDaily"
+                      src="@/assets/image/statisticsDaily/icon_2_ofo@3x.png"
+                      alt
+                      srcset
+                    >
+                    <img
+                      v-if="item.orgId==1014"
+                      class="saDaily"
+                      src="@/assets/image/statisticsDaily/赳赳@2x.png"
+                      alt
+                      srcset
+                    >
+                    <img
+                      v-if="item.orgId==1015"
+                      class="saDaily"
+                      src="@/assets/image/statisticsDaily/哈罗@2x.png"
+                      alt
+                      srcset
+                    >
+                    <img
+                      v-if="item.orgId==1059"
+                      class="saDaily"
+                      src="@/assets/image/statisticsDaily/享骑@2x.png"
+                      alt
+                      srcset
+                    >
+                    <p v-if="item.orgId!==1006&&item.orgId!==1007&&item.orgId!==1014&&item.orgId!==1015&&item.orgId!==1059" class="other">{{item.orgName}}</p>
                     <!-- <p style="margin:0;font-size:0.39rem;margin-left:0.3rem">收到派单：{{item.receiveCount}}单</p> -->
                   </div>
-                  <div class="content-bottom-list" style="padding:0.3rem;border-left:1px solid #FEB621">
-                    <div style="display:flex;flex-direction: column;border:1px solid #F2F2F2;width:100%;">
+                  <div
+                    class="content-bottom-list"
+                    style="padding:0.3rem;border-left:1px solid #FEB621"
+                  >
+                    <div
+                      style="display:flex;flex-direction: column;border:1px solid #F2F2F2;width:100%;"
+                    >
                       <!-- <div style="display:flex;justify-content: space-between;width:100%;border-bottom:1px solid #F2F2F2">
                         <div style='display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%'>
                           <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.done}}</span>
@@ -217,18 +353,33 @@
                           <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{(item.doneRate)*100/100}}%</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">完成率</span>
                         </div>
-                      </div> -->
+                      </div>-->
                       <div style="display:flex;justify-content: space-between;width:100%;">
-                        <div style='display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.checkCount==0?'-':item.checkCount}}</span>
+                        <div
+                          style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%"
+                        >
+                          <span
+                            :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                            style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
+                          >{{item.checkCount==0?'-':item.checkCount}}</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">自查数</span>
                         </div>
-                        <div style='display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.arrangeNum==0?'-':item.arrangeNum}}</span>
+                        <div
+                          style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%"
+                        >
+                          <span
+                            :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                            style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
+                          >{{item.arrangeNum==0?'-':item.arrangeNum}}</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">整理数</span>
                         </div>
-                        <div style='display:flex;flex-direction: column;justify-content:center;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.cleanNum==0?'-':item.cleanNum}}</span>
+                        <div
+                          style="display:flex;flex-direction: column;justify-content:center;padding:0.2rem;margin:0.1rem 0;width:100%"
+                        >
+                          <span
+                            :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                            style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
+                          >{{item.cleanNum==0?'-':item.cleanNum}}</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">清运数</span>
                         </div>
                       </div>
@@ -264,13 +415,13 @@ export default {
       versionTime: "",
       dispatchContentSummary: "",
       dispatchContentSummary1: "",
-      dispatchCount:0,
-      dayDate:'',
-      areaId:"",
-      checkCount:0,
-      dispatchCount1:0,
-      checkCount1:0,
-      areaName:'',
+      dispatchCount: 0,
+      dayDate: "",
+      areaId: "",
+      checkCount: 0,
+      dispatchCount1: 0,
+      checkCount1: 0,
+      areaName: "",
       companyDetail: [],
       dataDetail: {}
     };
@@ -291,53 +442,56 @@ export default {
     },
     // 选中时间事件
     selectDate(val) {
-      this.downIcon1=true;
+      this.downIcon1 = true;
       // this.query.yearMonth = val.Format("yyyy-MM-DD");
-      this.dayDate=this.FormatDate5(val);
+      this.dayDate = this.FormatDate5(val);
       this.getData();
     },
-    changeCompany(val){
-      this.areaName=val.value;
-      this.downIcon=true;
-      this.areaId=val.key;
+    changeCompany(val) {
+      this.areaName = val.value;
+      this.downIcon = true;
+      this.areaId = val.key;
       this.getData();
     },
-    getData(){
-      this.dispatchCount=0;
-      this.checkCount=0;
-      this.dispatchCount1=0;
-      this.checkCount1=0;
+    getData() {
+      this.dispatchCount = 0;
+      this.checkCount = 0;
+      this.dispatchCount1 = 0;
+      this.checkCount1 = 0;
       this.$fetchGet("cleanDaily/getCleanDaily", {
-          areaId: this.areaId,
-          dayDate: this.dayDate
-        }).then(res => {
-          if(res.status==1){
-            this.dataDetail = res;
-            console.log(res.dispatchContentDetail);
-            res.detailByOrgList.forEach(element => {
-                this.dispatchCount+=element.arrangeNum;
-                this.checkCount+=element.cleanNum
-            });
-            res.selfCheckByOrgList.forEach(element => {
-                this.dispatchCount1+=element.arrangeNum;
-                this.checkCount1+=element.cleanNum
-            });
-            this.dispatchContentSummary=res.dispatchContentSummary.split('<###>')[0];
-            this.dispatchContentSummary1=res.dispatchContentSummary.split('<###>')[1]
-          }else{
-            this.dataDetail = res;
-            this.dispatchContentSummary=res.dispatchContentSummary;
-            this.dispatchContentSummary1='';
-          }
-          
-        });
+        areaId: this.areaId,
+        dayDate: this.dayDate
+      }).then(res => {
+        if (res.status == 1) {
+          this.dataDetail = res;
+          console.log(res.dispatchContentDetail);
+          res.detailByOrgList.forEach(element => {
+            this.dispatchCount += element.arrangeNum;
+            this.checkCount += element.cleanNum;
+          });
+          res.selfCheckByOrgList.forEach(element => {
+            this.dispatchCount1 += element.arrangeNum;
+            this.checkCount1 += element.cleanNum;
+          });
+          this.dispatchContentSummary = res.dispatchContentSummary.split(
+            "<###>"
+          )[0];
+          this.dispatchContentSummary1 = res.dispatchContentSummary.split(
+            "<###>"
+          )[1];
+        } else {
+          this.dataDetail = res;
+          this.dispatchContentSummary = res.dispatchContentSummary;
+          this.dispatchContentSummary1 = "";
+        }
+      });
     },
     //获取地区列表
     getCleanArea() {
       this.$fetchGet("cleanDaily/getCleanArea").then(res => {
-        this.companyDetail=res;
-        this.areaId=res[0].key;
-        this.areaName=res[0].value;
+        this.companyDetail = res;
+        this.areaId = res[0].key;
+        this.areaName = res[0].value;
         this.getData();
         // this.$fetchGet("cleanDaily/getCleanDaily", {
         //   areaId: this.areaId,
@@ -357,7 +511,7 @@ export default {
         //   this.dispatchContentSummary=res.dispatchContentSummary.split('<###>')[0];
         //   this.dispatchContentSummary1=res.dispatchContentSummary.split('<###>')[1]
         //   }
-          
+
         // });
       });
     }
@@ -401,17 +555,17 @@ export default {
       background-image: url("../../assets/image/statisticsDaily/iamge_1@3x.png");
       background-size: 100% 100%;
       position: relative;
-      .companyList{
+      .companyList {
         position: absolute;
         right: 0.3rem;
-        top:0.9rem;
-        padding:0 0.2rem;
+        top: 0.9rem;
+        padding: 0 0.2rem;
         background: #ffffff;
         border-radius: 0.1rem;
         box-shadow: 0 0 0.1rem #dddddd;
-        .companyList-son{
+        .companyList-son {
           color: #333333;
-          padding:0.2rem;
+          padding: 0.2rem;
           font-size: 0.373333rem;
         }
       }
@@ -450,22 +604,21 @@ export default {
           flex-direction: column;
           .mobike {
             color: #f25b4a;
-            
           }
           .ofo {
             color: #fbc303;
-            
           }
           .haluo {
             color: #01a1ff;
-           
           }
           .jiujiu {
             color: #fd3121;
-            
           }
           .xiangqi {
             color: #00cb4b;
+          }
+          .other1{
+            color: #9a6eff;
           }
           .content-bottom-list {
             display: flex;
@@ -526,6 +679,16 @@ export default {
             .saDaily {
               width: 1.47rem;
               height: 0.54rem;
+              margin-left: -0.3rem;
+            }
+            .other {
+              background: #9a6eff;
+              color: #ffffff;
+              padding: 0.06rem 0.3rem;
+              box-sizing: border-box;
+              border-radius: 12px;
+              font-size: 0.35rem;
+              margin: 0;
               margin-left: -0.3rem;
             }
             .content-bottom-rules-box1 {

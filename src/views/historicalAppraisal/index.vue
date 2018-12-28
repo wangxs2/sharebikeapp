@@ -21,7 +21,7 @@
     <div class="content">
         <p v-if="userCount.length==0" style="color:rgb(170, 170, 170);text-align:center">--我也是有底线的--</p>
       <div class="content-box">
-        <div class="content-box-list" v-for="(iteam, index) in userCount" :key="index">
+        <div class="content-box-list" v-for="(iteam, index) in userCount" :key="index" @click="toAssessment(iteam)">
           <div class="content-box-listop">
             <div style="display:flex;justify-content: flex-start;align-items: center">
               <span
@@ -108,7 +108,7 @@ export default {
   data() {
     return {
       userCount: [],
-      pickerValue: new Date(), // 选择的时间
+      pickerValue: '', // 选择的时间
       viewTypesa: "1",
       query: {
         yearMonth: "",
@@ -121,6 +121,7 @@ export default {
   components: {},
   mounted() {},
   created() {
+    this.pickerValue = new Date();
     let myDate = new Date();
     let now_year = myDate.getFullYear(); //年份
     let nowData =
@@ -139,8 +140,17 @@ export default {
   methods: {
     //获取数据
     getData() {
+      this.userCount=[];
       this.$fetchGet("evaluation/monthEvaluation", this.query).then(res => {
-        this.userCount = res;
+        if(this.viewTypesa==2){
+          res.forEach(element => {
+            if(element.status==2){
+              this.userCount.push(element);
+            }
+          });
+        }else{
+          this.userCount = res;
+        }
       });
     },
     // 打开时间选择框
@@ -150,7 +160,8 @@ export default {
     // 选中时间事件
     selectDate(val) {
       this.query.yearMonth = val.Format("yyyy-MM");
-      this.nowData1=val.Format("yyyy/MM")
+      this.nowData = val.Format("yyyy年MM");
+      this.nowData1=val.Format("yyyy/MM");
       this.getData();
     },
     //进入个人信息修改
@@ -167,6 +178,27 @@ export default {
     },
     toRules() {
       this.$router.push("/evaluationrules");
+    },
+    //进入考评页面或详情
+    toAssessment(val) {
+      if (val.status == 2) {
+        this.$router.push({
+          path: "/assessmentDetails",
+          query: {
+            assessmentId: val.id,
+            data:val,
+          }
+        });
+      } else {
+        this.$router.push({
+          path: "/noAssessment",
+          query: {
+            assessmentId: val.id,
+            pageSize:val.evaluatedCount,
+            totalPage:val.sheetCount,
+          }
+        });
+      }
     },
     //考评切换
     selectView(e) {

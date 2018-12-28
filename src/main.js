@@ -20,37 +20,37 @@ import { Swipe, SwipeItem } from "mint-ui";
 import VueLazyLoad from 'vue-lazyload'
 import VueScroller from 'vue-scroller'
 Vue.use(VueScroller)
-Vue.use(VueLazyLoad,{
-  preLoad: 1,
-  error: require('./assets/image/error.svg'),
-  loading: require('./assets/image/loading.svg'),
-  attempt: 2,
+Vue.use(VueLazyLoad, {
+    preLoad: 1,
+    error: require('./assets/image/error.svg'),
+    loading: require('./assets/image/loading.svg'),
+    attempt: 2,
 })
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 // let vConsole = new Vconsole()
 Vue.use(VuePreview, {
-  mainClass: 'pswp--minimal--dark',
-  barsSize: { top: 0, bottom: 0 },
-  captionEl: false,
-  fullscreenEl: false,
-  shareEl: false,
-  bgOpacity: 0.85,
-  tapToClose: true,
-  tapToToggleControls: false
+    mainClass: 'pswp--minimal--dark',
+    barsSize: { top: 0, bottom: 0 },
+    captionEl: false,
+    fullscreenEl: false,
+    shareEl: false,
+    bgOpacity: 0.85,
+    tapToClose: true,
+    tapToToggleControls: false
 })
 Vue.use(common)
 Vue.use(mintUI)
-// Vue.prototype.Ip = process.env.API_HOST + '';
+    // Vue.prototype.Ip = process.env.API_HOST + '';
 Vue.prototype.Ip = 'http://10.1.4.42:18088';
 // Vue.prototype.Ip = 'http://10.1.30.202:18088';
 // Vue.prototype.Ip = 'http://106.14.198.128:18088';
 Vue.config.productionTip = false
-/* eslint-disable no-new */
+    /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  store,
-  components: { App },
-  template: '<App/>'
+    el: '#app',
+    router,
+    store,
+    components: { App },
+    template: '<App/>'
 })

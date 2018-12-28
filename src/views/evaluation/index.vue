@@ -147,8 +147,18 @@ export default {
   methods: {
     //获取数据
     getData() {
+      this.userCount=[];
       this.$fetchGet("evaluation/monthEvaluation", this.query).then(res => {
-        this.userCount = res;
+        if(this.viewTypesa==2){
+          res.forEach(element => {
+            if(element.status==2){
+              this.userCount.push(element);
+            }
+          });
+        }else{
+          this.userCount = res;
+        }
+        
       });
     },
     //进入个人信息修改

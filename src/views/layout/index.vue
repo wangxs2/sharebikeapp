@@ -102,7 +102,7 @@ export default {
     getRules(){
       //获取是否有红点点
       this.$fetchGet("count/willdo").then(res => {
-          this.ruleStatus=res.evaluation==='false'?this.ruleStatus=false:this.ruleStatus=true;
+          this.ruleStatus=res.evaluation==='true'?this.ruleStatus=true:this.ruleStatus=false;
           this.ruleStatus3=res.daily==='false'?false:true;
           if(res.selfCheck>0){
             this.ruleStatus1=true;

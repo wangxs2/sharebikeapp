@@ -12,7 +12,8 @@
         <div class="header-contentsa">
           <div class="headertop" style="flex:1" @click="toUserModi">
             <div class="info-box">
-              <img class="user-avatar" src="@/assets/image/me/默认头像@2x.png" alt>
+              <img v-if="userInfo.imageURL!==''" class="user-avatar" :src="Ip + userInfo.imageURL" alt>
+               <img v-if="userInfo.imageURL==''" class="user-avatar" src="@/assets/image/me/默认头像@2x.png" alt>
               <div class="user-namebox">
                 <div class="user-nameboxsa">
                   <h3
@@ -53,7 +54,7 @@
                   alt
                   srcset
                 >
-                <span style="color:#333333;margin-left:0.1rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{userInfo.orgName}}</span>
+                <span style="width:5rem;color:#333333;margin-left:0.1rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;text-align:left">{{userInfo.orgName}}</span>
               </div>
               <p
                 style="border:1px solid #5279FF;color:#5279FF;margin:0;padding:0.06rem 0.2rem;border-radius: 0.6rem;"
@@ -75,9 +76,9 @@
         </div>
       </div>
     </div>
-    <div class="content">
-      <div class="colorsa"></div>
-      <div class="evaluation">
+    <div class="content" style="padding:0.1rem">
+      <!-- <div class="colorsa"></div> -->
+      <div class="evaluation" v-if="ruleStatus!=='close'">
         <div class="evaluationimg" @click="toEvaluation">
           <span
             v-if="ruleStatus"
@@ -108,7 +109,7 @@
           </div>
           <div style="display: flex;flex-direction: column;padding:0.1rem">
             <span style="text-align:center;margin-bottom:0.2rem;color:#A857FB;font-size:0.5rem">{{userCount.selfCheck==0?'-':userCount.selfCheck}}</span>
-            <span style="text-align:center;color:#666666;font-size:0.3rem">自检次数(次)</span>
+            <span style="text-align:center;color:#666666;font-size:0.3rem">自检单数(单)</span>
           </div>
         </div>
         <!-- <div class="static-box-left">
