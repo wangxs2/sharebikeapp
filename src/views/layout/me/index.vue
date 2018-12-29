@@ -257,10 +257,15 @@ export default {
 .container {
   @-webkit-keyframes twinkling {
     0% {
-      opacity: 0;
+      // opacity: 0;
+      transform:scale(1);
+    }
+    50%{
+      transform:scale(1.1);
     }
     100% {
-      opacity: 1;
+      // opacity: 1;
+      transform:scale(1);
     }
   }
   .animated-tada {

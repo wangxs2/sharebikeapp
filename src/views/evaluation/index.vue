@@ -37,11 +37,13 @@
           <div class="content-box-listop">
             <div style="display:flex;justify-content: flex-start;align-items: center">
               <span
+              v-if="boxSarule"
                 :class="iteam.status==0?'noAssessment':iteam.status==1?'evaluation':'alreadyEvaluated'"
                 style="display:block;width:8px;height:8px;border-radius:50%;"
               ></span>
               <span
                 style="font-size:0.36rem;margin-left:0.1rem"
+                v-if="boxSarule"
               >{{iteam.status==2?FormatDate(iteam.evaluateEndTime):'请尽快考评'}}</span>
             </div>
             <div
@@ -121,6 +123,7 @@ export default {
     return {
       userCount: [],
       viewTypesa: "1",
+      boxSarule:true,
       rulesBox: false,
       query: {
         yearMonth: "",
@@ -226,10 +229,12 @@ export default {
       if (type) {
         this.viewTypesa = type;
         if (type == "1") {
+          this.boxSarule=true;
           this.query.type = "evaluate";
           this.getData();
         } else {
           this.query.type = "evaluated";
+          this.boxSarule=false;
           this.getData();
         }
       }

@@ -130,7 +130,7 @@
             </div>
             <div class="topcloumson" v-if="iteamList.sheetType=='DISPATCH'">
               <p class="leftfont">派单人</p>
-              <p class="leftfont1">{{iteamList.dispatchUserName}}</p>
+              <p class="leftfont1">{{iteamList.dispachUserName}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理方式</p>

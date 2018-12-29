@@ -9,6 +9,7 @@
       ref="picker"
       type="date"
       v-model="pickerValue"
+      class="dateBox"
     ></mt-datetime-picker>
     <!-- 时间选择 -->
     <div class="header">
@@ -38,10 +39,12 @@
           <div class="content-box-listop">
             <div style="display:flex;justify-content: flex-start;align-items: center">
               <span
+              v-if="boxSarule"
                 :class="iteam.status==0?'noAssessment':iteam.status==1?'evaluation':'alreadyEvaluated'"
                 style="display:block;width:8px;height:8px;border-radius:50%;"
               ></span>
               <span
+              v-if="boxSarule"
                 style="font-size:0.36rem;margin-left:0.1rem"
               >{{iteam.status==2?FormatDate(iteam.evaluateEndTime):'请尽快考评'}}</span>
             </div>
@@ -121,6 +124,7 @@ export default {
   data() {
     return {
       userCount: [],
+      boxSarule:true,
       pickerValue: "", // 选择的时间
       viewTypesa: "1",
       query: {
@@ -237,9 +241,11 @@ export default {
       if (type) {
         this.viewTypesa = type;
         if (type == "1") {
+          this.boxSarule=true;
           this.query.type = "evaluate";
           this.getData();
         } else {
+          this.boxSarule=false;
           this.query.type = "evaluated";
           this.getData();
         }
@@ -249,17 +255,20 @@ export default {
 };
 </script>
 <style>
+.dateBox .picker-items .picker-slot.picker-slot-center:nth-of-type(3) {
+    display: none !important;
+    background: #00c458;
+  }
 </style>
 
 <style lang="scss" scoped>
+
 .container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  .picker-slot:last-child {
-    display: none !important;
-  }
+  
   .header {
     width: 100%;
     height: 2.273333rem;

@@ -2,8 +2,9 @@
   <div class="gcontainer">
     <header>
       <h1></h1>
-      <h1 style="margin-left:0.96rem">统计</h1>
-      <h1 class="animated-tada" v-if="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'" @click="toDaily">日报</h1>
+      <h1 style="margin-left:0.96rem;width:50%;text-align:right">统计</h1>
+      <h1 class="animated-tada" style="width:50%;text-align:right" v-show="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'" @click="toDaily">日报</h1>
+      <h1 style="width:50%;" v-show="userInfo.roleCode=='clean'||userInfo.roleCode=='manage'||userInfo.roleCode=='dispatch'"></h1>
     </header>
     <main>
       <nav @click="selectComany($event)">
@@ -289,13 +290,16 @@ export default {
   }
   @keyframes change {
     0% {
-      text-shadow: 0 0 4px #fff;
+      // text-shadow: 0 0 4px #fff;
+      transform:scale(1);
     }
     50% {
-      text-shadow: 0 0 40px #fff;
+      // text-shadow: 0 0 40px #fff;
+      transform:scale(1.1);
     }
     100% {
-      text-shadow: 0 0 4px #fff;
+      // text-shadow: 0 0 4px #fff;
+      transform:scale(1);
     }
   }
   width: 100%;
@@ -309,6 +313,7 @@ export default {
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     display: flex;
     justify-content: space-between;
+    justify-content: center;
     box-sizing: border-box;
     padding: 0 0.3rem;
     h1 {
