@@ -201,9 +201,7 @@ import { mapGetters } from "vuex";
 import { MessageBox } from "mint-ui";
 import "@/assets/stylefont/iconfont.css";
 export default {
-  // computed: {
-  //   ...mapGetters(["userInfo"])
-  // },
+  
   data() {
     return {
       userCount: {},
@@ -266,7 +264,7 @@ export default {
     }
   }
   .animated-tada {
-    -webkit-animation: twinkling 1.5s infinite ease-in-out;
+    -webkit-animation: twinkling 1s infinite ease-in-out;
   }
   width: 100%;
   height: 100%;

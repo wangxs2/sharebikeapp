@@ -3,7 +3,7 @@
     <header>
       <h1></h1>
       <h1 style="margin-left:0.96rem">统计</h1>
-      <h1 class="animated-tada" @click="toDaily">日报</h1>
+      <h1 class="animated-tada" v-if="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'" @click="toDaily">日报</h1>
     </header>
     <main>
       <nav @click="selectComany($event)">
@@ -80,8 +80,11 @@
 
 <script>
 import { Indicator } from "mint-ui";
+import { mapGetters } from "vuex";
 export default {
-  computed: {},
+  computed: {
+    ...mapGetters(["userInfo"])
+  },
   data() {
     return {
       dateValue: "", // 实际使用时间

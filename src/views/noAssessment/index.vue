@@ -300,6 +300,7 @@
 import { Loadmore } from "mint-ui";
 import { Indicator } from "mint-ui";
 import { MessageBox } from "mint-ui";
+let pathsaTwo;
 export default {
   computed: {},
   data() {
@@ -387,6 +388,11 @@ export default {
     },
     achievementTimely: (val, old) => {}
   },
+  beforeRouteEnter(to, from, next) {
+    console.log(from.path);
+    pathsaTwo = from.path;
+    next();
+  },
   mounted() {},
   methods: {
     handOpen(val) {
@@ -434,7 +440,7 @@ export default {
     },
     iconClick() {
       this.$router.push({
-        path: "/evaluation"
+        path: pathsaTwo
       });
     },
     //计算派单响应及时性成绩
@@ -498,7 +504,17 @@ export default {
           "json"
         ).then(res => {
           if (res.status == 0) {
+            console.log(number);
+
             let number = this.currentPage;
+            if (number == this.totalData.length - 1) {
+              MessageBox.alert("", {
+                message: "评分完成！",
+                title: "成功"
+              }).then(action => {
+                this.$router.push(pathsaTwo);
+              });
+            }
             this.iteamList = this.totalData[number + 1];
             this.currentPage = number + 1;
             if (this.iteamList.evaluationComments) {

@@ -2,6 +2,7 @@
 
 <template>
   <div class="container">
+    <span v-if="buttonScroll" @click="toTop" class="scroll-top"></span>
     <mt-popup class="imgMask" v-model="popupVisible" position="right">
       <span
         class="iconfont icon-guandiao"
@@ -99,225 +100,212 @@
         v-if="checkData.length==0||dispatchData.length==0"
         style="color:rgb(170, 170, 170);text-align:center"
       >--我也是有底线的--</p>
-      <div class="superList">
-        <div class="pagingSa">
-          <p v-show="presa" @click="prePage" class="buttontab">上</p>
-          <p style>第{{currentPage+1}}单</p>
-          <p v-show="nextsa" @click="nextPage" class="buttontab">下</p>
-        </div>
-      </div>
-      <div class="superList">
-        <div class="topsa">
-          <div class="fontext">详情</div>
-          <div></div>
-        </div>
-      </div>
-      <div class="superList">
-        <div class="topcloum" style="border-bottom:1px solid #eeeeee;">
-          <div class="topcloumson">
-            <p class="leftfont">单号</p>
-            <p class="leftfont1">{{iteamList.sheetCode}}</p>
-          </div>
-          <div class="topcloumson">
-            <p class="leftfont">{{iteamList.sheetType=='CHECK'?'时间':'派单时间'}}</p>
-            <p class="leftfont1">{{FormatDate(iteamList.dispatchTime)}}</p>
-          </div>
-          <div class="topcloumson">
-            <p class="leftfont">地点</p>
-            <p class="leftfont1">{{iteamList.handleAddr}}</p>
-          </div>
-          <div class="topcloumson" v-if="iteamList.sheetType=='DISPATCH'">
-            <p class="leftfont">派单人</p>
-            <p class="leftfont1">{{iteamList.dispatchUserName}}</p>
-          </div>
-          <div class="topcloumson">
-            <p class="leftfont">处理方式</p>
-            <p
-              class="leftfont1"
-            >{{iteamList.dealMethod==1?"整理":iteamList.dealMethod==2?"清运":"整理且清运"}}</p>
-          </div>
-          <div class="topcloumson" v-if="iteamList.sheetType=='DISPATCH'">
-            <p class="leftfont">派单照片</p>
-            <p class="leftfont1">
-              <img
-                v-for="(iteam,index) in iteamList.dispachPhotoURLs"
-                :src="Ip+iteam"
-                :key="index"
-                alt
-                srcset
-                @click="handOpen(iteam)"
-              >
-            </p>
-          </div>
-          <div class="topcloumson">
-            <p class="leftfont">处理前</p>
-            <p class="leftfont1">
-              <img
-                v-for="(iteam,index) in iteamList.handleBeforeURLs"
-                :src="Ip+iteam"
-                :key="index"
-                alt
-                srcset
-                @click="handOpen(iteam)"
-              >
-            </p>
-          </div>
-          <div class="topcloumson">
-            <p class="leftfont">处理后</p>
-            <p class="leftfont1">
-              <img
-                v-for="(iteam,index) in iteamList.handleAfterURLs"
-                :src="Ip+iteam"
-                :key="index"
-                alt
-                srcset
-                @click="handOpen(iteam)"
-              >
-            </p>
-          </div>
-          <div class="topcloumson">
-            <p class="leftfont">整理数</p>
-            <p class="leftfont1">{{iteamList.arrangeNum}}</p>
-          </div>
-          <div class="topcloumson" v-if="iteamList.sheetType=='DISPATCH'">
-            <p class="leftfont">清运数</p>
-            <p class="leftfont1">{{iteamList.cleanNum}}</p>
-          </div>
-          <div class="topcloumson">
-            <p class="leftfont">备注</p>
-            <p class="leftfont1">{{iteamList.dispachRemark}}</p>
-          </div>
-          <div class="topcloumson">
-            <p class="leftfont">处理人</p>
-            <p class="leftfont1">{{iteamList.handleAddr}}</p>
-          </div>
-          <div class="topcloumson">
-            <p class="leftfont">处理时长</p>
-            <p class="leftfont1">{{iteamList.dealTimeHour}}</p>
-          </div>
-          <div class="topcloumson">
-            <p class="leftfont">处理时间</p>
-            <p class="leftfont1">{{FormatDate(iteamList.handleTime)}}</p>
+      <div v-for="(iteamList,index) in dataFind" :key="index" style="margin-bottom:0.3rem;">
+        <div class="superList">
+          <div class="pagingSa">
+            <!-- <p v-show="presa" @click="prePage" class="buttontab">上</p> -->
+            <p style>第{{index+1}}单</p>
+            <!-- <p v-show="nextsa" @click="nextPage" class="buttontab">下</p> -->
           </div>
         </div>
-      </div>
-      <div class="superList">
-        <div class="topsa">
-          <div class="fontext">考评情况</div>
-          <div></div>
+        <div class="superList">
+          <div class="topsa">
+            <div class="fontext">详情</div>
+            <div></div>
+          </div>
         </div>
-      </div>
-      <div class="superList" style="margin-bottom:0rem;">
-        <div
-          class="topcloum"
-          style="border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:1px solid #eeeeee;"
-        >
-          <div class="topcloumson" style="padding-bottom:0.16rem">
-            <div style="font-size: 0.38rem">拍照角度</div>
-            <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <img
-                v-for="(iteam,index) in iteamList.evaluationComments.photoAngle"
-                @click="chooseOrder(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/stars.png"
-                alt
-                srcset
-              >
+        <div class="superList">
+          <div class="topcloum" style="border-bottom:1px solid #eeeeee;">
+            <div class="topcloumson">
+              <p class="leftfont">单号</p>
+              <p class="leftfont1">{{iteamList.sheetCode}}</p>
             </div>
-          </div>
-          <!-- <p
-            style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem"
-          >照片角度是否一致，是否能看出是同一个地点，照片的视野范围是否太小。</p>-->
-          <div class="topcloumson" style="padding-bottom:0.16rem">
-            <div style="font-size: 0.38rem">治理数量</div>
-            <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <img
-                v-for="(iteam,index) in iteamList.evaluationComments.dealNum"
-                @click="chooseOrder1(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/stars.png"
-                alt
-                srcset
-              >
+            <div class="topcloumson">
+              <p class="leftfont">{{iteamList.sheetType=='CHECK'?'时间':'派单时间'}}</p>
+              <p class="leftfont1">{{FormatDate(iteamList.dispatchTime)}}</p>
             </div>
-          </div>
-          <!-- <p
-            style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem"
-          >实际整理或清运数量是否与照片展现的一致，整理和清运数量是否写反。</p>-->
-          <div class="topcloumson" style="padding-bottom:0.16rem">
-            <div style="font-size: 0.38rem">整理照片</div>
-            <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <img
-                v-for="(iteam,index) in iteamList.evaluationComments.afterDeal"
-                @click="chooseOrder2(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/stars.png"
-                alt
-                srcset
-              >
+            <div class="topcloumson">
+              <p class="leftfont">地点</p>
+              <p class="leftfont1">{{iteamList.handleAddr}}</p>
             </div>
-          </div>
-          <!-- <p
-            style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem"
-          >整理后，其他企业的单车或社会车辆是否停放错乱，照片是否清晰。</p>-->
-          <div class="topcloumson" style="padding-bottom:0.16rem;">
-            <div style="font-size: 0.38rem">处理方式</div>
-            <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <img
-                v-for="(iteam,index) in iteamList.evaluationComments.dealMethod"
-                @click="chooseOrder3(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/stars.png"
-                alt
-                srcset
-              >
+            <div class="topcloumson" v-if="iteamList.sheetType=='DISPATCH'">
+              <p class="leftfont">派单人</p>
+              <p class="leftfont1">{{iteamList.dispatchUserName}}</p>
             </div>
-          </div>
-          <!-- <p
-            style="color:#999999;font-size:0.3rem;padding-left:2rem;"
-          >派单的处理方式与企业的处理方式是否一致，反例：派单要求清运，而企业只做了整理的处理。</p>-->
-        </div>
-      </div>
-      <div class="superList">
-        <div class="topsa" style="border-radius:0">
-          <div class="fontext">备注</div>
-          <div></div>
-        </div>
-      </div>
-      <div class="superList">
-        <div class="topcloum" style="color:#666666">{{iteamList.evaluationComments.remark}}</div>
-      </div>
-      <div class="superList">
-        <div class="fraction-img">
-          <div class="fraction-number">
-            <div class="fraction-font">
-              <span>综合得分</span>
+            <div class="topcloumson">
+              <p class="leftfont">处理方式</p>
               <p
-                style="font-size:0.7rem;margin-top:0.1rem"
-              >{{iteamList.evaluationComments.generalScore}}</p>
+                class="leftfont1"
+              >{{iteamList.dealMethod==1?"整理":iteamList.dealMethod==2?"清运":"整理且清运"}}</p>
+            </div>
+            <div class="topcloumson" v-if="iteamList.sheetType=='DISPATCH'">
+              <p class="leftfont">派单照片</p>
+              <p class="leftfont1">
+                <img
+                  v-for="(iteam,index) in iteamList.dispachPhotoURLs"
+                  :src="Ip+iteam"
+                  :key="index"
+                  alt
+                  srcset
+                  @click="handOpen(iteam)"
+                >
+              </p>
+            </div>
+            <div class="topcloumson">
+              <p class="leftfont">处理前</p>
+              <p class="leftfont1">
+                <img
+                  v-for="(iteam,index) in iteamList.handleBeforeURLs"
+                  :src="Ip+iteam"
+                  :key="index"
+                  alt
+                  srcset
+                  @click="handOpen(iteam)"
+                >
+              </p>
+            </div>
+            <div class="topcloumson">
+              <p class="leftfont">处理后</p>
+              <p class="leftfont1">
+                <img
+                  v-for="(iteam,index) in iteamList.handleAfterURLs"
+                  :src="Ip+iteam"
+                  :key="index"
+                  alt
+                  srcset
+                  @click="handOpen(iteam)"
+                >
+              </p>
+            </div>
+            <div class="topcloumson">
+              <p class="leftfont">整理数</p>
+              <p class="leftfont1">{{iteamList.arrangeNum}}</p>
+            </div>
+            <div class="topcloumson" v-if="iteamList.sheetType=='DISPATCH'">
+              <p class="leftfont">清运数</p>
+              <p class="leftfont1">{{iteamList.cleanNum}}</p>
+            </div>
+            <div class="topcloumson">
+              <p class="leftfont">备注</p>
+              <p class="leftfont1">{{iteamList.dispachRemark}}</p>
+            </div>
+            <div class="topcloumson">
+              <p class="leftfont">处理人</p>
+              <p class="leftfont1">{{iteamList.handleAddr}}</p>
+            </div>
+            <div class="topcloumson">
+              <p class="leftfont">处理时长</p>
+              <p class="leftfont1">{{iteamList.dealTimeHour}}</p>
+            </div>
+            <div class="topcloumson">
+              <p class="leftfont">处理时间</p>
+              <p class="leftfont1">{{FormatDate(iteamList.handleTime)}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="superList">
+          <div class="topsa">
+            <div class="fontext">考评情况</div>
+            <div></div>
+          </div>
+        </div>
+        <div class="superList" style="margin-bottom:0rem;">
+          <div
+            class="topcloum"
+            style="border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:1px solid #eeeeee;"
+          >
+            <div class="topcloumson" style="padding-bottom:0.16rem">
+              <div style="font-size: 0.38rem">拍照角度</div>
+              <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
+                <img
+                  v-for="(iteam,index) in iteamList.avgEvaluationComments.avgPhotoAngle"
+                  @click="chooseOrder(index)"
+                  style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                  :key="index"
+                  src="@/assets/image/evaluation/stars.png"
+                  alt
+                  srcset
+                >
+              </div>
+            </div>
+            <!-- <p
+            style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem"
+            >照片角度是否一致，是否能看出是同一个地点，照片的视野范围是否太小。</p>-->
+            <div class="topcloumson" style="padding-bottom:0.16rem">
+              <div style="font-size: 0.38rem">治理数量</div>
+              <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
+                <img
+                  v-for="(iteam,index) in iteamList.avgEvaluationComments.avgDealNum"
+                  @click="chooseOrder1(index)"
+                  style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                  :key="index"
+                  src="@/assets/image/evaluation/stars.png"
+                  alt
+                  srcset
+                >
+              </div>
+            </div>
+            <!-- <p
+            style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem"
+            >实际整理或清运数量是否与照片展现的一致，整理和清运数量是否写反。</p>-->
+            <div class="topcloumson" style="padding-bottom:0.16rem">
+              <div style="font-size: 0.38rem">整理照片</div>
+              <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
+                <img
+                  v-for="(iteam,index) in iteamList.avgEvaluationComments.avgAfterDeal"
+                  @click="chooseOrder2(index)"
+                  style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                  :key="index"
+                  src="@/assets/image/evaluation/stars.png"
+                  alt
+                  srcset
+                >
+              </div>
+            </div>
+            <!-- <p
+            style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem"
+            >整理后，其他企业的单车或社会车辆是否停放错乱，照片是否清晰。</p>-->
+            <div class="topcloumson" style="padding-bottom:0.16rem;">
+              <div style="font-size: 0.38rem">处理方式</div>
+              <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
+                <img
+                  v-for="(iteam,index) in iteamList.avgEvaluationComments.avgDealMethod"
+                  @click="chooseOrder3(index)"
+                  style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                  :key="index"
+                  src="@/assets/image/evaluation/stars.png"
+                  alt
+                  srcset
+                >
+              </div>
+            </div>
+            <!-- <p
+            style="color:#999999;font-size:0.3rem;padding-left:2rem;"
+            >派单的处理方式与企业的处理方式是否一致，反例：派单要求清运，而企业只做了整理的处理。</p>-->
+          </div>
+        </div>
+        <div class="superList">
+          <div class="topsa" style="border-radius:0">
+            <div class="fontext">备注</div>
+            <div></div>
+          </div>
+        </div>
+        <div class="superList">
+          <div class="topcloum" style="color:#666666" v-for="(iteam,index) in iteamList.avgEvaluationComments.remarks" :key="index">{{iteam.key}}：{{iteam.value}}</div>
+        </div>
+        <div class="superList">
+          <div class="fraction-img">
+            <div class="fraction-number">
+              <div class="fraction-font">
+                <span>综合得分</span>
+                <p
+                  style="font-size:0.7rem;margin-top:0.1rem"
+                >{{iteamList.avgEvaluationComments.avgGeneralScore}}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- <div class="superList" style="margin-top:0.3rem">
-        <div style="display: flex;justify-content:center;margin:0 0.3rem;">
-          <button
-            class="button-number"
-            v-if="prePage"
-            style="width:48%;background: -webkit-linear-gradient(left, #6698FF, #5076FF);margin-right:2%"
-            @click="onSingle"
-          >上一单</button>
-          <button
-            class="button-number"
-            style="width:48%;background: -webkit-linear-gradient(left, #FF9B42, #FF7743);margin-left:2%"
-            @click="Submission"
-          >{{nextPage==true?'下一单':'提交'}}</button>
-        </div>
-      </div>-->
     </div>
   </div>
 </template>
@@ -326,6 +314,7 @@
 import { Loadmore } from "mint-ui";
 import { Indicator } from "mint-ui";
 import { MessageBox } from "mint-ui";
+let pathSa;
 export default {
   computed: {},
   data() {
@@ -333,6 +322,7 @@ export default {
       slide: [],
       slide1: [],
       assessmentId: "",
+      buttonScroll:false,
       totalSingular: "",
       viewType: 1, // 自查/派单显示
       currentPage: 0,
@@ -346,6 +336,8 @@ export default {
       bigImage: "",
       popupVisible: false,
       achievementTimely: "",
+      pathSa:'',
+      dataFind: [],
       iteamList: {},
       dataList: {}
     };
@@ -361,7 +353,7 @@ export default {
   computed: {},
   watch: {
     currentPage: function(val, old) {
-      console.log(val, old);
+      // console.log(val, old);
       if (val == 0) {
         this.presa = false;
         this.nextsa = true;
@@ -370,16 +362,6 @@ export default {
         this.presa = false;
         this.nextsa = false;
       }
-      // if (val == 0) {
-      //   this.prePage = false;
-      //   this.nextPage = true;
-      // } else if (val == this.totalSingular - 1) {
-      //   this.prePage = true;
-      //   this.nextPage = false;
-      // } else {
-      //   this.prePage = true;
-      //   this.nextPage = true;
-      // }
     },
     achievementTimely1: function(val, old) {
       this.achievementTimely =
@@ -413,14 +395,17 @@ export default {
         this.achievementTimely3 +
         this.achievementTimely2;
     },
-    achievementTimely: (val, old) => {}
+    achievementTimely: (val, old) => {},
+  },
+  beforeRouteEnter(to,from,next){
+    console.log(from.path);
+    pathSa=from.path;
+    next();
   },
   mounted() {
-    var that=this
-    this.$nextTick(()=>{
-      console.log(that.$refs.menuWrapper);
-    });
-    window.addEventListener('scroll',this.handleScroll,true)
+    this.box = this.$refs.menuWrapper;
+    //             监听这个dom的scroll事件
+    this.box.addEventListener("scroll", this.handleScroll, false);
   },
   methods: {
     handOpen(val) {
@@ -430,39 +415,37 @@ export default {
       this.bigImage = val;
     },
     handleScroll() {
-      var scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-      console.log(scrollTop);
+      if(this.$refs.menuWrapper.scrollTop>667){
+          this.buttonScroll=true
+      }else{
+        this.buttonScroll=false
+      }
+    },
+    toTop(){
+      this.$refs.menuWrapper.scrollTop=0;
     },
     // 选择考评类型自查
     selectView(e) {
+      this.dataFind = [];
       this.viewType = 1;
-      this.currentPage = 0;
       if (this.checkData) {
-        this.iteamList = this.checkData[0];
+        this.dataFind = this.checkData;
       }
     },
     // 选择考评类型派单
     selectView1(e) {
+      this.dataFind = [];
       this.viewType = 2;
-      this.currentPage = 0;
-
       if (this.dispatchData) {
-        this.iteamList = this.dispatchData[0];
-      }
-      if (this.dispatchData.length == 1) {
-        this.presa = false;
-        this.nextsa = false;
+        this.dataFind = this.dispatchData;
       }
     },
     nextPage() {
       if (this.viewType == 2) {
         this.currentPage++;
         this.presa = true;
-        console.log(this.currentPage);
-        console.log(this.dispatchData);
+        // console.log(this.currentPage);
+        // console.log(this.dispatchData);
         this.iteamList = this.dispatchData[this.currentPage];
         if (
           this.currentPage == this.dispatchData.length - 1 ||
@@ -475,8 +458,8 @@ export default {
       } else if (this.viewType == 1) {
         this.currentPage++;
         this.presa = true;
-        console.log(this.currentPage);
-        console.log(this.checkData.length - 2);
+        // console.log(this.currentPage);
+        // console.log(this.checkData.length - 2);
         this.iteamList = this.checkData[this.currentPage];
         if (
           this.currentPage == this.checkData.length - 1 ||
@@ -528,8 +511,9 @@ export default {
       this.rotateS = this.rotateS + 90;
     },
     iconClick() {
+      console.log()
       this.$router.push({
-        path: "/evaluation"
+        path: pathSa
       });
     },
     //计算派单响应及时性成绩
@@ -592,14 +576,7 @@ export default {
               this.checkData.push(element);
             }
           });
-          this.iteamList = this.checkData[0];
-          //   this.totalData = res;
-
-          //   this.iteamList = res[this.currentPage];
-          //   this.achievementTimelysa = this.achievementSa(
-          //     this.iteamList.costTime
-          //   );
-          //   this.achievementTimely = this.achievementTimelysa;
+          this.dataFind = this.checkData;
         })
         .catch(res => {});
     }
@@ -625,6 +602,17 @@ p {
   flex-direction: column;
   overflow: hidden;
   background-color: #f2f2f2;
+  .scroll-top{
+    width:1.5rem;
+    height:1.5rem;
+    position:fixed;
+    bottom:0.5rem;
+    right:0.5rem;
+    background-image: url('../../assets/image/evaluation/icon_top@3x.png');
+    background-size: 100% 100%;
+    // box-shadow: 0 0 0.1rem #999999;
+    // border-radius: 50%;
+  }
   .imgMask {
     width: 100%;
     height: 100%;
@@ -746,7 +734,7 @@ p {
       border-radius: 2px;
       .pagingSa {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         border-bottom: 1px solid #eeeeee;
         margin: 0 0.3rem;
         padding: 0.2rem 0.3rem;
@@ -754,6 +742,7 @@ p {
         border-top-left-radius: 0.12rem;
         border-top-right-radius: 0.12rem;
         align-items: center;
+        font-weight: bolder;
         .buttontab {
           color: #fff;
           width: 30px;

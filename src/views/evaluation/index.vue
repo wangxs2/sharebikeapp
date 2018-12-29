@@ -170,7 +170,6 @@ export default {
     toSettings() {
       this.$router.push("/layout/me");
     },
-    
     //进入考评
     toEvaluation() {
       this.$router.push("/evaluation");

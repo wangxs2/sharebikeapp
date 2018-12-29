@@ -284,11 +284,21 @@ export default {
       this.menType = val.id;
       this.menname.name = val.realName;
       this.menname.id = val.id;
+      this.pageList=[];
+      this.searchCondition.createBy=this.menname.id;
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
     },
     statusclick(val){
       this.viewType3 = val.id;
       this.statusname.name = val.name;
       this.statusname.id = val.id;
+      this.pageList=[];
+      this.searchCondition.status=this.statusname.id;
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
     },
     // 获取单车企业数据
     getBikeCompany() {
@@ -339,6 +349,11 @@ export default {
       this.viewType2 = val.id;
       this.companyname.name = val.name;
       this.companyname.id = val.id;
+      this.pageList=[];
+      this.searchCondition.orgId=this.companyname.id;
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
     },
     areaTypeclick(val, index) {
       this.areaflag = false;
@@ -362,6 +377,11 @@ export default {
         this.areaflag = true;
         this.areakids = val.children;
       }
+      this.pageList=[];
+      this.searchCondition.areaId=this.areaname.id;
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
     },
     menReset() {
       this.viewType='';

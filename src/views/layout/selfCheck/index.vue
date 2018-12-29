@@ -303,16 +303,34 @@ export default {
       this.viewType2 = val.id;
       this.companyname.name = val.name;
       this.companyname.id = val.id;
+      // this.submit1();
+       this.pageList = [];
+      this.searchCondition.orgId = this.companyname.id;
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
     },
     menTypeclick(val) {
       this.menType = val.id;
       this.menname.name = val.realName;
       this.menname.id = val.id;
+      // this.submit2();
+      this.pageList = [];
+      this.searchCondition.handleBy = this.menname.id;
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
     },
     statusclick(val) {
       this.viewType3 = val.id;
       this.statusname.name = val.name;
       this.statusname.id = val.id;
+      // this.submit3();
+      this.pageList = [];
+      this.searchCondition.status = this.statusname.id;
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
     },
     areaTypeclick(val, index) {
       this.areaflag = false;
@@ -339,6 +357,12 @@ export default {
         this.areaflag = true;
         this.areakids = val.children;
       }
+      this.pageList = [];
+      this.searchCondition.areaId = this.areaname.id;
+      (this.searchCondition.page = "0"),
+        (this.searchCondition.pageSize = "15"),
+        this.infinite();
+      // this.submit();
     },
     menReset() {
       this.viewType = "";

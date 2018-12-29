@@ -226,6 +226,11 @@ export default {
         this.areaflag = true;
         this.areakids = val.children;
       }
+      this.pageList=[];
+      this.searchCondition.areaId=this.areaname.id;
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
     },
     menReset() {
       this.viewType='';
@@ -344,6 +349,11 @@ export default {
       this.menType = val.id;
       this.companyname.name = val.realName;
       this.companyname.id = val.id;
+      this.pageList=[];
+      this.searchCondition.handleBy=this.companyname.id;
+      this.searchCondition.page= "0",
+      this.searchCondition.pageSize= "15",
+      this.infinite();
     },
     // 导航标签
     selectComany(e) {
@@ -468,10 +478,6 @@ export default {
          margin-bottom: 0.2rem;
          padding: 0.3rem;
         border-bottom: 1px solid #eeeeee;
-        .leftSa {
-          // display: flex;
-          // flex: 1;
-        }
         .rightSa {
           width: 0;
           display: flex;
