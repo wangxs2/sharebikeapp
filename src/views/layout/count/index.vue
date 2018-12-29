@@ -3,11 +3,17 @@
     <header>
       <h1></h1>
       <h1 style="margin-left:0.96rem">统计</h1>
-      <h1 @click="toDaily">日报</h1>
+      <h1 class="animated-tada" @click="toDaily">日报</h1>
     </header>
     <main>
       <nav @click="selectComany($event)">
-        <div v-for="item in company" :key="item.id" :companyId="item.id" :class="[activeComany == item.id ? 'nav-active' : '']" class="nav-item">{{item.name}}</div>
+        <div
+          v-for="item in company"
+          :key="item.id"
+          :companyId="item.id"
+          :class="[activeComany == item.id ? 'nav-active' : '']"
+          class="nav-item"
+        >{{item.name}}</div>
       </nav>
       <section>
         <div class="tab-btns" @click="selectView">
@@ -16,8 +22,12 @@
         </div>
         <div class="echart-select">
           <div class="date-type" @click="selectDateType">
-            <div :class="dateType == 'week' ? 'date-active' : ''" dateType='week'>周统计</div>
-            <div :class="dateType == 'month' ? 'date-active' : ''" dateType="month" style="margin-left:.48rem">月统计</div>
+            <div :class="dateType == 'week' ? 'date-active' : ''" dateType="week">周统计</div>
+            <div
+              :class="dateType == 'month' ? 'date-active' : ''"
+              dateType="month"
+              style="margin-left:.48rem"
+            >月统计</div>
           </div>
           <div class="date-select" @click="openPicker">
             <div>{{dateValue}}</div>
@@ -32,8 +42,12 @@
                 <tr>
                   <td style="width:10%;">序号</td>
                   <td style="width:20%;">时间</td>
-                  <td style="width:15%;">整理<br/>(次数/总数)</td>
-                  <td style="width:15%;">清运<br/>(次数/总数)</td>
+                  <td style="width:15%;">整理
+                    <br>(次数/总数)
+                  </td>
+                  <td style="width:15%;">清运
+                    <br>(次数/总数)
+                  </td>
                   <td style="width:20%;">说明</td>
                 </tr>
               </table>
@@ -45,7 +59,11 @@
                   <td style="width:20%;">{{dateData[index]}}</td>
                   <td style="width:15%;">{{item.arrange}}/{{item.arrangeNum}}</td>
                   <td style="width:15%;">{{item.clean}}/{{item.cleanNum}}</td>
-                  <td style="width:20%;">自查：{{item.selfCheck}}次<br/>督办：{{item.dispatch}}次</td>
+                  <td style="width:20%;">
+                    自查：{{item.selfCheck}}次
+                    <br>
+                    督办：{{item.dispatch}}次
+                  </td>
                 </tr>
               </table>
             </div>
@@ -55,8 +73,7 @@
     </main>
 
     <!-- 时间选择 -->
-    <mt-datetime-picker @confirm="selectDate" ref="picker" type="date" v-model="pickerValue">
-    </mt-datetime-picker>
+    <mt-datetime-picker @confirm="selectDate" ref="picker" type="date" v-model="pickerValue"></mt-datetime-picker>
     <!-- 时间选择 -->
   </div>
 </template>
@@ -101,14 +118,14 @@ export default {
         this.dateData = res.timeArea;
         this.tabData = res.table;
         let dataxItem = "",
-          nowDate =new Date().Format("MM-dd")
-            // this.dateType == "week"
-            //   ? new Date().Format("MM-dd")
-            //   : new Date().Format("MM-dd");
-        let datax = res.timeArea.map(item =>{
+          nowDate = new Date().Format("MM-dd");
+        // this.dateType == "week"
+        //   ? new Date().Format("MM-dd")
+        //   : new Date().Format("MM-dd");
+        let datax = res.timeArea.map(item => {
           dataxItem =
-          this.dateType == "week" ? item.substring(5) : item.substring(5);
-          if (nowDate == dataxItem){
+            this.dateType == "week" ? item.substring(5) : item.substring(5);
+          if (nowDate == dataxItem) {
             dataxItem = "今天";
           }
           return dataxItem;
@@ -141,12 +158,12 @@ export default {
         this.getCount();
       }
     },
-    toDaily(){
+    toDaily() {
       this.$router.push("/statisticsDaily");
     },
     // 选择视图
     selectView(e) {
-      console.log(e.target)
+      console.log(e.target);
       let type = e.target.getAttribute("viewType");
       if (type) {
         this.viewType = type;
@@ -253,7 +270,7 @@ export default {
     // 打开时间选择框
     openPicker() {
       this.$refs.picker.open();
-      this.eachartNode.dispatchAction({type: 'hideTip'});
+      this.eachartNode.dispatchAction({ type: "hideTip" });
     }
   }
 };
@@ -261,6 +278,23 @@ export default {
 
 <style lang="scss" scoped>
 .gcontainer {
+  .animated-tada {
+    animation: change 1s ease-in infinite;
+    font-size: 0.48rem;
+    color: #ffffff;
+    font-weight: bold;
+  }
+  @keyframes change {
+    0% {
+      text-shadow: 0 0 4px #fff;
+    }
+    50% {
+      text-shadow: 0 0 40px #fff;
+    }
+    100% {
+      text-shadow: 0 0 4px #fff;
+    }
+  }
   width: 100%;
   height: 100%;
   background: #fff;
@@ -302,7 +336,7 @@ export default {
       justify-content: space-between;
       .nav-item {
         // flex: 1;
-        width:100%;
+        width: 100%;
         height: 100%;
         text-align: center;
         color: #656565;
@@ -327,7 +361,7 @@ export default {
     section {
       width: 100%;
       flex: 1;
-      height:1px;
+      height: 1px;
       display: flex;
       flex-direction: column;
       align-items: center;

@@ -149,15 +149,16 @@ export default {
     getData() {
       this.userCount=[];
       this.$fetchGet("evaluation/monthEvaluation", this.query).then(res => {
-        if(this.viewTypesa==2){
-          res.forEach(element => {
-            if(element.status==2){
-              this.userCount.push(element);
-            }
-          });
-        }else{
-          this.userCount = res;
-        }
+        // if(this.viewTypesa==2){
+        //   res.forEach(element => {
+        //     if(element.status==2){
+        //       this.userCount.push(element);
+        //     }
+        //   });
+        // }else{
+        //   this.userCount = res;
+        // }
+        this.userCount = res;
         
       });
     },
@@ -176,23 +177,40 @@ export default {
     },
     //进入考评页面或详情
     toAssessment(val) {
-      if (val.status == 2) {
-        this.$router.push({
-          path: "/assessmentDetails",
-          query: {
-            assessmentId: val.id,
-            data:val,
-          }
-        });
-      } else {
-        this.$router.push({
-          path: "/noAssessment",
-          query: {
-            assessmentId: val.id,
-            pageSize:val.evaluatedCount,
-            totalPage:val.sheetCount,
-          }
-        });
+      if (this.viewTypesa == 1) {
+        if (val.status == 2) {
+          this.$router.push({
+            path: "/assessmentDetails",
+            query: {
+              assessmentId: val.id,
+              data: val
+            }
+          });
+        } else {
+          this.$router.push({
+            path: "/noAssessment",
+            query: {
+              assessmentId: val.id,
+              pageSize: val.evaluatedCount,
+              totalPage: val.sheetCount
+            }
+          });
+        }
+      }else{
+        if(val.status == 2){
+          this.$router.push({
+            path: "/assessmentDetails",
+            query: {
+              assessmentId: val.id,
+              data: val
+            }
+          });
+        }else{
+          MessageBox.alert("", {
+          message: "考评未结束！",
+          title: "提示"
+        }).then(action => {});
+        }
       }
     },
     //进入考评规则

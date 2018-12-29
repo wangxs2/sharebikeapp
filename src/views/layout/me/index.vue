@@ -12,8 +12,18 @@
         <div class="header-contentsa">
           <div class="headertop" style="flex:1" @click="toUserModi">
             <div class="info-box">
-              <img v-if="userInfo.imageURL!==''" class="user-avatar" :src="Ip + userInfo.imageURL" alt>
-               <img v-if="userInfo.imageURL==''" class="user-avatar" src="@/assets/image/me/默认头像@2x.png" alt>
+              <img
+                v-if="userInfo.imageURL!==''"
+                class="user-avatar"
+                :src="Ip + userInfo.imageURL"
+                alt
+              >
+              <img
+                v-if="userInfo.imageURL==''"
+                class="user-avatar"
+                src="@/assets/image/me/默认头像@2x.png"
+                alt
+              >
               <div class="user-namebox">
                 <div class="user-nameboxsa">
                   <h3
@@ -54,7 +64,9 @@
                   alt
                   srcset
                 >
-                <span style="width:5rem;color:#333333;margin-left:0.1rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;text-align:left">{{userInfo.orgName}}</span>
+                <span
+                  style="width:5rem;color:#333333;margin-left:0.1rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;text-align:left"
+                >{{userInfo.orgName}}</span>
               </div>
               <p
                 style="border:1px solid #5279FF;color:#5279FF;margin:0;padding:0.06rem 0.2rem;border-radius: 0.6rem;"
@@ -88,27 +100,37 @@
             v-if="!ruleStatus"
             style="font-size:0.8rem;font-family:stylefont;color:#FF9600;letter-spacing:-0.1rem"
           >{{nowData}}月考评已完成</span>
+          <!-- <transition enter-active-class="animated tada"> -->
           <img
-            
+            class="animated-tada"
             src="@/assets/image/me/go@3x.png"
             style="width:1.3rem;height:0.65rem;margin-left:0.2rem"
             alt
             srcset
           >
+          <!-- </transition> -->
         </div>
       </div>
       <div class="static-box">
-        <div style="display: flex;justify-content:flex-start;align-items: center;border-bottom:1px solid #E1E1E1;padding:0.2rem">
-          <img style='width:22px;height:22px' src="@/assets/image/me/icon_1 @3x.png" alt="" srcset="">
+        <div
+          style="display: flex;justify-content:flex-start;align-items: center;border-bottom:1px solid #E1E1E1;padding:0.2rem"
+        >
+          <img style="width:22px;height:22px" src="@/assets/image/me/icon_1 @3x.png" alt srcset>
           <h6 style="font-size:0.33rem;margin:0;margin-left:0.2rem">工单总数</h6>
         </div>
-        <div style="display: flex;justify-content:space-between;box-sizing: border-box;padding:0.3rem;flex:1">
+        <div
+          style="display: flex;justify-content:space-between;box-sizing: border-box;padding:0.3rem;flex:1"
+        >
           <div style="display: flex;flex-direction: column;padding:0.1rem;">
-            <span style="text-align:center;margin-bottom:0.2rem;color:#A857FB;font-size:0.5rem">{{userCount.dispatch==0?'-':userCount.dispatch}}</span>
+            <span
+              style="text-align:center;margin-bottom:0.2rem;color:#A857FB;font-size:0.5rem"
+            >{{userCount.dispatch==0?'-':userCount.dispatch}}</span>
             <span style="text-align:center;color:#666666;font-size:0.3rem">收到派单数(单)</span>
           </div>
           <div style="display: flex;flex-direction: column;padding:0.1rem">
-            <span style="text-align:center;margin-bottom:0.2rem;color:#A857FB;font-size:0.5rem">{{userCount.selfCheck==0?'-':userCount.selfCheck}}</span>
+            <span
+              style="text-align:center;margin-bottom:0.2rem;color:#A857FB;font-size:0.5rem"
+            >{{userCount.selfCheck==0?'-':userCount.selfCheck}}</span>
             <span style="text-align:center;color:#666666;font-size:0.3rem">自检单数(单)</span>
           </div>
         </div>
@@ -118,20 +140,28 @@
           </div>
           <div class="static-title">收到派单</div>
         </div>
-        <div class="static-data" v-text="userCount.dispatch"></div> -->
+        <div class="static-data" v-text="userCount.dispatch"></div>-->
       </div>
       <div class="static-box" style="margin-top:0.3rem">
-        <div style="display: flex;justify-content:flex-start;align-items: center;border-bottom:1px solid #E1E1E1;padding:0.2rem">
-          <img style='width:22px;height:22px' src="@/assets/image/me/icon_2 @3x.png" alt="" srcset="">
+        <div
+          style="display: flex;justify-content:flex-start;align-items: center;border-bottom:1px solid #E1E1E1;padding:0.2rem"
+        >
+          <img style="width:22px;height:22px" src="@/assets/image/me/icon_2 @3x.png" alt srcset>
           <h6 style="font-size:0.33rem;margin:0;margin-left:0.2rem">处理总数</h6>
         </div>
-        <div style="display: flex;justify-content:space-between;box-sizing: border-box;padding:0.3rem;flex:1">
+        <div
+          style="display: flex;justify-content:space-between;box-sizing: border-box;padding:0.3rem;flex:1"
+        >
           <div style="display: flex;flex-direction: column;box-sizing: border-box;padding:0.1rem">
-            <span style="text-align:center;margin-bottom:0.2rem;color:#FF8039;font-size:0.5rem">{{userCount.arrangeNum==0?'-':userCount.arrangeNum}}</span>
+            <span
+              style="text-align:center;margin-bottom:0.2rem;color:#FF8039;font-size:0.5rem"
+            >{{userCount.arrangeNum==0?'-':userCount.arrangeNum}}</span>
             <span style="text-align:center;color:#666666;font-size:0.3rem">整理车辆数(辆)</span>
           </div>
           <div style="display: flex;flex-direction: column;box-sizing: border-box;padding:0.1rem">
-            <span style="text-align:center;margin-bottom:0.2rem;color:#FF8039;font-size:0.5rem">{{userCount.cleanNum==0?'-':userCount.cleanNum}}</span>
+            <span
+              style="text-align:center;margin-bottom:0.2rem;color:#FF8039;font-size:0.5rem"
+            >{{userCount.cleanNum==0?'-':userCount.cleanNum}}</span>
             <span style="text-align:center;color:#666666;font-size:0.3rem">清运车辆数(辆)</span>
           </div>
         </div>
@@ -141,7 +171,7 @@
           </div>
           <div class="static-title">自检次数</div>
         </div>
-        <div class="static-data" v-text="userCount.selfCheck"></div> -->
+        <div class="static-data" v-text="userCount.selfCheck"></div>-->
       </div>
       <!-- <div class="static-box">
         <div class="static-box-left">
@@ -160,7 +190,7 @@
           <div class="static-title">清运车辆</div>
         </div>
         <div class="static-data" v-text="userCount.cleanNum"></div>
-      </div> -->
+      </div>-->
     </div>
   </div>
 </template>
@@ -179,7 +209,7 @@ export default {
       userCount: {},
       ruleStatus: false,
       nowData: "",
-      userInfo:{},
+      userInfo: {}
     };
   },
   components: {},
@@ -187,9 +217,9 @@ export default {
   created() {
     this.getUser();
     let myDate = new Date();
-    this.nowData=(myDate.getMonth()) == 0 ?12: myDate.getMonth(); //获取当前月份(0-11,0代表1月)
+    this.nowData = myDate.getMonth() == 0 ? 12 : myDate.getMonth(); //获取当前月份(0-11,0代表1月)
     this.getData();
-    this.getRules()
+    this.getRules();
   },
   methods: {
     //获取数据
@@ -198,7 +228,7 @@ export default {
         this.userCount = res;
       });
     },
-    getUser(){
+    getUser() {
       this.$fetchGet("user/user").then(res => {
         this.userInfo = res;
       });
@@ -227,6 +257,17 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  @-webkit-keyframes twinkling {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  .animated-tada {
+    -webkit-animation: twinkling 1.5s infinite ease-in-out;
+  }
   width: 100%;
   height: 100%;
   display: flex;
@@ -279,7 +320,7 @@ export default {
         width: 94%;
         border-radius: 6px;
         box-shadow: 0 0.05rem 0.1rem #f2f2f2;
-        box-shadow:0 2px 6px -1px #f2f2f2; //底部阴影
+        box-shadow: 0 2px 6px -1px #f2f2f2; //底部阴影
         display: flex;
         flex-direction: column;
       }
@@ -366,7 +407,7 @@ export default {
       border-radius: 6px;
       flex-direction: column;
       box-shadow: 0 0.05rem 0.1rem #f2f2f2;
-      box-shadow:0 2px 6px -1px #f2f2f2; //底部阴影
+      box-shadow: 0 2px 6px -1px #f2f2f2; //底部阴影
       margin: 0 0.36rem;
       margin-bottom: 1px;
       // height: 1.4rem;

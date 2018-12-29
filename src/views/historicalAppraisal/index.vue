@@ -1,7 +1,15 @@
 <template>
   <div class="container">
     <!-- 时间选择 -->
-    <mt-datetime-picker year-format="{value} 年" Format='yyyy-MM' month-format="{value} 月" @confirm="selectDate" ref="picker" type="date" v-model="pickerValue"></mt-datetime-picker>
+    <mt-datetime-picker
+      year-format="{value} 年"
+      Format="yyyy-MM"
+      month-format="{value} 月"
+      @confirm="selectDate"
+      ref="picker"
+      type="date"
+      v-model="pickerValue"
+    ></mt-datetime-picker>
     <!-- 时间选择 -->
     <div class="header">
       <div class="header-header">
@@ -19,9 +27,14 @@
       </div>
     </div>
     <div class="content">
-        <p v-if="userCount.length==0" style="color:rgb(170, 170, 170);text-align:center">--我也是有底线的--</p>
+      <p v-if="userCount.length==0" style="color:rgb(170, 170, 170);text-align:center">--我也是有底线的--</p>
       <div class="content-box">
-        <div class="content-box-list" v-for="(iteam, index) in userCount" :key="index" @click="toAssessment(iteam)">
+        <div
+          class="content-box-list"
+          v-for="(iteam, index) in userCount"
+          :key="index"
+          @click="toAssessment(iteam)"
+        >
           <div class="content-box-listop">
             <div style="display:flex;justify-content: flex-start;align-items: center">
               <span
@@ -108,14 +121,14 @@ export default {
   data() {
     return {
       userCount: [],
-      pickerValue: '', // 选择的时间
+      pickerValue: "", // 选择的时间
       viewTypesa: "1",
       query: {
         yearMonth: "",
         type: "evaluate"
       },
       nowData: "",
-      nowData1: "",
+      nowData1: ""
     };
   },
   components: {},
@@ -127,11 +140,11 @@ export default {
     let nowData =
       myDate.getMonth() == 0
         ? 11
-        :myDate.getMonth() == 1
+        : myDate.getMonth() == 1
         ? 12
         : myDate.getMonth() < 10
-        ? "0" + myDate.getMonth()-1
-        : myDate.getMonth()-1; //获取当前月份(0-11,0代表1月)
+        ? "0" + myDate.getMonth() - 1
+        : myDate.getMonth() - 1; //获取当前月份(0-11,0代表1月)
     this.query.yearMonth = now_year + "-" + nowData;
     this.nowData = now_year + "年" + nowData;
     this.nowData1 = now_year + "/" + nowData;
@@ -140,17 +153,18 @@ export default {
   methods: {
     //获取数据
     getData() {
-      this.userCount=[];
+      this.userCount = [];
       this.$fetchGet("evaluation/monthEvaluation", this.query).then(res => {
-        if(this.viewTypesa==2){
-          res.forEach(element => {
-            if(element.status==2){
-              this.userCount.push(element);
-            }
-          });
-        }else{
-          this.userCount = res;
-        }
+        // if(this.viewTypesa==2){
+        //   res.forEach(element => {
+        //     if(element.status==2){
+        //       this.userCount.push(element);
+        //     }
+        //   });
+        // }else{
+        //   this.userCount = res;
+        // }
+        this.userCount = res;
       });
     },
     // 打开时间选择框
@@ -161,7 +175,7 @@ export default {
     selectDate(val) {
       this.query.yearMonth = val.Format("yyyy-MM");
       this.nowData = val.Format("yyyy年MM");
-      this.nowData1=val.Format("yyyy/MM");
+      this.nowData1 = val.Format("yyyy/MM");
       this.getData();
     },
     //进入个人信息修改
@@ -181,23 +195,40 @@ export default {
     },
     //进入考评页面或详情
     toAssessment(val) {
-      if (val.status == 2) {
-        this.$router.push({
-          path: "/assessmentDetails",
-          query: {
-            assessmentId: val.id,
-            data:val,
-          }
-        });
-      } else {
-        this.$router.push({
-          path: "/noAssessment",
-          query: {
-            assessmentId: val.id,
-            pageSize:val.evaluatedCount,
-            totalPage:val.sheetCount,
-          }
-        });
+      if (this.viewTypesa == 1) {
+        if (val.status == 2) {
+          this.$router.push({
+            path: "/assessmentDetails",
+            query: {
+              assessmentId: val.id,
+              data: val
+            }
+          });
+        } else {
+          this.$router.push({
+            path: "/noAssessment",
+            query: {
+              assessmentId: val.id,
+              pageSize: val.evaluatedCount,
+              totalPage: val.sheetCount
+            }
+          });
+        }
+      }else{
+        if(val.status == 2){
+          this.$router.push({
+            path: "/assessmentDetails",
+            query: {
+              assessmentId: val.id,
+              data: val
+            }
+          });
+        }else{
+          MessageBox.alert("", {
+          message: "考评未结束！",
+          title: "提示"
+        }).then(action => {});
+        }
       }
     },
     //考评切换
@@ -218,7 +249,6 @@ export default {
 };
 </script>
 <style>
-
 </style>
 
 <style lang="scss" scoped>
@@ -227,8 +257,8 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-    .picker-slot:last-child{
-      display:none!important;
+  .picker-slot:last-child {
+    display: none !important;
   }
   .header {
     width: 100%;

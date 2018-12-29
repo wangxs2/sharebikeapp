@@ -10,6 +10,7 @@ import router from './router'
 import './permission' //路由判断
 import store from './stores' //vuex
 import 'lib-flexible'
+import 'animate.css'
 // import axios from 'axios'
 // Vue.prototype.$axios = axios
 import $ from 'zepto'
