@@ -37,19 +37,17 @@
           <div class="content-box-listop">
             <div style="display:flex;justify-content: flex-start;align-items: center">
               <span
-              v-if="boxSarule"
                 :class="iteam.status==0?'noAssessment':iteam.status==1?'evaluation':'alreadyEvaluated'"
                 style="display:block;width:8px;height:8px;border-radius:50%;"
               ></span>
               <span
                 style="font-size:0.36rem;margin-left:0.1rem"
-                v-if="boxSarule"
-              >{{iteam.status==2?FormatDate(iteam.evaluateEndTime):'请尽快考评'}}</span>
+              >{{iteam.status==2?FormatDate(iteam.evaluateEndTime):(boxSarule?'请尽快考评':'尚未完成')}}</span>
             </div>
-            <div
+            <!-- <div
               style="font-size:0.36rem;text-align:right;width:5rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"
               v-if="iteam.status!==0"
-            >考评人：{{iteam.evaluateOrgName}}</div>
+            >考评人：{{iteam.evaluateOrgName}}</div> -->
           </div>
           <div class="content-box-listbottom">
             <div class="listbottom-left">
@@ -290,7 +288,8 @@ export default {
         margin-bottom: 0.18rem;
         .btn-left {
           box-sizing: border-box;
-          padding: 3px 20px;
+          padding: 3px 0px;
+          width: 2rem;
           font-size: 0.373333rem;
           color: #ffffff;
           border-top-left-radius: 0.5rem;
@@ -300,7 +299,8 @@ export default {
         }
         .btn-right {
           box-sizing: border-box;
-          padding: 3px 20px;
+          padding: 3px 0px;
+          width: 2rem;
           // line-height: normal;
           font-size: 0.373333rem;
           color: #ffffff;

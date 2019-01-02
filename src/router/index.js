@@ -22,7 +22,7 @@ export const constantRouterMap = [{
                 component: () =>
                     import ('@/views/layout/selfCheck'),
                 // meta: {
-                //   keepAlive: true,
+                //     keepAlive: true,
 
                 // }
             },
@@ -32,7 +32,7 @@ export const constantRouterMap = [{
                 component: () =>
                     import ('@/views/layout/supervise'),
                 // meta: {
-                //   keepAlive: true,
+                //     keepAlive: true,
 
                 // }
             },
@@ -42,7 +42,7 @@ export const constantRouterMap = [{
                 component: () =>
                     import ('@/views/layout/needtodo'),
                 // meta: {
-                //   keepAlive: true,
+                //     keepAlive: true,
 
                 // }
             },

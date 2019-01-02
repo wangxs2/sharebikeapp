@@ -90,19 +90,27 @@
     </div>
     <div class="content" style="padding:0.1rem">
       <!-- <div class="colorsa"></div> -->
-      <div class="evaluation" v-if="ruleStatus!=='close'">
+      <div class="evaluation" v-if="willdoInfo.evaluation!=='close'">
         <div class="evaluationimg" @click="toEvaluation">
           <span
-            v-if="ruleStatus"
+            v-if="willdoInfo.evaluation=='true'"
             style="font-size:0.8rem;font-family:stylefont;color:#FF9600;letter-spacing:-0.1rem"
           >{{nowData}}月考评已生成</span>
           <span
-            v-if="!ruleStatus"
+            v-if="willdoInfo.evaluation=='false'"
             style="font-size:0.8rem;font-family:stylefont;color:#FF9600;letter-spacing:-0.1rem"
           >{{nowData}}月考评已完成</span>
           <!-- <transition enter-active-class="animated tada"> -->
           <img
+          v-if="ruleStatus=='true'"
             class="animated-tada"
+            src="@/assets/image/me/go@3x.png"
+            style="width:1.3rem;height:0.65rem;margin-left:0.2rem"
+            alt
+            srcset
+          >
+          <img
+          v-if="ruleStatus=='false'"
             src="@/assets/image/me/go@3x.png"
             style="width:1.3rem;height:0.65rem;margin-left:0.2rem"
             alt
@@ -201,13 +209,15 @@ import { mapGetters } from "vuex";
 import { MessageBox } from "mint-ui";
 import "@/assets/stylefont/iconfont.css";
 export default {
-  
+  computed: {
+    ...mapGetters(["willdoInfo","userInfo"])
+  },
   data() {
     return {
       userCount: {},
-      ruleStatus: false,
+      ruleStatus: '',
       nowData: "",
-      userInfo: {}
+      // userInfo: {}
     };
   },
   components: {},
@@ -255,21 +265,25 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  @-webkit-keyframes twinkling {
+  .animated-tada {
+    animation: change 1s ease-in infinite;
+    font-size: 0.48rem;
+    color: #ffffff;
+    font-weight: bold;
+  }
+  @keyframes change {
     0% {
-      // opacity: 0;
+      // text-shadow: 0 0 4px #fff;
       transform:scale(1);
     }
-    50%{
+    50% {
+      // text-shadow: 0 0 40px #fff;
       transform:scale(1.1);
     }
     100% {
-      // opacity: 1;
+      // text-shadow: 0 0 4px #fff;
       transform:scale(1);
     }
-  }
-  .animated-tada {
-    -webkit-animation: twinkling 1s infinite ease-in-out;
   }
   width: 100%;
   height: 100%;

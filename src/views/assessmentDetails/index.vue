@@ -42,9 +42,9 @@
             style="width:100%;height:100%;display:flex;justify-content: space-between;padding: 0 0.346667rem;box-sizing: border-box;"
           >
             <span style="font-size:0.36rem">{{FormatDate(dataList.evaluateEndTime)}}</span>
-            <span
+            <!-- <span
               style="font-size:0.36rem;width:3rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"
-            >考评人：{{dataList.evaluateOrgName}}</span>
+            >考评人：{{dataList.evaluateOrgName}}</span> -->
           </div>
         </div>
         <div class="header-content-top">

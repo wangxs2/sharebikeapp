@@ -83,7 +83,7 @@ export default {
     this.getRules();
     this.roleCode = localStorage.roleCode;
     this.selected = this.$route.path;
-    if (this.$route.path == "/layout/needtodo") {
+    if (this.$route.path == "/layout/needtodo"){
       this.selected = "/layout/supervise";
       this.changeImage("/layout/needtodo");
     } else {
@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     getRules(){
-      //获取是否有红点点
+      //获取是否有红点
       this.$fetchGet("count/willdo").then(res => {
           this.ruleStatus=res.evaluation==='true'?this.ruleStatus=true:this.ruleStatus=false;
           this.ruleStatus3=res.daily==='false'?false:true;

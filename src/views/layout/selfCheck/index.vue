@@ -163,12 +163,11 @@
           :key="index"
           @click="detailClick(iteam)"
         >
-          <div class="leftSa" style="width:120px;height:120px">
+          <div class="leftSa" style="width:2.6rem;height:2.6rem">
             <img
               :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]"
               alt
-              width="120"
-              height="120"
+              style="width:2.6rem;height:2.6rem"
               srcset
             >
           </div>
@@ -177,7 +176,7 @@
               <div class="topRight">
                 <p style="flex:1;">{{FormatDate(iteam.updateTime)}}</p>
                 <p
-                  style="font-size:0.36rem;line-height:1.5;"
+                  style="font-size:0.32rem;line-height:1.5;"
                   :class="iteam.status == 1 ? 'green' : 'red'"
                 >{{iteam.status == 1 ? '处理中' : "已处理"}}</p>
               </div>
@@ -795,6 +794,7 @@ export default {
             box-sizing: border-box;
             border-radius: 12px;
             color: #ffffff;
+            text-align: center;
             font-size: 0.35rem;
           }
           .xiangqi {
@@ -803,12 +803,18 @@ export default {
             box-sizing: border-box;
             border-radius: 12px;
             color: #ffffff;
+            text-align: center;
             font-size: 0.35rem;
           }
           .other {
             background: #9a6eff;
             color: #ffffff;
+            width: 2.4rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             padding: 0.06rem 0.2rem;
+            text-align: center;
             box-sizing: border-box;
             border-radius: 12px;
             font-size: 0.35rem;

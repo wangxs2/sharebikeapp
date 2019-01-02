@@ -3,7 +3,8 @@
     <header>
       <h1></h1>
       <h1 style="margin-left:0.96rem;width:50%;text-align:right">统计</h1>
-      <h1 class="animated-tada" style="width:50%;text-align:right" v-show="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'" @click="toDaily">日报</h1>
+      <h1 class="animated-tada" style="width:50%;text-align:right" v-show="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'&&ruleStatus=='true'" @click="toDaily">日报</h1>
+      <h1 style="width:50%;text-align:right" v-show="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'&&ruleStatus=='false'" @click="toDaily">日报</h1>
       <h1 style="width:50%;" v-show="userInfo.roleCode=='clean'||userInfo.roleCode=='manage'||userInfo.roleCode=='dispatch'"></h1>
     </header>
     <main>
@@ -96,10 +97,12 @@ export default {
       viewType: 1, // 图表/表格显示
       dateData: [], // 时间数据
       dateType: "week", // 周统计/月统计
+      ruleStatus:'',
       tabData: {} // 表格数据
     };
   },
   created() {
+    this.getRules();
     this.getBikeCompany();
     this.dateValue = new Date().Format("yyyy-MM-dd");
   },
@@ -107,6 +110,12 @@ export default {
     this.eachartNode = this.$echarts.init(document.getElementById("Echart"));
   },
   methods: {
+    getRules() {
+      //获取是否有考评
+      this.$fetchGet("count/willdo").then(res => {
+        this.ruleStatus = res.daily;
+      });
+    },
     // 获取统计数据
     getCount() {
       Indicator.open({

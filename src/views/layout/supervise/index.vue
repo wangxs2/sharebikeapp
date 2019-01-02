@@ -144,14 +144,14 @@
             <div class="iteamListSa" v-for="(iteam, index) in pageList"
         :key="index"
         @click="detailClick(iteam)">
-              <div class="leftSa" style="width:120px;height:120px">                  
-                  <img v-if="iteam.dispachPhotoURLs.length!==0" :src="Ip + iteam.dispachPhotoURLs[0]" alt="" width="120" height="120" srcset="">
-                  <img v-if="iteam.dispachPhotoURLs.length==0" src="../../../assets/image/selfcheck/image_no data@3x.png" alt="" width="120" height="120" srcset="">
+              <div class="leftSa" style="width:2.6rem;height:2.6rem">                  
+                  <img style="width:2.6rem;height:2.6rem" v-if="iteam.dispachPhotoURLs.length!==0" :src="Ip + iteam.dispachPhotoURLs[0]" alt="" srcset="">
+                  <img style="width:2.6rem;height:2.6rem" v-if="iteam.dispachPhotoURLs.length==0" src="../../../assets/image/selfcheck/image_no data@3x.png" alt="" srcset="">
               </div>
               <div class="rightSa">
                   <div class="topRight">
                       <span>{{FormatDate(iteam.dispatchTime)}}</span>
-                       <span style="font-size:0.36rem;line-height:1.5;" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
+                       <span style="font-size:0.32rem;line-height:1.5;" :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
                       <!-- <p style="width:0.1rem"></p> -->
                   </div>
                   <div class="centersa">
@@ -799,6 +799,11 @@ export default {
             box-sizing: border-box;
             border-radius: 12px;
             font-size: 0.35rem;
+            width: 2.4rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: center;
           }
           }
         }
