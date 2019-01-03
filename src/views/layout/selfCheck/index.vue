@@ -4,7 +4,7 @@
     <div class="header">
         <span style="font-size:0.48rem;width:2rem;text-align:center" class="iconfont icon-location">上海</span>
         <span style='width:2rem;text-align:center'>自查</span>
-        <span style="font-size:24px;width:2rem;text-align:center" class="iconfont icon-gengduo" @click="iconClick"></span>
+        <span style="font-size:24px;width:1.7rem;text-align:right;padding-right:0.3rem" class="iconfont icon-gengduo" @click="iconClick"></span>
       </div>
     <div class="version-popup-box">
       <div class="version-popup">

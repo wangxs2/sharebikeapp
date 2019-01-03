@@ -26,7 +26,7 @@
         </mt-tab-item>
         <mt-tab-item id="/layout/me">
           <img slot="icon" :src="imgUrl[4]">
-          <span class="badge" v-if="ruleStatus"></span>
+          <!-- <span class="badge" v-if="ruleStatus"></span> -->
           我的
         </mt-tab-item>
       </mt-tabbar>

@@ -22,7 +22,7 @@
             <img src="../../assets/image/selfcheck/icon_1_time@3x.png" width="24" height="24" alt="" srcset="">
             <div class="rightsa">
               <span>时间</span>
-              <span  v-model="formMessage.createTime" style="text-align:right;margin-right:0.3rem">{{FormatDate(formMessage.createTime)}}</span>
+              <span v-model="formMessage.createTime" style="text-align:right;margin-right:0.3rem">{{FormatDate(formMessage.createTime)}}</span>
             </div>
           </div>
           <div class="iteamForm" style="padding-bottom:0.4rem">
@@ -99,21 +99,27 @@
       </div>
       <mt-popup v-model="popupVisible" class="mapwhere" position="right">
           <div class="header">
-            <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
-            <p>位置</p>
+            <div style="display: flex;justify-content:flex-start;">
+              <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
+              <p style="margin:0;padding:0">位置</p>
+            </div>
           </div>
           <div id="myMap">
 
           </div>
+           <div class="addres-search">
+              <input type="text" v-model="addressCtrol" id="suggestId" style="height:100%;" placeholder="搜索地点">
+              <!-- <span style="color:#5076ff" @click="suggestSa">搜索</span> -->
+            </div>
           <div class="placeList">
-                <div v-for="(iteam,index) in placeData" :key="index" class="address" @click="getAddress(iteam,index)">
-                  <div>
-                    <h5>{{iteam.title}}</h5>
-                    <p>{{iteam.city}}&nbsp;&nbsp;{{iteam.address}}</p>
-                  </div>
-                     <span v-if="changeId==index" class="iconfont icon-xuanzhong" style="font-size:22px;color:#1caa20"></span>
+            <p v-if="placeData.length==0" style="color:666666;padding-left:0.2rem">搜索不到相应地址，请重新操作</p>
+              <div v-for="(iteam,index) in placeData" :key="index" class="address" @click="getAddress(iteam,index)">
+                <div>
+                  <h5>{{iteam.title}} {{iteam.business}}</h5>
+                  <p>{{iteam.city}}&nbsp;{{iteam.address}}&nbsp;{{iteam.district}}&nbsp;{{iteam.business}}</p>
                 </div>
-             
+                    <span v-if="changeId==index" class="iconfont icon-xuanzhong" style="font-size:22px;color:#1caa20"></span>
+              </div>
           </div>
       </mt-popup>
   </div>
@@ -125,9 +131,12 @@ export default {
   computed: {},
   data() {
     return {
-      changeId: 0,
+      changeId: -1,
+      changeId1: -1,
       rotateS: 0,
+      addressCtrol:'',
       popupVisible1: false,
+      popupVisible2: false,
       popupVisible: false,
       bigImage: "",
       time: "",
@@ -135,6 +144,7 @@ export default {
       slide1: [],
       slide: [],
       placeData: [],
+      placeData1: [],
       sheetCode: "",
       iteamList: {},
       imageStatus: 0,
@@ -166,13 +176,23 @@ export default {
     window.getLocation = this.getLocation;
   },
   mounted() {
-    
+    new BMap.Autocomplete(    //建立一个自动完成的对象
+      {
+        input : "suggestId",
+        location : '上海市',
+        onSearchComplete:(AutocompleteResult)=>{
+          // console.log(AutocompleteResult.Ar)
+          this.placeData=AutocompleteResult.Ar;
+          this.suggestSa(this.addressCtrol);
+        }
+    });
   },
   methods: {
      getLocation(val){
       return val
      },
-    placeClick() {      
+    placeClick() {    
+      // console.log(123);
       if(this.downAddress()==false||this.getLocation()==false){
         MessageBox.alert("", {
           message: "请在权限管理里面打开定位权限",
@@ -184,7 +204,7 @@ export default {
       }      
     },
     detailImage(index, id){
-      console.log(index)
+      // console.log(index)
       MessageBox.confirm("是否确认删除图片?").then(action => {
         if (action == "confirm") {
           //确认的回调
@@ -192,7 +212,7 @@ export default {
             this.formMessage.handleBefore.splice(id, 1);
             this.formMessage.handleBeforeURLs.splice(id, 1);
           } else {
-            console.log("进入整理后")
+            // console.log("进入整理后")
             this.formMessage.handleAfter.splice(id, 1);
             this.formMessage.handleAfterURLs.splice(id, 1);
           }
@@ -203,27 +223,36 @@ export default {
       this.rotateS = this.rotateS + 90;
     },
     getAddress(row, index) {
-      this.changeId = index;
-      this.formMessage.handleAddr = row.address;
-      this.formMessage.gpsLongitude = row.point.lng;
-      this.formMessage.gpsLatitude = row.point.lat;
+     console.log(row);
+      if(row.title){
+        this.formMessage.handleAddr = row.city+row.address+row.title;
+        this.formMessage.gpsLongitude = row.point.lng;
+        this.formMessage.gpsLatitude = row.point.lat;
+      }else{
+        // console.log(row);
+        this.formMessage.handleAddr = row.city+row.district+row.business;
+        this.suggestSa(row.city+row.district+row.business)
+
+      }
+      //  this.changeId = index;
       this.popupVisible = false;
     },
+
     getMap() {
       this.myMap = new BMap.Map("myMap", { enableMapClick: false });
       let myCity = new BMap.Geolocation();
       let geoc = new BMap.Geocoder();
+      
       myCity.getCurrentPosition(rs => {
         let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
-        var marker = new BMap.Marker(ggPoint); // 创建标注
+        let marker = new BMap.Marker(ggPoint);
         this.myMap.addOverlay(marker);
-        this.myMap.centerAndZoom(ggPoint, 16);
+        this.myMap.centerAndZoom(ggPoint,16);
+        this.addCompCtrol(this.myMap);
         geoc.getLocation(
           ggPoint,
           rs => {
-            console.log(rs);
             this.placeData = rs.surroundingPois;
-            this.formMessage.handleAddr = this.placeData[0].address;
             this.formMessage.gpsLongitude = this.placeData[0].point.lng;
             this.formMessage.gpsLatitude = this.placeData[0].point.lat;
             let addComp = rs.addressComponents;
@@ -231,6 +260,66 @@ export default {
           { poiRadius: 200, numPois: 20 }
         );
       });
+      this.myMap.addEventListener("click",(e)=>{
+        let pt = e.point;
+        this.myMap.clearOverlays(); 
+        geoc.getLocation(pt,(rs)=>{
+          var addComp = rs.addressComponents;
+          let marker = new BMap.Marker(pt);
+          this.myMap.addOverlay(marker);
+          this.myMap.centerAndZoom(pt,16);
+          this.addCompCtrol(this.myMap);
+          this.placeData=rs.surroundingPois;
+          // console.log(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+          // this.addressCtrol=
+        });  
+      });
+    },
+    addCompCtrol(val){
+      // 添加定位控件
+          var navigationControl = new BMap.NavigationControl({
+          // 靠左上角位置
+          anchor: BMAP_ANCHOR_TOP_RIGHT,
+          // LARGE类型
+          type: BMAP_NAVIGATION_CONTROL_LARGE,
+          // 启用显示定位
+          enableGeolocation: true
+        });
+        val.addControl(navigationControl);
+        var geolocationControl = new BMap.GeolocationControl({
+          anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+          size:(20,20),
+          showAddressBar:true,
+          enableAutoLocation:true,
+        });
+        geolocationControl.addEventListener("locationSuccess", function(e){
+          // 定位成功事件
+        });
+        geolocationControl.addEventListener("locationError",function(e){
+          // 定位失败事件
+          // alert(e.message);
+        });
+        val.addControl(geolocationControl);
+    },
+    //百度地图关键字提示
+    suggestSa(val){
+      this.myMap = new BMap.Map("myMap", { enableMapClick: false });
+      let myGeo = new BMap.Geocoder();
+      myGeo.getPoint(val,(point)=>{
+        if (point) {
+          // console.log(point.lng);
+          // console.log(point.lat);
+          this.myMap.centerAndZoom(point,16);
+          this.myMap.addOverlay(new BMap.Marker(point));
+          this.addCompCtrol(this.myMap);
+          this.formMessage.gpsLongitude = point.lng;
+          this.formMessage.gpsLatitude = point.lat;
+        }else{
+        }
+      }, "上海市");
+
+      
+      
     },
     handOpen(val) {
       this.rotateS=0;
@@ -315,7 +404,7 @@ export default {
     },
     submit() {
       this.formMessage.createTime=this.FormatDate1(this.formMessage.createTime);
-      console.log(this.formMessage.createTime);
+      // console.log(this.formMessage.createTime);
       if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择清理地点",
@@ -431,7 +520,8 @@ export default {
       font-size: 16px;
       background: -webkit-linear-gradient(left, #6698ff, #5076ff);
       display: flex;
-      justify-content: flex-start;
+      justify-content:space-between;
+      align-items: center;
       p {
         margin: 0;
         padding: 0;
@@ -441,6 +531,14 @@ export default {
     #myMap {
       width: 100%;
       flex: 1;
+    }
+    .addres-search{
+      display: flex;
+        justify-content: space-between;
+        padding: 0.34rem 0.2rem;
+        box-sizing: border-box;
+        border-bottom: 1px solid #eeeeee;
+        // background: #f2f2f2;
     }
     .placeList {
       width: 100%;

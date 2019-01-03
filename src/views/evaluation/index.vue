@@ -9,10 +9,10 @@
         <div class="header-tittle" @click="rulesBox=!rulesBox">更多</div>
       </div>
       <div class="header-content">
-        <div class="tab-btns" @click="selectView">
+        <!-- <div class="tab-btns" @click="selectView">
           <div class="btn-left" viewType="1" :class="[viewTypesa == 1 ? 'tab-active' : '']">考评</div>
           <div class="btn-right" viewType="2" :class="[viewTypesa == 2 ? 'tab-active' : '']">被考评</div>
-        </div>
+        </div> -->
         <div class="historical-rules" v-if="rulesBox">
           <div class="rules-box" @click="toHistory">
             <img src="@/assets/image/evaluation/history.png" alt srcset>
@@ -44,10 +44,10 @@
                 style="font-size:0.36rem;margin-left:0.1rem"
               >{{iteam.status==2?FormatDate(iteam.evaluateEndTime):(boxSarule?'请尽快考评':'尚未完成')}}</span>
             </div>
-            <!-- <div
+            <div
               style="font-size:0.36rem;text-align:right;width:5rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"
-              v-if="iteam.status!==0"
-            >考评人：{{iteam.evaluateOrgName}}</div> -->
+              v-if="iteam.status==2"
+            >平均分：{{iteam.avgScore}}</div>
           </div>
           <div class="content-box-listbottom">
             <div class="listbottom-left">
@@ -134,7 +134,7 @@ export default {
   mounted() {},
   created() {
     let myDate = new Date();
-    let now_year = myDate.getFullYear(); //年份
+    let now_year = myDate.getMonth() == 0?myDate.getFullYear()-1:myDate.getFullYear(); //年份
     let nowData =
       myDate.getMonth() == 0
         ? 12
@@ -249,7 +249,7 @@ export default {
   flex-direction: column;
   .header {
     width: 100%;
-    height: 2.273333rem;
+    height: 1.173333rem;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
     text-align: center;
     padding: 0 0.346667rem;

@@ -269,7 +269,7 @@
                           <span
                             :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
                             style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
-                          >{{item.avgTime}}</span>
+                          >{{item.avgDealTimeHour}}</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">处理时长</span>
                         </div>
                       </div>

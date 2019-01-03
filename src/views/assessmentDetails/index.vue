@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="header-content-top">
-          <div class="header-content-fixed">
+          <div class="header-content-sa">
             <img
               style="width:0.48rem;height:0.48rem"
               src="@/assets/image/evaluation/status2.png"
@@ -631,7 +631,8 @@ p {
     color: #fff;
     display: flex;
     flex-direction: column;
-    position: relative;
+    // position: relative;
+    // z-index: 999999;
     .header-header {
       height: 1.173333rem;
       display: flex;
@@ -661,16 +662,17 @@ p {
       //   padding: 0 0.346667rem;
       box-sizing: border-box;
       //   background: -webkit-linear-gradient(left, #6698ff, #5076ff);
-
       position: relative;
       .header-content-top {
         position: absolute;
         top: 0.5rem;
+        left: 0;
         width: 100%;
         height: 1.2rem;
         box-sizing: border-box;
         padding: 0 0.346667rem;
-        .header-content-fixed {
+        z-index: 999999;
+        .header-content-sa {
           height: 100%;
           background: #fff;
           border-radius: 0.1rem;
@@ -686,11 +688,13 @@ p {
       .header-content-bottom {
         position: absolute;
         top: 1.9rem;
+        left: 0;
         // background: #fff;
         width: 100%;
         height: 1.2rem;
         box-sizing: border-box;
         padding: 0 0.346667rem;
+        z-index: 999999;
         .header-content-nav {
           height: 100%;
           background: #fff;

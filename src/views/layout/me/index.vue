@@ -89,8 +89,8 @@
       </div>
     </div>
     <div class="content" style="padding:0.1rem">
-      <!-- <div class="colorsa"></div> -->
-      <div class="evaluation" v-if="willdoInfo.evaluation!=='close'">
+      <!-- <div class="colorsa"></div> v-if="willdoInfo.evaluation!=='close'" -->
+      <div class="evaluation" style="display:none">
         <div class="evaluationimg" @click="toEvaluation">
           <span
             v-if="willdoInfo.evaluation=='true'"
@@ -210,14 +210,14 @@ import { MessageBox } from "mint-ui";
 import "@/assets/stylefont/iconfont.css";
 export default {
   computed: {
-    ...mapGetters(["willdoInfo","userInfo"])
+    ...mapGetters(["willdoInfo"])
   },
   data() {
     return {
       userCount: {},
       ruleStatus: '',
       nowData: "",
-      // userInfo: {}
+      userInfo: {}
     };
   },
   components: {},

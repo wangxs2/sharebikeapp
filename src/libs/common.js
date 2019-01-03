@@ -2,6 +2,21 @@ import echarts from 'echarts' //引入echarts
 
 import * as http from './http'
 
+function isSystem() {
+    var system = {
+        win: false,
+        mac: false,
+        xll: false,
+        ipad: false
+    };
+    //检测平台 
+    var p = navigator.platform;
+    system.win = p.indexOf("Win") == 0;
+    system.mac = p.indexOf("Mac") == 0;
+    system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);
+    system.ipad = (navigator.userAgent.match(/iPad/i) != null) ? true : false;
+    return system.win || system.mac || system.xll || system.ipad;
+};
 export default {
     install(Vue, options) {
         /* *
@@ -114,14 +129,17 @@ export default {
             }
         };
         Vue.prototype.downAddress = function() {
-            let ua = navigator.userAgent.toLowerCase();
-            let isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1; //Ios终端
-            let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-                window.webkit.messageHandlers.isLocation.postMessage({ body: 'Location' })
-            } else if (/(Android)/i.test(navigator.userAgent)) {
-                return Android.onPositioning();
+            console.log(isSystem());
+            if (isSystem()) {
+                return true
+            } else {
+                if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                    window.webkit.messageHandlers.isLocation.postMessage({ body: 'Location' })
+                } else if (/(Android)/i.test(navigator.userAgent)) {
+                    return Android.onPositioning();
+                }
             }
+
         };
         Vue.prototype.downApp = function() {
             let ua = navigator.userAgent.toLowerCase();
