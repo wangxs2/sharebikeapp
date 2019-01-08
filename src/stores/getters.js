@@ -13,6 +13,7 @@ const getters = {
     userInfo: state => state.user.userInfo,
     willdoInfo: state => state.user.willdoInfo,
     password: state => state.user.password,
-    query: state => state.app.query
+    query: state => state.app.query,
+    iscacheModule: state => state.app.iscacheModule,
 }
 export default getters

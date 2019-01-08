@@ -2,54 +2,34 @@
 <template>
   <div class="containerSaone">
     <div class="header">
-        <span style="font-size:0.48rem;width:2rem;text-align:center" class="iconfont icon-location">上海</span>
-        <span style='width:2rem;text-align:center'>自查</span>
-        <span style="font-size:24px;width:1.7rem;text-align:right;padding-right:0.3rem" class="iconfont icon-gengduo" @click="iconClick"></span>
-      </div>
+      <span style="font-size:0.48rem;width:2rem;text-align:center" class="iconfont icon-location">上海</span>
+      <span style="width:2rem;text-align:center">自查</span>
+      <span
+        style="font-size:24px;width:1.7rem;text-align:right;padding-right:0.3rem"
+        class="iconfont icon-gengduo"
+        @click="iconClick"
+      ></span>
+    </div>
     <div class="version-popup-box">
       <div class="version-popup">
-        <div @click="sort">
+        <div v-for="(iteam,index) in menuListTop" :key="index" @click="sort(iteam,index)">
           <span
             class="version-popup-font"
-            :class="[areaname.name == '区域' ? '' : 'version-popup-font-active']"
-          >{{areaname.name}}</span>
-          <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-show="downIcon"></span>
-          <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-show="!downIcon"></span>
-        </div>
-        <div @click="sort1">
-          <span
-            class="version-popup-font"
-            :class="[companyname.name == '单车企业' ? '' : 'version-popup-font-active']"
-          >{{companyname.name}}</span>
-          <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-show="downIcon1"></span>
-          <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-show="!downIcon1"></span>
-        </div>
-        <div @click="sort2">
-          <span
-            class="version-popup-font"
-            :class="[menname.name == '处理人' ? '' : 'version-popup-font-active']"
-          >{{menname.name}}</span>
-          <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-show="downIcon2"></span>
-          <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-show="!downIcon2"></span>
-        </div>
-        <div style="border:none" @click="sort3">
-          <span
-            class="version-popup-font"
-            :class="[statusname.name == '状态' ? '' : 'version-popup-font-active']"
-          >{{statusname.name}}</span>
-          <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-show="downIcon3"></span>
-          <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-show="!downIcon3"></span>
+            :class="[iteam.menuName == '' ? '' : 'version-popup-font-active']"
+          >{{iteam.menuName == ''?iteam.name:iteam.menuName}}</span>
+          <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-if="downIcon==index"></span>
+          <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-if="downIcon!==index"></span>
         </div>
       </div>
     </div>
-    <!-- 区域的划分 -->
-    <div class="version-popup-box1" v-show="!downIcon">
+    <!-- 查询列表 -->
+    <div class="version-popup-box1" v-if="downIcon1">
       <div class="version-popup">
         <div class="variable">
           <div class="menself">
-            <p v-if="areakids.length==0" style="color:#999999;text-align:center">暂无数据</p>
+            <p v-if="menuListCenter.length==0" style="color:#999999;text-align:center">暂无数据</p>
             <div style="padding:0rem;background: #f2f2f2;">
-              <div class="areacheck" v-if="areaarr.length>0">
+              <div class="areacheck" v-if="areaarr.length>0&&downIcon==0">
                 <p
                   class="areachecklist"
                   @click="areaTypeclick(iteam,index)"
@@ -62,12 +42,11 @@
             <div>
               <p
                 class="menselflist"
-                @click="areaTypeclick1(iteam)"
-                v-for="(iteam, index) in areakids"
+                @click="menuListClick(item)"
+                v-for="(item, index) in menuListCenter"
                 :key="index"
-                :class="[viewType1 == iteam.id ? 'menselflist-active' : '']"
-              >{{iteam.name}}</p>
-              <!-- <p v-if="areakids.length==0" style="text-align:center;color:#999999">暂无数据</p> -->
+                :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']"
+              >{{downIcon==2?item.realName:item.name}}</p>
             </div>
           </div>
         </div>
@@ -77,72 +56,7 @@
         </div>
       </div>
     </div>
-    <!-- 区域的划分 -->
-    <!-- 单车企业弹框 -->
-    <div class="version-popup-box1" v-show="!downIcon1">
-      <div class="version-popup">
-        <div class="variable">
-          <div class="menself">
-            <p v-if="company.length==0" style="color:#999999;text-align:center">暂无数据</p>
-            <p
-              class="menselflist"
-              @click="clickCompany(iteam)"
-              v-for="(iteam, index) in company"
-              :class="[viewType2 == iteam.id ? 'menselflist-active' : '']"
-              :key="index"
-            >{{iteam.name}}</p>
-          </div>
-        </div>
-        <div class="bottomsa">
-          <p @click="menReset1()">重置</p>
-          <p @click="submit1()" style="border:none">确定</p>
-        </div>
-      </div>
-    </div>
-    <!-- 单车企业弹框 -->
-    <!-- 处理人弹框 -->
-    <div class="version-popup-box1" v-show="!downIcon2">
-      <div class="version-popup">
-        <div class="variable">
-          <div class="menself">
-            <p v-if="menData.length==0" style="color:#999999;text-align:center">暂无数据</p>
-            <p
-              class="menselflist"
-              v-for="(iteam, index) in menData"
-              :key="index"
-              @click="menTypeclick(iteam)"
-              :class="[menType == iteam.id ? 'menselflist-active' : '']"
-            >{{iteam.realName}}</p>
-          </div>
-        </div>
-        <div class="bottomsa">
-          <p @click="menReset2()">重置</p>
-          <p @click="submit2()" style="border:none">确定</p>
-        </div>
-      </div>
-    </div>
-    <!-- 处理人弹框 -->
-    <!-- 状态弹框 -->
-    <div class="version-popup-box1" v-show="!downIcon3">
-      <div class="version-popup">
-        <div class="variable">
-          <div class="menself">
-            <p
-              class="menselflist"
-              v-for="(iteam, index) in statusData"
-              :key="index"
-              @click="statusclick(iteam)"
-              :class="[viewType3 == iteam.id ? 'menselflist-active' : '']"
-            >{{iteam.name}}</p>
-          </div>
-        </div>
-        <div class="bottomsa">
-          <p @click="menReset3()">重置</p>
-          <p @click="submit3()" style="border:none">确定</p>
-        </div>
-      </div>
-    </div>
-    <!-- 状态弹框 -->
+    <!-- 查询列表 -->
     <div class="noneList" v-if="noneList">
       <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt>
       <p style="color:#989898">暂时没有自查数据哦~</p>
@@ -182,7 +96,7 @@
               </div>
               <div class="centersa">
                 <p
-                  style='line-height:1.5;'
+                  style="line-height:1.5;"
                   :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'"
                 >{{iteam.orgName}}</p>
                 <p style="color:#666666;margin-left:0.2rem">整理</p>
@@ -190,9 +104,7 @@
                   style="color:#5076FF;margin-left:0.1rem"
                 >{{iteam.arrangeNum==0?'-':iteam.arrangeNum}}</p>
                 <p style="color:#666666;margin-left:0.2rem">清运</p>
-                <p
-                  style="color:#5076FF;margin-left:0.1rem"
-                >{{iteam.cleanNum==0?'-':iteam.cleanNum}}</p>
+                <p style="color:#5076FF;margin-left:0.1rem">{{iteam.cleanNum==0?'-':iteam.cleanNum}}</p>
               </div>
             </div>
             <div class="bottomRight">
@@ -211,21 +123,45 @@ import { Loadmore } from "mint-ui";
 import { Toast } from "mint-ui";
 import { Indicator } from "mint-ui";
 export default {
+  name:"zicha",
   computed: {},
   data() {
     return {
       selected: "/layout/selfCheck",
       viewType: "",
-      viewType1: "",
       viewType2: "",
       viewType3: "",
       popupVisible: true,
       areaflag: true, //是否包含flag
       menType: "",
-      downIcon: true,
-      downIcon1: true,
-      downIcon2: true,
-      downIcon3: true,
+      downIcon: -1,
+      downIcon1: false,
+      // downIcon2: true,
+      // downIcon3: true,
+      menuName: "",
+      menuListTop: [
+        {
+          name: "区域",
+          menuName: "",
+          label: ""
+        },
+        {
+          name: "单车企业",
+          menuName: "",
+          label: ""
+        },
+        {
+          name: "处理人",
+          menuName: "",
+          label: ""
+        },
+        {
+          name: "状态",
+          menuName: "",
+          label: ""
+        }
+      ],
+      menuListCenter: [],
       statusData: [
         {
           name: "处理中",
@@ -276,8 +212,32 @@ export default {
     this.getBikeMen();
     this.getorgsTree();
   },
+  activated(){
+    console.log('进入activated');
+      // if(!this.$route.meta.isUserChce){
+      // }
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log('---------------------------------------------');
+    
+    if (to.path == "/selfCheckAdd" || to.path == "/selfCheckdetail") {
+      if (!from.meta.keepAlive) {
+        from.meta.keepAlive = true;
+      }
+      next();
+    } else {
+      from.meta.keepAlive = false;
+      to.meta.keepAlive = false;
+      this.$destroy();
+      // console.log(this)
+      next();
+    }
+    console.log(to.meta.keepAlive);
+    console.log(from.meta.keepAlive);
+  },
   mounted() {},
   methods: {
+    //进入详情
     detailClick(row) {
       if (row.status == 2) {
         this.$router.push({
@@ -298,169 +258,95 @@ export default {
     iconClick() {
       this.$router.push("/selfCheckAdd");
     },
-    clickCompany(val) {
-      this.viewType2 = val.id;
-      this.companyname.name = val.name;
-      this.companyname.id = val.id;
-      // this.submit1();
-       this.pageList = [];
-      this.searchCondition.orgId = this.companyname.id;
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-    },
-    menTypeclick(val) {
-      this.menType = val.id;
-      this.menname.name = val.realName;
-      this.menname.id = val.id;
-      // this.submit2();
-      this.pageList = [];
-      this.searchCondition.handleBy = this.menname.id;
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-    },
-    statusclick(val) {
-      this.viewType3 = val.id;
-      this.statusname.name = val.name;
-      this.statusname.id = val.id;
-      // this.submit3();
-      this.pageList = [];
-      this.searchCondition.status = this.statusname.id;
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-    },
+    //区域切换
     areaTypeclick(val, index) {
+      console.log(val);
       this.areaflag = false;
-      this.areakids = [];
+      this.areakids=[];
       this.viewType = val.id;
       this.areaname.name = val.name;
       this.areaname.id = val.id;
       this.areakids = val.children;
+      this.menuListCenter = this.areakids;
       this.areaarr = this.areaarr.slice(0, index + 1);
     },
-    areaTypeclick1(val) {
-      this.viewType1 = val.id;
-      this.areaname.name = val.name;
-      this.areaname.id = val.id;
-      if (val.children) {
-        this.viewType = val.id;
-        if (this.areaflag) {
-          this.areaarr.push({
-            name: val.name,
-            id: val.id,
-            children: this.areakids
-          });
+    //点击查询列表
+    menuListClick(row) {
+      if (this.downIcon == 0) {
+        this.menuListTop[this.downIcon].label = row.id;
+        this.areaname.id = row.id;
+        this.menuListTop[this.downIcon].menuName = row.name;
+        if (row.children) {
+          this.viewType = row.id;
+          if (this.areaflag) {
+            this.areaarr.push({
+              name: row.name,
+              id: row.id,
+              children: this.areakids
+            });
+          }
+          this.areaflag = true;
+          this.areakids = row.children;
+          this.menuListCenter = this.areakids;
         }
-        this.areaflag = true;
-        this.areakids = val.children;
+        this.searchCondition.areaId = this.areaname.id;
+      } else if (this.downIcon == 1) {
+        this.menuListTop[this.downIcon].label = row.shortName;
+        this.menuListTop[this.downIcon].menuName = row.name;
+        this.searchCondition.orgId = row.id;
+      } else if (this.downIcon == 2) {
+        this.menuListTop[this.downIcon].label = row.id;
+        this.menuListTop[this.downIcon].menuName = row.realName;
+        this.searchCondition.handleBy = row.id;
+      } else if (this.downIcon == 3) {
+        this.menuListTop[this.downIcon].label = row.id;
+        this.menuListTop[this.downIcon].menuName = row.name;
+        this.searchCondition.status = row.id;
       }
-      this.pageList = [];
-      this.searchCondition.areaId = this.areaname.id;
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-      // this.submit();
     },
+    //重置
     menReset() {
-      this.viewType = "";
-      this.viewType1 = "";
-      this.areaname.name = "区域";
-      this.pageList = [];
-      this.searchCondition.areaId = "";
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-      this.downIcon = true;
+      if (this.downIcon == 0) {
+        this.viewType = "";
+        this.menuListTop[this.downIcon].label = "";
+        this.menuListTop[this.downIcon].menuName = "";
+        this.searchCondition.areaId = "";
+      } else if (this.downIcon == 1) {
+        this.menuListTop[this.downIcon].label = "";
+        this.menuListTop[this.downIcon].menuName = "";
+        this.searchCondition.orgId = "";
+      } else if (this.downIcon == 2) {
+        this.menuListTop[this.downIcon].label = "";
+        this.menuListTop[this.downIcon].menuName = "";
+        this.searchCondition.handleBy = "";
+      } else if (this.downIcon == 3) {
+        this.menuListTop[this.downIcon].label = "";
+        this.menuListTop[this.downIcon].menuName = "";
+        this.searchCondition.status = "";
+      }
+      this.downIcon1 = false;
+      this.getListData2();
     },
-    menReset1() {
-      this.viewType2 = "";
-      this.companyname.name = "单车企业";
-      this.pageList = [];
-      this.searchCondition.orgId = "";
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-      this.downIcon1 = true;
-    },
-    menReset2() {
-      this.menType = "";
-      this.menname.name = "处理人";
-      this.pageList = [];
-      this.searchCondition.handleBy = "";
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-      this.downIcon2 = true;
-    },
-    menReset3() {
-      this.viewType3 = "";
-      this.statusname.name = "状态";
-      this.pageList = [];
-      this.searchCondition.status = "";
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-      this.downIcon3 = true;
-    },
+    //确定
     submit() {
-      this.pageList = [];
-      this.searchCondition.areaId = this.areaname.id;
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-      this.downIcon = true;
-    },
-    submit1() {
-      this.pageList = [];
-      this.searchCondition.orgId = this.companyname.id;
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-      this.downIcon1 = true;
-    },
-    submit2() {
-      this.pageList = [];
-      this.searchCondition.handleBy = this.menname.id;
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-      this.downIcon2 = true;
-    },
-    submit3() {
-      this.pageList = [];
-      this.searchCondition.status = this.statusname.id;
-      (this.searchCondition.page = "0"),
-        (this.searchCondition.pageSize = "15"),
-        this.infinite();
-      this.downIcon3 = true;
+      this.downIcon1 = false;
+      this.getListData2();
     },
     //切换图片；
-    sort() {
-      this.downIcon = !this.downIcon;
+    sort(iteam, index) {
+      this.downIcon = index;
       this.downIcon1 = true;
-      this.downIcon2 = true;
-      this.downIcon3 = true;
+      if (this.downIcon == 0) {
+        this.menuListCenter = this.areakids;
+      } else if (this.downIcon == 1) {
+        this.menuListCenter = this.company;
+      } else if (this.downIcon == 2) {
+        this.menuListCenter = this.menData;
+      } else if (this.downIcon == 3) {
+        this.menuListCenter = this.statusData;
+      }
     },
-    sort1() {
-      this.downIcon1 = !this.downIcon1;
-      this.downIcon = true;
-      this.downIcon2 = true;
-      this.downIcon3 = true;
-    },
-    sort2() {
-      this.downIcon2 = !this.downIcon2;
-      this.downIcon1 = true;
-      this.downIcon = true;
-      this.downIcon3 = true;
-    },
-    sort3() {
-      this.downIcon3 = !this.downIcon3;
-      this.downIcon1 = true;
-      this.downIcon = true;
-      this.downIcon2 = true;
-    },
+
     getorgsTree() {
       //获取组织树数据
       this.$fetchGet("org/getUserArea").then(res => {
@@ -506,20 +392,37 @@ export default {
         this.menData = res;
       });
     },
+    getListData() {
+      this.pageList = [];
+      this.searchCondition.page = "0";
+      this.searchCondition.pageSize = "15";
+    },
+    getListData2() {
+      if (this.pageList.length !== 0) {
+        this.getListData();
+      } else {
+        this.getListData();
+        this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
+          res => {
+            this.pageList = res.list;
+          }
+        );
+      }
+    },
     infinite(done) {
       this.searchCondition.page++;
       this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
         res => {
-          if (res.list.length !== 0) {
-            this.pageList = this.pageList.concat(res.list);
-            done();
+          if (this.pageList.length == 0) {
+            this.pageList = res.list;
           } else {
-            done(true);
+            this.pageList = this.pageList.concat(res.list);
           }
+          done(true);
         }
       );
     },
-    refresh: function() {
+    refresh: function(done) {
       //下拉刷新
       // console.log("refresh");
       this.$fetchGet("selfcheck/pageSelfCheck", {
@@ -530,11 +433,13 @@ export default {
         orgId: this.searchCondition.orgId,
         status: this.searchCondition.status
       }).then(res => {
+        done();
+        this.bottom = self.bottom + 10;
         this.pageList = res.list;
       });
-      this.timeout = setTimeout(() => {
-        this.$refs.my_scroller.finishPullToRefresh();
-      }, 1000);
+      // this.timeout = setTimeout(() => {
+      //   this.$refs.my_scroller.finishPullToRefresh();
+      // }, 1000);
     }
   }
 };
@@ -827,7 +732,7 @@ export default {
           height: 0.4rem;
           color: #666666;
           justify-content: flex-start;
-          align-items:flex-end;
+          align-items: flex-end;
           .moreFont {
             max-width: 90%;
             overflow: hidden;

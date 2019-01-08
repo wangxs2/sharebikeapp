@@ -1,13 +1,10 @@
 <template>
   <div id="app">
     <!-- <div id="allmap"></div>
-    <router-view/> -->
+    <router-view/>-->
     <keep-alive>
-      <router-view v-if="$route.meta.keepAlive">
-        <!-- 这里是会被缓存的视图组件，比如 page1,page2 -->
-      </router-view>
+      <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
-
     <router-view v-if="!$route.meta.keepAlive">
       <!-- 这里是不被缓存的视图组件，比如 page3 -->
     </router-view>
@@ -19,12 +16,27 @@ import { MessageBox } from "mint-ui";
 import base64 from "@/libs/base.js";
 export default {
   name: "App",
-  return: {},
+  data() {
+    return {
+      routeArr: []
+    };
+  },
+
   mounted() {},
   created() {
+    window.onAndroidHome=this.backWXS(data);
     window.getPush = this.getPush;
+    // Android.onAndroidHome()=this.backWXS;
+    console.log(window.onAndroidHome);
   },
+  // beforeRouteLeave(to, from, next) {
+
+  // },
   methods: {
+    backWXS(data){
+      console.log(data); 
+      this.$router.go(-1);
+    },
     getPush(userName, password, url) {
       if (userName) {
         let b = new base64();

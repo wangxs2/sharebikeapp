@@ -4,32 +4,10 @@
       <appMain></appMain>
     </div>
     <div class="bottom">
-      <mt-tabbar v-model="selected" style="background:#fff" @click.native="message">
-        <mt-tab-item id="/layout/selfCheck">
-          <img slot="icon" :src="imgUrl[0]">
-          <span class="badge1" v-if="ruleStatus1">{{selfCheckNum}}</span>
-          自查
-        </mt-tab-item>
-        <mt-tab-item id="/layout/supervise">
-          <img slot="icon" :src="imgUrl[1]">
-          <span class="badge1" v-if="ruleStatus2">{{dispatchkNum}}</span>
-          督办
-        </mt-tab-item>
-        <mt-tab-item id="/layout/count">
-          <img slot="icon" :src="imgUrl[2]">
-          <span class="badge" style="right:28%" v-if="ruleStatus3"></span>
-          统计
-        </mt-tab-item>
-        <mt-tab-item id="/layout/warning">
-          <img slot="icon" :src="imgUrl[3]">
-          预警
-        </mt-tab-item>
-        <mt-tab-item id="/layout/me">
-          <img slot="icon" :src="imgUrl[4]">
-          <!-- <span class="badge" v-if="ruleStatus"></span> -->
-          我的
-        </mt-tab-item>
-      </mt-tabbar>
+      <div class="menu-iteam" v-for="(iteam,index) in menuList" :key="index" @click="toRouterIndex(iteam,index)">
+          <img :src="iteam.imgUrl[selectIndex==index?0:1]">
+          <span v-bind:style="{color:selectIndex==index?'#5076FF':'#AAAAAA'}">{{iteam.name}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -45,13 +23,13 @@ export default {
     return {
       longitude: "",
       latitude: "",
-      ruleStatus:false,
-      selfCheckNum:'',
-      dispatchkNum:'',
+      ruleStatus: false,
+      selfCheckNum: "",
+      dispatchkNum: "",
       selected: "",
-      ruleStatus1:false,
-      ruleStatus2:false,
-      ruleStatus3:false,
+      ruleStatus1: false,
+      ruleStatus2: false,
+      ruleStatus3: false,
       roleCode: "",
       imgUrl: [
         require("../../assets/image/login/icon_tab_1_nor@3x.png"),
@@ -59,60 +37,102 @@ export default {
         require("../../assets/image/login/icon_tab_3_nor@3x.png"),
         require("../../assets/image/login/icon_tab_4_nor@3x.png"),
         require("../../assets/image/login/icon_tab_5_nor@3x.png")
+      ],
+      selectIndex: "",
+      menuList: [
+        {
+          name: "自查",
+          imgUrl: [
+            require("@/assets/image/login/icon_tab_1_pre@3x.png"),
+            require("@/assets/image/login/icon_tab_1_nor@3x.png")
+          ],
+          pathUrl: "/layout/selfCheck"
+        },
+        {
+          name: "督办",
+          imgUrl: [
+            require("@/assets/image/login/icon_tab_2_pre@3x.png"),
+            require("@/assets/image/login/icon_tab_2_nor@3x.png")
+          ],
+          pathUrl: "/layout/supervise",
+          pathUrlTodo: "/layout/needtodo"
+        },
+        {
+          name: "统计",
+          imgUrl: [
+            require("@/assets/image/login/icon_tab_3_pre@3x.png"),
+            require("@/assets/image/login/icon_tab_3_nor@3x.png")
+          ],
+          pathUrl: "/layout/count"
+        },
+        {
+          name: "预警",
+          imgUrl: [
+            require("@/assets/image/login/icon_tab_4_pre@3x.png"),
+            require("@/assets/image/login/icon_tab_4_nor@3x.png")
+          ],
+          pathUrl: "/layout/warning"
+        },
+        {
+          name: "我的",
+          imgUrl: [
+            require("@/assets/image/login/icon_tab_5_pre@3x.png"),
+            require("@/assets/image/login/icon_tab_5_nor@3x.png")
+          ],
+          pathUrl: "/layout/me"
+        }
       ]
-      //imgUrls:[require("../../assets/image/login/icon_tab_1_pre@3x.png"),require("../../assets/image/login/icon_tab_2_pre@3x.png"),require("../../assets/image/login/icon_tab_3_pre@3x.png"),require("../../assets/image/login/icon_tab_4_pre@3x.png"),require("../../assets/image/login/icon_tab_5_pre@3x.png")],
     };
   },
   mounted() {
     // this.getMap();
   },
-  beforeRouteLeave(to, from, next) {
-    if (to.name == "自查" || to.name == "待办" || to.name == "督办") {
-      if (!from.meta.keepAlive) {
-        from.meta.keepAlive = true;
-      } else {
-        next();
+  activated() {
+    // this.selected = this.$route.path;
+  },
+  watch: {
+    $route: function(val, oldval) {
+      // this.selectIndex=val.path;
+      if (val) {
+        this.getRouterIndex(val);
       }
-    } else {
-      from.meta.keepAlive = false;
-      to.meta.keepAlive = false;
-      next();
     }
   },
   created() {
     this.getRules();
+    this.getRouterIndex(this.$route);
     this.roleCode = localStorage.roleCode;
-    this.selected = this.$route.path;
-    if (this.$route.path == "/layout/needtodo"){
-      this.selected = "/layout/supervise";
-      this.changeImage("/layout/needtodo");
-    } else {
-      if (this.$route.path == "/layout/supervise"){
-        this.selected = "/layout/supervise";
-        this.changeImage("/layout/needtodo");
-      } else {
-        this.selected = this.$route.path;
-        this.changeImage(this.$route.path);
-      }
-    }
-
-    // this
   },
   methods: {
-    getRules(){
+    getRules() {
       //获取是否有红点
       this.$fetchGet("count/willdo").then(res => {
-          this.ruleStatus=res.evaluation==='true'?this.ruleStatus=true:this.ruleStatus=false;
-          this.ruleStatus3=res.daily==='false'?false:true;
-          if(res.selfCheck>0){
-            this.ruleStatus1=true;
-            this.selfCheckNum=res.selfCheck
-          }
-          if(res.dispatch>0){
-              this.ruleStatus2=true;
-              this.dispatchkNum=res.dispatch;
-          }
+        this.ruleStatus =
+          res.evaluation === "true"
+            ? (this.ruleStatus = true)
+            : (this.ruleStatus = false);
+        this.ruleStatus3 = res.daily === "false" ? false : true;
+        if (res.selfCheck > 0) {
+          this.ruleStatus1 = true;
+          this.selfCheckNum = res.selfCheck;
+        }
+        if (res.dispatch > 0) {
+          this.ruleStatus2 = true;
+          this.dispatchkNum = res.dispatch;
+        }
       });
+    },
+    getRouterIndex(val) {
+      this.selectIndex = this.menuList.findIndex(iteam => {
+        return val.path == iteam.pathUrl || val.path == iteam.pathUrlTodo;
+      });
+    },
+    toRouterIndex(val,index){
+      if(this.roleCode == "clean" || this.roleCode == "manage"&&index==1){
+        this.$router.push(val.pathUrlTodo)
+      }else{
+        this.$router.push(val.pathUrl)
+      }
     },
     getMap() {
       let that = this;
@@ -140,55 +160,7 @@ export default {
         this.getMap();
       }, 300000);
     },
-    changeImage(val) {
-      if (val == "/layout/selfCheck") {
-        this.imgUrl[0] = require("../../assets/image/login/icon_tab_1_pre@3x.png");
-      } else {
-        this.imgUrl[0] = require("../../assets/image/login/icon_tab_1_nor@3x.png");
-      }
-      if (val == "/layout/supervise") {
-        this.imgUrl[1] = require("../../assets/image/login/icon_tab_2_pre@3x.png");
-      } else {
-        this.imgUrl[1] = require("../../assets/image/login/icon_tab_2_nor@3x.png");
-      }
-      if (val == "/layout/needtodo") {
-        this.imgUrl[1] = require("../../assets/image/login/icon_tab_2_pre@3x.png");
-      } else {
-        this.imgUrl[1] = require("../../assets/image/login/icon_tab_2_nor@3x.png");
-      }
-      if (val == "/layout/count") {
-        this.imgUrl[2] = require("../../assets/image/login/icon_tab_3_pre@3x.png");
-      } else {
-        this.imgUrl[2] = require("../../assets/image/login/icon_tab_3_nor@3x.png");
-      }
-      if (val == "/layout/warning") {
-        this.imgUrl[3] = require("../../assets/image/login/icon_tab_4_pre@3x.png");
-      } else {
-        this.imgUrl[3] = require("../../assets/image/login/icon_tab_4_nor@3x.png");
-      }
-      if (val == "/layout/me") {
-        this.imgUrl[4] = require("../../assets/image/login/icon_tab_5_pre@3x.png");
-      } else {
-        this.imgUrl[4] = require("../../assets/image/login/icon_tab_5_nor@3x.png");
-      }
-    },
-    message() {
-      if (
-        (this.roleCode == "clean" || this.roleCode == "manage") &&
-        this.selected == "/layout/supervise"
-      ) {
-        this.changeImage("/layout/needtodo");
-        this.$router.push("/layout/needtodo");
-      } else {
-        if (this.selected == "/layout/supervise") {
-          this.$router.push(this.selected);
-          this.changeImage("/layout/needtodo");
-        } else {
-          this.$router.push(this.selected);
-          this.changeImage(this.selected);
-        }
-      }
-    }
+
   }
 };
 </script>
@@ -208,13 +180,32 @@ export default {
   .bottom {
     display: flex;
     width: 100%;
-    height: 55px;
+    height: 1.4rem;
     border-top: 1px solid #f6f6f6;
     z-index: 8887;
+    background: #fff;
+    .menu-iteam {
+      flex: 1;
+      width: 1px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.34rem;
+      color: #aaaaaa;
+      img {
+        width: 0.6rem;
+        height: 0.6rem;
+      }
+      span {
+        margin-top: 0.08rem;
+      }
+    }
     .mint-tabbar {
       .mint-tab-item {
         position: relative;
-        .badge{
+        .badge {
           position: absolute;
           top: 7px;
           right: 32%;
@@ -224,7 +215,7 @@ export default {
           border-radius: 50%;
           background: red;
         }
-        .badge1{
+        .badge1 {
           position: absolute;
           top: 2px;
           right: 20%;

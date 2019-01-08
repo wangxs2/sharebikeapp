@@ -129,7 +129,7 @@ export default {
             }
         };
         Vue.prototype.downAddress = function() {
-            console.log(isSystem());
+            // console.log(isSystem());
             if (isSystem()) {
                 return true
             } else {

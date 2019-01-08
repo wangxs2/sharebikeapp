@@ -1,29 +1,28 @@
 <template>
   <div class="container">
     <div class="header">
-      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt="" @click="toUserInfo">
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toUserInfo">
       <div class="header-title">设置</div>
       <div></div>
-
     </div>
     <div class="content">
       <div class="content-top">
         <div class="info-box" @click="toPassword">
           <div class="info-title">修改密码</div>
-          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
+          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt>
         </div>
         <div class="info-box" @click="toProblemFeedback
         ">
           <div class="info-title">意见反馈</div>
-          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
+          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt>
         </div>
         <div class="info-box" @click="popupVisible = true">
           <div class="info-title">版本更新{{version}}</div>
-          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
+          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt>
         </div>
         <div class="info-box" v-if="userInfo.userName!=='caicc'" @click="todownload">
           <div class="info-title">下载方式</div>
-          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt="">
+          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt>
         </div>
       </div>
       <div class="content-bottom">
@@ -34,9 +33,14 @@
       <!-- 版本信息弹框↓ -->
       <mt-popup class="version-popup-box" v-model="popupVisible" position="right">
         <div class="version-popup">
-        <img class="close-popup" src="@/assets/image/settings/icon_close@2x.png" alt="" @click="popupVisible = false">
+          <img
+            class="close-popup"
+            src="@/assets/image/settings/icon_close@2x.png"
+            alt
+            @click="popupVisible = false"
+          >
           <div class="version-popup-top">
-            <img class="logo" src="@/assets/image/settings/ios-template-120.png" alt="">
+            <img class="logo" src="@/assets/image/settings/ios-template-120.png" alt>
             <div class="cur-version">版本{{version}} {{versionTime}}</div>
             <div class="new-version">当前版本已是最新版本</div>
           </div>
@@ -65,15 +69,15 @@ export default {
   data() {
     return {
       popupVisible: false,
-      version:"",
-      versionTime:"",
+      version: "",
+      versionTime: "",
       versionDetail: []
     };
   },
   components: {},
   mounted() {},
   created() {
-    this.getVersion()
+    this.getVersion();
   },
   methods: {
     //返回个人中心
@@ -81,14 +85,14 @@ export default {
       this.$router.push("/layout/me");
     },
     //获取版本号
-    getVersion(){
-      this.$fetchGet("sysInfo/getAPPversion").then(data=>{
-        if(data.status==0){
-          this.version=data.version;
-          this.versionTime=data.list[0].split("：")[1]
-          this.versionDetail=data.list.splice(1)
+    getVersion() {
+      this.$fetchGet("sysInfo/getAPPversion").then(data => {
+        if (data.status == 0) {
+          this.version = data.version;
+          this.versionTime = data.list[0].split("：")[1];
+          this.versionDetail = data.list.splice(1);
         }
-      })
+      });
       // .catch(res => {
       //     MessageBox.alert("", {
       //       message: "请求超时",
@@ -104,7 +108,7 @@ export default {
     toProblemFeedback() {
       this.$router.push("/problemFeedback");
     },
-    todownload(){
+    todownload() {
       this.$router.push("/downloadmode");
     },
     //退出登录
@@ -117,6 +121,8 @@ export default {
         if (action == "confirm") {
           this.$fetchGet("login/logout").then(res => {
             if (res == "login") {
+              // this.$stores.getters.cacheModule=;
+              this.$store.commit("SET_CACHE", false);
               this.$router.push("/login");
             }
           });
@@ -217,10 +223,10 @@ export default {
       padding: 0.4rem;
       .close-popup {
         position: absolute;
-        right: .32rem;
-        top: .32rem;
-        height: .48rem;
-        width: .48rem;
+        right: 0.32rem;
+        top: 0.32rem;
+        height: 0.48rem;
+        width: 0.48rem;
       }
       .version-popup-top {
         display: flex;

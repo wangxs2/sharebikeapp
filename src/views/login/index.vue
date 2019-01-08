@@ -44,7 +44,7 @@ export default {
   },
   beforeCreate() {},
   mounted() {
-    console.log(this.$store.getters.password);
+    // console.log(this.$store.getters.password);
     if (localStorage.getItem("passWord")) {
       this.loginMess.password = localStorage.getItem("passWord");
       this.loginMess.username = localStorage.getItem("userName");
@@ -120,6 +120,7 @@ export default {
         .then(res => {
           Indicator.close();
           if (res.status == "success") {
+            this.$store.commit("SET_CACHE", true);
             localStorage.setItem("roleCode", res.info.roleCode);
             document.cookie = "userId=" + res.info.id;           
             this.$router.push("/layout/selfCheck");

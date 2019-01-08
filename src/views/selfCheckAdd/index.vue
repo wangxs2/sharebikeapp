@@ -105,10 +105,10 @@
             </div>
           </div>
           <div id="myMap">
-
           </div>
            <div class="addres-search">
-              <input type="text" v-model="addressCtrol" id="suggestId" style="height:100%;" placeholder="搜索地点">
+             <span></span>
+              <input type="text" v-model="addressCtrol" id="suggestId" style="height:100%;background:#f2f2f2" placeholder="搜索地点">
               <!-- <span style="color:#5076ff" @click="suggestSa">搜索</span> -->
             </div>
           <div class="placeList">
@@ -538,7 +538,7 @@ export default {
         padding: 0.34rem 0.2rem;
         box-sizing: border-box;
         border-bottom: 1px solid #eeeeee;
-        // background: #f2f2f2;
+        background: #f2f2f2;
     }
     .placeList {
       width: 100%;

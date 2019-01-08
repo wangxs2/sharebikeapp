@@ -16,35 +16,36 @@ export const constantRouterMap = [{
         path: '/layout',
         name: '主页',
         component: _import('layout/index'),
+
         children: [{
                 path: 'selfCheck',
                 name: '自查',
                 component: () =>
                     import ('@/views/layout/selfCheck'),
-                // meta: {
-                //     keepAlive: true,
+                meta: {
+                    keepAlive: true,
+                },
 
-                // }
             },
             {
                 path: 'supervise',
                 name: '派单',
                 component: () =>
                     import ('@/views/layout/supervise'),
-                // meta: {
-                //     keepAlive: true,
+                meta: {
+                    keepAlive: true,
+                },
 
-                // }
             },
             {
                 path: 'needtodo',
                 name: '待办',
                 component: () =>
                     import ('@/views/layout/needtodo'),
-                // meta: {
-                //     keepAlive: true,
+                meta: {
+                    keepAlive: true,
+                },
 
-                // }
             },
             {
                 path: 'count',
@@ -52,9 +53,9 @@ export const constantRouterMap = [{
                 component: () =>
                     import ('@/views/layout/count'),
                 // meta: {
-                //   keepAlive: true,
+                //     keepAlive: true,
+                // },
 
-                // }
             },
             {
                 path: 'warning',
@@ -62,9 +63,9 @@ export const constantRouterMap = [{
                 component: () =>
                     import ('@/views/layout/warning'),
                 // meta: {
-                //   keepAlive: true,
+                //     keepAlive: true,
+                // },
 
-                // }
             },
             {
                 path: 'me',
@@ -72,9 +73,9 @@ export const constantRouterMap = [{
                 component: () =>
                     import ('@/views/layout/me'),
                 // meta: {
-                //   keepAlive: true,
+                //     keepAlive: true,
+                // },
 
-                // }
             },
         ]
     },
@@ -120,7 +121,7 @@ export const constantRouterMap = [{
     },
     {
         path: '/superviseDetail',
-        name: '自查详情',
+        name: '派单详情',
         component: _import('superviseDetail/index')
     },
     {
