@@ -97,13 +97,11 @@
             <div class="topRight">
               <span>{{FormatDate(iteam.dispatchTime)}}</span>
               <span
-                style="font-size:0.32rem;line-height:1.5;"
+                style="font-size:0.3rem;line-height:1.5;"
                 :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'"
               >{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"重新派单":"已完成"}}</span>
-              <!-- <p style="width:0.1rem"></p> -->
             </div>
             <div class="centersa">
-              <!-- <p v-if="iteam.status==0">企业：{{iteam.dispatchReceive}}</p> -->
               <div
                 class="centersalist"
                 v-for="(item, index) in iteam.finishDetailList"
@@ -236,28 +234,29 @@ export default {
         }
       });
     }
+
   },
   created() {
+    if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
+      this.searchCondition = this.$route.query.searchCondition;
+      this.menuListTop = this.$route.query.menuListTop;
+      this.downIcon = this.$route.query.downIcon;
+      console.log(this.$route.query.areaarr);
+      if (this.$route.query.areaarr.length == 0) {
+        this.getorgsTree();
+      } else {
+        this.areakids = this.$route.query.areakids;
+        this.areaarr = this.$route.query.areaarr;
+        
+        this.viewType=this.areaarr[this.areaarr.length-1].id;
+      }
+      this.getListData2();
+    } else {
+      
+      this.getorgsTree();
+    }
     this.getBikeCompany();
     this.getBikeMen();
-    this.getorgsTree();
-  },
-  beforeRouteLeave(to, from, next) {
-    console.log('---------------------------------------------');
-    if (to.path == "/superviseAdd" || to.path == "/superviseDetail") {
-      if (!from.meta.keepAlive) {
-        from.meta.keepAlive = true;
-      }
-      next();
-    } else {
-      from.meta.keepAlive = false;
-      to.meta.keepAlive = false;
-      console.log(this)
-      this.$destroy();
-      next();
-    }
-    console.log(to.meta.keepAlive);
-    console.log(from.meta.keepAlive);
   },
   methods: {
     detailClick(row) {
@@ -265,12 +264,27 @@ export default {
         path: "/superviseDetail",
         query: {
           supervise: row.sheetCode,
-          statuSa: row.status
+          statuSa: row.status,
+          searchCondition: this.searchCondition,
+          menuListTop: this.menuListTop,
+          downIcon: this.downIcon,
+          areakids: this.areakids,
+          areaarr: this.areaarr,
         }
       });
     },
     iconClick() {
-      this.$router.push("/superviseAdd");
+      // this.$router.push("/superviseAdd");
+      this.$router.push({
+        path: "/superviseAdd",
+        query: {
+          searchCondition: this.searchCondition,
+          menuListTop: this.menuListTop,
+          downIcon: this.downIcon,
+          areakids: this.areakids,
+          areaarr: this.areaarr,
+        }
+      });
     },
     //区域切换
     areaTypeclick(val, index) {
@@ -344,7 +358,7 @@ export default {
     //确定
     submit() {
       this.downIcon1 = false;
-      this.getListData2();
+      this.getListData();
     },
     //切换图片；
     sort(iteam, index) {
@@ -409,20 +423,16 @@ export default {
     },
     getListData() {
       this.pageList = [];
-      this.searchCondition.page = "0";
-      this.searchCondition.pageSize = "15";
+      this.searchCondition.page = 0;
+      this.searchCondition.pageSize = 15;
     },
     getListData2() {
-      if (this.pageList.length !== 0) {
-        this.getListData();
-      } else {
         this.getListData();
         this.$fetchGet("dispatch/pageDispatch", this.searchCondition).then(
           res => {
             this.pageList = res.list;
           }
         );
-      }
     },
     infinite(done) {
       this.searchCondition.page++;
@@ -440,6 +450,8 @@ export default {
     refresh: function(done) {
       //下拉刷新
       // console.log("refresh");
+      this.searchCondition.page = 1;
+      this.searchCondition.pageSize = 15;
       this.$fetchGet("dispatch/pageDispatch", {
         page: 1,
         pageSize: 15,

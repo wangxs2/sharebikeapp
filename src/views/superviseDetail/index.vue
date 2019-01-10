@@ -27,12 +27,9 @@
       >
     </mt-popup>
     <div class="header">
-      <mt-header title="派单处理详情">
-        <router-link to="/layout/supervise" slot="left">
-          <mt-button icon="back" style="font-size:24px"></mt-button>
-        </router-link>
-        <mt-button style="font-size:18px" slot="right" @click="iconClick">{{status==2?"反馈":""}}</mt-button>
-      </mt-header>
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
+      <div class="header-title">派单处理详情</div>
+      <div style="font-size:18px" @click="iconClick">{{status==2?"反馈":""}}</div>
     </div>
     <main>
       <p
@@ -240,7 +237,13 @@ export default {
       slide1: [],
       sheetCode: "",
       status: "",
-      iteamList: []
+      iteamList: [],
+       areakids:[],
+      areaarr:[],
+      searchCondition:{},
+      menuListTop:[],
+      lageImg:[],//轮播显示图片
+      downIcon:-1,
     };
   },
   components: {},
@@ -250,13 +253,36 @@ export default {
     if (this.$route.query.supervise) {
       this.sheetCode = this.$route.query.supervise;
       this.status = this.$route.query.statuSa;
+      if(this.$route.query.downIcon||this.$route.query.downIcon==0){
+        this.searchCondition = this.$route.query.searchCondition;
+        this.menuListTop = this.$route.query.menuListTop;
+        this.downIcon = this.$route.query.downIcon;
+        this.areakids = this.$route.query.areakids;
+        this.areaarr = this.$route.query.areaarr;
+      }
       this.getMessage(this.sheetCode);
     }
+    window.watchBackWXS=this.watchBackWXS;
   },
   mounted() {},
   methods: {
     handleClose() {
       console.log("close event");
+    },
+    watchBackWXS(){
+      this.toHome();
+    },
+    toHome(){
+      this.$router.push({
+          path: "/layout/supervise",
+          query: {
+            searchCondition:this.searchCondition,
+            menuListTop:this.menuListTop,
+            downIcon:this.downIcon,
+            areaarr:this.areaarr,
+            areakids:this.areakids,
+          }
+        });
     },
     rotate() {
       this.rotateS = this.rotateS + 90;
@@ -282,7 +308,12 @@ export default {
         query: {
           message: this.sheetCode,
           dealMethod: this.iteamList[0].dealMethod,
-          statuSa: this.iteamList[0].status
+          statuSa: this.iteamList[0].status,
+          searchCondition:this.searchCondition,
+          menuListTop:this.menuListTop,
+          downIcon:this.downIcon,
+          areaarr:this.areaarr,
+          areakids:this.areakids,
         }
       });
     },
@@ -347,12 +378,21 @@ export default {
     align-items: center;
   }
   .header {
-    width: 100%;
     height: 1.173333rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
-    text-align: center;
-    line-height: 1.173333rem;
     color: #fff;
+    font-size: 0.48rem;
+    padding: 0 0.32rem;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    img {
+      height: 0.48rem;
+      width: 0.266667rem;
+    }
   }
   main {
     flex: 1;

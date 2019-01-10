@@ -430,11 +430,15 @@ export default {
   mounted() {},
   created() {
     this.getCleanArea();
+    window.watchBackWXS=this.watchBackWXS;
   },
   methods: {
     //返回考评
     toUserInfo() {
       this.$router.push("/layout/count");
+    },
+    watchBackWXS(){
+        this.toUserInfo();
     },
     // 打开时间选择框
     openPicker() {

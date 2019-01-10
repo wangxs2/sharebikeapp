@@ -123,7 +123,7 @@ import { Loadmore } from "mint-ui";
 import { Toast } from "mint-ui";
 import { Indicator } from "mint-ui";
 export default {
-  name:"zicha",
+  name: "zicha",
   computed: {},
   data() {
     return {
@@ -136,8 +136,6 @@ export default {
       menType: "",
       downIcon: -1,
       downIcon1: false,
-      // downIcon2: true,
-      // downIcon3: true,
       menuName: "",
       menuListTop: [
         {
@@ -188,10 +186,11 @@ export default {
         name: "处理人",
         id: ""
       },
+      requestFlage:true,//请求是我自己写的还是自带的刷新的
       noneList: false,
       searchCondition: {
-        page: "0",
-        pageSize: "15",
+        page: 0,
+        pageSize: 15,
         handleBy: "",
         areaId: "",
         orgId: "",
@@ -208,32 +207,25 @@ export default {
   },
   components: {},
   created() {
-    this.getBikeCompany();
-    this.getBikeMen();
-    this.getorgsTree();
-  },
-  activated(){
-    console.log('进入activated');
-      // if(!this.$route.meta.isUserChce){
-      // }
-  },
-  beforeRouteLeave(to, from, next) {
-    console.log('---------------------------------------------');
-    
-    if (to.path == "/selfCheckAdd" || to.path == "/selfCheckdetail") {
-      if (!from.meta.keepAlive) {
-        from.meta.keepAlive = true;
+    if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
+      this.searchCondition = this.$route.query.searchCondition;
+      this.menuListTop = this.$route.query.menuListTop;
+      this.downIcon = this.$route.query.downIcon;
+      console.log(this.menuListTop);
+      if (this.$route.query.areaarr.length == 0) {
+        this.getorgsTree();
+      } else {
+        this.areakids = this.$route.query.areakids;
+        this.areaarr = this.$route.query.areaarr;
+        
+        this.viewType=this.areaarr[this.areaarr.length-1].id;
       }
-      next();
+     this.getListData2();
     } else {
-      from.meta.keepAlive = false;
-      to.meta.keepAlive = false;
-      this.$destroy();
-      // console.log(this)
-      next();
+      this.getorgsTree();
     }
-    console.log(to.meta.keepAlive);
-    console.log(from.meta.keepAlive);
+     this.getBikeCompany();
+      this.getBikeMen();
   },
   mounted() {},
   methods: {
@@ -243,26 +235,46 @@ export default {
         this.$router.push({
           path: "/selfCheckdetail",
           query: {
-            message: row.sheetCode
+            message: row.sheetCode,
+            searchCondition: this.searchCondition,
+            menuListTop: this.menuListTop,
+            downIcon: this.downIcon,
+            areakids: this.areakids,
+            areaarr: this.areaarr,
           }
         });
       } else {
         this.$router.push({
           path: "/selfCheckAdd",
           query: {
-            message: row.sheetCode
+            message: row.sheetCode,
+            searchCondition: this.searchCondition,
+            menuListTop: this.menuListTop,
+            downIcon: this.downIcon,
+            areakids: this.areakids,
+            areaarr: this.areaarr,
           }
         });
       }
     },
     iconClick() {
-      this.$router.push("/selfCheckAdd");
+      this.$router.push({
+          path: "/selfCheckAdd",
+          query: {
+            message: 'just',
+            searchCondition: this.searchCondition,
+            menuListTop: this.menuListTop,
+            downIcon: this.downIcon,
+            areakids: this.areakids,
+            areaarr: this.areaarr,
+          }
+        });
     },
     //区域切换
     areaTypeclick(val, index) {
       console.log(val);
       this.areaflag = false;
-      this.areakids=[];
+      this.areakids = [];
       this.viewType = val.id;
       this.areaname.name = val.name;
       this.areaname.id = val.id;
@@ -330,7 +342,7 @@ export default {
     //确定
     submit() {
       this.downIcon1 = false;
-      this.getListData2();
+      this.getListData();
     },
     //切换图片；
     sort(iteam, index) {
@@ -360,7 +372,6 @@ export default {
       //格式父级权限
       var arr = [];
       $.each(json, (index, item) => {
-        // item.Ids = item.pid + "," + item.id;
         if (item.pid === pid) {
           arr.push(item);
           item.children = this.parseChildren(item.id, json);
@@ -394,37 +405,36 @@ export default {
     },
     getListData() {
       this.pageList = [];
-      this.searchCondition.page = "0";
-      this.searchCondition.pageSize = "15";
+      this.searchCondition.page = 0
+      this.searchCondition.pageSize = 15;
     },
     getListData2() {
-      if (this.pageList.length !== 0) {
-        this.getListData();
-      } else {
-        this.getListData();
+      this.getListData();
         this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
           res => {
             this.pageList = res.list;
           }
         );
-      }
     },
     infinite(done) {
-      this.searchCondition.page++;
-      this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
-        res => {
-          if (this.pageList.length == 0) {
-            this.pageList = res.list;
-          } else {
-            this.pageList = this.pageList.concat(res.list);
+      if(this.requestFlage){
+        this.searchCondition.page++;
+        this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
+          res => {
+            if (this.pageList.length == 0) {
+              this.pageList = res.list;
+            } else {
+              this.pageList = this.pageList.concat(res.list);
+            }
+            done(true);
           }
-          done(true);
-        }
-      );
+        );
+      }
+      
     },
     refresh: function(done) {
-      //下拉刷新
-      // console.log("refresh");
+      this.searchCondition.page = 1;
+      this.searchCondition.pageSize = 15;
       this.$fetchGet("selfcheck/pageSelfCheck", {
         page: 1,
         pageSize: 15,
@@ -437,9 +447,6 @@ export default {
         this.bottom = self.bottom + 10;
         this.pageList = res.list;
       });
-      // this.timeout = setTimeout(() => {
-      //   this.$refs.my_scroller.finishPullToRefresh();
-      // }, 1000);
     }
   }
 };

@@ -10,11 +10,9 @@
           <img src="../../assets/image/login/rotate.svg" alt="" srcset="" width="50" height="50" style="position:fixed;right:44%;bottom:15px;" @click="rotate()">
       </mt-popup>
       <div class="header">
-        <mt-header title="添加企业自查">   
-            <router-link to="/layout/selfCheck" slot="left">
-                <mt-button icon="back" style="font-size:24px"></mt-button>
-            </router-link>         
-        </mt-header>
+        <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
+        <div class="header-title">添加企业自查</div>
+        <div></div>
       </div>
       <div class="content">
         <div class="witeSa">
@@ -134,6 +132,11 @@ export default {
       changeId: -1,
       changeId1: -1,
       rotateS: 0,
+      areakids:[],
+      areaarr:[],
+      searchCondition:{},
+      menuListTop:[],
+      downIcon:-1,
       addressCtrol:'',
       popupVisible1: false,
       popupVisible2: false,
@@ -170,10 +173,16 @@ export default {
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
       this.getMessage(this.sheetCode);
+      this.searchCondition = this.$route.query.searchCondition;
+      this.menuListTop = this.$route.query.menuListTop;
+      this.downIcon = this.$route.query.downIcon;
+      this.areakids = this.$route.query.areakids;
+      this.areaarr = this.$route.query.areaarr;
     }
     this.downAddress();
     window.getImage = this.getImage;
     window.getLocation = this.getLocation;
+    window.watchBackWXS=this.watchBackWXS;
   },
   mounted() {
     new BMap.Autocomplete(    //建立一个自动完成的对象
@@ -191,6 +200,21 @@ export default {
      getLocation(val){
       return val
      },
+     watchBackWXS(){
+      this.toHome();
+    },
+     toHome(){
+      this.$router.push({
+          path: "/layout/selfCheck",
+          query: {
+            searchCondition:this.searchCondition,
+            menuListTop:this.menuListTop,
+            downIcon:this.downIcon,
+            areaarr:this.areaarr,
+            areakids:this.areakids,
+          }
+        });
+    },
     placeClick() {    
       // console.log(123);
       if(this.downAddress()==false||this.getLocation()==false){
@@ -481,15 +505,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// input {
-//   width: 100%;
-//   margin: 0 1rem;
-//   text-align: right;
-// }
-// textarea {
-//   width: 100%;
-//   text-align: right;
-// }
 .container {
   width: 100%;
   height: 100%;
@@ -569,10 +584,21 @@ export default {
     }
   }
   .header {
-    width: 100%;
+    height: 1.173333rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
-    text-align: center;
     color: #fff;
+    font-size: 0.48rem;
+    padding: 0 0.32rem;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    img {
+      height: 0.48rem;
+      width: 0.266667rem;
+    }
   }
   .content {
     flex: 1;

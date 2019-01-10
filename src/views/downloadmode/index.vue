@@ -37,11 +37,15 @@ export default {
   mounted() {},
   created() {
     window.getImage = this.getImage;
+    window.watchBackWXS=this.watchBackWXS;
   },
   methods: {
     //返回个人中心
     toSettings() {
       this.$router.push("/settings");
+    },
+    watchBackWXS(){
+        this.toSettings();
     },
     //删除图片
     deleteImg(index) {

@@ -27,16 +27,9 @@
       >
     </mt-popup>
     <div class="header">
-      <mt-header title="派单处理">
-        <router-link to="/layout/needtodo" slot="left">
-          <mt-button icon="back" style="font-size:24px"></mt-button>
-        </router-link>
-        <mt-button
-          style="font-size:18px"
-          slot="right"
-          @click="iconClick"
-        >{{roleCode=="manage"?"转派":""}}</mt-button>
-      </mt-header>
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
+      <div class="header-title">派单处理</div>
+      <div style="font-size:18px" @click="iconClick">{{roleCode=="manage"?"转派":""}}</div>
     </div>
     <div class="content">
       <div class="superList">
@@ -233,51 +226,6 @@
             </div>
           </div>
       </div>
-      <!-- 
-        <div  style="color:rgb(102, 204, 0);padding-left:0.4rem">
-              处理信息
-        </div>
-        <div class="iteamImage">
-          <p>
-            <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">整理前</span>
-          </p>
-          <div class="imageList">
-               <div v-for="(iteam,index) in formMessage.handleBeforeURLs" :key="index" class="detailIcon">
-                  <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-                  <span @click="detailImage(1,index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
-              </div>             
-              <img v-if="formMessage.handleBeforeURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="100px" height="100px" alt="" srcset="" @click="clickImage">
-          </div>
-        </div>
-        <div class="iteamImage">
-          <p>
-            <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-            <span style="padding-left:0.2rem">整理后</span>
-          </p>
-          <div class="imageList">
-             <div v-for="(iteam,index) in formMessage.handleAfterURLs" :key="index" class="detailIcon">
-                  <img :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-                  <span @click="detailImage(2,index)"><img src="@/assets/image/close@2x.png" width="30" height="30" alt="" srcset=""></span>
-              </div>             
-              <img v-if="formMessage.handleAfterURLs.length<5" src="../../assets/image/login/cramer.svg" style="box-shadow:none;background:#eeeeee;" width="100px" height="100px" alt="" srcset="" @click="clickImage1">
-             
-          </div>
-        </div>
-        <div class="iteamForm">
-          <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
-            <span>整理数</span>
-            <input type="number" placeholder="请选择整理数" v-model="formMessage.arrangeNum">
-          </p>
-        </div>
-        <div class="iteamForm">
-          <span><img src="../../assets/image/selfcheck/icon_6_num2@3x.png" width="22" height="22" alt="" srcset=""></span>
-          <p>
-            <span>清运数</span>
-            <input type="number" placeholder="请选择清运数" v-model="formMessage.cleanNum">
-          </p>
-      </div>-->
     </div>
     <div class="bottom">
       <button type="button" class="buttonSa" @click="save()">暂存</button>
@@ -318,7 +266,14 @@ export default {
         handleAfterURLs: [],
         cleanNum: "",
         sheetCode1: "",
-        remark: ""
+        remark: "",
+        //c查询条件
+        viewTypesa:'',
+        areakids:[],
+        areaarr:[],
+        searchCondition:{},
+        menuListTop:[],
+        downIcon:-1,
       }
     };
   },
@@ -328,9 +283,18 @@ export default {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.id) {
       this.sheetCode = this.$route.query.id;
+      this.viewTypesa= this.$route.query.viewTypesa;
       this.getMessage(this.sheetCode);
+      if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
+        this.searchCondition = this.$route.query.searchCondition;
+        this.menuListTop = this.$route.query.menuListTop;
+        this.downIcon = this.$route.query.downIcon;
+        this.areakids = this.$route.query.areakids;
+        this.areaarr = this.$route.query.areaarr;
+      }
     }
     window.getImage = this.getImage;
+    window.watchBackWXS=this.watchBackWXS;
   },
   methods: {
     clickImage() {
@@ -339,6 +303,23 @@ export default {
     },
     rotate() {
       this.rotateS = this.rotateS + 90;
+    },
+    watchBackWXS(){
+      this.toHome();
+    },
+    toHome(){
+      this.$router.push({
+          path: "/layout/needtodo",
+          query: {
+            name: "2",
+            searchCondition:this.searchCondition,
+            menuListTop:this.menuListTop,
+            downIcon:this.downIcon,
+            areaarr:this.areaarr,
+            areakids:this.areakids,
+            viewTypesa:this.viewTypesa,
+          }
+        });
     },
     getMap() {
       this.myMap = new BMap.Map("myMap", { enableMapClick: false });
@@ -366,7 +347,13 @@ export default {
         path: "/transfer",
         query: {
           sheetCode1: this.sheetCode1,
-          message: this.sheetCode
+          message: this.sheetCode,
+          viewTypesa:this.viewTypesa,
+          searchCondition: this.searchCondition,
+          menuListTop: this.menuListTop,
+          downIcon: this.downIcon,
+          areakids: this.areakids,
+          areaarr: this.areaarr,
         }
       });
     },
@@ -569,12 +556,21 @@ p {
     align-items: center;
   }
   .header {
-    width: 100%;
     height: 1.173333rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
-    text-align: center;
-    line-height: 1.173333rem;
     color: #fff;
+    font-size: 0.48rem;
+    padding: 0 0.32rem;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    img {
+      height: 0.48rem;
+      width: 0.266667rem;
+    }
   }
   .content {
     width: 100%;

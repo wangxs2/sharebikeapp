@@ -197,146 +197,6 @@
             </div>
           </div>
         </div>
-      <!-- <div style="color:rgb(102, 204, 0)" class="iteamList">
-                        派单信息
-        </div>
-        <div class="iteamList">
-              <div>
-                <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>单号：</span>
-                <span>{{(iteamList.sheetCode)}}</span>
-                
-              </div>
-              <div style="margin-top:0.2rem" :class="iteamList.status == 1 ? 'green' : 'red'">{{iteamList.status == 1 ? '处理中' : "已处理"}}</div>
-
-        </div>
-        <div class="iteamList">
-              <div>
-                <span><img src="../../assets/image/selfcheck/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>时间：</span>
-                <span>{{FormatDate(iteamList.updateTime)}}</span>
-                
-              </div>
-        </div>
-        <div class="iteamList">
-              <div>
-                <span><img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>地点：</span>
-                <span>{{iteamList.handleAddr}}</span>
-                
-              </div>
-
-        </div>
-        <div class="imageClean" style="padding:0.3rem 0.213333rem">
-              <div>
-                <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>派单照片</span>                                
-              </div>
-              <div class="imageList">
-                <img v-for="(iteam,index) in iteamList.dispachPhotoURLs" :key="index" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-              </div>
-
-        </div>
-        <div class="iteamList">
-              <div>
-                <span><img src="../../assets/image/selfcheck/icon_3_before processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>处理方式：</span>
-                <span>{{iteamList.dealMethod==1?"整理":iteamList.dealMethod==2?"清运":"整理且清运"}}</span>
-                
-              </div>
-
-        </div>
-         <div v-if="iteamList.sendRecordList.length!==0" style="color:rgb(102, 204, 0)" class="iteamList">
-                    转派记录
-        </div>
-        <div v-for="(item,index) in iteamList.sendRecordList" :key="index">
-            <div class="iteamList">
-                <div>
-                    <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
-                    <span>转派时间：</span>
-                    <span>{{item.sendTime}}</span>
-                </div>
-            </div>
-            <div class="iteamList">
-                <div>
-                    <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
-                    <span>转派人 ：</span>
-                    <span>{{item.sendMan}}</span>
-                </div>
-            </div>
-            <div class="iteamList">
-                <div>
-                    <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
-                    <span>接单人：</span>
-                    <span>{{item.receiveMan}}</span>
-                </div>
-            </div>
-            <div class="iteamList">
-                <div class="moreText">
-                    <span><img style="margin-top:-0.1rem" src="../../assets/image/supervise/icon_5_note@3x.png" width="22" height="22" alt="" srcset=""></span>
-                    <span style="width:17%;margin-left:0.1rem">备注：</span>
-                    <span class="textFont">{{item.sendRemark}}</span>                
-                </div>
-            </div>
-        </div>
-        <div style="color:rgb(102, 204, 0)" class="iteamList">
-            处理信息
-        </div>
-          <div class="iteamList">
-            <div>
-                <span><img src="../../assets/image/selfcheck/icon_8_processor@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>处理人：</span>
-                <span>{{iteamList.handleUserName}}</span>                
-            </div>
-        </div>
-        <div class="iteamList">
-            <div>
-                <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>处理时间：</span>
-                <span v-if="iteamList.handleTime!==undefined">{{FormatDate(iteamList.handleTime)}}</span>
-            </div>
-        </div>
-        <div class="iteamList">
-            <div>
-                <span><img src="../../assets/image/supervise/icon_1_time@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>处理时长：</span>
-                <span>{{iteamList.dealTime}}</span>
-            </div>
-        </div>
-        <div class="imageClean" style="padding:0.3rem 0.213333rem">
-            <div>
-                <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>处理前：</span>                                
-            </div>
-              <div class="imageList">
-                <img v-for="(iteam,index) in iteamList.handleBeforeURLs" :key="index" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-            </div>
-        </div>
-        <div class="imageClean" style="padding:0.3rem 0.213333rem">
-            <div>
-                <span><img src="../../assets/image/selfcheck/icon_4_after processing@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>处理后：</span>                                
-            </div>
-              <div class="imageList">
-                <img v-for="(iteam,index) in iteamList.handleAfterURLs" :key="index" :src="Ip+iteam" alt="" srcset="" width="100px" height="100px" @click="handOpen(iteam)">
-            </div>
-        </div>
-        <div class="iteamList">
-            <div>
-                <span><img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>整理数：</span>
-                <span>{{iteamList.arrangeNum}}</span>                
-            </div>
-        </div>
-        <div class="iteamList">
-            <div>
-                <span><img src="../../assets/image/selfcheck/icon_6_num2@3x.png" width="22" height="22" alt="" srcset=""></span>
-                <span>清运数：</span>
-                <span>{{iteamList.cleanNum}}</span>
-                
-            </div>
-
-      </div>-->
     </div>
   </div>
 </template>
@@ -354,7 +214,14 @@ export default {
       rotateS: 0,
       bigImage: "",
       popupVisible: false,
-      iteamList: {}
+      iteamList: {},
+      //c查询条件
+        viewTypesa:'',
+        areakids:[],
+        areaarr:[],
+        searchCondition:{},
+        menuListTop:[],
+        downIcon:-1,
     };
   },
   components: {},
@@ -362,8 +229,15 @@ export default {
   created() {
     if (this.$route.query.id) {
       this.sheetCode = this.$route.query.id;
+      this.viewTypesa= this.$route.query.viewTypesa;
+      this.searchCondition = this.$route.query.searchCondition;
+      this.menuListTop = this.$route.query.menuListTop;
+      this.downIcon = this.$route.query.downIcon;
+      this.areakids = this.$route.query.areakids;
+      this.areaarr = this.$route.query.areaarr;
       this.getMessage(this.sheetCode);
     }
+    window.watchBackWXS=this.watchBackWXS;
   },
   mounted() {},
   methods: {
@@ -372,6 +246,9 @@ export default {
       this.popupVisible = true;
       val = val.replace(".400x400.jpg", ".square.jpg");
       this.bigImage = val;
+    },
+    watchBackWXS(){
+      this.iconClick();
     },
     splitsa(val){
       return val.split(" ")[0].split("-")[1]+"-"+val.split(" ")[0].split("-")[2]
@@ -386,7 +263,13 @@ export default {
       this.$router.push({
         path: "/layout/needtodo",
         query: {
-          name: "2"
+          name: "2",
+          searchCondition:this.searchCondition,
+          menuListTop:this.menuListTop,
+          downIcon:this.downIcon,
+          areaarr:this.areaarr,
+          areakids:this.areakids,
+          viewTypesa:this.viewTypesa,
         }
       });
     },

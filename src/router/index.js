@@ -22,9 +22,7 @@ export const constantRouterMap = [{
                 name: '自查',
                 component: () =>
                     import ('@/views/layout/selfCheck'),
-                meta: {
-                    keepAlive: true,
-                },
+
 
             },
             {
@@ -32,9 +30,7 @@ export const constantRouterMap = [{
                 name: '派单',
                 component: () =>
                     import ('@/views/layout/supervise'),
-                meta: {
-                    keepAlive: true,
-                },
+
 
             },
             {
@@ -42,9 +38,7 @@ export const constantRouterMap = [{
                 name: '待办',
                 component: () =>
                     import ('@/views/layout/needtodo'),
-                meta: {
-                    keepAlive: true,
-                },
+
 
             },
             {
@@ -52,9 +46,7 @@ export const constantRouterMap = [{
                 name: '统计',
                 component: () =>
                     import ('@/views/layout/count'),
-                // meta: {
-                //     keepAlive: true,
-                // },
+
 
             },
             {
@@ -62,9 +54,7 @@ export const constantRouterMap = [{
                 name: '预警',
                 component: () =>
                     import ('@/views/layout/warning'),
-                // meta: {
-                //     keepAlive: true,
-                // },
+
 
             },
             {
@@ -72,9 +62,7 @@ export const constantRouterMap = [{
                 name: '个人中心',
                 component: () =>
                     import ('@/views/layout/me'),
-                // meta: {
-                //     keepAlive: true,
-                // },
+
 
             },
         ]

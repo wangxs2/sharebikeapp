@@ -51,11 +51,16 @@ export default {
   },
   components: {},
   mounted() {},
-  created() {},
+  created() {
+    window.watchBackWXS=this.watchBackWXS;  
+  },
   methods: {
     //返回个人中心
     toSettings() {
       this.$router.push("/settings");
+    },
+    watchBackWXS(){
+        this.toSettings();
     },
     //判断原密码
     checkCurPwd() {

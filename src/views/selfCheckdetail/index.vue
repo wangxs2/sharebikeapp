@@ -7,14 +7,18 @@
         style="color:#fff;position:fixed;right:15px;top:15px"
         @click="popupVisible=false"
       ></span>
-      <img
-        :src="Ip+bigImage"
-        alt
-        srcset
-        v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
-        width="100%"
-      >
-      <img
+      <mt-swipe style="width:100%;height:64%" :continuous='false' :touchstart='true' :speed ='10'	:auto="0" :defaultIndex='indexImage'>
+        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index" >
+          <img
+            :src="Ip+iteam"
+            alt
+            srcset
+            v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
+            width="100%"
+          >
+        </mt-swipe-item>
+      </mt-swipe>
+      <!-- <img
         src="../../assets/image/login/rotate.svg"
         alt
         srcset
@@ -22,24 +26,47 @@
         height="50"
         style="position:fixed;right:44%;bottom:15px;"
         @click="rotate()"
-      >
+      > -->
     </mt-popup>
     <div class="header">
-      <mt-header title="自查处理详情">
-        <router-link to="/layout/selfCheck" slot="left">
-          <mt-button icon="back" style="font-size:24px"></mt-button>
-        </router-link>
-      </mt-header>
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
+      <div class="header-title">自查处理详情</div>
+      <div></div>
     </div>
     <div class="content">
       <div class="selfcheckList" style="border-bottom:1px solid #f2f2f2;">
         <div class="iteamsa">
           <img v-if="iteamList.orgId==1007" src="../../assets/image/OFO.png" width="59" height="58">
-          <img v-if="iteamList.orgId==1006" src="../../assets/image/mobike.png" width="59" height="58">
-          <img v-if="iteamList.orgId==1014" src="../../assets/image/jiujiu.png" width="59" height="58">
-          <img v-if="iteamList.orgId==1015" src="../../assets/image/haluo.png" width="59" height="58">
-          <img v-if="iteamList.orgId==1059" src="../../assets/image/xiangqi.png" width="59" height="58">
-          <img v-if="iteamList.orgId!==1006&&iteamList.orgId!==1007&&iteamList.orgId!==1014&&iteamList.orgId!==1015&&iteamList.orgId!==1059" src="../../assets/image/jiedao.png" width="59" height="58">
+          <img
+            v-if="iteamList.orgId==1006"
+            src="../../assets/image/mobike.png"
+            width="59"
+            height="58"
+          >
+          <img
+            v-if="iteamList.orgId==1014"
+            src="../../assets/image/jiujiu.png"
+            width="59"
+            height="58"
+          >
+          <img
+            v-if="iteamList.orgId==1015"
+            src="../../assets/image/haluo.png"
+            width="59"
+            height="58"
+          >
+          <img
+            v-if="iteamList.orgId==1059"
+            src="../../assets/image/xiangqi.png"
+            width="59"
+            height="58"
+          >
+          <img
+            v-if="iteamList.orgId!==1006&&iteamList.orgId!==1007&&iteamList.orgId!==1014&&iteamList.orgId!==1015&&iteamList.orgId!==1059"
+            src="../../assets/image/jiedao.png"
+            width="59"
+            height="58"
+          >
           <div style="width:70%;margin-left:0.3rem;display: flex;flex-direction:column;">
             <p style="display: flex;justify-content: space-between;width:100%;flex:1">
               <span>{{iteamList.orgName}}</span>
@@ -116,8 +143,8 @@
             :key="index"
             alt
             srcset
-            style="width:2.7rem;height:2.7rem"
-            @click="handOpen(iteam)"
+            style="width:2.6rem;height:2.6rem"
+            @click="handOpen(iteamList.handleBeforeURLs,index)"
           >
         </div>
         <p style="font-size:0.3rem;color:#666666;padding-bottom:0.2rem;padding-top:0.2rem;">处理后</p>
@@ -128,8 +155,8 @@
             :key="index"
             alt
             srcset
-            style="width:2.7rem;height:2.7rem"
-            @click="handOpen(iteam)"
+            style="width:2.6rem;height:2.6rem"
+            @click="handOpen(iteamList.handleAfterURLs,index)"
           >
         </div>
       </div>
@@ -146,17 +173,25 @@
 <script>
 import { Loadmore } from "mint-ui";
 import { Indicator } from "mint-ui";
+import { setTimeout } from 'timers';
 export default {
   computed: {},
   data() {
     return {
       slide: [],
       slide1: [],
+      searchCondition: {},
+      menuListTop: [],
+      downIcon: -1,
       sheetCode: "",
       rotateS: 0,
       bigImage: "",
+      indexImage:-1,//轮播默认图片
+      lageImg: [],
       popupVisible: false,
-      iteamList: {}
+      iteamList: {},
+      areakids: [],
+      areaarr: []
     };
   },
   components: {},
@@ -164,19 +199,46 @@ export default {
   created() {
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
+      this.searchCondition = this.$route.query.searchCondition;
+      this.menuListTop = this.$route.query.menuListTop;
+      this.downIcon = this.$route.query.downIcon;
+      this.areakids = this.$route.query.areakids;
+      this.areaarr = this.$route.query.areaarr;
       this.getMessage(this.sheetCode);
     }
+    window.watchBackWXS = this.watchBackWXS;
   },
   mounted() {},
   methods: {
     rotate() {
       this.rotateS = this.rotateS + 90;
     },
-    handOpen(val) {
+    watchBackWXS() {
+      this.toHome();
+    },
+    toHome() {
+      this.$router.push({
+        path: "/layout/selfCheck",
+        query: {
+          searchCondition: this.searchCondition,
+          menuListTop: this.menuListTop,
+          downIcon: this.downIcon,
+          areaarr: this.areaarr,
+          areakids: this.areakids
+        }
+      });
+    },
+    handOpen(val,index) {
+      console.log(index);
       this.rotateS = 0;
+      this.lageImg=[];
       this.popupVisible = true;
-      val = val.replace(".400x400.jpg", ".square.jpg");
-      this.bigImage = val;
+      val.forEach(iteam => {
+        iteam = iteam.replace(".400x400.jpg", ".square.jpg");
+        this.lageImg.push(iteam);
+      });
+      this.indexImage=index;
+     
     },
     getMessage(val) {
       Indicator.open({
@@ -196,6 +258,9 @@ export default {
   }
 };
 </script>
+<style>
+
+</style>
 
 <style lang="scss" scoped>
 .green {
@@ -216,6 +281,7 @@ export default {
   flex-direction: column;
   // overflow: hidden;
   background-color: #f2f2f2;
+  
   .imgMask {
     width: 100%;
     height: 100%;
@@ -226,12 +292,21 @@ export default {
     align-items: center;
   }
   .header {
-    width: 100%;
     height: 1.173333rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
-    text-align: center;
-    line-height: 1.173333rem;
     color: #fff;
+    font-size: 0.48rem;
+    padding: 0 0.32rem;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    img {
+      height: 0.48rem;
+      width: 0.266667rem;
+    }
   }
   .content {
     width: 100%;

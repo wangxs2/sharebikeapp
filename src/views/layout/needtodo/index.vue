@@ -57,7 +57,6 @@
       </div>
     </div>
       <!-- 查询的划分 -->
-     
       <div class="noneList" v-if="noneList">
         <img
           src="../../../assets/image/selfcheck/image_no data@3x.png"
@@ -210,42 +209,55 @@ export default {
     if (this.$route.query.name == "2") {
       this.activeComany = 2;
       this.searchCondition.status = 2;
+      this.viewTypesa = this.$route.query.viewTypesa;
+      if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
+        this.searchCondition = this.$route.query.searchCondition;
+        this.menuListTop = this.$route.query.menuListTop;
+        this.downIcon = this.$route.query.downIcon;
+        console.log(this.$route.query.areaarr);
+          if (this.$route.query.areaarr.length == 0) {
+            this.getorgsTree();
+          } else {
+            this.areakids = this.$route.query.areakids;
+            this.areaarr = this.$route.query.areaarr;
+            this.viewType=this.areaarr[this.areaarr.length-1].id;
+          }
+      }
+      this.getBikeMen();
+      this.getListData2();
+    }else{
+      this.getBikeMen();
+      this.getorgsTree();
     }
-    // this.getBikeCompany();
-    this.getBikeMen();
-    this.getorgsTree();
+    
   },
   mounted() {},
-  beforeRouteLeave(to, from, next) {
-    console.log(to.name+'=====to');
-    console.log(from.name+'=====from');
-    if (to.path == "/needtodoAdd" || to.path == "/needtodoDetail") {
-      if (!from.meta.keepAlive) {
-        from.meta.keepAlive = true;
-      }
-      next();
-    } else {
-      from.meta.keepAlive = false;
-      to.meta.keepAlive = false;
-      this.$destroy();
-      next();
-    }
-  },
   methods: {
     detailClick(row) {
-      // console.log(row)
       if (row.status == 2) {
         this.$router.push({
           path: "/needtodoDetail",
           query: {
-            id: row.id
+            id: row.id,
+            viewTypesa:this.viewTypesa,
+            searchCondition: this.searchCondition,
+            menuListTop: this.menuListTop,
+            downIcon: this.downIcon,
+            areakids: this.areakids,
+            areaarr: this.areaarr,
           }
         });
       } else {
         this.$router.push({
           path: "/needtodoAdd",
           query: {
-            id: row.id
+            id: row.id,
+            viewTypesa:this.viewTypesa,
+            searchCondition: this.searchCondition,
+            menuListTop: this.menuListTop,
+            downIcon: this.downIcon,
+            areakids: this.areakids,
+            areaarr: this.areaarr,
           }
         });
       }
@@ -257,6 +269,7 @@ export default {
       this.areaname.name = val.name;
       this.areaname.id = val.id;
       this.areakids = val.children;
+      this.menuListCenter = this.areakids;
       this.areaarr = this.areaarr.slice(0, index + 1);
     },
     
@@ -292,11 +305,12 @@ export default {
             this.areaarr.push({
               name: row.name,
               id: row.id,
-              children: this.menuListCenter
+              children: this.areakids
             });
           }
           this.areaflag = true;
-          this.menuListCenter = row.children;
+          this.areakids = row.children;
+          this.menuListCenter = this.areakids;
         }
         this.searchCondition.areaId = this.areaname.id;
       }else if (this.downIcon == 1) {
@@ -398,13 +412,11 @@ export default {
     },
     getListData() {
       this.pageList = [];
-      this.searchCondition.page = "0";
-      this.searchCondition.pageSize = "15";
+      this.searchCondition.page =0;
+      this.searchCondition.pageSize = 15;
     },
     getListData2() {
-        this.pageList = [];
-      this.searchCondition.page = "1";
-      this.searchCondition.pageSize = "15";
+      this.getListData();
         this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
           res => {
             this.pageList = res.list;
@@ -427,6 +439,8 @@ export default {
     refresh: function() {
       //下拉刷新
       // console.log("refresh");
+      this.searchCondition.page = 1;
+      this.searchCondition.pageSize = 15;
       this.$fetchGet("dispatch/pageDispatchToDo", {
         page: 1,
         pageSize: 15,

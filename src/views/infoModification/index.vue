@@ -79,6 +79,7 @@ export default {
   created() {
     window.getImage = this.getImage;
     this.userInfoNew = this.cloneObj(this.userInfo);
+    window.watchBackWXS=this.watchBackWXS;  
   },
   methods: {
     //选择头像
@@ -93,6 +94,9 @@ export default {
     //返回个人信息修改
     toUserInfo() {
       this.$router.push("/layout/me");
+    },
+    watchBackWXS(){
+        this.toUserInfo();
     },
     checkPhoneNum() {},
     //设置性别

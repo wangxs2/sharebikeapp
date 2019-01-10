@@ -24,19 +24,20 @@ export default {
 
   mounted() {},
   created() {
-    window.onAndroidHome=this.backWXS(data);
+    // window.watchBackWXS=this.watchBackWXS;
     window.getPush = this.getPush;
-    // Android.onAndroidHome()=this.backWXS;
-    console.log(window.onAndroidHome);
+    
   },
-  // beforeRouteLeave(to, from, next) {
-
-  // },
   methods: {
-    backWXS(data){
-      console.log(data); 
-      this.$router.go(-1);
-    },
+    // watchBackWXS(){
+    //   console.log(555); 
+    //   console.log(this.$route.matched[0].path);
+    //   if(this.$route.matched[0].path=='/layout'||this.$route.matched[0].path=='/login'){
+    //     return
+    //   }else{
+    //     this.$router.go(-1);
+    //   }
+    // },
     getPush(userName, password, url) {
       if (userName) {
         let b = new base64();
@@ -66,8 +67,6 @@ export default {
                 res.info.roleCode == "global" ||
                 res.info.roleCode == "dispatch"
               ) {
-                // console.log(655555);
-                // console.log(url);
                 this.$router.push({
                   path: "/layout/supervise",
                   query: {

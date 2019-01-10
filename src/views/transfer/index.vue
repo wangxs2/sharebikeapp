@@ -40,7 +40,12 @@
       <div class="witeSa">
         <div class="topcloum">
           <div class="topcloumson" v-for="(item,index) in options" :key="index">
-            <p class="detail-btn" :viewType='item.id' :class="viewType==item.id?'detail-selected':''" @click="selectView"></p>
+            <p
+              class="detail-btn"
+              :viewType="item.id"
+              :class="viewType==item.id?'detail-selected':''"
+              @click="selectView"
+            ></p>
             <p style="margin:0 0.2rem">{{item.realName}}</p>
             <p :class="item.areas==''?'grey':''">{{item.areas==''?"（无负责区域）":'（'+item.areas+'）'}}</p>
           </div>
@@ -91,7 +96,7 @@ export default {
       time: "",
       valuesa: "",
       roleCode: "",
-      viewType:'',
+      viewType: "",
       options: [],
       value: "",
       slide1: [],
@@ -113,7 +118,14 @@ export default {
         remark: "",
         radio: ""
       },
-      sendMessage: {}
+      sendMessage: {},
+      //c查询条件
+      viewTypesa: "",
+      areakids: [],
+      areaarr: [],
+      searchCondition: {},
+      menuListTop: [],
+      downIcon: -1
     };
   },
   components: {},
@@ -124,9 +136,16 @@ export default {
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
       this.sheetCode1 = this.$route.query.sheetCode1;
+      this.searchCondition = this.$route.query.searchCondition;
+      this.menuListTop = this.$route.query.menuListTop;
+      this.downIcon = this.$route.query.downIcon;
+      this.areakids = this.$route.query.areakids;
+      this.areaarr = this.$route.query.areaarr;
+      this.viewTypesa = this.$route.query.viewTypesa;
       this.getMessage();
       this.getAll();
     }
+    window.watchBackWXS=this.watchBackWXS;
   },
   methods: {
     iconClick() {
@@ -134,18 +153,27 @@ export default {
         path: "/needtodoAdd",
         query: {
           id: this.sheetCode,
-          sheetCode1: this.sheetCode1
+          sheetCode1: this.sheetCode1,
+          viewTypesa: this.viewTypesa,
+          searchCondition: this.searchCondition,
+          menuListTop: this.menuListTop,
+          downIcon: this.downIcon,
+          areakids: this.areakids,
+          areaarr: this.areaarr
         }
       });
+    },
+    watchBackWXS(){
+      this.iconClick();
     },
     selectView(e) {
       let type = e.target.getAttribute("viewType");
       if (type) {
         this.viewType = type;
-        this.value= type;
+        this.value = type;
       }
     },
-   
+
     getMap() {
       this.myMap = new BMap.Map("myMap", { enableMapClick: false });
       let myCity = new BMap.Geolocation();
@@ -282,10 +310,9 @@ p {
           align-items: center;
           padding: 0.3rem 0;
           .ballsa {
-            
           }
           .detail-btn {
-           width: 0.5rem;
+            width: 0.5rem;
             height: 0.5rem;
             border-radius: 50%;
             border: 1px solid #dddddd;
@@ -296,7 +323,7 @@ p {
             border-radius: 50%;
             background-image: url("../../assets/image/select_pre@2x.png");
             background-size: contain;
-            border:none;
+            border: none;
           }
         }
       }

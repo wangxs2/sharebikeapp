@@ -51,14 +51,17 @@
     </mt-popup>
     <!-- 重新信息弹框↑ -->
     <div class="header">
-      <mt-header title="处理情况反馈">
+      <!-- <mt-header title="处理情况反馈">
         <mt-button
           class="iconfont icon-fanhui"
           style="font-size:24px;color:#fff"
           slot="left"
           @click="iconClick"
         ></mt-button>
-      </mt-header>
+      </mt-header> -->
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
+      <div class="header-title">处理情况反馈</div>
+      <div></div>
     </div>
     <div class="content">
       <div class="witeSa">
@@ -168,6 +171,13 @@ export default {
       iteamList: {},
       options: [],
       value: [],
+      //首页的查询条件
+      areakids:[],
+      areaarr:[],
+      searchCondition:{},
+      menuListTop:[],
+      downIcon:-1,
+      //首页的查询条件
       formMessage: {
         dealCondition: "",
         sheetCode: "",
@@ -183,8 +193,16 @@ export default {
       this.formMessage.sheetCode = this.$route.query.message;
       this.dealMethod = this.$route.query.dealMethod;
       this.statuSa = this.$route.query.statuSa;
+      if(this.$route.query.downIcon||this.$route.query.downIcon==0){
+        this.searchCondition = this.$route.query.searchCondition;
+        this.menuListTop = this.$route.query.menuListTop;
+        this.downIcon = this.$route.query.downIcon;
+        this.areakids = this.$route.query.areakids;
+        this.areaarr = this.$route.query.areaarr;
+      }
     }
     window.getImage = this.getImage;
+    window.watchBackWXS=this.watchBackWXS;
   },
   mounted() {
     console.log(this.$store.getters.imageUrl);
@@ -194,6 +212,9 @@ export default {
       this.$fetchGet("count/bikeCompany").then(res => {
         this.options = res;
       });
+    },
+    watchBackWXS(){
+      this.toHome();
     },
     rotate() {
       this.rotateS = this.rotateS + 90;
@@ -206,12 +227,17 @@ export default {
       this.popupVisible = true;
       this.bigImage = val;
     },
-    iconClick() {
+    toHome() {
       this.$router.push({
         path: "/superviseDetail",
         query: {
           supervise: this.formMessage.sheetCode,
-          statuSa: this.statuSa
+          statuSa: this.statuSa,
+          searchCondition:this.searchCondition,
+          menuListTop:this.menuListTop,
+          downIcon:this.downIcon,
+          areaarr:this.areaarr,
+          areakids:this.areakids,
         }
       });
     },
@@ -455,12 +481,21 @@ p {
     align-items: center;
   }
   .header {
-    width: 100%;
     height: 1.173333rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     background: -webkit-linear-gradient(left, #6698ff, #5076ff);
-    text-align: center;
-    line-height: 1.173333rem;
     color: #fff;
+    font-size: 0.48rem;
+    padding: 0 0.32rem;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    img {
+      height: 0.48rem;
+      width: 0.266667rem;
+    }
   }
   .content {
     flex: 1;

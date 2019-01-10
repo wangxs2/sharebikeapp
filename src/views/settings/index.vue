@@ -78,11 +78,15 @@ export default {
   mounted() {},
   created() {
     this.getVersion();
+    window.watchBackWXS=this.watchBackWXS;
   },
   methods: {
     //返回个人中心
     toUserInfo() {
       this.$router.push("/layout/me");
+    },
+    watchBackWXS(){
+        this.toUserInfo();
     },
     //获取版本号
     getVersion() {
