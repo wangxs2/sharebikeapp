@@ -261,7 +261,7 @@ export default {
       this.$router.push({
           path: "/selfCheckAdd",
           query: {
-            message: 'just',
+            message: '123',
             searchCondition: this.searchCondition,
             menuListTop: this.menuListTop,
             downIcon: this.downIcon,
@@ -404,12 +404,13 @@ export default {
       });
     },
     getListData() {
+     
       this.pageList = [];
       this.searchCondition.page = 0
       this.searchCondition.pageSize = 15;
     },
     getListData2() {
-      this.getListData();
+      this.searchCondition.page = 1;
         this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
           res => {
             this.pageList = res.list;

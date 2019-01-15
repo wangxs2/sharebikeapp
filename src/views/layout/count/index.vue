@@ -3,9 +3,21 @@
     <header>
       <h1></h1>
       <h1 style="margin-left:0.96rem;width:50%;text-align:right">统计</h1>
-      <h1 class="animated-tada" style="width:50%;text-align:right" v-show="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'&&ruleStatus=='true'" @click="toDaily">日报</h1>
-      <h1 style="width:50%;text-align:right" v-show="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'&&ruleStatus=='false'" @click="toDaily">日报</h1>
-      <h1 style="width:50%;" v-show="userInfo.roleCode=='clean'||userInfo.roleCode=='manage'||userInfo.roleCode=='dispatch'"></h1>
+      <h1
+        class="animated-tada"
+        style="width:50%;text-align:right"
+        v-show="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'&&ruleStatus=='true'"
+        @click="toDaily"
+      >日报</h1>
+      <h1
+        style="width:50%;text-align:right"
+        v-show="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'&&ruleStatus=='false'"
+        @click="toDaily"
+      >日报</h1>
+      <h1
+        style="width:50%;"
+        v-show="userInfo.roleCode=='clean'||userInfo.roleCode=='manage'||userInfo.roleCode=='dispatch'"
+      ></h1>
     </header>
     <main>
       <nav @click="selectComany($event)">
@@ -97,7 +109,7 @@ export default {
       viewType: 1, // 图表/表格显示
       dateData: [], // 时间数据
       dateType: "week", // 周统计/月统计
-      ruleStatus:'',
+      ruleStatus: "",
       tabData: {} // 表格数据
     };
   },
@@ -107,7 +119,16 @@ export default {
     this.dateValue = new Date().Format("yyyy-MM-dd");
   },
   mounted() {
-    this.eachartNode = this.$echarts.init(document.getElementById("Echart"));
+    this.$nextTick(function() {
+      this.eachartNode = this.$echarts.init(document.getElementById("Echart"));
+      // window.onresize = () => {
+      //   alert(2);
+      //   this.eachartNode.resize();
+      // };
+      window.addEventListener('resize',function(){
+        this.eachartNode.resize();
+      })
+    });
   },
   methods: {
     getRules() {
@@ -300,15 +321,15 @@ export default {
   @keyframes change {
     0% {
       // text-shadow: 0 0 4px #fff;
-      transform:scale(1);
+      transform: scale(1);
     }
     50% {
       // text-shadow: 0 0 40px #fff;
-      transform:scale(1.1);
+      transform: scale(1.1);
     }
     100% {
       // text-shadow: 0 0 4px #fff;
-      transform:scale(1);
+      transform: scale(1);
     }
   }
   width: 100%;

@@ -7,15 +7,16 @@
         style="color:#fff;position:fixed;right:15px;top:15px"
         @click="popupVisible1=false"
       ></span>
-      <img
-        :src="Ip+bigImage"
-        alt
-        srcset
-        width="100%"
-        v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
-        @click="popupVisible1=false"
-      >
-      <img
+      <mt-swipe style="width:100%;height:64%" :continuous='false' :touchstart='true' :speed ='10'	:auto="0" :defaultIndex='indexImage'>
+        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index" >
+          <img
+            :src="Ip+iteam"
+            v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
+            width="100%"
+          >
+        </mt-swipe-item>
+      </mt-swipe>
+      <!-- <img
         src="../../assets/image/login/rotate.svg"
         alt
         srcset
@@ -23,7 +24,7 @@
         height="50"
         style="position:fixed;right:44%;bottom:15px;"
         @click="rotate()"
-      >
+      > -->
     </mt-popup>
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
@@ -43,7 +44,6 @@
           <div class="rightsa">
             <span>时间</span>
             <span
-              v-model="formMessage.dispatchTime"
               style="text-align:right;"
             >{{FormatDate(formMessage.dispatchTime)}}</span>
           </div>
@@ -90,7 +90,7 @@
         </div>
         <div class="imageList">
           <div v-for="(iteam,index) in dispachPhotoUrls" :key="index" class="detailIcon">
-            <img :src="Ip+iteam" alt srcset width="100px" height="100px" @click="handOpen(iteam)">
+            <img :src="Ip+iteam" alt srcset width="100px" height="100px" @click="handOpen(dispachPhotoUrls,index)">
             <span @click="detailImage(1,index)">
               <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
             </span>
@@ -201,7 +201,23 @@
         <p>位置</p>
       </div>
       <div id="myMap"></div>
+      <div class="addres-search">
+        <div style="width:85%;height:100%;background:#f2f2f2;position:relative">
+          <span
+            style="position:absolute;top:0.2rem;left:0.2rem;color:#aaaaaa"
+            class="iconfont icon-iconset0157"
+          ></span>
+          <input
+            type="text"
+            v-model="addressCtrol"
+            id="suggestId"
+            style="width:100%;height:100%;padding:0.18rem;border-radius:4px;text-indent:0.6rem"
+            placeholder="搜索"
+          >
+        </div>
+      </div>
       <div class="placeList">
+        <p v-if="placeData.length==0" style="color:666666;padding-left:0.2rem">搜索不到相应地址，请重新操作</p>
         <div
           v-for="(iteam,index) in placeData"
           :key="index"
@@ -209,14 +225,14 @@
           @click="getAddress(iteam,index)"
         >
           <div>
-            <h5>{{iteam.title}}</h5>
-            <p>{{iteam.city}}&nbsp;&nbsp;{{iteam.address}}</p>
+            <h5>{{iteam.title}} {{iteam.business}}</h5>
+            <p>{{iteam.city}}&nbsp;{{iteam.address}}&nbsp;{{iteam.district}}&nbsp;{{iteam.business}}</p>
           </div>
-          <span
+          <!-- <span
             v-if="changeId==index"
             class="iconfont icon-xuanzhong"
             style="font-size:22px;color:#1caa20"
-          ></span>
+          ></span> -->
         </div>
       </div>
     </mt-popup>
@@ -237,6 +253,8 @@ export default {
       popupVisible: false,
       popupVisible1: false,
       bigImage: "",
+      addressCtrol: "",
+      myMap: null,
       value: [],
       value1: [],
       options: [],
@@ -256,6 +274,8 @@ export default {
       iteamList: {},
       dispachPhotoUrls: [],
       placeData: [],
+      lageImg:[],//轮播显示图片
+      indexImage:0,
       formMessage: {
         dispatchTime: Date.now(),
         handleAddr: "",
@@ -264,6 +284,7 @@ export default {
         gpsLongitude: "",
         gpsLatitude: "",
         dispachPhoto: [],
+
         //c查询条件
         areakids: [],
         areaarr: [],
@@ -274,7 +295,17 @@ export default {
     };
   },
   components: {},
-  mounted() {},
+  mounted() {
+    new BMap.Autocomplete({ //建立一个自动完成的对象
+      input: "suggestId",
+      location: "上海市",
+      onSearchComplete: AutocompleteResult => {
+        console.log(12)
+        this.placeData = AutocompleteResult.Ar;
+        this.suggestSa(this.addressCtrol);
+      }
+    });
+  },
   created() {
     if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
       this.searchCondition = this.$route.query.searchCondition;
@@ -288,13 +319,16 @@ export default {
     window.getLocation = this.getLocation;
     window.watchBackWXS = this.watchBackWXS;
   },
-  mounted() {},
   methods: {
     clickImage() {
       this.downPictur("bikeImg");
     },
     watchBackWXS() {
-      this.toHome();
+      if(this.popupVisible){
+        this.popupVisible=false
+      }else{
+        this.toHome();
+      }
     },
     rotate() {
       this.rotateS = this.rotateS + 90;
@@ -310,21 +344,36 @@ export default {
         }).then(action => {});
       } else {
         this.getMap();
+        this.addressCtrol = "";
         this.popupVisible = true;
       }
     },
     getAddress(row, index) {
-      this.changeId = index;
-      this.formMessage.handleAddr = row.address;
-      this.formMessage.gpsLongitude = row.point.lng;
-      this.formMessage.gpsLatitude = row.point.lat;
+      console.log(row);
+      if (row.title) {
+        this.formMessage.handleAddr = row.city + row.address + row.title;
+        this.formMessage.gpsLongitude = row.point.lng;
+        this.formMessage.gpsLatitude = row.point.lat;
+      } else {
+        this.formMessage.handleAddr = row.city + row.district + row.business;
+        this.suggestSa(row.city + row.district + row.business);
+      }
       this.popupVisible = false;
     },
-    handOpen(val) {
+    handOpen(val,index) {
+      // this.rotateS = 0;
+      // this.popupVisible1 = true;
+      // val = val.replace(".400x400.jpg", ".square.jpg");
+      // this.bigImage = val;
+      console.log(index);
       this.rotateS = 0;
+      this.lageImg=[];
       this.popupVisible1 = true;
-      val = val.replace(".400x400.jpg", ".square.jpg");
-      this.bigImage = val;
+      val.forEach(iteam => {
+        iteam = iteam.replace(".400x400.jpg", ".square.jpg");
+        this.lageImg.push(iteam);
+      });
+      this.indexImage=index;
     },
     getImage(val, row) {
       this.dispachPhotoUrls.push(row);
@@ -339,6 +388,53 @@ export default {
         }
       });
     },
+     addCompCtrol(val) {
+      // 添加定位控件
+      var navigationControl = new BMap.NavigationControl({
+        // 靠左上角位置
+        anchor: BMAP_ANCHOR_TOP_RIGHT,
+        // LARGE类型
+        type: BMAP_NAVIGATION_CONTROL_LARGE,
+        // 启用显示定位
+        enableGeolocation: true
+      });
+      val.addControl(navigationControl);
+      var geolocationControl = new BMap.GeolocationControl({
+        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+        size: (20, 20),
+        showAddressBar: true,
+        enableAutoLocation: true
+      });
+      geolocationControl.addEventListener("locationSuccess", function(e) {
+        // 定位成功事件
+      });
+      geolocationControl.addEventListener("locationError", function(e) {
+        // 定位失败事件
+        // alert(e.message);
+      });
+      val.addControl(geolocationControl);
+    },
+    //百度地图关键字提示
+    suggestSa(val) {
+      this.myMap = new BMap.Map("myMap", { enableMapClick: false });
+      let myGeo = new BMap.Geocoder();
+      myGeo.getPoint(
+        val,
+        point => {
+          if (point) {
+            // console.log(point.lng);
+            // console.log(point.lat);
+            this.myMap.centerAndZoom(point, 16);
+            this.myMap.addOverlay(new BMap.Marker(point));
+            this.addCompCtrol(this.myMap);
+            this.formMessage.gpsLongitude = point.lng;
+            this.formMessage.gpsLatitude = point.lat;
+          } else {
+          }
+        },
+        "上海市"
+      );
+    },
     getMap() {
       this.myMap = new BMap.Map("myMap", { enableMapClick: false });
       let myCity = new BMap.Geolocation();
@@ -348,18 +444,30 @@ export default {
         var marker = new BMap.Marker(ggPoint); // 创建标注
         this.myMap.addOverlay(marker);
         this.myMap.centerAndZoom(ggPoint, 16);
+        this.addCompCtrol(this.myMap);
         geoc.getLocation(
           ggPoint,
           rs => {
             // console.log(rs);
             this.placeData = rs.surroundingPois;
-            this.formMessage.handleAddr = this.placeData[0].address;
             this.formMessage.gpsLongitude = this.placeData[0].point.lng;
             this.formMessage.gpsLatitude = this.placeData[0].point.lat;
             let addComp = rs.addressComponents;
           },
           { poiRadius: 200, numPois: 20 }
         );
+      });
+      this.myMap.addEventListener("click", e => {
+        let pt = e.point;
+        this.myMap.clearOverlays();
+        geoc.getLocation(pt, rs => {
+          var addComp = rs.addressComponents;
+          let marker = new BMap.Marker(pt);
+          this.myMap.addOverlay(marker);
+          this.myMap.centerAndZoom(pt, 16);
+          this.addCompCtrol(this.myMap);
+          this.placeData = rs.surroundingPois;
+        });
       });
     },
     handleClose() {
@@ -511,8 +619,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-input {
-}
 textarea {
   width: 80%;
   margin: 0rem 1rem 0 0rem;
@@ -556,6 +662,14 @@ textarea {
     #myMap {
       width: 100%;
       flex: 1;
+    }
+    .addres-search {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.2rem 0.2rem;
+      box-sizing: border-box;
+      border-bottom: 1px solid #eeeeee;
+      background: #f2f2f2;
     }
     .placeList {
       width: 100%;

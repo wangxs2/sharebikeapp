@@ -119,17 +119,17 @@ export default {
             return newobj;
         };
         Vue.prototype.downPictur = function(val) {
-            let ua = navigator.userAgent.toLowerCase();
-            let isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1; //Ios终端
-            let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-                window.webkit.messageHandlers.photo.postMessage({ body: val });
-            } else if (/(Android)/i.test(navigator.userAgent)) {
-                Android.requestPicture(val);
+            if (isSystem()) {
+                return true
+            } else {
+                if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                    window.webkit.messageHandlers.photo.postMessage({ body: val });
+                } else if (/(Android)/i.test(navigator.userAgent)) {
+                    Android.requestPicture(val);
+                }
             }
         };
         Vue.prototype.downAddress = function() {
-            // console.log(isSystem());
             if (isSystem()) {
                 return true
             } else {
@@ -142,13 +142,14 @@ export default {
 
         };
         Vue.prototype.downApp = function() {
-            let ua = navigator.userAgent.toLowerCase();
-            let isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1; //Ios终端
-            let isiOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-                window.webkit.messageHandlers.login.postMessage({ body: "nowlogin" });
-            } else if (/(Android)/i.test(navigator.userAgent)) {
-                Android.requestTerminal()
+            if (isSystem()) {
+                return true
+            } else {
+                if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                    window.webkit.messageHandlers.login.postMessage({ body: "nowlogin" });
+                } else if (/(Android)/i.test(navigator.userAgent)) {
+                    Android.requestTerminal()
+                }
             }
         };
         /* *

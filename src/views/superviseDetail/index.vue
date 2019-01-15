@@ -8,15 +8,20 @@
         style="color:#fff;position:fixed;right:15px;top:15px"
         @click="popupVisible=false"
       ></span>
-      <img
-        :src="Ip+bigImage"
-        alt
-        srcset
-        width="100%"
-        v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
-        @click="popupVisible=false"
+
+      <mt-swipe
+        style="width:100%;height:64%"
+        :continuous="false"
+        :touchstart="true"
+        :speed="10"
+        :auto="0"
+        :defaultIndex="indexImage"
       >
-      <img
+        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index">
+          <img :src="Ip+iteam" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" width="100%">
+        </mt-swipe-item>
+      </mt-swipe>
+      <!-- <img
         src="../../assets/image/login/rotate.svg"
         alt
         srcset
@@ -24,7 +29,7 @@
         height="50"
         style="position:fixed;right:44%;bottom:15px;"
         @click="rotate()"
-      >
+      >-->
     </mt-popup>
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
@@ -48,7 +53,9 @@
         <div class="superList">
           <div class="topsa" style="margin-top:0.3rem">
             <div class="fontext">派单信息</div>
-            <div :class="listdetail.status == 2 ? 'red' : 'green'">{{listdetail.status == 0 ? '未处理' : listdetail.status == 1 ?"处理中":listdetail.status == 2 ?"已处理":listdetail.status == 3 ?"已转派":"已完成"}}</div>
+            <div
+              :class="listdetail.status == 2 ? 'red' : 'green'"
+            >{{listdetail.status == 0 ? '未处理' : listdetail.status == 1 ?"处理中":listdetail.status == 2 ?"已处理":listdetail.status == 3 ?"已转派":"已完成"}}</div>
           </div>
         </div>
         <div class="superList">
@@ -88,7 +95,7 @@
                   :key="index"
                   alt
                   srcset
-                  @click="handOpen(iteam)"
+                  @click="handOpen(listdetail.dispachPhotoURLs,index)"
                 >
               </p>
             </div>
@@ -119,11 +126,12 @@
           >
             <div class="topcloumson" style="padding-bottom:0">
               <div style="margin-top:-0.1rem">
-                <span>{{splitsa1(item.sendTime)}}</span>
-                <br>
-                <span
-                  style="display: block;margin-top:0.1rem;font-size:0.3rem;color:#555555;margin-left:0.09rem"
-                >{{splitsa(item.sendTime)}}</span>
+                <span>{{splitsa(item.sendTime)}} {{splitsa1(item.sendTime)}}</span>
+                <!-- <br> -->
+                <p
+                  :class="item.read==0?'reaed-two':'reaed-sa'"
+                  style="display: block;width:1.1rem;height:0.4rem;padding:0rem;line-height:0.46rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem"
+                >{{item.read==0?'未读':'已读'}}</p>
               </div>
               <div
                 class="topcloum"
@@ -161,6 +169,28 @@
             <div></div>
           </div>
         </div>
+
+        <div class="superList">
+          <div class="iteamsa" style="padding-top:0.3rem;padding-bottom:0.2rem">
+            <div style="width:50%;text-align: center">
+              <p style="font-size:0.3rem;color:#666666">整理总数</p>
+              <p
+                style="font-size:0.5rem;margin-top:0.1rem"
+              >{{listdetail.arrangeNum==undefined?0:listdetail.arrangeNum}}</p>
+            </div>
+            <div style="width:50%;text-align: center">
+              <p style="font-size:0.3rem;color:#666666">清运总数</p>
+              <p
+                style="font-size:0.5rem;margin-top:0.1rem"
+              >{{listdetail.cleanNum==undefined?0:listdetail.cleanNum}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="superList" v-show="ifCleanByBike==1&&listdetail.dispatchDealDetailList.length!==0">
+          <div class="iteamsa" style="height:6rem;padding-bottom:0.2rem">
+            <div id="Myechart"></div>
+          </div>
+        </div>
         <div class="superList">
           <div class="topcloum">
             <div class="topcloumson">
@@ -169,7 +199,10 @@
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理时间</p>
-              <p class="leftfont1" v-if="listdetail.handleTime!==undefined">{{FormatDate(listdetail.handleTime)}}</p>
+              <p
+                class="leftfont1"
+                v-if="listdetail.handleTime!==undefined"
+              >{{FormatDate(listdetail.handleTime)}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理时长</p>
@@ -184,7 +217,7 @@
                   :key="index"
                   alt
                   srcset
-                  @click="handOpen(iteam)"
+                  @click="handOpen(listdetail.handleBeforeURLs,index)"
                 >
               </p>
             </div>
@@ -197,18 +230,18 @@
                   :key="index"
                   alt
                   srcset
-                  @click="handOpen(iteam)"
+                  @click="handOpen(listdetail.handleAfterURLs,index)"
                 >
               </p>
             </div>
-            <div class="topcloumson">
+            <!-- <div class="topcloumson">
               <p class="leftfont">整理数</p>
               <p class="leftfont1">{{listdetail.arrangeNum}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">清运数</p>
               <p class="leftfont1">{{listdetail.cleanNum}}</p>
-            </div>
+            </div>-->
           </div>
         </div>
       </section>
@@ -230,6 +263,7 @@ export default {
       listdetail: {},
       showIndicators: false,
       activeComany: "", // 选中的单车企业
+      ifCleanByBike: "", //是否分成企业填写整理数
       title: "",
       bigImage: "",
       roleCode: "",
@@ -238,22 +272,41 @@ export default {
       sheetCode: "",
       status: "",
       iteamList: [],
-       areakids:[],
-      areaarr:[],
-      searchCondition:{},
-      menuListTop:[],
-      lageImg:[],//轮播显示图片
-      downIcon:-1,
+      areakids: [],
+      areaarr: [],
+      searchCondition: {},
+      menuListTop: [],
+      lageImg: [], //轮播显示图片
+      indexImage: 0,
+      downIcon: -1,
+      eachartNode: null //echarts
     };
   },
   components: {},
-  mounted() {},
+  mounted() {
+    
+    this.$nextTick(() => {
+      var worldMapContainer = document.getElementById('Myechart');
+      //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
+      var resizeWorldMapContainer = function () {
+          worldMapContainer.style.width = window.innerWidth-30+'px';
+          worldMapContainer.style.height = '6rem';
+      };
+      //设置容器高宽
+      resizeWorldMapContainer();
+      this.eachartNode = this.$echarts.init(worldMapContainer);
+      this.getComanylist();
+      window.onresize =()=>{
+        this.eachartNode.resize();
+      }
+    });
+  },
   created() {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.supervise) {
       this.sheetCode = this.$route.query.supervise;
       this.status = this.$route.query.statuSa;
-      if(this.$route.query.downIcon||this.$route.query.downIcon==0){
+      if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
         this.searchCondition = this.$route.query.searchCondition;
         this.menuListTop = this.$route.query.menuListTop;
         this.downIcon = this.$route.query.downIcon;
@@ -262,27 +315,150 @@ export default {
       }
       this.getMessage(this.sheetCode);
     }
-    window.watchBackWXS=this.watchBackWXS;
+    window.watchBackWXS = this.watchBackWXS;
+    
   },
-  mounted() {},
   methods: {
     handleClose() {
       console.log("close event");
     },
-    watchBackWXS(){
+    //获取分企业添加的列表
+    getComanylist() {
+      this.$fetchGet("cleanConfig/ifCleanByBike")
+        .then(res => {
+          this.ifCleanByBike = res;
+        })
+        .catch(res => {});
+    },
+    watchBackWXS() {
       this.toHome();
     },
-    toHome(){
-      this.$router.push({
-          path: "/layout/supervise",
-          query: {
-            searchCondition:this.searchCondition,
-            menuListTop:this.menuListTop,
-            downIcon:this.downIcon,
-            areaarr:this.areaarr,
-            areakids:this.areakids,
+    //echarts
+    initCanvas(company, arrangeNum, cleanNum) {
+      
+      console.log(this.eachartNode);
+      let option = {
+        color: ["#958BFF", "#FF688D"],
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: [
+            {
+              name: "整理数",
+              color: "#666666",
+              fontSize: 12
+            },
+            {
+              name: "清运数",
+              color: "#666666",
+              fontSize: 12
+            }
+          ],
+          itemWidth: 12,
+          itemHeight: 12,
+          bottom: 0
+        },
+        grid: {
+          top: "4%",
+          left: "4%",
+          right: "4%",
+          bottom: "12%",
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: "category",
+            axisTick: { show: false }, //是否显示刻度
+            splitLine: { show: false }, //去除网格线
+            splitArea: { show: false }, //保留网格区域
+            data: company,
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#DDDDDD", //左边线的颜色
+                width: "1" //坐标线的宽度
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#666666" //坐标值得具体的颜色
+              }
+            }
           }
-        });
+        ],
+        yAxis: [
+          {
+            type: "value",
+            axisTick: { show: false }, //是否显示刻度
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#DDDDDD", //左边线的颜色
+                width: "1" //坐标线的宽度
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#666666" //坐标值得具体的颜色
+              }
+            }
+          },
+          {
+            type: "value", //双y轴  默认的第一个是左边 第二个是右边
+            axisTick: { show: false },
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#DDDDDD", //右边线的颜色
+                width: "1" //坐标线的宽度
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#666666" //坐标值得具体的颜色
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: "整理数",
+            type: "bar",
+            barGap: "50%",
+            barCateGoryGap: "50%",
+            barWidth: 6,
+            itemStyle: {
+              barBorderRadius: [14, 14, 14, 14] //柱子的圆角设置//
+            },
+            data: arrangeNum
+          },
+          {
+            name: "清运数",
+            type: "bar",
+            barCateGoryGap: "50%",
+            barWidth: 6,
+            barGap: "50%",
+            itemStyle: {
+              barBorderRadius: [14, 14, 14, 14]
+            },
+            data: cleanNum
+          }
+        ]
+      };
+      this.eachartNode.setOption(option);
+    },
+    toHome() {
+      this.$router.push({
+        path: "/layout/supervise",
+        query: {
+          searchCondition: this.searchCondition,
+          menuListTop: this.menuListTop,
+          downIcon: this.downIcon,
+          areaarr: this.areaarr,
+          areakids: this.areakids
+        }
+      });
     },
     rotate() {
       this.rotateS = this.rotateS + 90;
@@ -290,17 +466,30 @@ export default {
     handleChange(val) {
       // console.log(val)
     },
-    splitsa(val){
-      return val.split(" ")[0].split("-")[1]+"-"+val.split(" ")[0].split("-")[2]
+    splitsa(val) {
+      return (
+        val.split(" ")[0].split("-")[1] + "-" + val.split(" ")[0].split("-")[2]
+      );
     },
-    splitsa1(val){
-      return val.split(" ")[1].split(":")[0]+":"+val.split(" ")[1].split(":")[1]
+    splitsa1(val) {
+      return (
+        val.split(" ")[1].split(":")[0] + ":" + val.split(" ")[1].split(":")[1]
+      );
     },
-    handOpen(val) {
+    handOpen(val, index) {
+      // this.rotateS = 0;
+      // this.popupVisible = true;
+      // val = val.replace(".400x400.jpg", ".square.jpg");
+      // this.bigImage = val;
+      console.log(index);
       this.rotateS = 0;
+      this.lageImg = [];
       this.popupVisible = true;
-      val = val.replace(".400x400.jpg", ".square.jpg");
-      this.bigImage = val;
+      val.forEach(iteam => {
+        iteam = iteam.replace(".400x400.jpg", ".square.jpg");
+        this.lageImg.push(iteam);
+      });
+      this.indexImage = index;
     },
     iconClick() {
       this.$router.push({
@@ -309,32 +498,47 @@ export default {
           message: this.sheetCode,
           dealMethod: this.iteamList[0].dealMethod,
           statuSa: this.iteamList[0].status,
-          searchCondition:this.searchCondition,
-          menuListTop:this.menuListTop,
-          downIcon:this.downIcon,
-          areaarr:this.areaarr,
-          areakids:this.areakids,
+          searchCondition: this.searchCondition,
+          menuListTop: this.menuListTop,
+          downIcon: this.downIcon,
+          areaarr: this.areaarr,
+          areakids: this.areakids
         }
       });
     },
     // 选择公司
     selectComany(e) {
+      let slide = [];
+      let slide1 = [];
+      let slide2 = [];
       let id = e.target.getAttribute("companyId");
       if (id) {
         this.activeComany = id;
       }
-      this.iteamList.forEach((iteam,index)=>{
-        if(id==iteam.id){
-          this.listdetail=iteam;
+      this.iteamList.forEach((iteam, index) => {
+        if (id == iteam.id) {
+          this.listdetail = iteam;
+          console.log(iteam.dispatchDealDetailList);
+          if (iteam.dispatchDealDetailList.length > 0) {
+            this.$nextTick(function() {
+              iteam.dispatchDealDetailList.forEach(item => {
+                slide.push(item.orgName);
+                slide1.push(item.arrangeNum);
+                slide2.push(item.cleanNum);
+              });
+              console.log()
+              this.initCanvas(slide, slide1, slide2);
+            });
+          }
         }
-      })
-
+      });
     },
     getMessage(val) {
       this.iteamList = [];
-      this.slide = [];
-      this.slide1 = [];
-      this.slide2 = [];
+      let slide = [];
+      let slide1 = [];
+      let slide2 = [];
+      let slide3 = [];
       Indicator.open({
         text: "加载中...",
         spinnerType: "fading-circle"
@@ -344,9 +548,20 @@ export default {
       })
         .then(res => {
           Indicator.close();
+          console.log("-------------------------");
+          slide3 = res[0].dispatchDealDetailList;
+          console.log(slide3);
           this.iteamList = res;
           this.activeComany = res[0].id;
           this.listdetail = res[0];
+          if (res[0].dispatchDealDetailList.length > 0) {
+            slide3.forEach(iteam => {
+              slide.push(iteam.orgName);
+              slide1.push(iteam.arrangeNum);
+              slide2.push(iteam.cleanNum);
+            });
+            this.initCanvas(slide, slide1, slide2);
+          }
         })
         .catch(res => {});
     }
@@ -460,6 +675,23 @@ export default {
         box-sizing: border-box;
 
         border-radius: 2px;
+        .iteamsa {
+          box-sizing: border-box;
+          margin: 0 0.3rem;
+          flex: 1;
+          display: flex;
+          justify-content: flex-start;
+          background: #fff;
+          #Myechart {
+            width: 100%;
+            height: 100%;
+          }
+          .timesa {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+
         .topsa {
           display: flex;
           justify-content: space-between;
@@ -496,6 +728,12 @@ export default {
           flex-direction: column;
           border-bottom-left-radius: 0.12rem;
           border-bottom-right-radius: 0.12rem;
+          .reaed-sa {
+            background: #aaaaaa;
+          }
+          .reaed-two {
+            background: #ff0000;
+          }
           .topcloumson {
             display: flex;
             justify-content: flex-start;

@@ -7,15 +7,16 @@
         style="color:#fff;position:fixed;right:15px;top:15px"
         @click="popupVisible=false"
       ></span>
-      <mt-swipe style="width:100%;height:64%" :continuous='false' :touchstart='true' :speed ='10'	:auto="0" :defaultIndex='indexImage'>
-        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index" >
-          <img
-            :src="Ip+iteam"
-            alt
-            srcset
-            v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
-            width="100%"
-          >
+      <mt-swipe
+        style="width:100%;height:64%"
+        :continuous="false"
+        :touchstart="true"
+        :speed="10"
+        :auto="0"
+        :defaultIndex="indexImage"
+      >
+        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index">
+          <img :src="Ip+iteam" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" width="100%">
         </mt-swipe-item>
       </mt-swipe>
       <!-- <img
@@ -26,7 +27,7 @@
         height="50"
         style="position:fixed;right:44%;bottom:15px;"
         @click="rotate()"
-      > -->
+      >-->
     </mt-popup>
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
@@ -119,17 +120,24 @@
         style="background: #fff;box-sizing: border-box;padding:0.2rem 0.3rem;border-bottom:1px solid #f2f2f2"
       >处理统计</p>
       <!-- <div class="iteamList" style="margin-top:0px;margin-bottom:1px">处理统计</div> -->
-      <div class="selfcheckList" style="margin-bottom:0.3rem">
-        <div class="iteamsa">
+      <div class="selfcheckList">
+        <div class="iteamsa" style="padding-top:0.5rem;padding-bottom:0.2rem">
           <div style="width:50%;text-align: center">
-            <p style="font-size:0.5rem">{{iteamList.arrangeNum}}</p>
-            <p style="font-size:0.3rem;color:#666666;margin-top:0.1rem">整理数</p>
+            <p style="font-size:0.3rem;color:#666666">整理总数</p>
+            <p style="font-size:0.5rem;margin-top:0.1rem">{{iteamList.arrangeNum==undefined?0:iteamList.arrangeNum}}</p>
           </div>
           <div style="width:50%;text-align: center">
-            <p style="font-size:0.5rem">{{iteamList.cleanNum}}</p>
-            <p style="font-size:0.3rem;color:#666666;margin-top:0.1rem">清运数</p>
+            <p style="font-size:0.3rem;color:#666666">清运总数</p>
+            <p style="font-size:0.5rem;margin-top:0.1rem">{{iteamList.cleanNum==undefined?0:iteamList.cleanNum}}</p>
           </div>
         </div>
+      </div>
+      <div
+        class="selfcheckList"
+        style="width:100%;height:6rem;padding: 0 0.293333rem;box-sizing: border-box;flex: 1;margin-bottom:0.3rem;padding-bottom:0.2rem"
+        v-show="ifCleanByBike==1&&iteamList.selfCheckDealDetailList.length!==0"
+      >
+        <div id="Echart"></div>
       </div>
       <p
         style="background: #fff;box-sizing: border-box;padding:0.2rem 0.3rem;border-bottom:1px solid #f2f2f2"
@@ -173,7 +181,7 @@
 <script>
 import { Loadmore } from "mint-ui";
 import { Indicator } from "mint-ui";
-import { setTimeout } from 'timers';
+import { setTimeout } from "timers";
 export default {
   computed: {},
   data() {
@@ -186,8 +194,10 @@ export default {
       sheetCode: "",
       rotateS: 0,
       bigImage: "",
-      indexImage:-1,//轮播默认图片
+      indexImage: -1, //轮播默认图片
+      ifCleanByBike: "", //是否分成企业填写整理数
       lageImg: [],
+      eachartNode: null,//echarts
       popupVisible: false,
       iteamList: {},
       areakids: [],
@@ -195,7 +205,20 @@ export default {
     };
   },
   components: {},
-  mounted() {},
+  mounted() {
+    
+    this.$nextTick(()=>{
+      var worldMapContainer = document.getElementById('Echart');
+        //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
+        var resizeWorldMapContainer = function () {
+            worldMapContainer.style.width = window.innerWidth-30+'px';
+            worldMapContainer.style.height = '6rem';
+        };
+        //设置容器高宽
+        resizeWorldMapContainer();
+      this.eachartNode = this.$echarts.init(worldMapContainer);
+    })
+  },
   created() {
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
@@ -205,16 +228,154 @@ export default {
       this.areakids = this.$route.query.areakids;
       this.areaarr = this.$route.query.areaarr;
       this.getMessage(this.sheetCode);
+     
     }
+    this.getComanylist();
     window.watchBackWXS = this.watchBackWXS;
   },
-  mounted() {},
   methods: {
     rotate() {
       this.rotateS = this.rotateS + 90;
     },
+    //获取分企业添加的列表
+    getComanylist() {
+      this.$fetchGet("cleanConfig/ifCleanByBike")
+        .then(res => {
+          this.ifCleanByBike = res;
+        })
+        .catch(res => {});
+    },
     watchBackWXS() {
       this.toHome();
+    },
+    //echarts
+    initCanvas(company, arrangeNum, cleanNum) {
+      let option = {
+        color: ["#958BFF", "#FF688D"],
+        tooltip: {
+          trigger: "axis",
+        },
+        legend: {
+          data: [
+            {
+              name:"整理数",
+              color:'#666666',
+              fontSize: 12,
+              
+            },{
+              name:"清运数",
+              color:'#666666',
+              fontSize: 12
+            }
+          ],
+          itemWidth: 12,
+          itemHeight: 12,
+          bottom:0,
+        },
+        grid: {
+          top:'4%',
+          left: "1%",
+          right: "1%",
+          bottom: "12%",
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: "category",
+            axisTick: { show: false },//是否显示刻度
+            splitLine:{show: false},//去除网格线
+            splitArea : {show : false},//保留网格区域
+            data: company,
+            axisLine: {
+                    lineStyle: {
+                        type: 'solid',
+                        color: '#DDDDDD',//左边线的颜色
+                        width:'1'//坐标线的宽度
+                    }
+                },
+             axisLabel: {
+                    textStyle: {
+                        color: '#666666',//坐标值得具体的颜色
+ 
+                    }
+                },
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            axisTick: { show: false },//是否显示刻度
+            axisLine: {
+                    lineStyle: {
+                        type: 'solid',
+                        color: '#DDDDDD',//左边线的颜色
+                        width:'1'//坐标线的宽度
+                    }
+                },
+             axisLabel: {
+                    textStyle: {
+                        color: '#666666',//坐标值得具体的颜色
+ 
+                    }
+                },
+          },
+          {
+            type: "value",//双y轴  默认的第一个是左边 第二个是右边
+            axisTick: { show: false },
+            axisLine: {
+                    lineStyle: {
+                        type: 'solid',
+                        color: '#DDDDDD',//右边线的颜色
+                        width:'1'//坐标线的宽度
+                    }
+                },
+             axisLabel: {
+                    textStyle: {
+                        color: '#666666',//坐标值得具体的颜色
+ 
+                    }
+                },
+          }
+        ],
+        series: [
+          {
+            name: "整理数",
+            type: "bar",
+            barGap: '50%',
+            barCateGoryGap:'50%',
+            barWidth:6,
+            itemStyle:{
+                barBorderRadius:[14, 14, 14, 14],//柱子的圆角设置//
+            },
+            data: arrangeNum
+          },
+          {
+            name: "清运数",
+            type: "bar",
+            barCateGoryGap:'50%',
+            barWidth:6,
+            barGap: '50%',
+            itemStyle:{
+                barBorderRadius:[14, 14, 14, 14],
+            },
+            
+            data: cleanNum
+          },
+          // {
+          //   name: "Desert",
+          //   type: "bar",
+          //   barCateGoryGap:20,
+          //   data: [150, 232, 201, 154, 190]
+          // },
+          // {
+          //   name: "Wetland",
+          //   type: "bar",
+          //   barCateGoryGap:20,
+          //   data: [98, 77, 101, 99, 40]
+          // }
+        ]
+      };
+      this.eachartNode.setOption(option);
     },
     toHome() {
       this.$router.push({
@@ -228,19 +389,22 @@ export default {
         }
       });
     },
-    handOpen(val,index) {
+    handOpen(val, index) {
       console.log(index);
       this.rotateS = 0;
-      this.lageImg=[];
+      this.lageImg = [];
       this.popupVisible = true;
       val.forEach(iteam => {
         iteam = iteam.replace(".400x400.jpg", ".square.jpg");
         this.lageImg.push(iteam);
       });
-      this.indexImage=index;
-     
+      this.indexImage = index;
     },
     getMessage(val) {
+      let slide = [];
+      let slide1 = [];
+      let slide2 = [];
+      let slide3 = [];
       Indicator.open({
         text: "加载中...",
         spinnerType: "fading-circle"
@@ -250,8 +414,16 @@ export default {
       })
         .then(res => {
           Indicator.close();
-
           this.iteamList = res;
+          slide3 = res.selfCheckDealDetailList;
+          if (res.selfCheckDealDetailList.length > 0) {
+            slide3.forEach(iteam => {
+              slide.push(iteam.orgName);
+              slide1.push(iteam.arrangeNum);
+              slide2.push(iteam.cleanNum);
+            });
+            this.initCanvas(slide, slide1, slide2);
+          }
         })
         .catch(res => {});
     }
@@ -259,7 +431,6 @@ export default {
 };
 </script>
 <style>
-
 </style>
 
 <style lang="scss" scoped>
@@ -281,7 +452,7 @@ export default {
   flex-direction: column;
   // overflow: hidden;
   background-color: #f2f2f2;
-  
+
   .imgMask {
     width: 100%;
     height: 100%;
@@ -326,7 +497,10 @@ export default {
       box-sizing: border-box;
       background: #fff;
       border-radius: 2px;
-
+      #Echart {
+        width: 100%;
+        height: 100%;
+      }
       .iteamsa {
         box-sizing: border-box;
         padding: 0.3rem;

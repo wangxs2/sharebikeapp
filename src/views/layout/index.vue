@@ -102,6 +102,7 @@ export default {
     this.getRules();
     this.getRouterIndex(this.$route);
     this.roleCode = localStorage.roleCode;
+    window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
     getRules() {
@@ -122,13 +123,18 @@ export default {
         }
       });
     },
+    watchBackWXS() {
+      return
+    },
     getRouterIndex(val) {
       this.selectIndex = this.menuList.findIndex(iteam => {
         return val.path == iteam.pathUrl || val.path == iteam.pathUrlTodo;
       });
     },
     toRouterIndex(val,index){
-      if(this.roleCode == "clean" || this.roleCode == "manage"&&index==1){
+      console.log(val,index);
+      console.log(this.roleCode,index);
+      if((this.roleCode == "clean" || this.roleCode == "manage")&&index==1){
         this.$router.push(val.pathUrlTodo)
       }else{
         this.$router.push(val.pathUrl)

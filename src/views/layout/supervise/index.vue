@@ -111,7 +111,9 @@
                   style="line-height:1.15;text-align:center"
                   :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'"
                 >{{item.orgName}}</p>
-                <p style="flex:1;padding-top:0.2rem">{{item.dealTime}}</p>
+                <p v-if="item.dealTime!==undefined" style="flex:1;padding-top:0.2rem">{{item.dealTime}}</p>
+                <p v-if="item.read==1&&item.dealTime==undefined" style="flex:1;padding-top:0.2rem;color:#aaaaaa;font-size:0.3rem">已读</p>
+                <p v-if="item.read==0&&item.dealTime==undefined" style="flex:1;padding-top:0.2rem;color:#ff0000;font-size:0.3rem">未读</p>
               </div>
             </div>
             <div class="bottomRight">
@@ -130,7 +132,7 @@ import { Loadmore } from "mint-ui";
 import { Toast } from "mint-ui";
 import { Indicator } from "mint-ui";
 export default {
-  name:'duban',
+  name: "duban",
   computed: {},
   data() {
     return {
@@ -139,6 +141,7 @@ export default {
       viewType2: "",
       viewType3: -1,
       popupVisible: true,
+      requestFlage: true, //请求是我自己写的还是自带的刷新的
       areaflag: true, //是否包含flag
       menType: "",
       downIcon: -1,
@@ -234,7 +237,6 @@ export default {
         }
       });
     }
-
   },
   created() {
     if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
@@ -247,12 +249,11 @@ export default {
       } else {
         this.areakids = this.$route.query.areakids;
         this.areaarr = this.$route.query.areaarr;
-        
-        this.viewType=this.areaarr[this.areaarr.length-1].id;
+
+        this.viewType = this.areaarr[this.areaarr.length - 1].id;
       }
       this.getListData2();
     } else {
-      
       this.getorgsTree();
     }
     this.getBikeCompany();
@@ -269,7 +270,7 @@ export default {
           menuListTop: this.menuListTop,
           downIcon: this.downIcon,
           areakids: this.areakids,
-          areaarr: this.areaarr,
+          areaarr: this.areaarr
         }
       });
     },
@@ -282,7 +283,7 @@ export default {
           menuListTop: this.menuListTop,
           downIcon: this.downIcon,
           areakids: this.areakids,
-          areaarr: this.areaarr,
+          areaarr: this.areaarr
         }
       });
     },
@@ -290,7 +291,7 @@ export default {
     areaTypeclick(val, index) {
       console.log(val);
       this.areaflag = false;
-      this.areakids=[];
+      this.areakids = [];
       this.viewType = val.id;
       this.areaname.name = val.name;
       this.areaname.id = val.id;
@@ -427,25 +428,27 @@ export default {
       this.searchCondition.pageSize = 15;
     },
     getListData2() {
-        this.getListData();
-        this.$fetchGet("dispatch/pageDispatch", this.searchCondition).then(
-          res => {
-            this.pageList = res.list;
-          }
-        );
-    },
-    infinite(done) {
-      this.searchCondition.page++;
+      this.searchCondition.page = 1;
       this.$fetchGet("dispatch/pageDispatch", this.searchCondition).then(
         res => {
-          if (this.pageList.length == 0) {
-            this.pageList = res.list;
-          } else {
-            this.pageList = this.pageList.concat(res.list);
-          }
-          done(true);
+          this.pageList = res.list;
         }
       );
+    },
+    infinite(done) {
+      if (this.requestFlage) {
+        this.searchCondition.page++;
+        this.$fetchGet("dispatch/pageDispatch", this.searchCondition).then(
+          res => {
+            if (this.pageList.length == 0) {
+              this.pageList = res.list;
+            } else {
+              this.pageList = this.pageList.concat(res.list);
+            }
+            done(true);
+          }
+        );
+      }
     },
     refresh: function(done) {
       //下拉刷新

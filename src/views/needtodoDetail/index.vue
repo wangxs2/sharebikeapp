@@ -8,14 +8,16 @@
         style="color:#fff;position:fixed;right:15px;top:15px"
         @click="popupVisible=false"
       ></span>
-      <img
-        :src="Ip+bigImage"
-        alt
-        srcset
-        v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
-        width="100%"
-      >
-      <img
+      <mt-swipe style="width:100%;height:64%" :continuous='false' :touchstart='true' :speed ='10'	:auto="0" :defaultIndex='indexImage'>
+        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index" >
+          <img
+            :src="Ip+iteam"
+            v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
+            width="100%"
+          >
+        </mt-swipe-item>
+      </mt-swipe>
+      <!-- <img
         src="../../assets/image/login/rotate.svg"
         alt
         srcset
@@ -23,7 +25,7 @@
         height="50"
         style="position:fixed;right:44%;bottom:15px;"
         @click="rotate()"
-      >
+      > -->
     </mt-popup>
     <div class="header">
       <mt-header title="详情">
@@ -74,7 +76,7 @@
                   :key="index"
                   alt
                   srcset
-                  @click="handOpen(iteam)"
+                  @click="handOpen(iteamList.dispachPhotoURLs,index)"
                 >
               </p>
             </div>
@@ -105,11 +107,11 @@
           >
             <div class="topcloumson" style="padding-bottom:0">
               <div style="margin-top:-0.1rem">
-                <span>{{splitsa1(item.sendTime)}}</span>
-                <br>
-                <span
-                  style="display: block;margin-top:0.1rem;font-size:0.3rem;color:#555555;margin-left:0.09rem"
-                >{{splitsa(item.sendTime)}}</span>
+                <span>{{splitsa(item.sendTime)}} {{splitsa1(item.sendTime)}}</span>
+                <p
+                  :class="item.read==0?'reaed-two':'reaed-sa'"
+                  style="display: block;width:1.1rem;height:0.4rem;padding:0rem;line-height:0.46rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem"
+                >{{item.read==0?'未读':'已读'}}</p>
               </div>
               <div
                 class="topcloum"
@@ -147,6 +149,27 @@
             <div></div>
           </div>
         </div>
+        <div class="superList">
+          <div class="topsa" style="padding-top:0.3rem;padding-bottom:0.2rem;border-radius:0">
+            <div style="width:50%;text-align: center">
+              <p style="font-size:0.3rem;color:#666666">整理总数</p>
+              <p
+                style="font-size:0.5rem;margin-top:0.1rem"
+              >{{iteamList.arrangeNum==undefined?0:iteamList.arrangeNum}}</p>
+            </div>
+            <div style="width:50%;text-align: center">
+              <p style="font-size:0.3rem;color:#666666">清运总数</p>
+              <p
+                style="font-size:0.5rem;margin-top:0.1rem"
+              >{{iteamList.cleanNum==undefined?0:iteamList.cleanNum}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="superList" v-show="ifCleanByBike==1&&iteamList.dispatchDealDetailList.length!==0">
+          <div class="topsa" style="height:6rem;padding:0rem;border-radius:0">
+            <div id="Myechart"></div>
+          </div>
+        </div>
         <div class="superList" style="margin-bottom:0.2rem">
           <div class="topcloum">
             <div class="topcloumson">
@@ -170,7 +193,7 @@
                   :key="index"
                   alt
                   srcset
-                  @click="handOpen(iteam)"
+                  @click="handOpen(iteamList.handleBeforeURLs,index)"
                 >
               </p>
             </div>
@@ -183,18 +206,18 @@
                   :key="index"
                   alt
                   srcset
-                  @click="handOpen(iteam)"
+                  @click="handOpen(iteamList.handleAfterURLs,index)"
                 >
               </p>
             </div>
-            <div class="topcloumson">
+            <!-- <div class="topcloumson">
               <p class="leftfont">整理数</p>
               <p class="leftfont1">{{iteamList.arrangeNum}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">清运数</p>
               <p class="leftfont1">{{iteamList.cleanNum}}</p>
-            </div>
+            </div> -->
           </div>
         </div>
     </div>
@@ -210,6 +233,10 @@ export default {
     return {
       slide: [],
       slide1: [],
+      lageImg:[],//轮播显示图片
+      eachartNode: null, //echarts
+      ifCleanByBike: "", //是否分成企业填写整理数
+      indexImage:0,
       sheetCode: "",
       rotateS: 0,
       bigImage: "",
@@ -225,7 +252,23 @@ export default {
     };
   },
   components: {},
-  mounted() {},
+  mounted() {
+    this.$nextTick(() => {
+      var worldMapContainer = document.getElementById('Myechart');
+      //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
+      var resizeWorldMapContainer = function () {
+          worldMapContainer.style.width = window.innerWidth-30+'px';
+          worldMapContainer.style.height = '6rem';
+      };
+      //设置容器高宽
+      resizeWorldMapContainer();
+      this.eachartNode = this.$echarts.init(worldMapContainer);
+      this.getComanylist();
+      window.onresize =()=>{
+        this.eachartNode.resize();
+      }
+    });
+  },
   created() {
     if (this.$route.query.id) {
       this.sheetCode = this.$route.query.id;
@@ -237,15 +280,142 @@ export default {
       this.areaarr = this.$route.query.areaarr;
       this.getMessage(this.sheetCode);
     }
+    this.getComanylist();
     window.watchBackWXS=this.watchBackWXS;
   },
-  mounted() {},
   methods: {
-    handOpen(val) {
+    handOpen(val,index) {
+      console.log(index);
       this.rotateS = 0;
+      this.lageImg=[];
       this.popupVisible = true;
-      val = val.replace(".400x400.jpg", ".square.jpg");
-      this.bigImage = val;
+      val.forEach(iteam => {
+        iteam = iteam.replace(".400x400.jpg", ".square.jpg");
+        this.lageImg.push(iteam);
+      });
+      this.indexImage=index;
+    },
+    //获取分企业添加的列表
+    getComanylist() {
+      this.$fetchGet("cleanConfig/ifCleanByBike")
+        .then(res => {
+          this.ifCleanByBike = res;
+        })
+        .catch(res => {});
+    },
+    //echarts
+    initCanvas(company, arrangeNum, cleanNum) {
+      console.log(this.eachartNode);
+      let option = {
+        color: ["#958BFF", "#FF688D"],
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data: [
+            {
+              name: "整理数",
+              color: "#666666",
+              fontSize: 12
+            },
+            {
+              name: "清运数",
+              color: "#666666",
+              fontSize: 12
+            }
+          ],
+          itemWidth: 12,
+          itemHeight: 12,
+          bottom: 0
+        },
+        grid: {
+          top: "4%",
+          left: "4%",
+          right: "4%",
+          bottom: "12%",
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: "category",
+            axisTick: { show: false }, //是否显示刻度
+            splitLine: { show: false }, //去除网格线
+            splitArea: { show: false }, //保留网格区域
+            data: company,
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#DDDDDD", //左边线的颜色
+                width: "1" //坐标线的宽度
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#666666" //坐标值得具体的颜色
+              }
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: "value",
+            axisTick: { show: false }, //是否显示刻度
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#DDDDDD", //左边线的颜色
+                width: "1" //坐标线的宽度
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#666666" //坐标值得具体的颜色
+              }
+            }
+          },
+          {
+            type: "value", //双y轴  默认的第一个是左边 第二个是右边
+            axisTick: { show: false },
+            axisLine: {
+              lineStyle: {
+                type: "solid",
+                color: "#DDDDDD", //右边线的颜色
+                width: "1" //坐标线的宽度
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#666666" //坐标值得具体的颜色
+              }
+            }
+          }
+        ],
+        series: [
+          {
+            name: "整理数",
+            type: "bar",
+            barGap: "50%",
+            barCateGoryGap: "50%",
+            barWidth: 6,
+            itemStyle: {
+              barBorderRadius: [14, 14, 14, 14] //柱子的圆角设置//
+            },
+            data: arrangeNum
+          },
+          {
+            name: "清运数",
+            type: "bar",
+            barCateGoryGap: "50%",
+            barWidth: 6,
+            barGap: "50%",
+            itemStyle: {
+              barBorderRadius: [14, 14, 14, 14]
+            },
+            data: cleanNum
+          }
+        ]
+      };
+      this.eachartNode.setOption(option);
     },
     watchBackWXS(){
       this.iconClick();
@@ -274,6 +444,10 @@ export default {
       });
     },
     getMessage(val) {
+      let slide = [];
+      let slide1 = [];
+      let slide2 = [];
+      let slide3 = [];
       Indicator.open({
         text: "加载中...",
         spinnerType: "fading-circle"
@@ -283,9 +457,18 @@ export default {
       })
         .then(res => {
           Indicator.close();
-          //   var obj = {};
-          // res.dispatchDetail.sendRecordList.splice(0, 1);
           this.iteamList = res.dispatchDetail;
+          if (res.dispatchDetail.dispatchDealDetailList.length > 0) {
+            this.$nextTick(function() {
+              res.dispatchDetail.dispatchDealDetailList.forEach(item => {
+                slide.push(item.orgName);
+                slide1.push(item.arrangeNum);
+                slide2.push(item.cleanNum);
+              });
+              console.log()
+              this.initCanvas(slide, slide1, slide2);
+            });
+          }
         })
         .catch(res => {});
     }
@@ -379,7 +562,12 @@ p {
             display: flex;
             justify-content: flex-start;
             padding-bottom: 0.3rem;
-
+            .reaed-sa {
+              background: #aaaaaa;
+            }
+            .reaed-two {
+              background: #ff0000;
+            }
             .leftfont {
               width: 25%;
               color: #999999;
