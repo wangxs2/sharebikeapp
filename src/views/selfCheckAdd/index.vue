@@ -731,7 +731,6 @@ export default {
     getMessage(val) {
       this.$fetchGet("cleanConfig/ifCleanByBike")
         .then(res => {
-          if (res) {
             this.ifCleanByBike = res;
             this.$fetchGet("selfcheck/selfCheck", {
               sheetCode: val
@@ -784,9 +783,7 @@ export default {
                 }
               })
               .catch(res => {});
-          }
         })
-        .catch(res => {});
     },
     save() {
       this.formMessage.createTime = this.FormatDate1(

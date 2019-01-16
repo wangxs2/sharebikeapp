@@ -273,7 +273,7 @@
                           <span
                             :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
                             style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
-                          >{{(item.doneRate)*100}}%</span>
+                          >{{((item.doneRate)*100).toFixed(2)}}%</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">完成率</span>
                         </div>
                       </div>

@@ -8,13 +8,16 @@
         style="color:#fff;position:fixed;right:15px;top:15px"
         @click="popupVisible=false"
       ></span>
-      <mt-swipe style="width:100%;height:64%" :continuous='false' :touchstart='true' :speed ='10'	:auto="0" :defaultIndex='indexImage'>
-        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index" >
-          <img
-            :src="Ip+iteam"
-            v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
-            width="100%"
-          >
+      <mt-swipe
+        style="width:100%;height:64%"
+        :continuous="false"
+        :touchstart="true"
+        :speed="10"
+        :auto="0"
+        :defaultIndex="indexImage"
+      >
+        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index">
+          <img :src="Ip+iteam" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" width="100%">
         </mt-swipe-item>
       </mt-swipe>
       <!-- <img
@@ -25,7 +28,7 @@
         height="50"
         style="position:fixed;right:44%;bottom:15px;"
         @click="rotate()"
-      > -->
+      >-->
     </mt-popup>
     <mt-popup class="version-popup-box" v-model="popupVisible2" position="right">
       <div class="version-popup" style="padding-bottom:0">
@@ -134,11 +137,11 @@
               <!-- <br>
               <span
                 style="display: block;margin-top:0.1rem;font-size:0.3rem;color:#555555;margin-left:0.09rem"
-              >{{splitsa(item.sendTime)}}</span> -->
+              >{{splitsa(item.sendTime)}}</span>-->
               <p
-                  :class="item.read==0?'reaed-two':'reaed-sa'"
-                  style="display: block;width:1.1rem;height:0.4rem;line-height:0.46rem;padding:0rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem"
-                >{{item.read==0?'未读':'已读'}}</p>
+                :class="item.read==0?'reaed-two':'reaed-sa'"
+                style="display: block;width:1.1rem;height:0.4rem;line-height:0.46rem;padding:0rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem"
+              >{{item.read==0?'未读':'已读'}}</p>
             </div>
             <div
               class="topcloum"
@@ -188,7 +191,14 @@
               :key="index"
               class="detailIcon"
             >
-              <img :src="Ip+iteam" alt srcset width="100px" height="100px" @click="handOpen(formMessage.handleBeforeURLs,index)">
+              <img
+                :src="Ip+iteam"
+                alt
+                srcset
+                width="100px"
+                height="100px"
+                @click="handOpen(formMessage.handleBeforeURLs,index)"
+              >
               <span @click="detailImage(1,index)">
                 <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
               </span>
@@ -221,7 +231,14 @@
               :key="index"
               class="detailIcon"
             >
-              <img :src="Ip+iteam" alt srcset width="100px" height="100px" @click="handOpen(formMessage.handleAfterURLs,index)">
+              <img
+                :src="Ip+iteam"
+                alt
+                srcset
+                width="100px"
+                height="100px"
+                @click="handOpen(formMessage.handleAfterURLs,index)"
+              >
               <span @click="detailImage(2,index)">
                 <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
               </span>
@@ -281,7 +298,7 @@
             @click="dealDetailList('清运')"
           ></span>
           </div>
-      </div> -->
+      </div>-->
       <div class="superList" style="margin-top:0.2rem;">
         <div class="iteamForm" style="padding-right:0.3rem">
           <img
@@ -444,9 +461,9 @@ export default {
     return {
       time: "",
       popupVisible: false,
-      popupVisible2:false,
-      isNumberbike:false,
-      isNumberbike1:false,
+      popupVisible2: false,
+      isNumberbike: false,
+      isNumberbike1: false,
       bigImage: "",
       rotateS: 0,
       roleCode: "",
@@ -459,10 +476,10 @@ export default {
       imageStatus: 0,
       iteamList: {},
       handleBefore: [],
-      lageImg:[],//轮播显示图片
+      lageImg: [], //轮播显示图片
       ifCleanByBike: "", //是否分成企业填写整理数
-      bikeTitle:'',
-      indexImage:0,
+      bikeTitle: "",
+      indexImage: 0,
       handleAfter: [],
       bikeCleanCompany: [],
       bikeCleanCompany1: [],
@@ -480,12 +497,12 @@ export default {
         sheetCode1: "",
         remark: "",
         //c查询条件
-        viewTypesa:'',
-        areakids:[],
-        areaarr:[],
-        searchCondition:{},
-        menuListTop:[],
-        downIcon:-1,
+        viewTypesa: "",
+        areakids: [],
+        areaarr: [],
+        searchCondition: {},
+        menuListTop: [],
+        downIcon: -1
       }
     };
   },
@@ -495,7 +512,7 @@ export default {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.id) {
       this.sheetCode = this.$route.query.id;
-      this.viewTypesa= this.$route.query.viewTypesa;
+      this.viewTypesa = this.$route.query.viewTypesa;
       this.getMessage(this.sheetCode);
       if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
         this.searchCondition = this.$route.query.searchCondition;
@@ -505,10 +522,10 @@ export default {
         this.areaarr = this.$route.query.areaarr;
       }
     }
-    this.getComanylist();
-    this.getbikeCleanCompany()
+    // this.getComanylist();
+    this.getbikeCleanCompany();
     window.getImage = this.getImage;
-    window.watchBackWXS=this.watchBackWXS;
+    window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
     clickImage() {
@@ -521,9 +538,9 @@ export default {
     getbikeCleanCompany() {
       this.$fetchGet("count/bikeCleanCompany")
         .then(res => {
-          res.forEach(iteam=>{
-            iteam.orgId=iteam.id
-          })
+          res.forEach(iteam => {
+            iteam.orgId = iteam.id;
+          });
           this.bikeCleanCompany = res;
         })
         .catch(res => {});
@@ -557,30 +574,30 @@ export default {
       this.bikeTitle = val;
       this.popupVisible2 = true;
     },
-    watchBackWXS(){
+    watchBackWXS() {
       this.toHome();
     },
     //获取分企业添加的列表
-    getComanylist() {
-      this.$fetchGet("cleanConfig/ifCleanByBike")
-        .then(res => {
-          this.ifCleanByBike = res;
-        })
-        .catch(res => {});
-    },
-    toHome(){
+    // getComanylist() {
+    //   this.$fetchGet("cleanConfig/ifCleanByBike")
+    //     .then(res => {
+    //       this.ifCleanByBike = res;
+    //     })
+    //     .catch(res => {});
+    // },
+    toHome() {
       this.$router.push({
-          path: "/layout/needtodo",
-          query: {
-            name: "2",
-            searchCondition:this.searchCondition,
-            menuListTop:this.menuListTop,
-            downIcon:this.downIcon,
-            areaarr:this.areaarr,
-            areakids:this.areakids,
-            viewTypesa:this.viewTypesa,
-          }
-        });
+        path: "/layout/needtodo",
+        query: {
+          name: "2",
+          searchCondition: this.searchCondition,
+          menuListTop: this.menuListTop,
+          downIcon: this.downIcon,
+          areaarr: this.areaarr,
+          areakids: this.areakids,
+          viewTypesa: this.viewTypesa
+        }
+      });
     },
     getMap() {
       this.myMap = new BMap.Map("myMap", { enableMapClick: false });
@@ -609,29 +626,29 @@ export default {
         query: {
           sheetCode1: this.sheetCode1,
           message: this.sheetCode,
-          viewTypesa:this.viewTypesa,
+          viewTypesa: this.viewTypesa,
           searchCondition: this.searchCondition,
           menuListTop: this.menuListTop,
           downIcon: this.downIcon,
           areakids: this.areakids,
-          areaarr: this.areaarr,
+          areaarr: this.areaarr
         }
       });
     },
-    handOpen(val,index) {
+    handOpen(val, index) {
       // this.rotateS = 0;
       // this.popupVisible = true;
       // val = val.replace(".400x400.jpg", ".square.jpg");
       // this.bigImage = val;
       console.log(index);
       this.rotateS = 0;
-      this.lageImg=[];
+      this.lageImg = [];
       this.popupVisible = true;
       val.forEach(iteam => {
         iteam = iteam.replace(".400x400.jpg", ".square.jpg");
         this.lageImg.push(iteam);
       });
-      this.indexImage=index;
+      this.indexImage = index;
     },
     getImage(val, row) {
       if (this.imageStatus == 1) {
@@ -694,56 +711,59 @@ export default {
       return s;
     },
     getMessage(val) {
-      this.$fetchGet("dispatch/dispatchDetail", {
-        id: val
-      })
-        .then(res => {
-          if (res.status == 1) {
-            this.sheetCode1 = res.dispatchDetail.sheetCode;
-            console.log(this.sheetCode1);
-            this.formMessage = res.dispatchDetail;
-            if (this.formMessage.handleTime == undefined) {
-              this.formMessage.handleTime = Date.now();
-            }
-            this.handleBefore = res.dispatchDetail.handleBefore.split(";");
-            this.handleAfter = res.dispatchDetail.handleAfter.split(";");
-            if(res.arrangeNum>0){
-              this.isNumberbike=true;
-              res.selfCheckDealDetailList.forEach(iteam=>{
-                iteam.id=iteam.orgId;
-                iteam.name=iteam.orgName;
-              });
-              this.bikeCleanCompany=res.selfCheckDealDetailList;
-              if(res.selfCheckDealDetailList.length>3){
-                this.bikeCleanCompany1 = this.bikeCleanCompany.slice(0, 3);
-                this.bikeCleanCompany2 = this.bikeCleanCompany.slice(
-                  3,
-                  this.bikeCleanCompany.length
-                );
-              }else{
-                this.bikeCleanCompany1=res.selfCheckDealDetailList
+      this.$fetchGet("cleanConfig/ifCleanByBike").then(res => {
+          this.ifCleanByBike = res;
+          this.$fetchGet("dispatch/dispatchDetail", {
+            id: val
+          })
+            .then(res => {
+              if (res.status == 1) {
+                this.sheetCode1 = res.dispatchDetail.sheetCode;
+                console.log(this.sheetCode1);
+                this.formMessage = res.dispatchDetail;
+                if (this.formMessage.handleTime == undefined) {
+                  this.formMessage.handleTime = Date.now();
+                }
+                this.handleBefore = res.dispatchDetail.handleBefore.split(";");
+                this.handleAfter = res.dispatchDetail.handleAfter.split(";");
+                if (res.dispatchDetail.arrangeNum > 0&&this.ifCleanByBike==1) {
+                  this.isNumberbike = true;
+                  res.dispatchDetail.dispatchDealDetailList.forEach(iteam => {
+                    iteam.id = iteam.orgId;
+                    iteam.name = iteam.orgName;
+                  });
+                  this.bikeCleanCompany = res.dispatchDetail.dispatchDealDetailList;
+                  if (res.dispatchDetail.dispatchDealDetailList.length > 3) {
+                    this.bikeCleanCompany1 = this.bikeCleanCompany.slice(0, 3);
+                    this.bikeCleanCompany2 = this.bikeCleanCompany.slice(
+                      3,
+                      this.bikeCleanCompany.length
+                    );
+                  } else {
+                    this.bikeCleanCompany1 = res.dispatchDetail.dispatchDealDetailList;
+                  }
+                }
+                if (res.dispatchDetail.cleanNum > 0&&this.ifCleanByBike==1) {
+                  this.isNumberbike1 = true;
+                  res.dispatchDetail.dispatchDealDetailList.forEach(iteam => {
+                    iteam.id = iteam.orgId;
+                    iteam.name = iteam.orgName;
+                  });
+                  this.bikeCleanCompany = res.dispatchDetail.dispatchDealDetailList;
+                  if (res.dispatchDetail.dispatchDealDetailList.length > 3) {
+                    this.bikeCleanCompany1 = this.bikeCleanCompany.slice(0, 3);
+                    this.bikeCleanCompany2 = this.bikeCleanCompany.slice(
+                      3,
+                      this.bikeCleanCompany.length
+                    );
+                  } else {
+                    this.bikeCleanCompany1 = res.dispatchDetail.dispatchDealDetailList;
+                  }
+                }
               }
-            }
-            if(res.cleanNum>0){
-              this.isNumberbike1=true;
-              res.selfCheckDealDetailList.forEach(iteam=>{
-                iteam.id=iteam.orgId;
-                iteam.name=iteam.orgName;
-              });
-              this.bikeCleanCompany=res.selfCheckDealDetailList;
-              if(res.selfCheckDealDetailList.length>3){
-                this.bikeCleanCompany1 = this.bikeCleanCompany.slice(0, 3);
-                this.bikeCleanCompany2 = this.bikeCleanCompany.slice(
-                  3,
-                  this.bikeCleanCompany.length
-                );
-              }else{
-                this.bikeCleanCompany1=res.selfCheckDealDetailList
-              }
-            }
-          }
-        })
-        .catch(res => {});
+            })
+            .catch(res => {});
+      });
     },
     save() {
       this.getMap();
@@ -754,8 +774,8 @@ export default {
         }).then(action => {});
       } else {
         let obj = {};
-        this.formMessage.handleBefore;
         obj.dispatchDetail = this.formMessage;
+        obj.dispatchDealDetailList = this.bikeCleanCompany;
         obj.dispatchDetail.handleBefore = this.handleBefore.join(";");
         obj.dispatchDetail.handleAfter = this.handleAfter.join(";");
         obj.finish = 0;
@@ -812,8 +832,8 @@ export default {
         }).then(action => {
           if (action == "confirm") {
             let obj = {};
-            this.formMessage.handleBefore;
             obj.dispatchDetail = this.formMessage;
+            obj.dispatchDealDetailList = this.bikeCleanCompany;
             obj.dispatchDetail.handleBefore = this.handleBefore.join(";");
             obj.dispatchDetail.handleAfter = this.handleAfter.join(";");
             obj.finish = 1;
@@ -988,65 +1008,67 @@ p {
 
       border-radius: 2px;
       .green {
-              color: #ffc000;
-              // border: 1px solid #ffc000;
-              // box-sizing: border-box;
-              // padding: 0.06rem;
-              // border-radius: 5px;
-            }
-            .red {
-              color: #41cd76;
-              // border: 1px solid #41cd76;
-              // box-sizing: border-box;
-              // padding: 0.06rem;
-              // border-radius: 5px;
-            }
-            .blue {
-              color: red;
-              // border: 1px solid red;
-              // box-sizing: border-box;
-              // padding: 0.06rem;
-              // border-radius: 5px;
-            }
+        color: #ffc000;
+        // border: 1px solid #ffc000;
+        // box-sizing: border-box;
+        // padding: 0.06rem;
+        // border-radius: 5px;
+      }
+      .red {
+        color: #41cd76;
+        // border: 1px solid #41cd76;
+        // box-sizing: border-box;
+        // padding: 0.06rem;
+        // border-radius: 5px;
+      }
+      .blue {
+        color: red;
+        // border: 1px solid red;
+        // box-sizing: border-box;
+        // padding: 0.06rem;
+        // border-radius: 5px;
+      }
       .iteamForm {
-      display: flex;
-      justify-content: flex-start;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0.4rem 0rem 0rem 0.3rem;
-      background-color: #ffffff;
-      .border-bike {
-        border: none;
-      }
-      .border-bike2 {
-        border-right: 1px solid #dddddd;
-      }
-      .rightsa{
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        margin-left: 0.3rem;
-        border-bottom: 1px solid #eeeeee;
-        height: 1rem;
-        line-height: 0.6rem;
         display: flex;
-        justify-content: space-between;
-        // text-align:right;
-        padding-right: 0.3rem;
-        input{
-          margin-bottom: 0.4rem;
+        justify-content: flex-start;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.3rem;
+        background-color: #ffffff;
+        align-items: center;
+        .border-bike {
+          border: none;
+        }
+        .border-bike2 {
+          border-right: 1px solid #dddddd;
+        }
+        .rightsa {
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          margin-left: 0.3rem;
+          border-bottom: 1px solid #eeeeee;
+          height: 1rem;
+          line-height: 0.6rem;
+          display: flex;
+          justify-content: space-between;
+          // text-align:right;
+          align-items: center;
+          padding-right: 0.3rem;
+          input {
+            margin-bottom: 0.4rem;
+          }
+        }
+        .rightsa1 {
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          margin-left: 0.3rem;
+          display: flex;
+          justify-content: space-between;
+          padding-right: 0.3rem;
         }
       }
-      .rightsa1{
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        margin-left: 0.3rem;
-        display: flex;
-        justify-content: space-between;
-        padding-right: 0.3rem;
-      }
-    }
       .iteamImage {
         width: 100%;
         display: flex;
@@ -1121,11 +1143,11 @@ p {
         border-bottom-left-radius: 0.12rem;
         border-bottom-right-radius: 0.12rem;
         .reaed-sa {
-              background: #aaaaaa;
-            }
-            .reaed-two {
-              background: #ff0000;
-            }
+          background: #aaaaaa;
+        }
+        .reaed-two {
+          background: #ff0000;
+        }
         .topcloumson {
           display: flex;
           justify-content: flex-start;
