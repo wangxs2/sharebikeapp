@@ -74,11 +74,13 @@
           <div class="rightsa1">
             <span style="margin-top:0.1rem;">地点</span>
             <input
-              style="width:80%;text-align:right;word-break:break-all"
+              style="width:80%;text-align:right;word-break:break-all;background:#ffffff"
               maxlength="60"
+              :disabled="true"
               placeholder="点击图标获取当前位置"
               v-model="formMessage.handleAddr"
             >
+            <!-- <p style="flex:1;height:0.4rem;text-align:right;word-break:break-all;overflow-x:scroll;margin:0">{{formMessage.handleAddr}}</p> -->
             <img
               src="../../assets/image/icon_2_address2.png"
               width="24"

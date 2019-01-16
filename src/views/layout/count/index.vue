@@ -1,23 +1,32 @@
 <template>
   <div class="gcontainer">
     <header>
-      <h1></h1>
       <h1 style="margin-left:0.96rem;width:50%;text-align:right">统计</h1>
       <h1
         class="animated-tada"
         style="width:50%;text-align:right"
-        v-show="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'&&ruleStatus=='true'"
-        @click="toDaily"
-      >日报</h1>
-      <h1
-        style="width:50%;text-align:right"
-        v-show="userInfo.roleCode!=='clean'&&userInfo.roleCode!=='manage'&&userInfo.roleCode!=='dispatch'&&ruleStatus=='false'"
-        @click="toDaily"
-      >日报</h1>
-      <h1
-        style="width:50%;"
-        v-show="userInfo.roleCode=='clean'||userInfo.roleCode=='manage'||userInfo.roleCode=='dispatch'"
-      ></h1>
+        v-if="ruleStatus=='true'"
+        @click="rulesBox=!rulesBox"
+      >
+        <span style="font-size:0.6rem" class="iconfont icon-paper"></span>
+      </h1>
+      <h1 style="width:50%;text-align:right" v-if="ruleStatus=='false'" @click="rulesBox=!rulesBox">
+        <span style="font-size:0.6rem" class="iconfont icon-paper"></span>
+      </h1>
+      <div class="historical-rules" v-if="rulesBox">
+        <div class="rules-box" @click="toDaily('day')">
+          <!-- <img src="@/assets/image/evaluation/history.png" alt srcset> -->
+          <span>日报</span>
+        </div>
+        <div class="rules-box" @click="toDaily('week')">
+          <!-- <img src="@/assets/image/evaluation/ruls@2x (1).png" alt srcset> -->
+          <span>周报</span>
+        </div>
+        <div class="rules-box" @click="toDaily('month')" style="border:none">
+          <!-- <img src="@/assets/image/evaluation/ruls@2x (1).png" alt srcset> -->
+          <span>月报</span>
+        </div>
+      </div>
     </header>
     <main>
       <nav @click="selectComany($event)">
@@ -102,6 +111,7 @@ export default {
   data() {
     return {
       dateValue: "", // 实际使用时间
+      rulesBox:false,//日周月报
       pickerValue: new Date(), // 选择的时间
       eachartNode: null,
       company: [], //单车企业数据
@@ -125,9 +135,9 @@ export default {
       //   alert(2);
       //   this.eachartNode.resize();
       // };
-      window.addEventListener('resize',function(){
+      window.addEventListener("resize", function() {
         this.eachartNode.resize();
-      })
+      });
     });
   },
   methods: {
@@ -192,8 +202,13 @@ export default {
         this.getCount();
       }
     },
-    toDaily() {
-      this.$router.push("/statisticsDaily");
+    toDaily(val) {
+      this.$router.push({
+        path:"/statisticsDaily",
+        query:{
+          dailyType:val
+        }
+      });
     },
     // 选择视图
     selectView(e) {
@@ -346,6 +361,7 @@ export default {
     justify-content: center;
     box-sizing: border-box;
     padding: 0 0.3rem;
+    position: relative;
     h1 {
       font-size: 0.48rem;
       color: #fff;
@@ -354,6 +370,35 @@ export default {
       text-align: center;
       line-height: 1.173333rem;
     }
+    .historical-rules {
+        position: absolute;
+        top: 0.9rem;
+        right: 0.1rem;
+        width: 2rem;
+        height: 2.6rem;
+        background: #ffffff;
+        border-radius: 0.1rem;
+        box-shadow: 0 0 0.1rem #dddddd;
+        display: flex;
+        flex-direction: column;
+        z-index: 99999;
+        .rules-box {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-bottom: 1px solid #eeeeee;
+          padding: 0.42rem 0.05rem;
+          img {
+            width: 0.5rem;
+            height: 0.5rem;
+            margin-right: 0.1rem;
+          }
+          span {
+            color: #333333;
+            font-size: 0.373333rem;
+          }
+        }
+      }
   }
   main {
     width: 100%;

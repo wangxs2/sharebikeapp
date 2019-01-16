@@ -5,6 +5,8 @@
     </div>
     <div class="bottom">
       <div class="menu-iteam" v-for="(iteam,index) in menuList" :key="index" @click="toRouterIndex(iteam,index)">
+        <span class="badge" v-if="index==2&&ruleStatus3"></span>
+        <span class="badge1" v-if="(index==0&&ruleStatus1)||(index==1&&ruleStatus2)">{{index==0?selfCheckNum:dispatchkNum}}</span>
           <img :src="iteam.imgUrl[selectIndex==index?0:1]">
           <span v-bind:style="{color:selectIndex==index?'#5076FF':'#AAAAAA'}">{{iteam.name}}</span>
       </div>
@@ -200,21 +202,11 @@ export default {
       align-items: center;
       font-size: 0.34rem;
       color: #aaaaaa;
-      img {
-        width: 0.6rem;
-        height: 0.6rem;
-      }
-      span {
-        margin-top: 0.08rem;
-      }
-    }
-    .mint-tabbar {
-      .mint-tab-item {
-        position: relative;
-        .badge {
+      position: relative;
+      .badge {
           position: absolute;
-          top: 7px;
-          right: 32%;
+          top: 0;
+          right: 0.4rem;
           display: block;
           width: 6px;
           height: 6px;
@@ -223,8 +215,8 @@ export default {
         }
         .badge1 {
           position: absolute;
-          top: 2px;
-          right: 20%;
+          top: 0;
+          right: 0.28rem;
           display: block;
           width: 15px;
           height: 15px;
@@ -235,8 +227,15 @@ export default {
           line-height: 15px;
           background: red;
         }
+      img {
+        width: 0.6rem;
+        height: 0.6rem;
+      }
+      span {
+        margin-top: 0.08rem;
       }
     }
+    
   }
 }
 </style>

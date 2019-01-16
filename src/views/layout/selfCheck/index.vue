@@ -342,7 +342,7 @@ export default {
     //确定
     submit() {
       this.downIcon1 = false;
-      this.getListData();
+      this.getListData2();
     },
     //切换图片；
     sort(iteam, index) {
@@ -404,7 +404,6 @@ export default {
       });
     },
     getListData() {
-     
       this.pageList = [];
       this.searchCondition.page = 0
       this.searchCondition.pageSize = 15;

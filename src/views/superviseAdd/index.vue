@@ -61,7 +61,8 @@
           <div class="rightsa1">
             <span style="width:20%">地点</span>
             <input
-              style="width:100%;text-align:right;word-break:break-all"
+              style="width:100%;text-align:right;word-break:break-all;background:#ffffff"
+              :disabled="true"
               maxlength="60"
               placeholder="点击图标获取当前位置"
               v-model="formMessage.handleAddr"

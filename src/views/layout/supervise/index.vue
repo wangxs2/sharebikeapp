@@ -359,7 +359,7 @@ export default {
     //确定
     submit() {
       this.downIcon1 = false;
-      this.getListData();
+      this.getListData2();
     },
     //切换图片；
     sort(iteam, index) {

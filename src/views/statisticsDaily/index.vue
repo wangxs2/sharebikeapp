@@ -2,6 +2,7 @@
   <div class="container">
     <!-- 时间选择 -->
     <mt-datetime-picker
+    v-if="dailyType!=='month'"
       year-format="{value} 年"
       Format="yyyy-MM"
       month-format="{value} 月"
@@ -11,9 +12,21 @@
       v-model="pickerValue"
     ></mt-datetime-picker>
     <!-- 时间选择 -->
+    <mt-datetime-picker
+    v-if="dailyType=='month'"
+      year-format="{value} 年"
+      Format="yyyy-MM"
+      month-format="{value} 月"
+      @confirm="selectDate"
+      ref="picker"
+      type="date"
+      v-model="pickerValue"
+      class="dailyBox"
+    ></mt-datetime-picker>
+    <!-- 时间选择 -->
     <div class="header">
       <img src="@/assets/image/evaluation/nav_1_back@2x.png" alt @click="toUserInfo">
-      <div style="color:#333333" class="header-title">治理日报</div>
+      <div style="color:#333333" class="header-title">治理{{dailyType=='week'?'周报':dailyType=='month'?'月报':'日报'}}</div>
       <img
         style="width:0.48rem;height:0.48rem"
         src="@/assets/image/statisticsDaily/icon_data@3x.png"
@@ -66,7 +79,7 @@
             >{{dataDetail.title}}</h1>
             <p
               style="font-size:0.4rem;margin:0;color:#afbffe;text-align:center;margin-right:0.6rem"
-            >《单车治理》{{FormatDate5(dataDetail.dayDate)}}</p>
+            >《单车治理》{{dataDetail.dayDate}}</p>
           </div>
         </div>
         <div class="content-bottom-box" style="margin-top:0rem">
@@ -89,29 +102,33 @@
             <div class="content-bottom-list">
               <p
                 style="margin:0;padding:0.3rem;line-height:0.62rem;padding-bottom:0;text-indent:0.8rem"
+              >{{dataDetail.status==0?dataDetail.dispatchDealSummary:dataDetail.cleanByUserSummary}}</p>
+              <p
+                style="margin:0;padding:0.3rem;line-height:0.62rem;padding-bottom:0;text-indent:0.8rem"
                 v-html="dispatchContentSummary"
               ></p>
               <p
                 style="margin:0;padding:0.3rem;line-height:0.62rem;padding-top:0;text-indent:0.8rem"
                 v-html="dispatchContentSummary1"
               ></p>
+              
             </div>
             <div
               class="content-bottom-list"
-              v-if="dataDetail.status==1&&dataDetail.dispatchByAreaList.length!==0"
+              v-if="dataDetail.status==1"
             >
               <table class="tableSa" cellspacing="0">
                 <thead>
                   <tr>
-                    <th>派单单位</th>
-                    <th>派单数</th>
-                    <th>派单详情</th>
-                    <th>已处理</th>
-                    <th>处理中</th>
-                    <th>未处理</th>
+                    <th>{{dataDetail.type!=='bike'?'派单单位':'姓名'}}</th>
+                    <th>{{dataDetail.type!=='bike'?'派单数':'处理单'}}</th>
+                    <th>{{dataDetail.type!=='bike'?'派单详情':'自查'}}</th>
+                    <th>{{dataDetail.type!=='bike'?'已处理':'整理'}}</th>
+                    <th>{{dataDetail.type!=='bike'?'处理中':'清运'}}</th>
+                    <th v-if="dataDetail.type!=='bike'">未处理</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="dataDetail.type!=='bike'">
                   <tr v-for="(item,index) in dataDetail.dispatchByAreaList" :key="index">
                     <td>
                       <p style="width:2.2rem;">{{item.dispatchUnit}}</p>
@@ -128,6 +145,19 @@
                     <td style="color:#09C504">{{item.done}}</td>
                     <td style="color:#FF7E00">{{item.doing}}</td>
                     <td style="color:#FF1717">{{item.willdo}}</td>
+                  </tr>
+                </tbody>
+                <tbody v-if="dataDetail.type=='bike'">
+                  <tr v-for="(item,index) in dataDetail.cleanByUserList" :key="index">
+                    <td>
+                      <p style="width:2.2rem;">{{item.userName}}</p>
+                    </td>
+                    <td style="color:#3E68FF">{{item.done}}/{{item.receiveCount}}</td>
+                    <td>
+                      {{item.checkCount}}
+                    </td>
+                    <td style="color:#09C504">{{item.arrangeNum}}</td>
+                    <td style="color:#FF7E00">{{item.cleanNum}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -149,7 +179,7 @@
           >
           <div class="content-bottom-rules" style="width:100%;margin-top:0rem">
             <div class="content-bottom-rules-box">
-              <div class="content-bottom-rules-box1">各企业派单处理情况</div>
+              <div class="content-bottom-rules-box1">{{dataDetail.type==='bike'?'派单处理情况':'各企业派单处理情况'}}</div>
               <div style="padding-top:0.98rem">
                 <div
                   class="content-bottom-list"
@@ -200,7 +230,10 @@
                       alt
                       srcset
                     >
-                    <p v-if="item.orgId!==1006&&item.orgId!==1007&&item.orgId!==1014&&item.orgId!==1015&&item.orgId!==1059" class="other">{{item.orgName}}</p>
+                    <p
+                      v-if="item.orgId!==1006&&item.orgId!==1007&&item.orgId!==1014&&item.orgId!==1015&&item.orgId!==1059"
+                      class="other"
+                    >{{item.orgName}}</p>
                     <!-- <p class="other">产研院</p> -->
                     <p
                       style="margin:0;font-size:0.39rem;margin-left:0.3rem"
@@ -269,7 +302,7 @@
                           <span
                             :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
                             style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem"
-                          >{{item.avgDealTimeHour}}</span>
+                          >{{item.avgDealTimeHour==undefined?'-':item.avgDealTimeHour}}</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">处理时长</span>
                         </div>
                       </div>
@@ -279,7 +312,7 @@
               </div>
             </div>
             <div class="content-bottom-rules-box">
-              <div class="content-bottom-rules-box1">各企业自查情况</div>
+              <div class="content-bottom-rules-box1">{{dataDetail.type==='bike'?'自查情况':'各企业自查情况'}}</div>
               <div style="padding-top:0.98rem">
                 <div
                   class="content-bottom-list"
@@ -330,7 +363,10 @@
                       alt
                       srcset
                     >
-                    <p v-if="item.orgId!==1006&&item.orgId!==1007&&item.orgId!==1014&&item.orgId!==1015&&item.orgId!==1059" class="other">{{item.orgName}}</p>
+                    <p
+                      v-if="item.orgId!==1006&&item.orgId!==1007&&item.orgId!==1014&&item.orgId!==1015&&item.orgId!==1059"
+                      class="other"
+                    >{{item.orgName}}</p>
                     <!-- <p style="margin:0;font-size:0.39rem;margin-left:0.3rem">收到派单：{{item.receiveCount}}单</p> -->
                   </div>
                   <div
@@ -390,7 +426,7 @@
             </div>
           </div>
         </div>
-        <p style="text-align:center;font-size:0.32rem;color:#FFFFFF">{{dataDetail.peroration}}</p>
+        <p style="text-align:center;font-size:0.32rem;color:#FFFFFF">今日治理日报到此结束，谢谢查阅</p>
         <div class="rules-bottom-img"></div>
       </div>
     </div>
@@ -413,6 +449,7 @@ export default {
       pickerValue: new Date(), // 选择的时间
       version: "",
       versionTime: "",
+      dailyType:'',//tb
       dispatchContentSummary: "",
       dispatchContentSummary1: "",
       dispatchCount: 0,
@@ -429,16 +466,19 @@ export default {
   components: {},
   mounted() {},
   created() {
-    this.getCleanArea();
-    window.watchBackWXS=this.watchBackWXS;
+    if(this.$route.query.dailyType){
+      this.dailyType=this.$route.query.dailyType;
+       this.getCleanArea();
+    }
+    window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
     //返回考评
     toUserInfo() {
       this.$router.push("/layout/count");
     },
-    watchBackWXS(){
-        this.toUserInfo();
+    watchBackWXS() {
+      this.toUserInfo();
     },
     // 打开时间选择框
     openPicker() {
@@ -447,8 +487,12 @@ export default {
     // 选中时间事件
     selectDate(val) {
       this.downIcon1 = true;
-      // this.query.yearMonth = val.Format("yyyy-MM-DD");
-      this.dayDate = this.FormatDate5(val);
+      if(this.dailyType!=='month'){
+        this.dayDate = this.FormatDate5(val);
+      }else{
+        this.dayDate = val.Format("yyyy-MM");
+      }
+      console.log(this.dayDate);
       this.getData();
     },
     changeCompany(val) {
@@ -464,25 +508,31 @@ export default {
       this.checkCount1 = 0;
       this.$fetchGet("cleanDaily/getCleanDaily", {
         areaId: this.areaId,
-        dayDate: this.dayDate
+        dayDate: this.dayDate,
+        dailyType:this.dailyType,
       }).then(res => {
         if (res.status == 1) {
           this.dataDetail = res;
-          console.log(res.dispatchContentDetail);
+          console.log(this.dataDetail.type);
           res.detailByOrgList.forEach(element => {
             this.dispatchCount += element.arrangeNum;
             this.checkCount += element.cleanNum;
           });
-          res.selfCheckByOrgList.forEach(element => {
-            this.dispatchCount1 += element.arrangeNum;
-            this.checkCount1 += element.cleanNum;
-          });
-          this.dispatchContentSummary = res.dispatchContentSummary.split(
-            "<###>"
-          )[0];
-          this.dispatchContentSummary1 = res.dispatchContentSummary.split(
-            "<###>"
-          )[1];
+          if(res.selfCheckByOrgList){
+              res.selfCheckByOrgList.forEach(element => {
+              this.dispatchCount1 += element.arrangeNum;
+              this.checkCount1 += element.cleanNum;
+            });
+          }
+          
+          if (res.dispatchContentSummary) {
+            this.dispatchContentSummary = res.dispatchContentSummary.split(
+              "<###>"
+            )[0];
+            this.dispatchContentSummary1 = res.dispatchContentSummary.split(
+              "<###>"
+            )[1];
+          }
         } else {
           this.dataDetail = res;
           this.dispatchContentSummary = res.dispatchContentSummary;
@@ -522,7 +572,12 @@ export default {
   }
 };
 </script>
-
+<style>
+.dailyBox .picker-items .picker-slot.picker-slot-center:nth-of-type(3) {
+    display: none !important;
+    background: #00c458;
+  }
+</style>
 <style lang="scss" scoped>
 .container {
   width: 100%;
@@ -621,7 +676,7 @@ export default {
           .xiangqi {
             color: #00cb4b;
           }
-          .other1{
+          .other1 {
             color: #9a6eff;
           }
           .content-bottom-list {
@@ -705,8 +760,10 @@ export default {
               width: 4.8rem;
               height: 1rem;
               line-height: 1rem;
-              text-align: center;
+              text-align: left;
               color: #ffffff;
+              box-sizing: border-box;
+              padding-left: 0.6rem;
               font-size: 0.44rem;
             }
           }
