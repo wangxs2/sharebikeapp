@@ -16,15 +16,6 @@
           >
         </mt-swipe-item>
       </mt-swipe>
-      <!-- <img
-        src="../../assets/image/login/rotate.svg"
-        alt
-        srcset
-        width="50"
-        height="50"
-        style="position:fixed;right:44%;bottom:15px;"
-        @click="rotate()"
-      > -->
     </mt-popup>
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
@@ -198,8 +189,13 @@
     </div>
     <mt-popup v-model="popupVisible" class="mapwhere" position="right">
       <div class="header">
-        <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
-        <p>位置</p>
+        <div style="display: flex;justify-content: space-between;align-items: center;width:100%">
+          <div style="display: flex;justify-content:flex-start;align-items: center;">
+            <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
+            <p style="margin:0;padding:0">位置</p>
+          </div>
+          <div @click="sendAddress">确定</div>
+        </div>
       </div>
       <div id="myMap"></div>
       <div class="addres-search">
@@ -211,7 +207,7 @@
           <input
             type="text"
             v-model="addressCtrol"
-            id="suggestId"
+            @keyup="suggestSa"
             style="width:100%;height:100%;padding:0.18rem;border-radius:4px;text-indent:0.6rem"
             placeholder="搜索"
           >
@@ -226,14 +222,14 @@
           @click="getAddress(iteam,index)"
         >
           <div>
-            <h5>{{iteam.title}} {{iteam.business}}</h5>
-            <p>{{iteam.city}}&nbsp;{{iteam.address}}&nbsp;{{iteam.district}}&nbsp;{{iteam.business}}</p>
+            <h5>{{iteam.name}}</h5>
+            <p>{{iteam.addr}}</p>
           </div>
-          <!-- <span
+          <span
             v-if="changeId==index"
             class="iconfont icon-xuanzhong"
             style="font-size:22px;color:#1caa20"
-          ></span> -->
+          ></span>
         </div>
       </div>
     </mt-popup>
@@ -248,7 +244,7 @@ export default {
     return {
       time: "",
       isDisable: false,
-      changeId: 0,
+      changeId: -1,
       rotateS: 0,
       dealMethod: "",
       popupVisible: false,
@@ -274,6 +270,7 @@ export default {
       sheetCode: "",
       iteamList: {},
       dispachPhotoUrls: [],
+      addrinfors:null,
       placeData: [],
       lageImg:[],//轮播显示图片
       indexImage:0,
@@ -285,7 +282,8 @@ export default {
         gpsLongitude: "",
         gpsLatitude: "",
         dispachPhoto: [],
-
+        longitude: "",
+        latitude: "",
         //c查询条件
         areakids: [],
         areaarr: [],
@@ -297,15 +295,7 @@ export default {
   },
   components: {},
   mounted() {
-    new BMap.Autocomplete({ //建立一个自动完成的对象
-      input: "suggestId",
-      location: "上海市",
-      onSearchComplete: AutocompleteResult => {
-        console.log(12)
-        this.placeData = AutocompleteResult.Ar;
-        this.suggestSa(this.addressCtrol);
-      }
-    });
+    
   },
   created() {
     if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
@@ -344,8 +334,11 @@ export default {
           title: "提示"
         }).then(action => {});
       } else {
-        this.getMap();
-        this.addressCtrol = "";
+        if (this.formMessage.handleAddr) {
+          this.getMap(false);
+        } else {
+          this.getMap(true);
+        }
         this.popupVisible = true;
       }
     },
@@ -389,87 +382,148 @@ export default {
         }
       });
     },
-     addCompCtrol(val) {
-      // 添加定位控件
-      var navigationControl = new BMap.NavigationControl({
-        // 靠左上角位置
-        anchor: BMAP_ANCHOR_TOP_RIGHT,
-        // LARGE类型
-        type: BMAP_NAVIGATION_CONTROL_LARGE,
-        // 启用显示定位
-        enableGeolocation: true
+    getAddress(row, index) {
+      console.log(row);
+      let marker = new AMap.Marker({
+          icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+          position: [row.lng, row.lat]
       });
-      val.addControl(navigationControl);
-      var geolocationControl = new BMap.GeolocationControl({
-        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
-        size: (20, 20),
-        showAddressBar: true,
-        enableAutoLocation: true
+      this.myMap = new AMap.Map("myMap", {
+        resizeEnable: true,
+        center: [row.lng, row.lat],
+        zoom: 20
       });
-      geolocationControl.addEventListener("locationSuccess", function(e) {
-        // 定位成功事件
-      });
-      geolocationControl.addEventListener("locationError", function(e) {
-        // 定位失败事件
-        // alert(e.message);
-      });
-      val.addControl(geolocationControl);
+      // 构造点标记
+      this.myMap.add(marker)
+      this.myMap.addControl(this.addCompCtrol());
+      this.changeId = index;
+      this.addrinfors = row;
     },
-    //百度地图关键字提示
-    suggestSa(val) {
-      this.myMap = new BMap.Map("myMap", { enableMapClick: false });
-      let myGeo = new BMap.Geocoder();
-      myGeo.getPoint(
-        val,
-        point => {
-          if (point) {
-            // console.log(point.lng);
-            // console.log(point.lat);
-            this.myMap.centerAndZoom(point, 16);
-            this.myMap.addOverlay(new BMap.Marker(point));
-            this.addCompCtrol(this.myMap);
-            this.formMessage.gpsLongitude = point.lng;
-            this.formMessage.gpsLatitude = point.lat;
-          } else {
-          }
-        },
-        "上海市"
-      );
-    },
-    getMap() {
-      this.myMap = new BMap.Map("myMap", { enableMapClick: false });
-      let myCity = new BMap.Geolocation();
-      let geoc = new BMap.Geocoder();
-      myCity.getCurrentPosition(rs => {
-        let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
-        var marker = new BMap.Marker(ggPoint); // 创建标注
-        this.myMap.addOverlay(marker);
-        this.myMap.centerAndZoom(ggPoint, 16);
-        this.addCompCtrol(this.myMap);
-        geoc.getLocation(
-          ggPoint,
-          rs => {
-            // console.log(rs);
-            this.placeData = rs.surroundingPois;
-            this.formMessage.gpsLongitude = this.placeData[0].point.lng;
-            this.formMessage.gpsLatitude = this.placeData[0].point.lat;
-            let addComp = rs.addressComponents;
-          },
-          { poiRadius: 200, numPois: 20 }
-        );
+    getMap(flag) {
+      this.myMap = new AMap.Map("myMap");
+      this.placeSearch = new AMap.PlaceSearch({
+        city: "全国",
+        map: this.myMap,
+        children: 0,
+        type:
+          "风景名胜|商务住宅|政府机构及社会团体|交通设施服务|公司企业|道路附属设施|地名地址信息|公共设施",
+        extensions: "all",
+        autoFitView: false
       });
-      this.myMap.addEventListener("click", e => {
-        let pt = e.point;
-        this.myMap.clearOverlays();
-        geoc.getLocation(pt, rs => {
-          var addComp = rs.addressComponents;
-          let marker = new BMap.Marker(pt);
-          this.myMap.addOverlay(marker);
-          this.myMap.centerAndZoom(pt, 16);
-          this.addCompCtrol(this.myMap);
-          this.placeData = rs.surroundingPois;
+      if (flag) {
+        let geolocation = new AMap.Geolocation({
+          enableHighAccuracy: true, //是否使用高精度定位，默认:true
+          timeout: 10000, //超过10秒后停止定位，默认：无穷大
+          maximumAge: 0, //定位结果缓存0毫秒，默认：0
+          convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+          showButton: true, //显示定位按钮，默认：true
+          buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
+          buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+          showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
+          showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
+          panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
+          zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+        });
+        this.myMap.addControl(geolocation);
+        geolocation.getCurrentPosition((status, result) => {
+          this.addressMapSa(result.position);
+          this.formMessage.gpsLongitude = result.position.lng;
+          this.formMessage.gpsLatitude = result.position.lat;
+          // var lat = result.position.lat;
+          // var lng = result.position.lng;
+        });
+      } else {
+        let marker = new AMap.Marker({
+          icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+          position: [this.formMessage.longitude, this.formMessage.latitude]
+      });
+      this.myMap.add(marker);
+        let location = [this.formMessage.longitude, this.formMessage.latitude];
+        this.myMap.setZoomAndCenter(20, location);
+        this.addressMapSa(location, true);
+        //unshift()
+      }
+    },
+    addCompCtrol() {
+       let geolocation = new AMap.Geolocation({
+          enableHighAccuracy: true, //是否使用高精度定位，默认:true
+          timeout: 10000, //超过10秒后停止定位，默认：无穷大
+          maximumAge: 0, //定位结果缓存0毫秒，默认：0
+          convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+          showButton: true, //显示定位按钮，默认：true
+          buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
+          buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+          showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
+          showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
+          panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
+          zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+        });
+        return geolocation;
+        // this.myMap.addControl(geolocation);
+    },
+    //高德地图关键字提示
+    suggestSa() {
+      this.placeSearch.search(this.addressCtrol, (status, result) => {
+        console.log(result);
+        // return;
+        let addrPrefix = "";
+        this.placeData = result.poiList.pois.map(iteam => {
+          addrPrefix =
+            iteam.pname === iteam.cityname
+              ? iteam.pname + iteam.adname
+              : iteam.pname + iteam.cityname + iteam.adname;
+          return {
+            addr: addrPrefix + iteam.address,
+            lng: iteam.location.lng,
+            lat: iteam.location.lat,
+            name: iteam.name
+          };
         });
       });
+    },
+     //经纬度获取周边
+    addressMapSa(position, flag) {
+      this.mapRangeSearch(position).then(res => {
+        let addrPrefix =
+          res.addressComponent.province +
+          res.addressComponent.city +
+          res.addressComponent.district;
+        let addr;
+        this.placeData = res.pois.map(iteam => {
+          // if()
+          return {
+            addr: addrPrefix + iteam.address,
+            lng: iteam.location.lng,
+            lat: iteam.location.lat,
+            name: iteam.name
+          };
+        });
+        if (flag) {
+          this.placeData.unshift({
+            addr: this.formMessage.handleAddr,
+            lng: this.formMessage.longitude,
+            lat: this.formMessage.latitude
+          });
+          this.changeId = 0;
+        }
+        
+      });
+    },
+    //确定
+    sendAddress() {
+      if (this.addrinfors) {
+        this.addressCtrol = "";
+        this.formMessage.handleAddr = this.addrinfors.addr;
+        this.formMessage.longitude = this.addrinfors.lng;
+        this.formMessage.latitude = this.addrinfors.lat;
+        this.popupVisible = false;
+      } else {
+        MessageBox.alert("", {
+          message: "请选择地址",
+          title: "提示"
+        }).then(action => {});
+      }
+      // this.formMessage.handleAddr=this.a
     },
     handleClose() {
       // console.log("close event");

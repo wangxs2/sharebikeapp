@@ -1,6 +1,17 @@
 import echarts from 'echarts' //引入echarts
 
 import * as http from './http'
+let geocoder;
+
+function addressMap() {
+    geocoder = new AMap.Geocoder({
+        city: '全国',
+        radius: 200,
+        batch: true,
+        extensions: 'all'
+
+    });
+};
 
 function isSystem() {
     var system = {
@@ -19,22 +30,22 @@ function isSystem() {
 };
 export default {
     install(Vue, options) {
-        /* *
-         *成功提示
-         */
-        Vue.prototype.Gsuccess = function(msg) {
 
+        Vue.prototype.mapRangeSearch = function(positions) {
+            if (!geocoder) {
+                addressMap()
             }
-            /* *
-             *警告提示
-             */
-        Vue.prototype.Gwarning = function(msg) {
+            return new Promise((resolve, reject) => {
+                geocoder.getAddress(positions, function(status, result) {
+                    // console.log(result);
+                    if (status == 'complete') {
+                        resolve(result.regeocode);
+                    } else {
+                        reject(status);
+                    }
 
-            }
-            /* *
-             *失败提示
-             */
-        Vue.prototype.Gerror = function(msg) {
+                })
+            })
 
         }
 

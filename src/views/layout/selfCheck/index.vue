@@ -217,7 +217,6 @@ export default {
       } else {
         this.areakids = this.$route.query.areakids;
         this.areaarr = this.$route.query.areaarr;
-        
         this.viewType=this.areaarr[this.areaarr.length-1].id;
       }
      this.getListData2();

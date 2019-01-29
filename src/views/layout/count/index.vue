@@ -375,7 +375,7 @@ export default {
         top: 0.9rem;
         right: 0.1rem;
         width: 2rem;
-        height: 2.6rem;
+        height: 2.4rem;
         background: #ffffff;
         border-radius: 0.1rem;
         box-shadow: 0 0 0.1rem #dddddd;
@@ -387,7 +387,7 @@ export default {
           justify-content: center;
           align-items: center;
           border-bottom: 1px solid #eeeeee;
-          padding: 0.42rem 0.05rem;
+          padding: 0.3rem;
           img {
             width: 0.5rem;
             height: 0.5rem;

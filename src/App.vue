@@ -22,7 +22,9 @@ export default {
     };
   },
 
-  mounted() {},
+  mounted() {
+    console.log(AMap);
+  },
   created() {
     // window.watchBackWXS=this.watchBackWXS;
     window.getPush = this.getPush;
