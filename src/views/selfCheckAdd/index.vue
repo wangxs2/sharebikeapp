@@ -1,396 +1,207 @@
 <template>
-  <div class="container">
-    <mt-popup class="imgMask" v-model="popupVisible1" position="right">
-      <span
-        class="iconfont icon-guandiao"
-        style="color:#fff;position:fixed;right:15px;top:15px"
-        @click="popupVisible1=false"
-      ></span>
-      <mt-swipe
-        style="width:100%;height:64%"
-        :continuous="false"
-        :touchstart="true"
-        :speed="10"
-        :auto="0"
-        :defaultIndex="indexImage"
-      >
-        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index">
-          <img :src="Ip+iteam" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" width="100%">
-        </mt-swipe-item>
-      </mt-swipe>
-    </mt-popup>
-    <mt-popup class="version-popup-box" v-model="popupVisible2" position="right">
-      <div class="version-popup" style="padding-bottom:0">
-        <p style="margin:0;text-align:center;">请输入{{bikeTitle}}车辆数</p>
-        <div style="padding:0.6rem;padding-top:0rem;display: flex;flex-direction: column;flex:1">
-          <div class="version-popup-content" v-for="(iteam,index) in bikeCleanCompany" :key="index">
-            <p
-              class="companyBike"
-              :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
-            >{{iteam.name}}</p>
-            <div style="margin-left:0.3rem;height:100%">
-              <input v-if="bikeTitle=='整理'" type="number" v-model="iteam.arrangeNum">
-              <input v-if="bikeTitle=='清运'" type="number" v-model="iteam.cleanNum">
+    <div class="container">
+        <mt-popup class="imgMask" v-model="popupVisible1" position="right">
+            <span class="iconfont icon-guandiao" style="color:#fff;position:fixed;right:15px;top:15px" @click="popupVisible1=false"></span>
+            <mt-swipe style="width:100%;height:64%" :continuous="false" :touchstart="true" :speed="10" :auto="0"
+                :defaultIndex="indexImage">
+                <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index">
+                    <img :src="Ip+iteam" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" width="100%">
+                </mt-swipe-item>
+            </mt-swipe>
+        </mt-popup>
+        <mt-popup class="version-popup-box" v-model="popupVisible2" position="right">
+            <div class="version-popup" style="padding-bottom:0">
+                <p style="margin:0;text-align:center;">请输入{{bikeTitle}}车辆数</p>
+                <div style="padding:0.6rem;padding-top:0rem;display: flex;flex-direction: column;flex:1">
+                    <div class="version-popup-content" v-for="(iteam,index) in bikeCleanCompany" :key="index">
+                        <p class="companyBike" :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</p>
+                        <div style="margin-left:0.3rem;height:100%">
+                            <input v-if="bikeTitle=='整理'" type="number" v-model="iteam.arrangeNum">
+                            <input v-if="bikeTitle=='清运'" type="number" v-model="iteam.cleanNum">
+                        </div>
+                    </div>
+                </div>
+                <div class="bottomsa">
+                    <p @click="popupVisible2=false">取消</p>
+                    <p @click="submitBike()" style="border:none;color:#5076FF">确定</p>
+                </div>
             </div>
-          </div>
+        </mt-popup>
+        <div class="header">
+            <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
+            <div class="header-title">添加企业自查</div>
+            <div></div>
         </div>
-        <div class="bottomsa">
-          <p @click="popupVisible2=false">取消</p>
-          <p @click="submitBike()" style="border:none;color:#5076FF">确定</p>
-        </div>
-      </div>
-    </mt-popup>
-    <div class="header">
-      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
-      <div class="header-title">添加企业自查</div>
-      <div></div>
-    </div>
-    <div class="content">
-      <div class="witeSa">
-        <div class="iteamForm">
-          <img
-            src="../../assets/image/selfcheck/icon_1_time@3x.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
-          <div class="rightsa">
-            <span>时间</span>
-            <span
-              style="text-align:right;margin-right:0.3rem"
-            >{{FormatDate(formMessage.createTime)}}</span>
-          </div>
-        </div>
-        <div class="iteamForm" style="padding-bottom:0.4rem">
-          <img
-            src="../../assets/image/selfcheck/icon_2_address@3x.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
-          <div class="rightsa1">
-            <span style="margin-top:0.1rem;">地点</span>
-            <input
-              style="width:80%;text-align:right;word-break:break-all;background:#ffffff"
-              maxlength="60"
-              :disabled="true"
-              placeholder="点击图标获取当前位置"
-              v-model="formMessage.handleAddr"
-            >
-            <!-- <p style="flex:1;height:0.4rem;text-align:right;word-break:break-all;overflow-x:scroll;margin:0">{{formMessage.handleAddr}}</p> -->
-            <img
-              src="../../assets/image/icon_2_address2.png"
-              width="24"
-              height="24"
-              alt
-              srcset
-              @click="placeClick"
-            >
-          </div>
-        </div>
-      </div>
+        <div class="content">
+            <div class="witeSa">
+                <div class="iteamForm">
+                    <img src="../../assets/image/selfcheck/icon_1_time@3x.png" width="24" height="24" alt srcset>
+                    <div class="rightsa">
+                        <span>时间</span>
+                        <span style="text-align:right;margin-right:0.3rem">{{FormatDate(formMessage.createTime)}}</span>
+                    </div>
+                </div>
+                <div class="iteamForm" style="padding-bottom:0.4rem">
+                    <img src="../../assets/image/selfcheck/icon_2_address@3x.png" width="24" height="24" alt srcset>
+                    <div class="rightsa1">
+                        <span style="margin-top:0.1rem;">地点</span>
+                        <input style="width:80%;text-align:right;word-break:break-all;background:#ffffff" maxlength="60"
+                            :disabled="true" placeholder="点击图标获取当前位置" v-model="formMessage.handleAddr">
+                        <!-- <p style="flex:1;height:0.4rem;text-align:right;word-break:break-all;overflow-x:scroll;margin:0">{{formMessage.handleAddr}}</p> -->
+                        <img src="../../assets/image/icon_2_address2.png" width="24" height="24" alt srcset @click="placeClick">
+                    </div>
+                </div>
+            </div>
 
-      <div class="iteamImage">
-        <div style="padding-left:0.3rem">
-          <img
-            src="../../assets/image/selfcheck/icon_4_picture.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
-          <span>整理前</span>
-        </div>
-        <div class="imageList">
-          <div
-            v-for="(iteam,index) in formMessage.handleBeforeURLs"
-            :key="index"
-            class="detailIcon"
-          >
-            <img
-              :src="Ip+iteam"
-              alt
-              srcset
-              width="100px"
-              height="100px"
-              @click="handOpen(formMessage.handleBeforeURLs,index)"
-            >
-            <span @click="detailImage(1,index)">
-              <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
-            </span>
-          </div>
-          <div
-            v-if="formMessage.handleBeforeURLs.length<5"
-            style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
-            @click="clickImage"
-          >
-            <img src="../../assets/image/icon_add.png" width="52px" height="52px" alt srcset>
-          </div>
-        </div>
-      </div>
-      <div class="iteamImage">
-        <div style="padding-left:0.3rem">
-          <img
-            src="../../assets/image/selfcheck/icon_4_picture.png"
-            width="22"
-            height="22"
-            alt
-            srcset
-          >
-          <span>整理后</span>
-        </div>
-        <div class="imageList">
-          <div v-for="(iteam,index) in formMessage.handleAfterURLs" :key="index" class="detailIcon">
-            <img
-              :src="Ip+iteam"
-              alt
-              srcset
-              width="100px"
-              height="100px"
-              @click="handOpen(formMessage.handleAfterURLs,index)"
-            >
-            <span @click="detailImage(2,index)">
-              <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
-            </span>
-          </div>
-          <div
-            v-if="formMessage.handleAfterURLs.length<5"
-            style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
-            @click="clickImage1"
-          >
-            <img src="../../assets/image/icon_add.png" width="52px" height="52px" alt srcset>
-          </div>
-        </div>
-      </div>
-      <div class="witeSa" style="margin-top:0.2rem;">
-        <div class="iteamForm" style="padding-right:0.3rem">
-          <img
-            src="../../assets/image/selfcheck/icon_5_num1@3x.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
-          <div class="rightsa" style="border:none">
-            <span>整理数</span>
-            <span
-              v-if="ifCleanByBike==1"
-              style="flex:1;line-height:100%;text-align:right;"
-            >{{formMessage.arrangeNum}}</span>
-            <input
-              v-if="ifCleanByBike==0"
-              style="text-align:right;"
-              type="number"
-              placeholder="请输入"
-              v-model="formMessage.arrangeNum"
-            >
-          </div>
-          <span
-            v-if="ifCleanByBike==1"
-            class="iconfont icon-jiantou1"
-            style="color:#999999;font-size:0.8rem;text-align:right"
-            @click="dealDetailList('整理')"
-          ></span>
-        </div>
-      </div>
-      <div class="witeSa" style="margin-top:0.05rem;">
-        <div style="margin:0 0.3rem">
-          <div class="iteamForm" v-if="isNumberbike">
-            <div
-              v-for="(iteam,index) in bikeCleanCompany1"
-              :key="index"
-              :class="index == (bikeCleanCompany1.length-1) ? 'border-bike':'border-bike2'"
-              style="display: flex;flex:1;flex-direction: column;justify-content:center;align-items: center;margin:0.2rem;"
-            >
-              <h7
-                style="color:#333333;font-size:0.52rem;margin-bottom:0.11rem;margin:0"
-              >{{iteam.arrangeNum==''||iteam.arrangeNum==undefined?0:iteam.arrangeNum}}</h7>
-              <span
-                class="companyBike"
-                style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
-              >{{iteam.name}}</span>
+            <div class="iteamImage">
+                <div style="padding-left:0.3rem">
+                    <img src="../../assets/image/selfcheck/icon_4_picture.png" width="24" height="24" alt srcset>
+                    <span>整理前</span>
+                </div>
+                <div class="imageList">
+                    <div v-for="(iteam,index) in formMessage.handleBeforeURLs" :key="index" class="detailIcon">
+                        <img :src="Ip+iteam" alt srcset width="100px" height="100px" @click="handOpen(formMessage.handleBeforeURLs,index)">
+                        <span @click="detailImage(1,index)">
+                            <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
+                        </span>
+                    </div>
+                    <div v-if="formMessage.handleBeforeURLs.length<5" style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
+                        @click="clickImage">
+                        <img src="../../assets/image/icon_add.png" width="52px" height="52px" alt srcset>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div
-            v-if="isNumberbike&&bikeCleanCompany2.length>0"
-            class="iteamForm"
-            style="border-top:1px solid #eeeeee"
-          >
-            <div
-              v-for="(iteam,index) in bikeCleanCompany2"
-              :key="index"
-              :class="index == 2||index==bikeCleanCompany2.length-1 ? 'border-bike':'border-bike2'"
-              style="display: flex;flex:1;flex-direction: column;justify-content:center;align-items: center;margin:0.2rem"
-            >
-              <h7
-                style="color:#333333;font-size:0.52rem;margin-bottom:0.1rem;margin:0"
-              >{{iteam.arrangeNum==''||iteam.arrangeNum==undefined?0:iteam.arrangeNum}}</h7>
-              <span
-                class="companyBike"
-                style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
-              >{{iteam.name}}</span>
+            <div class="iteamImage">
+                <div style="padding-left:0.3rem">
+                    <img src="../../assets/image/selfcheck/icon_4_picture.png" width="22" height="22" alt srcset>
+                    <span>整理后</span>
+                </div>
+                <div class="imageList">
+                    <div v-for="(iteam,index) in formMessage.handleAfterURLs" :key="index" class="detailIcon">
+                        <img :src="Ip+iteam" alt srcset width="100px" height="100px" @click="handOpen(formMessage.handleAfterURLs,index)">
+                        <span @click="detailImage(2,index)">
+                            <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
+                        </span>
+                    </div>
+                    <div v-if="formMessage.handleAfterURLs.length<5" style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
+                        @click="clickImage1">
+                        <img src="../../assets/image/icon_add.png" width="52px" height="52px" alt srcset>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="witeSa" style="margin-top:0.2rem;">
-        <div class="iteamForm" style="padding-right:0.3rem">
-          <img
-            src="../../assets/image/selfcheck/icon_5_num1@3x.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
-          <div class="rightsa" style="border:none">
-            <span>清运数</span>
-            <span
-              v-if="ifCleanByBike==1"
-              style="flex:1;line-height:100%;text-align:right;"
-            >{{formMessage.cleanNum}}</span>
-            <input
-              v-if="ifCleanByBike==0"
-              style="text-align:right;"
-              type="number"
-              placeholder="请输入"
-              v-model="formMessage.cleanNum"
-            >
-          </div>
-          <span
-            v-if="ifCleanByBike==1"
-            class="iconfont icon-jiantou1"
-            style="color:#999999;font-size:0.8rem;"
-            @click="dealDetailList('清运')"
-          ></span>
-        </div>
-      </div>
-      <div class="witeSa" style="margin-top:0.05rem;">
-        <div style="margin:0 0.3rem">
-          <div class="iteamForm" v-if="isNumberbike1">
-            <div
-              v-for="(iteam,index) in bikeCleanCompany1"
-              :key="index"
-              :class="index == (bikeCleanCompany1.length-1) ? 'border-bike':'border-bike2'"
-              style="display: flex;flex:1;flex-direction: column;justify-content:center;align-items: center;margin:0.2rem;"
-            >
-              <h7
-                style="color:#333333;font-size:0.52rem;margin-bottom:0.11rem;margin:0"
-              >{{iteam.cleanNum==''||iteam.cleanNum==undefined?0:iteam.cleanNum}}</h7>
-              <span
-                class="companyBike"
-                style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
-              >{{iteam.name}}</span>
+            <div class="witeSa" style="margin-top:0.2rem;">
+                <div class="iteamForm" style="padding-right:0.3rem">
+                    <img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="24" height="24" alt srcset>
+                    <div class="rightsa" style="border:none">
+                        <span>整理数</span>
+                        <span v-if="ifCleanByBike==1" style="flex:1;line-height:100%;text-align:right;">{{formMessage.arrangeNum}}</span>
+                        <input v-if="ifCleanByBike==0" style="text-align:right;" type="number" placeholder="请输入"
+                            v-model="formMessage.arrangeNum">
+                    </div>
+                    <span v-if="ifCleanByBike==1" class="iconfont icon-jiantou1" style="color:#999999;font-size:0.8rem;text-align:right"
+                        @click="dealDetailList('整理')"></span>
+                </div>
             </div>
-          </div>
-          <div
-            v-if="isNumberbike1&&bikeCleanCompany2.length>0"
-            class="iteamForm"
-            style="border-top:1px solid #eeeeee"
-          >
-            <div
-              v-for="(iteam,index) in bikeCleanCompany2"
-              :key="index"
-              :class="index == 2||index==bikeCleanCompany2.length-1? 'border-bike':'border-bike2'"
-              style="display: flex;flex:1;flex-direction: column;justify-content:center;align-items: center;margin:0.2rem;width:30%"
-            >
-              <h7
-                style="color:#333333;font-size:0.52rem;margin-bottom:0.1rem;margin:0"
-              >{{iteam.cleanNum==''||iteam.cleanNum==undefined?0:iteam.cleanNum}}</h7>
-              <span
-                class="companyBike"
-                style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
-              >{{iteam.name}}</span>
+            <div class="witeSa" style="margin-top:0.05rem;">
+                <div style="margin:0 0.3rem">
+                    <div class="iteamForm" v-if="isNumberbike">
+                        <div v-for="(iteam,index) in bikeCleanCompany1" :key="index" :class="index == (bikeCleanCompany1.length-1) ? 'border-bike':'border-bike2'"
+                            style="display: flex;flex:1;flex-direction: column;justify-content:center;align-items: center;margin:0.2rem;">
+                            <h7 style="color:#333333;font-size:0.52rem;margin-bottom:0.11rem;margin:0">{{iteam.arrangeNum==''||iteam.arrangeNum==undefined?0:iteam.arrangeNum}}</h7>
+                            <span class="companyBike" style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
+                                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
+                        </div>
+                    </div>
+                    <div v-if="isNumberbike&&bikeCleanCompany2.length>0" class="iteamForm" style="border-top:1px solid #eeeeee">
+                        <div v-for="(iteam,index) in bikeCleanCompany2" :key="index" :class="index == 2||index==bikeCleanCompany2.length-1 ? 'border-bike':'border-bike2'"
+                            style="display: flex;flex:1;flex-direction: column;justify-content:center;align-items: center;margin:0.2rem">
+                            <h7 style="color:#333333;font-size:0.52rem;margin-bottom:0.1rem;margin:0">{{iteam.arrangeNum==''||iteam.arrangeNum==undefined?0:iteam.arrangeNum}}</h7>
+                            <span class="companyBike" style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
+                                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="witeSa" style="margin-top:0.2rem;">
+                <div class="iteamForm" style="padding-right:0.3rem">
+                    <img src="../../assets/image/selfcheck/icon_5_num1@3x.png" width="24" height="24" alt srcset>
+                    <div class="rightsa" style="border:none">
+                        <span>清运数</span>
+                        <span v-if="ifCleanByBike==1" style="flex:1;line-height:100%;text-align:right;">{{formMessage.cleanNum}}</span>
+                        <input v-if="ifCleanByBike==0" style="text-align:right;" type="number" placeholder="请输入"
+                            v-model="formMessage.cleanNum">
+                    </div>
+                    <span v-if="ifCleanByBike==1" class="iconfont icon-jiantou1" style="color:#999999;font-size:0.8rem;"
+                        @click="dealDetailList('清运')"></span>
+                </div>
+            </div>
+            <div class="witeSa" style="margin-top:0.05rem;">
+                <div style="margin:0 0.3rem">
+                    <div class="iteamForm" v-if="isNumberbike1">
+                        <div v-for="(iteam,index) in bikeCleanCompany1" :key="index" :class="index == (bikeCleanCompany1.length-1) ? 'border-bike':'border-bike2'"
+                            style="display: flex;flex:1;flex-direction: column;justify-content:center;align-items: center;margin:0.2rem;">
+                            <h7 style="color:#333333;font-size:0.52rem;margin-bottom:0.11rem;margin:0">{{iteam.cleanNum==''||iteam.cleanNum==undefined?0:iteam.cleanNum}}</h7>
+                            <span class="companyBike" style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
+                                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
+                        </div>
+                    </div>
+                    <div v-if="isNumberbike1&&bikeCleanCompany2.length>0" class="iteamForm" style="border-top:1px solid #eeeeee">
+                        <div v-for="(iteam,index) in bikeCleanCompany2" :key="index" :class="index == 2||index==bikeCleanCompany2.length-1? 'border-bike':'border-bike2'"
+                            style="display: flex;flex:1;flex-direction: column;justify-content:center;align-items: center;margin:0.2rem;width:30%">
+                            <h7 style="color:#333333;font-size:0.52rem;margin-bottom:0.1rem;margin:0">{{iteam.cleanNum==''||iteam.cleanNum==undefined?0:iteam.cleanNum}}</h7>
+                            <span class="companyBike" style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
+                                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="witeSa" style="margin-top:0.2rem;padding-left:0.3rem;margin-bottom:0.3rem;padding-top:0.2rem">
+                <div class="topsa">
+                    <img src="../../assets/image/selfcheck/icon_7_note@3x.png" width="22" height="22" alt srcset>
+                    <div style="width:100%;margin-top:0.05rem;padding-left:0.3rem;display:flex;justify-content: space-between">
+                        <span>备注</span>
+                        <span style="text-align:right;margin-right:0.3rem;color:#757575">最多输入180个文字</span>
+                    </div>
+                </div>
+                <div class="bottomsa" style="padding-top:0.2rem;padding-right:0.2rem">
+                    <textarea maxlength="180" style="width:100%;" rows="8" placeholder="请输入备注" v-model="formMessage.remark"></textarea>
+                </div>
+            </div>
         </div>
-      </div>
-      <div
-        class="witeSa"
-        style="margin-top:0.2rem;padding-left:0.3rem;margin-bottom:0.3rem;padding-top:0.2rem"
-      >
-        <div class="topsa">
-          <img
-            src="../../assets/image/selfcheck/icon_7_note@3x.png"
-            width="22"
-            height="22"
-            alt
-            srcset
-          >
-          <div
-            style="width:100%;margin-top:0.05rem;padding-left:0.3rem;display:flex;justify-content: space-between"
-          >
-            <span>备注</span>
-            <span style="text-align:right;margin-right:0.3rem;color:#757575">最多输入180个文字</span>
-          </div>
+        <div class="bottom">
+            <button type="button" class="buttonSa" @click="save()">暂存</button>
+            <button type="button" class="buttonSa1" @click="submit()">完成</button>
         </div>
-        <div class="bottomsa" style="padding-top:0.2rem;padding-right:0.2rem">
-          <textarea
-            maxlength="180"
-            style="width:100%;"
-            rows="8"
-            placeholder="请输入备注"
-            v-model="formMessage.remark"
-          ></textarea>
-        </div>
-      </div>
+        <mt-popup v-model="popupVisible" class="mapwhere" position="right">
+            <div class="header">
+                <div style="display: flex;justify-content: space-between;align-items: center;width:100%">
+                    <div style="display: flex;justify-content:flex-start;align-items: center;">
+                        <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
+                        <p style="margin:0;padding:0">位置</p>
+                    </div>
+                    <div @click="sendAddress">确定</div>
+                </div>
+            </div>
+            <div id="myMap"></div>
+            <div class="addres-search">
+                <div style="width:85%;height:100%;background:#f2f2f2;position:relative">
+                    <span style="position:absolute;top:0.2rem;left:0.2rem;color:#aaaaaa" class="iconfont icon-iconset0157"></span>
+                    <input type="text" v-model="addressCtrol" @keyup="suggestSa" style="width:100%;height:100%;padding:0.18rem;border-radius:4px;text-indent:0.6rem"
+                        placeholder="搜索">
+                </div>
+            </div>
+            <div class="placeList">
+                <p v-if="placeData.length==0" style="color:666666;padding-left:0.2rem">搜索不到相应地址，请重新操作</p>
+                <div v-for="(iteam,index) in placeData" :key="index" class="address" @click="getAddress(iteam,index)">
+                    <div>
+                        <h5>{{iteam.name}}</h5>
+                        <p>{{iteam.addr}}</p>
+                    </div>
+                    <span v-if="changeId==index" class="iconfont icon-xuanzhong" style="font-size:22px;color:#1caa20"></span>
+                </div>
+            </div>
+        </mt-popup>
     </div>
-    <div class="bottom">
-      <button type="button" class="buttonSa" @click="save()">暂存</button>
-      <button type="button" class="buttonSa1" @click="submit()">完成</button>
-    </div>
-    <mt-popup v-model="popupVisible" class="mapwhere" position="right">
-      <div class="header">
-        <div style="display: flex;justify-content: space-between;align-items: center;width:100%">
-          <div style="display: flex;justify-content:flex-start;align-items: center;">
-            <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
-            <p style="margin:0;padding:0">位置</p>
-          </div>
-          <div @click="sendAddress">确定</div>
-        </div>
-      </div>
-      <div id="myMap"></div>
-      <div class="addres-search">
-        <div style="width:85%;height:100%;background:#f2f2f2;position:relative">
-          <span
-            style="position:absolute;top:0.2rem;left:0.2rem;color:#aaaaaa"
-            class="iconfont icon-iconset0157"
-          ></span>
-          <input
-            type="text"
-            v-model="addressCtrol"
-            @keyup="suggestSa"
-            style="width:100%;height:100%;padding:0.18rem;border-radius:4px;text-indent:0.6rem"
-            placeholder="搜索"
-          >
-        </div>
-      </div>
-      <div class="placeList">
-        <p v-if="placeData.length==0" style="color:666666;padding-left:0.2rem">搜索不到相应地址，请重新操作</p>
-        <div
-          v-for="(iteam,index) in placeData"
-          :key="index"
-          class="address"
-          @click="getAddress(iteam,index)"
-        >
-          <div>
-            <h5>{{iteam.name}}</h5>
-            <p>{{iteam.addr}}</p>
-          </div>
-          <span
-            v-if="changeId==index"
-            class="iconfont icon-xuanzhong"
-            style="font-size:22px;color:#1caa20"
-          ></span>
-        </div>
-      </div>
-    </mt-popup>
-  </div>
 </template>
 
 <script>
@@ -459,7 +270,7 @@
             };
         },
         components: {},
-        mounted() {},
+        mounted() { },
         created() {
             if (this.$route.query.message) {
                 this.sheetCode = this.$route.query.message;
@@ -477,7 +288,7 @@
             window.getLocation = this.getLocation;
             window.watchBackWXS = this.watchBackWXS;
         },
-        mounted() {},
+        mounted() { },
         methods: {
 
             getLocation(val) {
@@ -517,7 +328,7 @@
             //计算综合整理数的方法
             sum(arr) {
                 var s = 0;
-                arr.forEach(function(val, idx, arr) {
+                arr.forEach(function (val, idx, arr) {
                     if (val.arrangeNum) {
                         s += Number(val.arrangeNum);
                     }
@@ -526,7 +337,7 @@
             },
             sum1(arr) {
                 var s = 0;
-                arr.forEach(function(val, idx, arr) {
+                arr.forEach(function (val, idx, arr) {
                     if (val.cleanNum) {
                         s += Number(val.cleanNum);
                     }
@@ -543,7 +354,7 @@
                     .then(res => {
                         this.ifCleanByBike = res;
                     })
-                    .catch(res => {});
+                    .catch(res => { });
             },
             getbikeCleanCompany() {
                 this.$fetchGet("count/bikeCleanCompany")
@@ -553,7 +364,7 @@
                         });
                         this.bikeCleanCompany = res;
                     })
-                    .catch(res => {});
+                    .catch(res => { });
             },
             toHome() {
                 this.$router.push({
@@ -572,7 +383,7 @@
                     MessageBox.alert("", {
                         message: "请在权限管理里面打开定位权限",
                         title: "提示"
-                    }).then(action => {});
+                    }).then(action => { });
                 } else {
                     if (this.formMessage.handleAddr) {
                         this.getMap(false);
@@ -691,8 +502,8 @@
                     this.placeData = result.poiList.pois.map(iteam => {
                         addrPrefix =
                             iteam.pname === iteam.cityname ?
-                            iteam.pname + iteam.adname :
-                            iteam.pname + iteam.cityname + iteam.adname;
+                                iteam.pname + iteam.adname :
+                                iteam.pname + iteam.cityname + iteam.adname;
                         return {
                             addr: addrPrefix + iteam.address,
                             lng: iteam.location.lng,
@@ -742,7 +553,7 @@
                     MessageBox.alert("", {
                         message: "请选择地址",
                         title: "提示"
-                    }).then(action => {});
+                    }).then(action => { });
                 }
                 // this.formMessage.handleAddr=this.a
             },
@@ -781,8 +592,8 @@
                 this.$fetchGet("cleanConfig/ifCleanByBike").then(res => {
                     this.ifCleanByBike = res;
                     this.$fetchGet("selfcheck/selfCheck", {
-                            sheetCode: val
-                        })
+                        sheetCode: val
+                    })
                         .then(res => {
                             if (res) {
                                 this.formMessage = res;
@@ -824,7 +635,7 @@
                                 }
                             }
                         })
-                        .catch(res => {});
+                        .catch(res => { });
                 });
             },
             save() {
@@ -835,12 +646,12 @@
                     MessageBox.alert("", {
                         message: "请选择清理地点",
                         title: "提示"
-                    }).then(action => {});
+                    }).then(action => { });
                 } else if (this.formMessage.handleBefore == "") {
                     MessageBox.alert("", {
                         message: "请上传整理前照片",
                         title: "提示"
-                    }).then(action => {});
+                    }).then(action => { });
                 } else {
                     let obj = {};
                     this.formMessage.handleBefore;
@@ -855,7 +666,7 @@
                                 MessageBox.alert("", {
                                     message: res.message,
                                     title: "提示"
-                                }).then(action => {});
+                                }).then(action => { });
                             } else {
                                 MessageBox.alert("", {
                                     message: "保存成功",
@@ -869,7 +680,7 @@
                             MessageBox.alert("", {
                                 message: "请求超时",
                                 title: "提示"
-                            }).then(action => {});
+                            }).then(action => { });
                         });
                 }
             },
@@ -882,22 +693,22 @@
                     MessageBox.alert("", {
                         message: "请选择清理地点",
                         title: "提示"
-                    }).then(action => {});
+                    }).then(action => { });
                 } else if (this.formMessage.handleBefore == "") {
                     MessageBox.alert("", {
                         message: "请上传整理前照片",
                         title: "提示"
-                    }).then(action => {});
+                    }).then(action => { });
                 } else if (this.formMessage.handleAfter == "") {
                     MessageBox.alert("", {
                         message: "请上传整理后照片",
                         title: "提示"
-                    }).then(action => {});
+                    }).then(action => { });
                 } else if (this.formMessage.handleAddr.length > 60) {
                     MessageBox.alert("", {
                         message: "清理地点长度不能大于60",
                         title: "提示"
-                    }).then(action => {});
+                    }).then(action => { });
                 } else if (
                     (this.formMessage.arrangeNum == "" &&
                         this.formMessage.cleanNum == "") ||
@@ -907,7 +718,7 @@
                     MessageBox.alert("", {
                         message: "整理或清运数量有误",
                         title: "提示"
-                    }).then(action => {});
+                    }).then(action => { });
                 } else {
                     MessageBox.confirm("", {
                         message: "是否确认提交",
@@ -929,7 +740,7 @@
                                         MessageBox.alert("", {
                                             message: res.message,
                                             title: "提示"
-                                        }).then(action => {});
+                                        }).then(action => { });
                                     } else {
                                         MessageBox.alert("", {
                                             message: "保存成功",
@@ -943,7 +754,7 @@
                                     MessageBox.alert("", {
                                         message: "请求超时",
                                         title: "提示"
-                                    }).then(action => {});
+                                    }).then(action => { });
                                 });
                         } else {
                             return;
@@ -958,7 +769,7 @@
     .amap-logo img {
         display: none;
     }
-    
+
     .amap-copyright {
         opacity: 0;
     }
@@ -988,22 +799,28 @@
         .mobike {
             background: #f25b4a;
         }
+
         .ofo {
             background: #fbc303;
             color: #333333;
         }
+
         .haluo {
             background: #01a1ff;
         }
+
         .jiujiu {
             background: #fd3121;
         }
+
         .xiangqi {
             background: #00cb4b;
         }
+
         .other {
             background: #9a6eff;
         }
+
         .imgMask {
             width: 100%;
             height: 100%;
@@ -1013,6 +830,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .version-popup-box {
             height: 100%;
             width: 100%;
@@ -1020,6 +838,7 @@
             color: #282828;
             display: flex;
             align-items: center;
+
             .version-popup {
                 margin: 0 auto;
                 background: #fff;
@@ -1029,6 +848,7 @@
                 display: flex;
                 flex-direction: column;
                 padding: 0.4rem 0;
+
                 .version-popup-content {
                     display: flex;
                     justify-content: flex-start;
@@ -1036,11 +856,13 @@
                     height: 1.2rem;
                     box-sizing: border-box;
                     align-items: center;
+
                     input {
                         height: 90%;
                         border-bottom: 1px solid #dddddd;
                     }
                 }
+
                 .bottomsa {
                     width: 100%;
                     height: 1rem;
@@ -1048,6 +870,7 @@
                     color: #999999;
                     display: flex;
                     justify-content: space-between;
+
                     p {
                         margin: 0;
                         padding: 0;
@@ -1060,6 +883,7 @@
                 }
             }
         }
+
         .mapwhere {
             width: 100%;
             height: 100%;
@@ -1067,6 +891,7 @@
             overflow: hidden;
             background: #fff;
             flex-direction: column;
+
             .header {
                 height: 1.173333rem;
                 line-height: 1.173333rem;
@@ -1075,15 +900,18 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+
                 p {
                     margin: 0;
                     padding: 0;
                 }
             }
+
             #myMap {
                 width: 100%;
                 flex: 1;
             }
+
             .addres-search {
                 display: flex;
                 justify-content: space-between;
@@ -1092,6 +920,7 @@
                 border-bottom: 1px solid #eeeeee;
                 background: #f2f2f2;
             }
+
             .placeList {
                 width: 100%;
                 flex: 1;
@@ -1099,6 +928,7 @@
                 box-sizing: border-box;
                 overflow: hidden;
                 overflow-y: scroll;
+
                 .address {
                     display: flex;
                     justify-content: space-between;
@@ -1106,6 +936,7 @@
                     box-sizing: border-box;
                     border-bottom: 1px solid #eeeeee;
                 }
+
                 h5 {
                     margin: 0;
                     padding: 0;
@@ -1113,6 +944,7 @@
                     color: #282828;
                     font-weight: normal;
                 }
+
                 p {
                     margin: 0;
                     padding: 0;
@@ -1120,6 +952,7 @@
                 }
             }
         }
+
         .header {
             height: 1.173333rem;
             display: flex;
@@ -1132,28 +965,34 @@
             padding: 0 0.32rem;
             box-sizing: border-box;
             flex-shrink: 0;
+
             img {
                 height: 0.48rem;
                 width: 0.266667rem;
             }
         }
+
         .content {
             flex: 1;
             overflow: hidden;
             overflow-y: scroll;
             box-sizing: border-box;
+
             .witeSa {
                 background-color: #ffffff;
                 margin: 0;
                 padding: 0;
                 display: flex;
                 flex-direction: column;
+
                 .border-bike {
                     border: none;
                 }
+
                 .border-bike2 {
                     border-right: 1px solid #dddddd;
                 }
+
                 .topsa {
                     display: flex;
                     justify-content: flex-start;
@@ -1161,6 +1000,7 @@
                     padding-bottom: 0.2rem;
                 }
             }
+
             .iteamForm {
                 display: flex;
                 justify-content: flex-start;
@@ -1168,6 +1008,7 @@
                 box-sizing: border-box;
                 padding: 0.2rem 0.3rem;
                 align-items: center;
+
                 .rightsa {
                     width: 100%;
                     margin: 0;
@@ -1180,12 +1021,14 @@
                     justify-content: space-between;
                     // text-align:right;
                     align-items: center;
+
                     // margin-right: 0.3rem;
                     input {
                         // margin-bottom: 0.4rem;
                         height: 100%;
                     }
                 }
+
                 .rightsa1 {
                     width: 100%;
                     margin: 0;
@@ -1196,6 +1039,7 @@
                     padding-right: 0.3rem;
                 }
             }
+
             .iteamImage {
                 width: 100%;
                 display: flex;
@@ -1205,15 +1049,18 @@
                 margin-top: 0.2rem;
                 padding-top: 0.2rem;
                 padding-bottom: 0.2rem;
+
                 .imageList {
                     display: flex;
                     flex-wrap: wrap;
                     box-sizing: border-box;
                     padding-left: 0.3rem;
                     padding-top: 0.2rem;
+
                     .detailIcon {
                         position: relative;
                         margin-right: 0.2rem;
+
                         span {
                             position: absolute;
                             right: 0px;
@@ -1221,12 +1068,15 @@
                         }
                     }
                 }
+
                 div {
                     img {
                         border: none;
                         margin-bottom: -4px;
                     }
+
                     vertical-align: middle;
+
                     // display: flex;
                     // justify-content: flex-start;
                     // width: 100%;
@@ -1241,9 +1091,11 @@
                 }
             }
         }
+
         .bottom {
             display: flex;
             flex-direction: row;
+
             .buttonSa {
                 border: none;
                 border-radius: 0;
@@ -1255,6 +1107,7 @@
                 font-size: 0.5rem;
                 background: -webkit-linear-gradient(left, #c69efc, #8f78f4);
             }
+
             .buttonSa1 {
                 border: none;
                 border-radius: 0;

@@ -5,140 +5,131 @@
         <div class="header-setting"></div>
         <div class="header-tittle">个人中心</div>
         <div class="header-setting">
-          <img src="@/assets/image/me/icon_nav_set@2x.png" alt @click="toSettings">
+          <img src="@/assets/image/me/icon_nav_set@2x.png"
+               alt
+               @click="toSettings">
         </div>
       </div>
       <div class="header-content">
         <div class="header-contentsa">
-          <div class="headertop" style="flex:1" @click="toUserModi">
+          <div class="headertop"
+               style="flex:1"
+               @click="toUserModi">
             <div class="info-box">
-              <img
-                v-if="userInfo.imageURL!==''"
-                class="user-avatar"
-                :src="Ip + userInfo.imageURL"
-                alt
-              >
-              <img
-                v-if="userInfo.imageURL==''"
-                class="user-avatar"
-                src="@/assets/image/me/默认头像@2x.png"
-                alt
-              >
+              <img v-if="userInfo.imageURL!==''"
+                   class="user-avatar"
+                   :src="Ip + userInfo.imageURL"
+                   alt>
+              <img v-if="userInfo.imageURL==''"
+                   class="user-avatar"
+                   src="@/assets/image/me/默认头像@2x.png"
+                   alt>
               <div class="user-namebox">
                 <div class="user-nameboxsa">
-                  <h3
-                    style="font-size: 0.426667rem;color:#333333;margin:0;padding:0;margin-right:0.15rem"
-                    v-text="userInfo.realName"
-                  ></h3>
-                  <img
-                    style="width:0.5rem;height:0.5rem"
-                    src="@/assets/image/me/icon_woman@2x.png"
-                    alt
-                    v-if="userInfo.sex == 'W'"
-                  >
-                  <img
-                    style="width:0.5rem;height:0.5rem"
-                    src="@/assets/image/me/icon_man@2x.png"
-                    alt
-                    v-else
-                  >
+                  <h3 style="font-size: 0.426667rem;color:#333333;margin:0;padding:0;margin-right:0.15rem"
+                      v-text="userInfo.realName"></h3>
+                  <img style="width:0.5rem;height:0.5rem"
+                       src="@/assets/image/me/icon_woman@2x.png"
+                       alt
+                       v-if="userInfo.sex == 'W'">
+                  <img style="width:0.5rem;height:0.5rem"
+                       src="@/assets/image/me/icon_man@2x.png"
+                       alt
+                       v-else>
                 </div>
-                <div class="user-nameboxsa" style="margin-top:0.2rem">
-                  <span style="color:#AAAAAA;margin-right:0.1rem" class="iconfont icon-icon-mail"></span>
-                  <div style="color:#999999" v-text="userInfo.emailAddr"></div>
+                <div class="user-nameboxsa"
+                     style="margin-top:0.2rem">
+                  <span style="color:#AAAAAA;margin-right:0.1rem"
+                        class="iconfont icon-icon-mail"></span>
+                  <div style="color:#999999"
+                       v-text="userInfo.emailAddr"></div>
                 </div>
               </div>
             </div>
-            <img
-              style="width: 0.373333rem;height: 0.373333rem;"
-              src="@/assets/image/settings/icon_next page@2x.png"
-              alt
-            >
+            <img style="width: 0.373333rem;height: 0.373333rem;"
+                 src="@/assets/image/settings/icon_next page@2x.png"
+                 alt>
           </div>
           <div class="headerbottom">
             <div class="headerbottom-top">
               <div style="display:flex;justify-content: flex-start;align-items: center">
-                <img
-                  style="width:0.48rem;height:0.48rem"
-                  src="@/assets/image/me/company@3x.png"
-                  alt
-                  srcset
-                >
-                <span
-                  style="width:5rem;color:#333333;margin-left:0.1rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;text-align:left"
-                >{{userInfo.orgName}}</span>
+                <img style="width:0.48rem;height:0.48rem"
+                     src="@/assets/image/me/company@3x.png"
+                     alt
+                     srcset>
+                <span style="width:5rem;color:#333333;margin-left:0.1rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;text-align:left">{{userInfo.orgName}}</span>
               </div>
-              <p
-                style="border:1px solid #5279FF;color:#5279FF;margin:0;padding:0.06rem 0.2rem;border-radius: 0.6rem;"
-              >{{userInfo.roleName}}</p>
+              <p style="border:1px solid #5279FF;color:#5279FF;margin:0;padding:0.06rem 0.2rem;border-radius: 0.6rem;">{{userInfo.roleName}}</p>
             </div>
-            <div class="headerbottom-bottom" style="margin-top:0.2rem">
-              <img
-                style="width:0.48rem;height:0.48rem"
-                src="@/assets/image/me/address.png"
-                alt
-                srcset
-              >
+            <div class="headerbottom-bottom"
+                 style="margin-top:0.2rem">
+              <img style="width:0.48rem;height:0.48rem"
+                   src="@/assets/image/me/address.png"
+                   alt
+                   srcset>
               <span style="color:#999999;margin-left:0.1rem">负责区域</span>
-              <span
-                style="color:#333333;flex:1;margin-left:0.1rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;text-align:left"
-              >{{userInfo.areas}}</span>
+              <span style="color:#333333;flex:1;margin-left:0.1rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;text-align:left">{{userInfo.areas}}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="content" style="padding:0.1rem">
-      <!-- <div class="colorsa"></div> v-if="willdoInfo.evaluation!=='close'" -->
-      <div class="evaluation" style="display:none">
-        <div class="evaluationimg" @click="toEvaluation">
-          <span
-            v-if="willdoInfo.evaluation=='true'"
-            style="font-size:0.8rem;font-family:stylefont;color:#FF9600;letter-spacing:-0.1rem"
-          >{{nowData}}月考评已生成</span>
-          <span
-            v-if="willdoInfo.evaluation=='false'"
-            style="font-size:0.8rem;font-family:stylefont;color:#FF9600;letter-spacing:-0.1rem"
-          >{{nowData}}月考评已完成</span>
+    <div class="content"
+         style="padding:0.1rem">
+      <!-- <div class="colorsa"></div> v-if="willdoInfo.evaluation!=='close'"  -->
+      <div class="evaluation"
+           style="display:none">
+        <div class="evaluationimg"
+             @click="toEvaluation">
+          <span v-if="willdoInfo.evaluation=='true'"
+                style="font-size:0.8rem;font-family:stylefont;color:#FF9600;letter-spacing:-0.1rem">{{nowData}}月考评已生成</span>
+          <span v-if="willdoInfo.evaluation=='false'"
+                style="font-size:0.8rem;font-family:stylefont;color:#FF9600;letter-spacing:-0.1rem">{{nowData}}月考评已完成</span>
           <!-- <transition enter-active-class="animated tada"> -->
-          <img
-          v-if="ruleStatus=='true'"
-            class="animated-tada"
-            src="@/assets/image/me/go@3x.png"
-            style="width:1.3rem;height:0.65rem;margin-left:0.2rem"
-            alt
-            srcset
-          >
-          <img
-          v-if="ruleStatus=='false'"
-            src="@/assets/image/me/go@3x.png"
-            style="width:1.3rem;height:0.65rem;margin-left:0.2rem"
-            alt
-            srcset
-          >
+          <img v-if="ruleStatus=='true'"
+               class="animated-tada"
+               src="@/assets/image/me/go@3x.png"
+               style="width:1.3rem;height:0.65rem;margin-left:0.2rem"
+               alt
+               srcset>
+          <img v-if="ruleStatus=='false'"
+               src="@/assets/image/me/go@3x.png"
+               style="width:1.3rem;height:0.65rem;margin-left:0.2rem"
+               alt
+               srcset>
           <!-- </transition> -->
         </div>
       </div>
+      <div class="static-box-count"
+           style="display:none"
+           @click="getinstallationCount">
+        <div style="display: flex;justify-content:flex-start;align-items: center;padding:0.2rem">
+          <img style="width:22px;height:22px"
+               src="@/assets/image/me/icon_baobiao@3x.png"
+               alt
+               srcset>
+          <h6 style="font-size:0.33rem;margin:0;margin-left:0.2rem">统计报表</h6>
+        </div>
+        <img style="width: 0.373333rem;height: 0.373333rem;"
+             src="@/assets/image/settings/icon_next page@2x.png"
+             alt>
+
+      </div>
       <div class="static-box">
-        <div
-          style="display: flex;justify-content:flex-start;align-items: center;border-bottom:1px solid #E1E1E1;padding:0.2rem"
-        >
-          <img style="width:22px;height:22px" src="@/assets/image/me/icon_1 @3x.png" alt srcset>
+        <div style="display: flex;justify-content:flex-start;align-items: center;border-bottom:1px solid #E1E1E1;padding:0.2rem">
+          <img style="width:22px;height:22px"
+               src="@/assets/image/me/icon_1 @3x.png"
+               alt
+               srcset>
           <h6 style="font-size:0.33rem;margin:0;margin-left:0.2rem">工单总数</h6>
         </div>
-        <div
-          style="display: flex;justify-content:space-between;box-sizing: border-box;padding:0.3rem;flex:1"
-        >
+        <div style="display: flex;justify-content:space-between;box-sizing: border-box;padding:0.2rem 0.3rem;flex:1">
           <div style="display: flex;flex-direction: column;padding:0.1rem;">
-            <span
-              style="text-align:center;margin-bottom:0.2rem;color:#A857FB;font-size:0.5rem"
-            >{{userCount.dispatch==0?'-':userCount.dispatch}}</span>
+            <span style="text-align:center;margin-bottom:0.2rem;color:#A857FB;font-size:0.5rem">{{userCount.dispatch==0?'-':userCount.dispatch}}</span>
             <span style="text-align:center;color:#666666;font-size:0.3rem">收到派单数(单)</span>
           </div>
           <div style="display: flex;flex-direction: column;padding:0.1rem">
-            <span
-              style="text-align:center;margin-bottom:0.2rem;color:#A857FB;font-size:0.5rem"
-            >{{userCount.selfCheck==0?'-':userCount.selfCheck}}</span>
+            <span style="text-align:center;margin-bottom:0.2rem;color:#A857FB;font-size:0.5rem">{{userCount.selfCheck==0?'-':userCount.selfCheck}}</span>
             <span style="text-align:center;color:#666666;font-size:0.3rem">自检单数(单)</span>
           </div>
         </div>
@@ -150,26 +141,22 @@
         </div>
         <div class="static-data" v-text="userCount.dispatch"></div>-->
       </div>
-      <div class="static-box" style="margin-top:0.3rem">
-        <div
-          style="display: flex;justify-content:flex-start;align-items: center;border-bottom:1px solid #E1E1E1;padding:0.2rem"
-        >
-          <img style="width:22px;height:22px" src="@/assets/image/me/icon_2 @3x.png" alt srcset>
+      <div class="static-box"
+           style="margin-top:0.3rem">
+        <div style="display: flex;justify-content:flex-start;align-items: center;border-bottom:1px solid #E1E1E1;padding:0.2rem">
+          <img style="width:22px;height:22px"
+               src="@/assets/image/me/icon_2 @3x.png"
+               alt
+               srcset>
           <h6 style="font-size:0.33rem;margin:0;margin-left:0.2rem">处理总数</h6>
         </div>
-        <div
-          style="display: flex;justify-content:space-between;box-sizing: border-box;padding:0.3rem;flex:1"
-        >
+        <div style="display: flex;justify-content:space-between;box-sizing: border-box;padding:0.2rem 0.3rem;flex:1">
           <div style="display: flex;flex-direction: column;box-sizing: border-box;padding:0.1rem">
-            <span
-              style="text-align:center;margin-bottom:0.2rem;color:#FF8039;font-size:0.5rem"
-            >{{userCount.arrangeNum==0?'-':userCount.arrangeNum}}</span>
+            <span style="text-align:center;margin-bottom:0.2rem;color:#FF8039;font-size:0.5rem">{{userCount.arrangeNum==0?'-':userCount.arrangeNum}}</span>
             <span style="text-align:center;color:#666666;font-size:0.3rem">整理车辆数(辆)</span>
           </div>
           <div style="display: flex;flex-direction: column;box-sizing: border-box;padding:0.1rem">
-            <span
-              style="text-align:center;margin-bottom:0.2rem;color:#FF8039;font-size:0.5rem"
-            >{{userCount.cleanNum==0?'-':userCount.cleanNum}}</span>
+            <span style="text-align:center;margin-bottom:0.2rem;color:#FF8039;font-size:0.5rem">{{userCount.cleanNum==0?'-':userCount.cleanNum}}</span>
             <span style="text-align:center;color:#666666;font-size:0.3rem">清运车辆数(辆)</span>
           </div>
         </div>
@@ -212,7 +199,7 @@ export default {
   computed: {
     ...mapGetters(["willdoInfo"])
   },
-  data() {
+  data () {
     return {
       userCount: {},
       ruleStatus: '',
@@ -221,42 +208,53 @@ export default {
     };
   },
   components: {},
-  mounted() {},
-  created() {
+  mounted () { },
+  created () {
     this.getUser();
     let myDate = new Date();
     this.nowData = myDate.getMonth() == 0 ? 12 : myDate.getMonth(); //获取当前月份(0-11,0代表1月)
     this.getData();
     this.getRules();
+    this.getArea();
   },
   methods: {
+
+    getArea () {
+      this.$fetchGet("report/getReportArea").then(res => {
+        // this.userCount = res;
+      });
+    },
     //获取数据
-    getData() {
+    getData () {
       this.$fetchGet("count/countByUser").then(res => {
         this.userCount = res;
       });
     },
-    getUser() {
+    getUser () {
       this.$fetchGet("user/user").then(res => {
         this.userInfo = res;
       });
     },
-    getRules() {
+    getRules () {
       //获取是否有考评
       this.$fetchGet("count/willdo").then(res => {
         this.ruleStatus = res.evaluation;
       });
     },
     //进入个人信息修改
-    toUserModi() {
+    toUserModi () {
       this.$router.push("/infoModification");
     },
     //进入设置
-    toSettings() {
+    toSettings () {
       this.$router.push("/settings");
     },
+    //进入保有量日统计表
+    getinstallationCount () {
+      this.$router.push("/installationCount");
+    },
     //进入考评
-    toEvaluation() {
+    toEvaluation () {
       this.$router.push("/evaluation");
     }
   }
@@ -274,15 +272,15 @@ export default {
   @keyframes change {
     0% {
       // text-shadow: 0 0 4px #fff;
-      transform:scale(1);
+      transform: scale(1);
     }
     50% {
       // text-shadow: 0 0 40px #fff;
-      transform:scale(1.1);
+      transform: scale(1.1);
     }
     100% {
       // text-shadow: 0 0 4px #fff;
-      transform:scale(1);
+      transform: scale(1);
     }
   }
   width: 100%;
@@ -430,6 +428,21 @@ export default {
       // height: 1.4rem;
       background: #ffffff;
       margin-top: 0.1rem;
+    }
+    .static-box-count {
+      display: flex;
+      border-radius: 6px;
+      justify-content: space-between;
+      box-shadow: 0 0.05rem 0.1rem #f2f2f2;
+      box-shadow: 0 2px 6px -1px #f2f2f2; //底部阴影
+      margin: 0 0.36rem;
+      margin-bottom: 0.2rem;
+      margin-top: 0.05rem;
+      background: #ffffff;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 0.1rem 0;
+      padding-right: 0.2rem;
     }
   }
 }

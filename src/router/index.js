@@ -173,6 +173,10 @@ export const constantRouterMap = [{
         path: '/statisticsDaily',
         name: "统计日报",
         component: _import('statisticsDaily/index')
+    }, {
+        path: '/installationCount',
+        name: "保有量统计",
+        component: _import('installationCount/index')
     }
 ]
 
