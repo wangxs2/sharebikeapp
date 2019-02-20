@@ -5,6 +5,9 @@
         <div class="header-setting"></div>
         <div class="header-tittle">个人中心</div>
         <div class="header-setting">
+          <i style="font-size:0.58rem;margin-right:0.2rem"
+             class="iconfont icon-wenhao"
+             @click="toRules"></i>
           <img src="@/assets/image/me/icon_nav_set@2x.png"
                alt
                @click="toSettings">
@@ -100,8 +103,8 @@
           <!-- </transition> -->
         </div>
       </div>
+      <!-- style="display:none" -->
       <div class="static-box-count"
-           style="display:none"
            @click="getinstallationCount">
         <div style="display: flex;justify-content:flex-start;align-items: center;padding:0.2rem">
           <img style="width:22px;height:22px"
@@ -245,13 +248,17 @@ export default {
     toUserModi () {
       this.$router.push("/infoModification");
     },
+    //进入使用说明
+    toRules () {
+      this.$router.push("/Instructions");
+    },
     //进入设置
     toSettings () {
       this.$router.push("/settings");
     },
     //进入保有量日统计表
     getinstallationCount () {
-      this.$router.push("/installationCount");
+      this.$router.push("/statisticalforms");
     },
     //进入考评
     toEvaluation () {
@@ -311,11 +318,9 @@ export default {
         font-size: 0.48rem;
       }
       .header-setting {
-        height: 0.48rem;
-        width: 0.48rem;
         img {
-          height: 100%;
-          width: 100%;
+          height: 0.48rem;
+          width: 0.48rem;
         }
       }
     }

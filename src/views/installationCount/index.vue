@@ -9,6 +9,7 @@
     </div>
 
     <main>
+      <!-- 查询列表 -->
       <div class="version-popup-box">
         <div class="version-popup">
           <div v-for="(iteam,index) in menuListTop"
@@ -25,7 +26,7 @@
           </div>
         </div>
       </div>
-      <!-- 查询列表 -->
+
       <div class="version-popup-box1"
            v-if="downIcon1">
         <div class="version-popup">
@@ -38,7 +39,7 @@
                    @click="menuListClick(item)"
                    v-for="(item, index) in menuListCenter"
                    :key="index"
-                   :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']">{{downIcon==2?item.name:item.areaName}}</p>
+                   :class="[menuListTop[downIcon].label == item.areaId||menuListTop[downIcon].label == item.id ? 'menselflist-active' : '']">{{downIcon==0?item.areaName:item.name}}</p>
               </div>
             </div>
           </div>
@@ -49,72 +50,80 @@
           </div>
         </div>
       </div>
+      <div class="echart-select">
+        <!-- <div class="date-type"
+             @click="selectDateType">
+          <div :class="dateType == '5' ? 'date-active' : 'dateType'"
+               dateType="5">最近5天</div>
+          <div :class="dateType == '30' ? 'date-active' : 'dateType'"
+               dateType="30"
+               style="margin-left:.48rem">最近一个月</div>
+        </div> -->
+        <div class="date-select"
+             @click="openPicker">
+          <div>{{dateValue}}</div>
+          <i class="iconfont icon-rili"></i>
+        </div>
+      </div>
       <!-- 查询列表 -->
       <section>
-        <div class="tab-btns"
-             @click="selectView">
-          <div class="btn-left"
-               viewType="1"
-               :class="[viewType == 1 ? 'tab-active' : '']">图表</div>
-          <div class="btn-right"
-               viewType="2"
-               :class="[viewType == 2 ? 'tab-active' : '']">表格</div>
-        </div>
-        <div class="echart-select">
-          <div class="date-type"
-               @click="selectDateType">
-            <div :class="dateType == 'week' ? 'date-active' : ''"
-                 dateType="week">周统计</div>
-            <div :class="dateType == 'month' ? 'date-active' : ''"
-                 dateType="month"
-                 style="margin-left:.48rem">月统计</div>
-          </div>
-          <div class="date-select"
-               @click="openPicker">
-            <div>{{dateValue}}</div>
-            <i class="iconfont icon-rili"></i>
+
+        <div class="superList">
+          <div class="topsa">
+            <div class="fontext">{{title}}-保有量趋势图</div>
           </div>
         </div>
-        <div class="myViews">
-          <div v-show="viewType == 1"
-               id="Echart"></div>
-          <div v-show="viewType == 2"
-               class="tab-view">
-            <div class="tab-head">
-              <table border="0"
-                     cellpadding="0"
-                     cellspacing="0">
+        <!-- echarts图标 -->
+        <div class="myViews"
+             style="padding:0.2rem 0.3rem;height:10rem;">
+          <div id="Echart"></div>
+        </div>
+
+        <div class="superList"
+             style="margin-top:0.2rem">
+          <div class="topsa">
+            <div class="fontext">{{title}}-保有量数据表</div>
+          </div>
+        </div>
+        <!-- table表格 -->
+        <div class="myViews"
+             style="margin-bottom:0.2rem">
+          <div class="tab-view">
+            <p v-if="lenNumber==0"
+               style="text-align:center;width:100%;">暂无数据</p>
+            <table cellpadding="0"
+                   cellspacing="0"
+                   v-if="lenNumber>0">
+
+              <thead>
                 <tr>
-                  <td style="width:10%;">序号</td>
-                  <td style="width:20%;">时间</td>
-                  <td style="width:15%;">整理
-                    <br>(次数/总数)
-                  </td>
-                  <td style="width:15%;">清运
-                    <br>(次数/总数)
-                  </td>
-                  <td style="width:20%;">说明</td>
+                  <td style="width:2rem;">街镇</td>
+                  <td style="width:1.2rem;">企业</td>
+                  <td v-for="(iteam,index) in tabData.dateTime"
+                      :key="index">{{iteam.substring(5).replace('-','/')}}</td>
                 </tr>
-              </table>
-            </div>
-            <div class="tab-body">
-              <table border="0"
-                     cellpadding="0"
-                     cellspacing="0">
-                <tr v-for="(item,index) in tabData"
+              </thead>
+              <!-- 表体 -->
+              <tbody>
+
+                <tr v-for="(iteam,index) in tabData.mapData"
                     :key="index">
-                  <td style="width:10%;">{{index + 1}}</td>
-                  <td style="width:20%;">{{dateData[index]}}</td>
-                  <td style="width:15%;">{{item.arrange}}/{{item.arrangeNum}}</td>
-                  <td style="width:15%;">{{item.clean}}/{{item.cleanNum}}</td>
-                  <td style="width:20%;">
-                    自查：{{item.selfCheck}}次
-                    <br>
-                    督办：{{item.dispatch}}次
-                  </td>
+                  <td v-if='iteam.areaName!==""'
+                      :rowspan="getNumber(iteam.areaId)">{{iteam.areaName}}</td>
+                  <td :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'">{{iteam.orgName}}</td>
+                  <td v-for="(item,index) in iteam.bicycleNumsList"
+                      :key="index">{{item}}</td>
                 </tr>
-              </table>
-            </div>
+
+              </tbody>
+              <!-- 合计 -->
+              <!-- <tfoot>
+                <tr>
+                  <td>Sum</td>
+                  <td>$180</td>
+                </tr>
+              </tfoot> -->
+            </table>
           </div>
         </div>
       </section>
@@ -138,8 +147,10 @@ export default {
   },
   data () {
     return {
+      title: '',//标题头
       downIcon: -1,
       downIcon1: false,
+      roleType: '',//角色类型控制是否显示街镇
       dateValue: "", // 实际使用时间
       rulesBox: false,//日周月报
       pickerValue: new Date(), // 选择的时间
@@ -148,8 +159,14 @@ export default {
       activeComany: "", // 选中的单车企业
       viewType: 1, // 图表/表格显示
       dateData: [], // 时间数据
-      dateType: "week", // 周统计/月统计
+      dateType: "5", // 周统计/月统计
       menuListCenter: [],
+      query: {
+        areaId: '',
+        townId: '',
+        bikeId: '',
+        dayDate: ''
+      },
       menuListTop: [
         {
           name: "区域",
@@ -170,6 +187,7 @@ export default {
       ],
       ruleStatus: "",
       areakids: [],
+      lenNumber: 0,
       menData: [],
       tabData: {} // 表格数据
     };
@@ -178,14 +196,11 @@ export default {
     this.getRules();
     this.getBikeCompany();
     this.dateValue = new Date().Format("yyyy-MM-dd");
+    window.watchBackWXS = this.watchBackWXS;
   },
   mounted () {
     this.$nextTick(function () {
       this.eachartNode = this.$echarts.init(document.getElementById("Echart"));
-      // window.onresize = () => {
-      //   alert(2);
-      //   this.eachartNode.resize();
-      // };
       window.addEventListener("resize", function () {
         this.eachartNode.resize();
       });
@@ -193,35 +208,146 @@ export default {
   },
   methods: {
     toHome () {
+      this.$router.push("/statisticalforms");
+    },
+    getNumber (e) {
+      var len = 0;
+      this.tabData.mapData.forEach((iteam, index) => {
+        if (iteam.areaId == e) {
+          len++
+        }
+      })
+      return len;
+    },
+    watchBackWXS () {
+      this.toHome();
+    },
+    //确定
+    submit () {
+      this.downIcon1 = false;
+      if (this.menuListTop.length > 2) {
+        this.title = this.menuListTop[0].menuName + '-' + this.menuListTop[1].menuName + '-' + this.menuListTop[2].menuName
+      } else {
+        this.title = this.menuListTop[0].menuName + '-' + this.menuListTop[1].menuName
+      }
 
+      this.getCount();
+    },
+    // this.getTree(val);
+    getTree (val) {
+      //获取地区
+      this.$fetchGet("org/getOrgByPid/" + val).then(res => {
+        this.menData = res;
+      });
     },
     //切换图片；
     sort (iteam, index) {
       this.downIcon = index;
       this.downIcon1 = true;
-      if (this.downIcon == 0) {
-        this.menuListCenter = this.areakids;
-      } else if (this.downIcon == 1) {
-        this.menuListCenter = this.menData;
-      } else if (this.downIcon == 2) {
-        this.menuListCenter = this.company;
+      if (this.menuListTop.length == 3) {
+        if (this.downIcon == 0) {
+          this.menuListCenter = this.areakids;
+        } else if (this.downIcon == 1) {
+          this.menuListCenter = this.menData;
+        } else if (this.downIcon == 2) {
+          this.menuListCenter = this.company;
+        }
+      } else {
+        if (this.downIcon == 0) {
+          this.menuListCenter = this.areakids;
+        } else if (this.downIcon == 1) {
+          this.menuListCenter = this.company;
+        }
       }
+
+    },
+    //点击查询列表
+    menuListClick (row) {
+      if (this.menuListTop.length == 3) {
+        if (this.downIcon == 0) {
+          this.menuListTop[this.downIcon].label = row.areaId;
+          this.menuListTop[this.downIcon].menuName = row.areaName;
+          this.query.areaId = row.areaId;
+          this.getTree(row.areaId);
+          this.searchCondition.orgId = row.id;
+        } else if (this.downIcon == 1) {
+          this.menuListTop[this.downIcon].label = row.id;
+          this.menuListTop[this.downIcon].menuName = row.name;
+          this.query.townId = row.id;
+        } else if (this.downIcon == 2) {
+          this.menuListTop[this.downIcon].label = row.id;
+          this.menuListTop[this.downIcon].menuName = row.name;
+          this.query.bikeId = row.id;
+        }
+      } else {
+        if (this.downIcon == 0) {
+          this.menuListTop[this.downIcon].label = row.areaId;
+          this.menuListTop[this.downIcon].menuName = row.areaName;
+          this.query.townId = row.areaId;
+          this.searchCondition.orgId = row.id;
+        } else if (this.downIcon == 1) {
+          this.menuListTop[this.downIcon].label = row.id;
+          this.menuListTop[this.downIcon].menuName = row.name;
+          this.query.bikeId = row.id;
+        }
+      }
+
+    },
+    menReset () {
+      if (this.menuListTop.length == 3) {
+        if (this.downIcon == 0) {
+          this.menuListTop[this.downIcon].label = "";
+          this.menuListTop[this.downIcon].menuName = "";
+          this.query.areaId = "";
+        } else if (this.downIcon == 1) {
+          this.menuListTop[this.downIcon].label = "";
+          this.menuListTop[this.downIcon].menuName = "";
+          this.query.townId = "";
+        } else if (this.downIcon == 2) {
+          this.menuListTop[this.downIcon].label = "";
+          this.menuListTop[this.downIcon].menuName = "";
+          this.query.bikeId = "";
+        }
+      } else {
+        if (this.downIcon == 0) {
+          this.menuListTop[this.downIcon].label = "";
+          this.menuListTop[this.downIcon].menuName = "";
+          this.query.townId = "";
+        } else if (this.downIcon == 1) {
+          this.menuListTop[this.downIcon].label = "";
+          this.menuListTop[this.downIcon].menuName = "";
+          this.query.bikeId = "";
+        }
+      }
+
+      this.downIcon1 = false;
+      this.getCount();
     },
     getRules () {
       //获取地区
       this.$fetchGet("report/getReportArea").then(res => {
-        if (res.reportArea) {
-          this.$fetchGet("org/getOrgByPid", {
-            orgId: res.reportArea[0].areaId
-          }).then(res => {
-            // if (res.reportArea) {
-            //   this.areakids = res.reportArea;
+        this.roleType = res.type;
+        if (res.type == 'TOWN') {
+          this.menuListTop.splice(0, 1);
+          // this.$fetchGet("org/getOrgByPid", {
+          //   orgId: res.reportArea[0].areaId
+          // }).then(res => {
 
-            // }
-          });
-          this.areakids = res.reportArea;
-
+          // });
+          // this.areakids = res.reportArea;
+          // this.query.townId=res.reportArea[0].areaId
+        } else {
+          this.getTree(res.reportArea[0].areaId);
         }
+        // else{
+        //   this.query.areaId=res.reportArea[0].areaId
+        // }
+        this.areakids = res.reportArea;
+        this.menuListTop[0].menuName = res.reportArea[0].areaName;
+        this.menuListTop[0].label = res.reportArea[0].areaId;
+        this.getCount();
+        this.title = res.reportArea[0].areaName;
+
       });
     },
     // 获取统计数据
@@ -230,45 +356,60 @@ export default {
         text: "加载中...",
         spinnerType: "fading-circle"
       });
-      this.$fetchGet("count/countDeviceClickWeekOrDay", {
-        orgId: this.activeComany,
-        countType: this.dateType,
-        date: this.dateValue
+      this.$fetchGet("report/dailyBikeContainData", {
+        areaId: this.query.areaId,
+        townId: this.query.townId,
+        bikeId: this.query.bikeId,
+        days: this.dateType,
+        dayDate: this.dateValue,
       }).then(res => {
         Indicator.close();
-        this.dateData = res.timeArea;
-        this.tabData = res.table;
-        let dataxItem = "",
-          nowDate = new Date().Format("MM-dd");
-        // this.dateType == "week"
-        //   ? new Date().Format("MM-dd")
-        //   : new Date().Format("MM-dd");
-        let datax = res.timeArea.map(item => {
-          dataxItem =
-            this.dateType == "week" ? item.substring(5) : item.substring(5);
-          if (nowDate == dataxItem) {
-            dataxItem = "今天";
-          }
-          return dataxItem;
-        });
+        console.log(res.data.mapData.length)
+        this.lenNumber = res.data.mapData.length;
+        let datax = [];
+        res.data.dateTime.forEach(element => {
+          element = element.substring(5).replace('-', '/');
+          datax.push(element)
+        })
         let legendData = [];
-        let series = res.chart.map((item, index) => {
-          legendData.push({
-            name: item.name,
-            icon: "rect",
-            textStyle:
-              (index + 1) % 3 !== 0
-                ? {
-                  padding: [0, 20, 0, 0]
+        let series = [];
+        if (res.data.mapDataChart.length > 0) {
+          series = res.data.mapDataChart.map((item, index) => {
+            item.orgId == 1006 ? item.backgroundColor = '#f25b4a' : item.orgId == 1007 ? item.backgroundColor = '#fbc303' : item.orgId == 1014 ? item.backgroundColor = '#fd3121' : item.orgId == 1015 ? item.backgroundColor = '#01a1ff' : item.orgId == 1059 ? item.backgroundColor = '#00cb4b' : item.backgroundColor = '#9a6eff',
+              legendData.push({
+                name: item.orgName,
+                icon: "rect",
+
+                textStyle: {
+                  margin: [0, 10, 0, 0],
+                  // color: '#333333'
                 }
-                : ""
+              });
+            item.symbol = "none";
+            item.type = "line";
+            item.data = item.bicycleNumsList;
+            item.name = item.orgName;
+            item.smooth = true;
+            item.itemStyle = {
+              normal: {
+                lineStyle: {
+                  color: item.orgId == 1006 ? '#f25b4a' : item.orgId == 1007 ? '#fbc303' : item.orgId == 1014 ? '#fd3121' : item.orgId == 1015 ? '#01a1ff' : item.orgId == 1059 ? '#00cb4b' : '#9a6eff'
+                }
+              }
+            };
+            return item;
           });
-          item.symbol = "none";
-          item.type = "line";
-          item.smooth = true;
-          return item;
-        });
+        }
+
         this.initCanvas(legendData, datax, series);
+        this.tabData = res.data;
+        (this.tabData.mapData).forEach((item, index) => {
+          if (item.areaId == this.tabData.mapData[index + 1].areaId) {
+            this.tabData.mapData[index + 1].areaName = '';
+          }
+        })
+
+
       });
     },
     //选择统计时间类型
@@ -278,6 +419,10 @@ export default {
         this.dateType = type;
         this.getCount();
       }
+    },
+    //删除重复数据
+    deleteNumber () {
+
     },
     toDaily (val) {
       this.$router.push({
@@ -289,7 +434,6 @@ export default {
     },
     // 选择视图
     selectView (e) {
-      console.log(e.target);
       let type = e.target.getAttribute("viewType");
       if (type) {
         this.viewType = type;
@@ -312,24 +456,22 @@ export default {
     },
     // 画图
     initCanvas (legendData, dataX, seriesData) {
+      let color = [];
+      seriesData.forEach((iteam, index) => {
+        color.push(iteam.backgroundColor)
+      });
       let option = {
-        color: [
-          "#9A6EFF",
-          "#2AD5DB",
-          "#FF7418",
-          "#5883FF",
-          "#21C677",
-          "#FFAE1F"
-        ],
+        color: color,
         legend: {
-          width: "90%",
-          right: 0,
+          width: "100%",
+          left: 40,
           align: "left",
+          bottom: 0,
           selectedMode: true,
           itemWidth: 10,
           itemHeight: 10,
           textStyle: {
-            color: "#989898",
+            color: "#333333",
             fontSize: 12
           },
           data: legendData
@@ -338,9 +480,10 @@ export default {
           trigger: "axis"
         },
         grid: {
-          left: "4%",
+          left: "1%",
           right: "5%",
-          bottom: "3%",
+          bottom: "10%",
+          top: '3%',
           containLabel: true
         },
         xAxis: {
@@ -363,12 +506,14 @@ export default {
         yAxis: {
           type: "value",
           axisLine: {
+            show: false,
             lineStyle: {
               color: "#DDDDDD",
               type: "dotted"
             }
           },
           axisLabel: {
+
             color: "#AAAAAA"
           },
           splitLine: {
@@ -383,7 +528,7 @@ export default {
         },
         series: seriesData
       };
-      this.eachartNode.setOption(option);
+      this.eachartNode.setOption(option, true);
     },
     // 选中时间事件
     selectDate (val) {
@@ -568,6 +713,47 @@ export default {
         }
       }
     }
+    .echart-select {
+      width: 100%;
+      display: flex;
+      // justify-content: space-between;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0.293333rem;
+      box-sizing: border-box;
+      margin-top: 1.2rem;
+      .date-type {
+        display: flex;
+        font-size: 0.3rem;
+        color: #666666;
+        //
+        box-sizing: border-box;
+        .dateType {
+          padding: 0.1rem 0.3rem;
+          background: #fff;
+          border-radius: 0.3rem;
+          box-sizing: border-box;
+        }
+        .date-active {
+          padding: 0.1rem 0.3rem;
+          background: #fff;
+          color: #5076ff;
+          border-radius: 0.3rem;
+          box-sizing: border-box;
+        }
+      }
+      .date-select {
+        display: flex;
+        font-size: 0.36rem;
+        color: #5076ff;
+        align-items: center;
+        .icon-rili {
+          font-size: 0.48rem;
+          color: #bfbfbf;
+          margin-left: 0.173333rem;
+        }
+      }
+    }
     section {
       width: 100%;
       flex: 1;
@@ -575,79 +761,59 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      .tab-btns {
-        display: flex;
-        margin: 10px 0 10px 0;
-        .btn-left {
-          box-sizing: border-box;
-          padding: 6px 20px;
-          font-size: 0.373333rem;
-          color: #5076ff;
-          border-top-left-radius: 0.5rem;
-          border-bottom-left-radius: 0.5rem;
-          border: 1px solid #5076ff;
-          border-right: none;
-        }
-        .btn-right {
-          box-sizing: border-box;
-          padding: 6px 20px;
-          // line-height: normal;
-          font-size: 0.373333rem;
-          color: #5076ff;
-          border-top-right-radius: 0.5rem;
-          border-bottom-right-radius: 0.5rem;
-          border: 1px solid #5076ff;
-          border-left: none;
-        }
-        .tab-active {
-          color: #fff;
-          background: #5076ff;
-        }
-      }
-      .echart-select {
+      overflow-y: scroll;
+      // padding-top: 1.2rem;
+      .superList {
         width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 0.293333rem;
         box-sizing: border-box;
-        margin-bottom: 0.48rem;
-        .date-type {
+        border-radius: 2px;
+        // .iteamsa {
+        //   box-sizing: border-box;
+        //   margin: 0 0.3rem;
+        //   flex: 1;
+        //   display: flex;
+        //   justify-content: flex-start;
+        //   background: #fff;
+        //
+        //   .timesa {
+        //     display: flex;
+        //     flex-direction: column;
+        //   }
+        // }
+        #Myechart {
+          width: 100%;
+          height: 100%;
+        }
+        .topsa {
           display: flex;
-          font-size: 0.4rem;
-          color: #656565;
-          .date-active {
-            color: #5076ff;
+          justify-content: space-between;
+          box-sizing: border-box;
+          background: #fff;
+          padding: 0.3rem;
+          border-bottom: 1px solid #f2f2f2;
+          .fontext {
             position: relative;
-            &::after {
+            margin-left: 0.3rem;
+            &::before {
               content: "";
               position: absolute;
-              bottom: -0.16rem;
-              left: 50%;
-              width: 0.72rem;
-              height: 0.04rem;
-              margin-left: -0.36rem;
+              top: 0.015rem;
+              left: 0px;
+              width: 0.1rem;
+              height: 0.4rem;
               background: #5076ff;
+              margin-left: -0.25rem;
             }
           }
         }
-        .date-select {
-          display: flex;
-          font-size: 0.4rem;
-          color: #5076ff;
-          align-items: center;
-          .icon-rili {
-            font-size: 0.48rem;
-            color: #bfbfbf;
-            margin-left: 0.173333rem;
-          }
-        }
       }
+
       .myViews {
         width: 100%;
-        padding: 0 0.293333rem;
+        padding: 0 0.1rem;
         box-sizing: border-box;
         flex: 1;
+        background: #ffffff;
         #Echart {
           width: 100%;
           height: 100%;
@@ -657,40 +823,84 @@ export default {
           height: 100%;
           display: flex;
           flex-direction: column;
-          .tab-head {
-            width: 100%;
-            height: 0.96rem;
-            table {
-              width: 100%;
-              height: 0.96rem;
-              background: #f2f2f2;
-              font-size: 0.293333rem;
-              color: #888888;
-              font-weight: 100;
-              text-align: center;
-            }
+          box-sizing: border-box;
+          padding: 0.3rem 0.2rem;
+          .mobike {
+            color: #f25b4a;
           }
-          .tab-body {
-            height: 9.866667rem;
-            width: 100%;
-            overflow: hidden;
-            overflow-y: scroll;
-            table {
-              width: 100%;
-              font-size: 0.32rem;
-              color: #282828;
+          .ofo {
+            color: #fbc303;
+          }
+          .haluo {
+            color: #01a1ff;
+          }
+          .jiujiu {
+            color: #fd3121;
+          }
+          .xiangqi {
+            color: #00cb4b;
+          }
+          .other {
+            color: #9a6eff;
+          }
+          table {
+            border: none;
+            border-left: 1px solid #dddddd;
+            // border-bottom: 1px solid #dddddd;
+            // border-right: 1px solid #dddddd;
+            font-size: 0.34rem;
+            thead {
+              background: #dee6ff;
+              color: #666666;
+              td {
+                padding: 0.15rem;
+                border-right: 1px solid #dddddd;
+              }
+            }
+            tbody {
               tr {
-                width: 100%;
-                &:nth-child(even) {
-                  background: #f3f5ff;
-                }
                 td {
-                  height: 1.44rem;
-                  text-align: center;
+                  padding: 0.15rem;
+                  border-bottom: 1px solid #dddddd;
+                  border-right: 1px solid #dddddd;
                 }
               }
             }
           }
+          // .tab-head {
+          //   width: 100%;
+          //   height: 0.96rem;
+          //   table {
+          //     width: 100%;
+          //     height: 0.96rem;
+          //     background: #f2f2f2;
+          //     font-size: 0.293333rem;
+          //     color: #888888;
+          //     font-weight: 100;
+          //     text-align: center;
+          //   }
+          // }
+          // .tab-body {
+          //   height: 9.866667rem;
+          //   width: 100%;
+          //   overflow: hidden;
+          //   overflow-y: scroll;
+          //   table {
+          //     width: 100%;
+          //     font-size: 0.32rem;
+          //     color: #282828;
+          //     tr {
+          //       width: 100%;
+          //       &:nth-child(even) {
+          //         background: #f3f5ff;
+          //       }
+          //       td {
+          //         height: 1.44rem;
+          //         text-align: center;
+          //       }
+          //     }
+          //   }
+          // }
         }
       }
     }

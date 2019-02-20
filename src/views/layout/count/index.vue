@@ -2,27 +2,34 @@
   <div class="gcontainer">
     <header>
       <h1 style="margin-left:0.96rem;width:50%;text-align:right">统计</h1>
-      <h1
-        class="animated-tada"
-        style="width:50%;text-align:right"
-        v-if="ruleStatus=='true'"
-        @click="rulesBox=!rulesBox"
-      >
-        <span style="font-size:0.6rem" class="iconfont icon-paper"></span>
+      <h1 class="animated-tada"
+          style="width:50%;text-align:right"
+          v-if="ruleStatus=='true'"
+          @click="rulesBox=!rulesBox">
+        <span style="font-size:0.6rem"
+              class="iconfont icon-paper"></span>
       </h1>
-      <h1 style="width:50%;text-align:right" v-if="ruleStatus=='false'" @click="rulesBox=!rulesBox">
-        <span style="font-size:0.6rem" class="iconfont icon-paper"></span>
+      <h1 style="width:50%;text-align:right"
+          v-if="ruleStatus=='false'"
+          @click="rulesBox=!rulesBox">
+        <span style="font-size:0.6rem"
+              class="iconfont icon-paper"></span>
       </h1>
-      <div class="historical-rules" v-if="rulesBox">
-        <div class="rules-box" @click="toDaily('day')">
+      <div class="historical-rules"
+           v-if="rulesBox">
+        <div class="rules-box"
+             @click="toDaily('day')">
           <!-- <img src="@/assets/image/evaluation/history.png" alt srcset> -->
           <span>日报</span>
         </div>
-        <div class="rules-box" @click="toDaily('week')">
+        <div class="rules-box"
+             @click="toDaily('week')">
           <!-- <img src="@/assets/image/evaluation/ruls@2x (1).png" alt srcset> -->
           <span>周报</span>
         </div>
-        <div class="rules-box" @click="toDaily('month')" style="border:none">
+        <div class="rules-box"
+             @click="toDaily('month')"
+             style="border:none">
           <!-- <img src="@/assets/image/evaluation/ruls@2x (1).png" alt srcset> -->
           <span>月报</span>
         </div>
@@ -30,38 +37,46 @@
     </header>
     <main>
       <nav @click="selectComany($event)">
-        <div
-          v-for="item in company"
-          :key="item.id"
-          :companyId="item.id"
-          :class="[activeComany == item.id ? 'nav-active' : '']"
-          class="nav-item"
-        >{{item.name}}</div>
+        <div v-for="item in company"
+             :key="item.id"
+             :companyId="item.id"
+             :class="[activeComany == item.id ? 'nav-active' : '']"
+             class="nav-item">{{item.name}}</div>
       </nav>
       <section>
-        <div class="tab-btns" @click="selectView">
-          <div class="btn-left" viewType="1" :class="[viewType == 1 ? 'tab-active' : '']">图表</div>
-          <div class="btn-right" viewType="2" :class="[viewType == 2 ? 'tab-active' : '']">表格</div>
+        <div class="tab-btns"
+             @click="selectView">
+          <div class="btn-left"
+               viewType="1"
+               :class="[viewType == 1 ? 'tab-active' : '']">图表</div>
+          <div class="btn-right"
+               viewType="2"
+               :class="[viewType == 2 ? 'tab-active' : '']">表格</div>
         </div>
         <div class="echart-select">
-          <div class="date-type" @click="selectDateType">
-            <div :class="dateType == 'week' ? 'date-active' : ''" dateType="week">周统计</div>
-            <div
-              :class="dateType == 'month' ? 'date-active' : ''"
-              dateType="month"
-              style="margin-left:.48rem"
-            >月统计</div>
+          <div class="date-type"
+               @click="selectDateType">
+            <div :class="dateType == 'week' ? 'date-active' : ''"
+                 dateType="week">周统计</div>
+            <div :class="dateType == 'month' ? 'date-active' : ''"
+                 dateType="month"
+                 style="margin-left:.48rem">月统计</div>
           </div>
-          <div class="date-select" @click="openPicker">
+          <div class="date-select"
+               @click="openPicker">
             <div>{{dateValue}}</div>
             <i class="iconfont icon-rili"></i>
           </div>
         </div>
         <div class="myViews">
-          <div v-show="viewType == 1" id="Echart"></div>
-          <div v-show="viewType == 2" class="tab-view">
+          <div v-show="viewType == 1"
+               id="Echart"></div>
+          <div v-show="viewType == 2"
+               class="tab-view">
             <div class="tab-head">
-              <table border="0" cellpadding="0" cellspacing="0">
+              <table border="0"
+                     cellpadding="0"
+                     cellspacing="0">
                 <tr>
                   <td style="width:10%;">序号</td>
                   <td style="width:20%;">时间</td>
@@ -76,8 +91,11 @@
               </table>
             </div>
             <div class="tab-body">
-              <table border="0" cellpadding="0" cellspacing="0">
-                <tr v-for="(item,index) in tabData" :key="index">
+              <table border="0"
+                     cellpadding="0"
+                     cellspacing="0">
+                <tr v-for="(item,index) in tabData"
+                    :key="index">
                   <td style="width:10%;">{{index + 1}}</td>
                   <td style="width:20%;">{{dateData[index]}}</td>
                   <td style="width:15%;">{{item.arrange}}/{{item.arrangeNum}}</td>
@@ -96,7 +114,10 @@
     </main>
 
     <!-- 时间选择 -->
-    <mt-datetime-picker @confirm="selectDate" ref="picker" type="date" v-model="pickerValue"></mt-datetime-picker>
+    <mt-datetime-picker @confirm="selectDate"
+                        ref="picker"
+                        type="date"
+                        v-model="pickerValue"></mt-datetime-picker>
     <!-- 时间选择 -->
   </div>
 </template>
@@ -108,10 +129,10 @@ export default {
   computed: {
     ...mapGetters(["userInfo"])
   },
-  data() {
+  data () {
     return {
       dateValue: "", // 实际使用时间
-      rulesBox:false,//日周月报
+      rulesBox: false,//日周月报
       pickerValue: new Date(), // 选择的时间
       eachartNode: null,
       company: [], //单车企业数据
@@ -123,32 +144,32 @@ export default {
       tabData: {} // 表格数据
     };
   },
-  created() {
+  created () {
     this.getRules();
     this.getBikeCompany();
     this.dateValue = new Date().Format("yyyy-MM-dd");
   },
-  mounted() {
-    this.$nextTick(function() {
+  mounted () {
+    this.$nextTick(function () {
       this.eachartNode = this.$echarts.init(document.getElementById("Echart"));
       // window.onresize = () => {
       //   alert(2);
       //   this.eachartNode.resize();
       // };
-      window.addEventListener("resize", function() {
+      window.addEventListener("resize", function () {
         this.eachartNode.resize();
       });
     });
   },
   methods: {
-    getRules() {
+    getRules () {
       //获取是否有考评
       this.$fetchGet("count/willdo").then(res => {
         this.ruleStatus = res.daily;
       });
     },
     // 获取统计数据
-    getCount() {
+    getCount () {
       Indicator.open({
         text: "加载中...",
         spinnerType: "fading-circle"
@@ -182,8 +203,8 @@ export default {
             textStyle:
               (index + 1) % 3 !== 0
                 ? {
-                    padding: [0, 20, 0, 0]
-                  }
+                  padding: [0, 20, 0, 0]
+                }
                 : ""
           });
           item.symbol = "none";
@@ -195,23 +216,23 @@ export default {
       });
     },
     //选择统计时间类型
-    selectDateType(e) {
+    selectDateType (e) {
       let type = e.target.getAttribute("dateType");
       if (type) {
         this.dateType = type;
         this.getCount();
       }
     },
-    toDaily(val) {
+    toDaily (val) {
       this.$router.push({
-        path:"/statisticsDaily",
-        query:{
-          dailyType:val
+        path: "/statisticsDaily",
+        query: {
+          dailyType: val
         }
       });
     },
     // 选择视图
-    selectView(e) {
+    selectView (e) {
       console.log(e.target);
       let type = e.target.getAttribute("viewType");
       if (type) {
@@ -219,7 +240,7 @@ export default {
       }
     },
     // 选择公司
-    selectComany(e) {
+    selectComany (e) {
       let id = e.target.getAttribute("companyId");
       if (id) {
         this.activeComany = id;
@@ -227,7 +248,7 @@ export default {
       }
     },
     // 获取单车企业数据
-    getBikeCompany() {
+    getBikeCompany () {
       this.$fetchGet("count/bikeCompany").then(res => {
         if (res.length > 0) {
           this.activeComany = res[0].id;
@@ -237,7 +258,7 @@ export default {
       });
     },
     // 画图
-    initCanvas(legendData, dataX, seriesData) {
+    initCanvas (legendData, dataX, seriesData) {
       let option = {
         color: [
           "#9A6EFF",
@@ -312,12 +333,12 @@ export default {
       this.eachartNode.setOption(option);
     },
     // 选中时间事件
-    selectDate(val) {
+    selectDate (val) {
       this.dateValue = val.Format("yyyy-MM-dd");
       this.getCount();
     },
     // 打开时间选择框
-    openPicker() {
+    openPicker () {
       this.$refs.picker.open();
       this.eachartNode.dispatchAction({ type: "hideTip" });
     }
@@ -371,34 +392,34 @@ export default {
       line-height: 1.173333rem;
     }
     .historical-rules {
-        position: absolute;
-        top: 0.9rem;
-        right: 0.1rem;
-        width: 2rem;
-        height: 2.4rem;
-        background: #ffffff;
-        border-radius: 0.1rem;
-        box-shadow: 0 0 0.1rem #dddddd;
+      position: absolute;
+      top: 0.9rem;
+      right: 0.1rem;
+      width: 2rem;
+      height: 2.4rem;
+      background: #ffffff;
+      border-radius: 0.1rem;
+      box-shadow: 0 0 0.1rem #dddddd;
+      display: flex;
+      flex-direction: column;
+      z-index: 99999;
+      .rules-box {
         display: flex;
-        flex-direction: column;
-        z-index: 99999;
-        .rules-box {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-bottom: 1px solid #eeeeee;
-          padding: 0.3rem;
-          img {
-            width: 0.5rem;
-            height: 0.5rem;
-            margin-right: 0.1rem;
-          }
-          span {
-            color: #333333;
-            font-size: 0.373333rem;
-          }
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid #eeeeee;
+        padding: 0.3rem;
+        img {
+          width: 0.5rem;
+          height: 0.5rem;
+          margin-right: 0.1rem;
+        }
+        span {
+          color: #333333;
+          font-size: 0.373333rem;
         }
       }
+    }
   }
   main {
     width: 100%;
