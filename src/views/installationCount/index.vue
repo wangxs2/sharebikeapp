@@ -295,6 +295,7 @@ export default {
     },
     menReset () {
       if (this.menuListTop.length == 3) {
+
         if (this.downIcon == 0) {
           this.menuListTop[this.downIcon].label = "";
           this.menuListTop[this.downIcon].menuName = "";
@@ -308,6 +309,7 @@ export default {
           this.menuListTop[this.downIcon].menuName = "";
           this.query.bikeId = "";
         }
+        this.title = this.areakids[0].areaName + '-' + this.menuListTop[1].menuName + '-' + this.menuListTop[2].menuName
       } else {
         if (this.downIcon == 0) {
           this.menuListTop[this.downIcon].label = "";
@@ -318,6 +320,7 @@ export default {
           this.menuListTop[this.downIcon].menuName = "";
           this.query.bikeId = "";
         }
+        this.title = this.areakids[0].areaName + '-' + this.menuListTop[1].menuName
       }
 
       this.downIcon1 = false;
@@ -375,7 +378,7 @@ export default {
         let series = [];
         if (res.data.mapDataChart.length > 0) {
           series = res.data.mapDataChart.map((item, index) => {
-            item.orgId == 1006 ? item.backgroundColor = '#f25b4a' : item.orgId == 1007 ? item.backgroundColor = '#fbc303' : item.orgId == 1014 ? item.backgroundColor = '#fd3121' : item.orgId == 1015 ? item.backgroundColor = '#01a1ff' : item.orgId == 1059 ? item.backgroundColor = '#00cb4b' : item.backgroundColor = '#9a6eff',
+            item.orgId == 1006 ? item.backgroundColor = '#e99187' : item.orgId == 1007 ? item.backgroundColor = '#fbc303' : item.orgId == 1014 ? item.backgroundColor = '#fd3121' : item.orgId == 1015 ? item.backgroundColor = '#01a1ff' : item.orgId == 1059 ? item.backgroundColor = '#00cb4b' : item.backgroundColor = '#9a6eff',
               legendData.push({
                 name: item.orgName,
                 icon: "rect",
@@ -393,7 +396,7 @@ export default {
             item.itemStyle = {
               normal: {
                 lineStyle: {
-                  color: item.orgId == 1006 ? '#f25b4a' : item.orgId == 1007 ? '#fbc303' : item.orgId == 1014 ? '#fd3121' : item.orgId == 1015 ? '#01a1ff' : item.orgId == 1059 ? '#00cb4b' : '#9a6eff'
+                  color: item.orgId == 1006 ? '#e99187' : item.orgId == 1007 ? '#fbc303' : item.orgId == 1014 ? '#fd3121' : item.orgId == 1015 ? '#01a1ff' : item.orgId == 1059 ? '#00cb4b' : '#9a6eff'
                 }
               }
             };
@@ -450,7 +453,6 @@ export default {
     // 获取单车企业数据
     getBikeCompany () {
       this.$fetchGet("count/bikeCompany").then(res => {
-
         this.company = res;
       });
     },
@@ -826,7 +828,7 @@ export default {
           box-sizing: border-box;
           padding: 0.3rem 0.2rem;
           .mobike {
-            color: #f25b4a;
+            color: #e99187;
           }
           .ofo {
             color: #fbc303;
@@ -846,8 +848,6 @@ export default {
           table {
             border: none;
             border-left: 1px solid #dddddd;
-            // border-bottom: 1px solid #dddddd;
-            // border-right: 1px solid #dddddd;
             font-size: 0.34rem;
             thead {
               background: #dee6ff;

@@ -2,107 +2,107 @@
 <template>
   <div class="containerSaone">
     <div class="header">
-      <span style="font-size:0.48rem;width:2rem;text-align:center" class="iconfont icon-location">上海</span>
-      <span style="width:2rem;text-align:center">自查</span>
-      <span
-        style="font-size:24px;width:1.7rem;text-align:right;padding-right:0.3rem"
-        class="iconfont icon-gengduo"
-        @click="iconClick"
-      ></span>
+      <!-- {{district}} -->
+      <span v-if="addressFlag"
+            style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">定位中...</span>
+      <span v-if="!addressFlag"
+            style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+            class="iconfont icon-location">{{district}}</span>
+      <span style="width:48%;text-align:center">自查</span>
+      <span style="font-size:24px;width:25%;text-align:right;padding-right:2%"
+            class="iconfont icon-gengduo"
+            @click="iconClick"></span>
     </div>
     <div class="version-popup-box">
       <div class="version-popup">
-        <div v-for="(iteam,index) in menuListTop" :key="index" @click="sort(iteam,index)">
-          <span
-            class="version-popup-font"
-            :class="[iteam.menuName == '' ? '' : 'version-popup-font-active']"
-          >{{iteam.menuName == ''?iteam.name:iteam.menuName}}</span>
-          <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-if="downIcon==index"></span>
-          <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-if="downIcon!==index"></span>
+        <div v-for="(iteam,index) in menuListTop"
+             :key="index"
+             @click="sort(iteam,index)">
+          <span class="version-popup-font"
+                :class="[iteam.menuName == '' ? '' : 'version-popup-font-active']">{{iteam.menuName == ''?iteam.name:iteam.menuName}}</span>
+          <span style="color:#AAAAAA"
+                class="iconfont icon-jiantou"
+                v-if="downIcon==index"></span>
+          <span style="color:#AAAAAA"
+                class="iconfont icon-arrow-up"
+                v-if="downIcon!==index"></span>
         </div>
       </div>
     </div>
     <!-- 查询列表 -->
-    <div class="version-popup-box1" v-if="downIcon1">
+    <div class="version-popup-box1"
+         v-if="downIcon1">
       <div class="version-popup">
         <div class="variable">
           <div class="menself">
-            <p v-if="menuListCenter.length==0" style="color:#999999;text-align:center">暂无数据</p>
+            <p v-if="menuListCenter.length==0"
+               style="color:#999999;text-align:center">暂无数据</p>
             <div style="padding:0rem;background: #f2f2f2;">
-              <div class="areacheck" v-if="areaarr.length>0&&downIcon==0">
-                <p
-                  class="areachecklist"
-                  @click="areaTypeclick(iteam,index)"
-                  :class="[viewType == iteam.id ? 'tab-active' : '']"
-                  v-for="(iteam, index) in areaarr"
-                  :key="index"
-                >{{iteam.name}}</p>
+              <div class="areacheck"
+                   v-if="areaarr.length>0&&downIcon==0">
+                <p class="areachecklist"
+                   @click="areaTypeclick(iteam,index)"
+                   :class="[viewType == iteam.id ? 'tab-active' : '']"
+                   v-for="(iteam, index) in areaarr"
+                   :key="index">{{iteam.name}}</p>
               </div>
             </div>
             <div>
-              <p
-                class="menselflist"
-                @click="menuListClick(item)"
-                v-for="(item, index) in menuListCenter"
-                :key="index"
-                :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']"
-              >{{downIcon==2?item.realName:item.name}}</p>
+              <p class="menselflist"
+                 @click="menuListClick(item)"
+                 v-for="(item, index) in menuListCenter"
+                 :key="index"
+                 :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']">{{downIcon==2?item.realName:item.name}}</p>
             </div>
           </div>
         </div>
         <div class="bottomsa">
           <p @click="menReset()">重置</p>
-          <p @click="submit()" style="border:none">确定</p>
+          <p @click="submit()"
+             style="border:none">确定</p>
         </div>
       </div>
     </div>
     <!-- 查询列表 -->
-    <div class="noneList" v-if="noneList">
-      <img src="../../../assets/image/selfcheck/image_no data@3x.png" width="200" height="180" alt>
+    <div class="noneList"
+         v-if="noneList">
+      <img src="../../../assets/image/selfcheck/image_no data@3x.png"
+           width="200"
+           height="180"
+           alt>
       <p style="color:#989898">暂时没有自查数据哦~</p>
     </div>
-    <scroller
-      style="top:2.4rem;bottom:55px;height:82%;overflow:hidden"
-      v-if="!noneList"
-      :on-infinite="infinite"
-      :on-refresh="refresh"
-      infiniteText="上拉加载"
-      noDataText="--我也是有底线的--"
-      ref="my_scroller"
-    >
+    <scroller style="top:2.4rem;bottom:55px;height:82%;overflow:hidden"
+              v-if="!noneList"
+              :on-infinite="infinite"
+              :on-refresh="refresh"
+              infiniteText="上拉加载"
+              noDataText="--我也是有底线的--"
+              ref="my_scroller">
       <div class="iteamsa">
-        <div
-          class="iteamListSa"
-          v-for="(iteam, index) in pageList"
-          :key="index"
-          @click="detailClick(iteam)"
-        >
-          <div class="leftSa" style="width:2.6rem;height:2.6rem">
-            <img
-              :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]"
-              alt
-              style="width:2.6rem;height:2.6rem"
-              srcset
-            >
+        <div class="iteamListSa"
+             v-for="(iteam, index) in pageList"
+             :key="index"
+             @click="detailClick(iteam)">
+          <div class="leftSa"
+               style="width:2.6rem;height:2.6rem">
+            <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]"
+                 alt
+                 style="width:2.6rem;height:2.6rem"
+                 srcset>
           </div>
           <div class="rightSa">
             <div style="display:flex;flex-direction: column;flex:1;max-width: 100%;">
               <div class="topRight">
                 <p style="flex:1;">{{FormatDate(iteam.updateTime)}}</p>
-                <p
-                  style="font-size:0.32rem;line-height:1.5;"
-                  :class="iteam.status == 1 ? 'green' : 'red'"
-                >{{iteam.status == 1 ? '处理中' : "已处理"}}</p>
+                <p style="font-size:0.32rem;line-height:1.5;"
+                   :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</p>
               </div>
               <div class="centersa">
-                <p
-                  style="line-height:1.5;"
-                  :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'"
-                >{{iteam.orgName}}</p>
+                <p style="line-height:1.5;"
+                   :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'">{{iteam.orgName}}</p>
                 <p style="color:#666666;margin-left:0.2rem">整理</p>
-                <p
-                  style="color:#5076FF;margin-left:0.1rem"
-                >{{iteam.arrangeNum==0?'-':iteam.arrangeNum}}</p>
+                <p style="color:#5076FF;margin-left:0.1rem">{{iteam.arrangeNum==0?'-':iteam.arrangeNum}}</p>
                 <p style="color:#666666;margin-left:0.2rem">清运</p>
                 <p style="color:#5076FF;margin-left:0.1rem">{{iteam.cleanNum==0?'-':iteam.cleanNum}}</p>
               </div>
@@ -125,10 +125,12 @@ import { Indicator } from "mint-ui";
 export default {
   name: "zicha",
   computed: {},
-  data() {
+  data () {
     return {
+      addressFlag: true,
       selected: "/layout/selfCheck",
       viewType: "",
+      district: '',
       viewType2: "",
       viewType3: "",
       popupVisible: true,
@@ -186,7 +188,7 @@ export default {
         name: "处理人",
         id: ""
       },
-      requestFlage:true,//请求是我自己写的还是自带的刷新的
+      requestFlage: true,//请求是我自己写的还是自带的刷新的
       noneList: false,
       searchCondition: {
         page: 0,
@@ -206,7 +208,7 @@ export default {
     };
   },
   components: {},
-  created() {
+  created () {
     if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
       this.searchCondition = this.$route.query.searchCondition;
       this.menuListTop = this.$route.query.menuListTop;
@@ -217,19 +219,43 @@ export default {
       } else {
         this.areakids = this.$route.query.areakids;
         this.areaarr = this.$route.query.areaarr;
-        this.viewType=this.areaarr[this.areaarr.length-1].id;
+        this.viewType = this.areaarr[this.areaarr.length - 1].id;
       }
-     this.getListData2();
+      this.getListData2();
     } else {
       this.getorgsTree();
     }
-     this.getBikeCompany();
-      this.getBikeMen();
+    this.getBikeCompany();
+    this.getBikeMen();
   },
-  mounted() {},
+  mounted () {
+    this.getMap();
+  },
   methods: {
+    //获取当前城市
+    getMap () {
+      let geolocation = new AMap.Geolocation({
+        enableHighAccuracy: true, //是否使用高精度定位，默认:true
+        timeout: 10000, //超过10秒后停止定位，默认：无穷大
+        maximumAge: 0, //定位结果缓存0毫秒，默认：0
+        convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+        showButton: false, //显示定位按钮，默认：true
+        buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
+        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+        showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
+        showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
+        panToLocation: false, //定位成功后将定位到的位置作为地图中心点，默认：true
+        zoomToAccuracy: false //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+      });
+      geolocation.getCurrentPosition((status, result) => {
+        if (status == 'complete') {
+          this.district = result.addressComponent.district;
+          this.addressFlag = false;
+        }
+      });
+    },
     //进入详情
-    detailClick(row) {
+    detailClick (row) {
       if (row.status == 2) {
         this.$router.push({
           path: "/selfCheckdetail",
@@ -256,21 +282,21 @@ export default {
         });
       }
     },
-    iconClick() {
+    iconClick () {
       this.$router.push({
-          path: "/selfCheckAdd",
-          query: {
-            message: '123',
-            searchCondition: this.searchCondition,
-            menuListTop: this.menuListTop,
-            downIcon: this.downIcon,
-            areakids: this.areakids,
-            areaarr: this.areaarr,
-          }
-        });
+        path: "/selfCheckAdd",
+        query: {
+          message: '123',
+          searchCondition: this.searchCondition,
+          menuListTop: this.menuListTop,
+          downIcon: this.downIcon,
+          areakids: this.areakids,
+          areaarr: this.areaarr,
+        }
+      });
     },
     //区域切换
-    areaTypeclick(val, index) {
+    areaTypeclick (val, index) {
       console.log(val);
       this.areaflag = false;
       this.areakids = [];
@@ -282,7 +308,7 @@ export default {
       this.areaarr = this.areaarr.slice(0, index + 1);
     },
     //点击查询列表
-    menuListClick(row) {
+    menuListClick (row) {
       if (this.downIcon == 0) {
         this.menuListTop[this.downIcon].label = row.id;
         this.areaname.id = row.id;
@@ -316,7 +342,7 @@ export default {
       }
     },
     //重置
-    menReset() {
+    menReset () {
       if (this.downIcon == 0) {
         this.viewType = "";
         this.menuListTop[this.downIcon].label = "";
@@ -339,12 +365,12 @@ export default {
       this.getListData2();
     },
     //确定
-    submit() {
+    submit () {
       this.downIcon1 = false;
       this.getListData2();
     },
     //切换图片；
-    sort(iteam, index) {
+    sort (iteam, index) {
       this.downIcon = index;
       this.downIcon1 = true;
       if (this.downIcon == 0) {
@@ -358,7 +384,7 @@ export default {
       }
     },
 
-    getorgsTree() {
+    getorgsTree () {
       //获取组织树数据
       this.$fetchGet("org/getUserArea").then(res => {
         this.UserArea = res;
@@ -367,7 +393,7 @@ export default {
         this.areakids = originTree;
       });
     },
-    parseChildren(pid, json) {
+    parseChildren (pid, json) {
       //格式父级权限
       var arr = [];
       $.each(json, (index, item) => {
@@ -378,7 +404,7 @@ export default {
       });
       return arr;
     },
-    deleteChildren(menuData) {
+    deleteChildren (menuData) {
       //删除空的child
       $.each(menuData, (index, item) => {
         if (item.children && item.children.length) {
@@ -389,34 +415,34 @@ export default {
       });
     },
     // 获取单车企业数据
-    getBikeCompany() {
+    getBikeCompany () {
       this.$fetchGet("count/bikeCompany").then(res => {
         this.company = res;
       });
     },
     //获取处理人数据
-    getBikeMen() {
+    getBikeMen () {
       this.$fetchGet("dispatch/listSearchUser", {
         type: "1"
       }).then(res => {
         this.menData = res;
       });
     },
-    getListData() {
+    getListData () {
       this.pageList = [];
       this.searchCondition.page = 0
       this.searchCondition.pageSize = 15;
     },
-    getListData2() {
+    getListData2 () {
       this.searchCondition.page = 1;
-        this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
-          res => {
-            this.pageList = res.list;
-          }
-        );
+      this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
+        res => {
+          this.pageList = res.list;
+        }
+      );
     },
-    infinite(done) {
-      if(this.requestFlage){
+    infinite (done) {
+      if (this.requestFlage) {
         this.searchCondition.page++;
         this.$fetchGet("selfcheck/pageSelfCheck", this.searchCondition).then(
           res => {
@@ -429,9 +455,9 @@ export default {
           }
         );
       }
-      
+
     },
-    refresh: function(done) {
+    refresh: function (done) {
       this.searchCondition.page = 1;
       this.searchCondition.pageSize = 15;
       this.$fetchGet("selfcheck/pageSelfCheck", {

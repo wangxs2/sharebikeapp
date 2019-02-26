@@ -3,115 +3,112 @@
   <div class="containerSa2">
     <div class="header">
       <div></div>
-      <div class="tab-btns" @click="selectView">
-        <div class="btn-left" viewType="1" :class="[viewTypesa == 1 ? 'tab-active' : '']">待办</div>
-        <div class="btn-right" viewType="2" :class="[viewTypesa == 2 ? 'tab-active' : '']">已办</div>
+      <div class="tab-btns"
+           @click="selectView">
+        <div class="btn-left"
+             viewType="1"
+             :class="[viewTypesa == 1 ? 'tab-active' : '']">待办</div>
+        <div class="btn-right"
+             viewType="2"
+             :class="[viewTypesa == 2 ? 'tab-active' : '']">已办</div>
       </div>
       <div></div>
     </div>
     <div class="content">
       <div class="version-popup-box">
         <div class="version-popup">
-          <div v-for="(iteam,index) in menuListTop" :key="index" @click="sort(iteam,index)">
-            <span
-              class="version-popup-font"
-              :class="[iteam.menuName == '' ? '' : 'version-popup-font-active']"
-            >{{iteam.menuName == ''?iteam.name:iteam.menuName}}</span>
-            <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-if="downIcon==index"></span>
-            <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-if="downIcon!==index"></span>
+          <div v-for="(iteam,index) in menuListTop"
+               :key="index"
+               @click="sort(iteam,index)">
+            <span class="version-popup-font"
+                  :class="[iteam.menuName == '' ? '' : 'version-popup-font-active']">{{iteam.menuName == ''?iteam.name:iteam.menuName}}</span>
+            <span style="color:#AAAAAA"
+                  class="iconfont icon-jiantou"
+                  v-if="downIcon==index"></span>
+            <span style="color:#AAAAAA"
+                  class="iconfont icon-arrow-up"
+                  v-if="downIcon!==index"></span>
           </div>
         </div>
       </div>
       <!-- 查询的划分 -->
-      <div class="version-popup-box1" v-if="downIcon1">
+      <div class="version-popup-box1"
+           v-if="downIcon1">
         <div class="version-popup">
           <div class="variable">
             <div class="menself">
-              <p v-if="menuListCenter.length==0" style="color:#999999;text-align:center">暂无数据</p>
+              <p v-if="menuListCenter.length==0"
+                 style="color:#999999;text-align:center">暂无数据</p>
               <div style="padding:0rem;background: #f2f2f2;">
-                <div class="areacheck" v-if="areaarr.length>0&&downIcon==0">
-                  <p
-                    class="areachecklist"
-                    @click="areaTypeclick(iteam,index)"
-                    :class="[viewType == iteam.id ? 'tab-active' : '']"
-                    v-for="(iteam, index) in areaarr"
-                    :key="index"
-                  >{{iteam.name}}</p>
+                <div class="areacheck"
+                     v-if="areaarr.length>0&&downIcon==0">
+                  <p class="areachecklist"
+                     @click="areaTypeclick(iteam,index)"
+                     :class="[viewType == iteam.id ? 'tab-active' : '']"
+                     v-for="(iteam, index) in areaarr"
+                     :key="index">{{iteam.name}}</p>
                 </div>
               </div>
               <div>
-                <p
-                  class="menselflist"
-                  @click="menuListClick(item)"
-                  v-for="(item, index) in menuListCenter"
-                  :key="index"
-                  :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']"
-                >{{downIcon==1?item.realName:item.name}}</p>
+                <p class="menselflist"
+                   @click="menuListClick(item)"
+                   v-for="(item, index) in menuListCenter"
+                   :key="index"
+                   :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']">{{downIcon==1?item.realName:item.name}}</p>
               </div>
             </div>
           </div>
           <div class="bottomsa">
             <p @click="menReset()">重置</p>
-            <p @click="submit()" style="border:none">确定</p>
+            <p @click="submit()"
+               style="border:none">确定</p>
           </div>
         </div>
       </div>
       <!-- 查询的划分 -->
-      <div class="noneList" v-if="noneList">
-        <img
-          src="../../../assets/image/selfcheck/image_no data@3x.png"
-          width="200"
-          height="180"
-          alt
-        >
+      <div class="noneList"
+           v-if="noneList">
+        <img src="../../../assets/image/selfcheck/image_no data@3x.png"
+             width="200"
+             height="180"
+             alt>
         <p style="color:#989898">暂时没有数据哦~</p>
       </div>
-      <scroller
-        style="top: 2.4rem;bottom:55px;height:82%;overflow:hidden"
-        v-if="!noneList"
-        :on-infinite="infinite"
-        :on-refresh="refresh"
-        infiniteText="上拉加载"
-        noDataText="--我也是有底线的--"
-        ref="my_scroller"
-      >
+      <scroller style="top: 2.4rem;bottom:55px;height:82%;overflow:hidden"
+                v-if="!noneList"
+                :on-infinite="infinite"
+                :on-refresh="refresh"
+                infiniteText="上拉加载"
+                noDataText="--我也是有底线的--"
+                ref="my_scroller">
         <div class="iteamsa">
-          <div
-            class="iteamListSa"
-            v-for="(iteam, index) in pageList"
-            :key="index"
-            @click="detailClick(iteam)"
-          >
-            <div class="leftSa" style="width:2.6rem;height:2.6rem">
-              <img
-                style="width:2.6rem;height:2.6rem"
-                v-if="iteam.dispachPhotoURLs.length!==0&&iteam.status!==2"
-                :src="Ip + iteam.dispachPhotoURLs[0]"
-                alt
-                srcset
-              >
-              <img
-                style="width:2.6rem;height:2.6rem"
-                v-if="iteam.dispachPhotoURLs.length==0"
-                src="../../../assets/image/selfcheck/image_no data@3x.png"
-                alt
-                srcset
-              >
-              <img
-                style="width:2.6rem;height:2.6rem"
-                v-if="iteam.status==2"
-                :src="Ip + iteam.handleAfterURLs[0]"
-                alt
-                srcset
-              >
+          <div class="iteamListSa"
+               v-for="(iteam, index) in pageList"
+               :key="index"
+               @click="detailClick(iteam)">
+            <div class="leftSa"
+                 style="width:2.6rem;height:2.6rem">
+              <img style="width:2.6rem;height:2.6rem"
+                   v-if="iteam.dispachPhotoURLs.length!==0&&iteam.status!==2"
+                   :src="Ip + iteam.dispachPhotoURLs[0]"
+                   alt
+                   srcset>
+              <img style="width:2.6rem;height:2.6rem"
+                   v-if="iteam.dispachPhotoURLs.length==0"
+                   src="../../../assets/image/selfcheck/image_no data@3x.png"
+                   alt
+                   srcset>
+              <img style="width:2.6rem;height:2.6rem"
+                   v-if="iteam.status==2"
+                   :src="Ip + iteam.handleAfterURLs[0]"
+                   alt
+                   srcset>
             </div>
             <div class="rightSa">
               <div class="topRight">
                 <span>{{FormatDate(iteam.dispatchTime)}}</span>
-                <span
-                  style="font-size:0.32rem;line-height:1.5;"
-                  :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'"
-                >{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"已转派":"已完成"}}</span>
+                <span style="font-size:0.32rem;line-height:1.5;"
+                      :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"已转派":"已完成"}}</span>
                 <!-- <p style="width:0.1rem"></p> -->
               </div>
               <div class="centersa">
@@ -141,7 +138,7 @@ import { Loadmore } from "mint-ui";
 import { Indicator } from "mint-ui";
 export default {
   computed: {},
-  data() {
+  data () {
     return {
       viewType: "",
       popupVisible: true,
@@ -205,7 +202,7 @@ export default {
     };
   },
   components: {},
-  created() {
+  created () {
     if (this.$route.query.name == "2") {
       this.activeComany = 2;
       this.searchCondition.status = 2;
@@ -230,9 +227,9 @@ export default {
       this.getorgsTree();
     }
   },
-  mounted() {},
+  mounted () { },
   methods: {
-    detailClick(row) {
+    detailClick (row) {
       if (row.status == 2) {
         this.$router.push({
           path: "/needtodoDetail",
@@ -261,7 +258,7 @@ export default {
         });
       }
     },
-    areaTypeclick(val, index) {
+    areaTypeclick (val, index) {
       this.areaflag = false;
       this.areakids = [];
       this.viewType = val.id;
@@ -273,7 +270,7 @@ export default {
     },
 
     //代办切换
-    selectView(e) {
+    selectView (e) {
       let type = e.target.getAttribute("viewType");
       if (type) {
         this.viewTypesa = type;
@@ -292,7 +289,7 @@ export default {
     },
     //切换图片；
     //点击查询列表
-    menuListClick(row) {
+    menuListClick (row) {
       if (this.downIcon == 0) {
         this.menuListTop[this.downIcon].label = row.id;
         this.areaname.id = row.id;
@@ -318,7 +315,7 @@ export default {
       }
     },
     //重置
-    menReset() {
+    menReset () {
       if (this.downIcon == 0) {
         this.viewType = "";
         this.menuListTop[this.downIcon].label = "";
@@ -333,12 +330,12 @@ export default {
       this.getListData2();
     },
     //确定
-    submit() {
+    submit () {
       this.downIcon1 = false;
       this.getListData();
     },
     //切换图片；
-    sort(iteam, index) {
+    sort (iteam, index) {
       this.downIcon = index;
       this.downIcon1 = true;
       if (this.downIcon == 0) {
@@ -348,7 +345,7 @@ export default {
       }
     },
 
-    getorgsTree() {
+    getorgsTree () {
       //获取组织树数据
       this.$fetchGet("org/getUserArea").then(res => {
         this.UserArea = res;
@@ -357,7 +354,7 @@ export default {
         this.areakids = originTree;
       });
     },
-    parseChildren(pid, json) {
+    parseChildren (pid, json) {
       //格式父级权限
       var arr = [];
       $.each(json, (index, item) => {
@@ -369,7 +366,7 @@ export default {
       });
       return arr;
     },
-    deleteChildren(menuData) {
+    deleteChildren (menuData) {
       //删除空的child
       $.each(menuData, (index, item) => {
         if (item.children && item.children.length) {
@@ -380,13 +377,13 @@ export default {
       });
     },
     // 获取单车企业数据
-    getBikeCompany() {
+    getBikeCompany () {
       this.$fetchGet("count/bikeCompany").then(res => {
         this.companyData = res;
       });
     },
     //获取处理人数据
-    getBikeMen() {
+    getBikeMen () {
       this.$fetchGet("dispatch/listSearchUser", {
         type: "3"
       }).then(res => {
@@ -394,7 +391,7 @@ export default {
       });
     },
     // 导航标签
-    selectComany(e) {
+    selectComany (e) {
       let id = e.target.getAttribute("companyId");
       this.activeComany = id;
       if (id == 1) {
@@ -405,15 +402,15 @@ export default {
         this.getListData2();
       }
     },
-    iconClick() {
+    iconClick () {
       this.$router.push("/selfCheckAdd");
     },
-    getListData() {
+    getListData () {
       this.pageList = [];
       this.searchCondition.page = 0;
       this.searchCondition.pageSize = 15;
     },
-    getListData2() {
+    getListData2 () {
       this.searchCondition.page = 1;
       this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
         res => {
@@ -421,7 +418,7 @@ export default {
         }
       );
     },
-    infinite(done) {
+    infinite (done) {
       if (this.requestFlage) {
         this.searchCondition.page++;
         this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
@@ -436,7 +433,7 @@ export default {
         );
       }
     },
-    refresh: function() {
+    refresh: function () {
       //下拉刷新
       // console.log("refresh");
       this.searchCondition.page = 1;

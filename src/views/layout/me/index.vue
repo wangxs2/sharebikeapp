@@ -316,6 +316,8 @@ export default {
       .header-tittle {
         line-height: 1.173333rem;
         font-size: 0.48rem;
+        width: 3rem;
+        text-align: right;
       }
       .header-setting {
         img {
@@ -414,7 +416,7 @@ export default {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        width: 94%;
+        width: 95.8%;
         height: 2.4rem;
         padding-left: 0.3rem;
         background-image: url("../../../assets/image/me/bg@3x.png");
@@ -428,7 +430,7 @@ export default {
       flex-direction: column;
       box-shadow: 0 0.05rem 0.1rem #f2f2f2;
       box-shadow: 0 2px 6px -1px #f2f2f2; //底部阴影
-      margin: 0 0.36rem;
+      margin: 0 0.2rem;
       margin-bottom: 1px;
       // height: 1.4rem;
       background: #ffffff;
@@ -440,7 +442,7 @@ export default {
       justify-content: space-between;
       box-shadow: 0 0.05rem 0.1rem #f2f2f2;
       box-shadow: 0 2px 6px -1px #f2f2f2; //底部阴影
-      margin: 0 0.36rem;
+      margin: 0 0.2rem;
       margin-bottom: 0.2rem;
       margin-top: 0.05rem;
       background: #ffffff;

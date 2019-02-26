@@ -14,7 +14,7 @@
     <div class="content"
          ref="menuWrapper">
       <div class="content-top">
-        <div class="menu-box">
+        <!-- <div class="menu-box">
           <div class="menu-iteam"
                v-for="(iteam,index) in menuList"
                :key="index"
@@ -22,57 +22,57 @@
             <img :src="iteam.imgUrl[selectIndex==index?1:0]">
             <span v-bind:style="{color:selectIndex==index?'#FFAE1F':'#ffffff'}">{{iteam.name}}</span>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="content-bottom">
         <div class="content-bottom-box"
-             style="margin-top:-2rem">
+             style="margin-top:0.7rem">
           <div class="rules-bottom-img">
             自查
           </div>
 
           <div class="content-bottom-rules"
                style="width:100%;padding-bottom:0.5rem">
-            <p style="text-align:left;margin:0;margin-top:0.71rem"><span style="font-weight: bolder">说明：</span>单车企业的巡检人员发现异常情况，主动处理</p>
+            <p style="text-align:left;margin:0;margin-top:0.8rem;line-height:0.64rem"><span style="font-weight: bolder">说明：</span>单车企业的巡检人员发现异常情况，主动处理</p>
             <div style="text-align:center">
               <img src="@/assets/image/Instructions/image_4@3x.png"
                    class="rules-img">
             </div>
             <p style="margin:0;margin-top:0.41rem;line-height:0.64rem"><span style="font-weight: bolder">1、发现异常：</span>巡检人员在街道上发现单车乱停放、或密 度大、或坏车较多等问题；</p>
-            <p style="margin:0;margin-top:0.18rem;line-height:0.64rem"><span style="font-weight: bolder">2、登记：</span>在单车治理APP的第一栏“ <img class="rules-img1"
+            <p style="margin:0;margin-top:0rem;line-height:0.64rem"><span style="font-weight: bolder">2、登记：</span>在单车治理APP的第一栏“ <img class="rules-img1"
                    src="../../assets/image/login/icon_tab_1_pre@3x.png"><span style="color:#527AFF">自查</span> ”板块</p>
             <p style="justify-content: flex-start;margin:0;margin-top:0.1rem;">1）点击右上角有“ <img class="rules-img1"
                    src="../../assets/image/Instructions/icon_add@3x.png"> ”图标，即可进入自查登记页面；</p>
             <p style="justify-content: flex-start;margin:0;margin-top:0.18rem;">2）选择自查地点，然后拍摄现场的照片(不超过5张)；</p>
             <p style="justify-content: flex-start;margin:0;margin-top:0.18rem;line-height:0.64rem">3）点击页面左下方的 <span class="font-stylesa">暂存</span> 按钮，此时当前单会变成 <span class="font-stylesa1">处理中</span> 的状态；</p>
             <p style="justify-content: flex-start;margin:0;margin-top:0.18rem;">4）处理单车异常情况；</p>
-            <p style="justify-content: flex-start;margin:0;margin-top:0.18rem;line-height:0.64rem">5）处理完成后，选择刚刚暂存的 <span class="font-stylesa1">处理中</span> 状态的自查单， 上传处理后的照片，拍摄角度，保持一致，并填写整理数 量、清运数量；</p>
+            <p style="justify-content: flex-start;margin:0;margin-top:0.18rem;line-height:0.64rem">5）处理完成后，选择刚刚暂存的 <span class="font-stylesa1">处理中</span> 状态的自查单，上传处理后的照片，拍摄角度，保持一致，并填写整理数 量、清运数量；</p>
             <p style="justify-content: flex-start;margin:0;margin-top:0.18rem;line-height:0.64rem">6）点击页面右下方的 <span class="font-stylesa"
                     style="background:#5076FF">完成</span> 按钮，此时当前单会变成 <span class="font-stylesa1"
                     style="color:#09C504;border: 1px solid #09C504;">已处理</span> 的状态；</p>
           </div>
         </div>
         <div class="content-bottom-box"
-             style="margin-top:1rem">
+             style="margin-top:0rem">
           <div class="rules-bottom-img">
             督办
           </div>
 
           <div class="content-bottom-rules"
                style="width:100%;padding-bottom:0.5rem">
-            <p style="text-align:left;margin:0;margin-top:0.71rem"><span style="font-weight: bolder">说明：</span>巡检人员在街道上发现单车乱停放、或密 度大、或坏车较多等问题；</p>
+            <p style="text-align:left;margin:0;margin-top:0.8rem;line-height:0.64rem"><span style="font-weight: bolder">说明：</span>巡检人员在街道上发现单车乱停放、或密 度大、或坏车较多等问题；</p>
             <div style="text-align:center">
               <img src="@/assets/image/Instructions/image_2@3x.png"
                    class="rules-img2">
             </div>
             <p style="margin:0;margin-top:0.41rem;line-height:0.64rem"><span style="font-weight: bolder">1、发现异常：</span>巡检人员在街道上发现单车乱停放、或密 度大、或坏车较多等问题；</p>
-            <p style="margin:0;margin-top:0.18rem;line-height:0.64rem"><span style="font-weight: bolder">2、登记：</span>在单车治理APP的第二栏“ <img class="rules-img1"
+            <p style="margin:0;margin-top:0rem;line-height:0.64rem"><span style="font-weight: bolder">2、登记：</span>在单车治理APP的第二栏“ <img class="rules-img1"
                    src="../../assets/image/login/icon_tab_2_pre@3x.png"><span style="color:#527AFF">督办</span> ”板块</p>
             <p style="margin:0;margin-top:0.1rem;line-height:0.64rem">1）点击右上角有“ <img class="rules-img1"
                    src="../../assets/image/Instructions/icon_add@3x.png"> ”图标，即可进入派单登记页面；</p>
             <p style="margin:0;margin-top:0.16rem;line-height:0.64rem">2）选择派单地点，然后拍摄现场的照片(不超过5张)，选择“ <span style="color:#527AFF">派单企业</span> ”和“ <span style="color:#527AFF">处理方式</span> ”；</p>
             <p style="margin:0;margin-top:0.14rem;line-height:0.64rem">3）点击页面左下方的 <span class="font-stylesa"
-                    style="background:#5076FF">派单</span> 按钮，此时企业会受到派单，当前单是 <span style="color:#FF0000;border: 1px solid #FF0000;"
+                    style="background:#5076FF">派单</span> 按钮，此时企业会收到派单，当前单是 <span style="color:#FF0000;border: 1px solid #FF0000;"
                     class="font-stylesa1">未处理</span> 的状态；</p>
             <p style="margin:0;margin-top:0.18rem;">4）企业收到的派单会展示在督办的待办页面；</p>
             <p style="margin:0;margin-top:0.18rem;">5）企业按要求处理；</p>
@@ -87,7 +87,7 @@
           </div>
         </div>
         <div class="content-bottom-box"
-             style="margin-top:1rem">
+             style="margin-top:0rem">
           <div class="rules-bottom-img">
             统计
           </div>
@@ -104,7 +104,7 @@
           </div>
         </div>
         <div class="content-bottom-box"
-             style="margin-top:1rem">
+             style="margin-top:0rem">
           <div class="rules-bottom-img">
             预警
           </div>
@@ -119,7 +119,7 @@
           </div>
         </div>
         <div class="content-bottom-box"
-             style="margin-top:1rem;margin-bottom:0.8rem">
+             style="margin-top:0rem;margin-bottom:0.7rem">
           <div class="rules-bottom-img">
             我的
           </div>
@@ -207,7 +207,6 @@ export default {
   },
   methods: {
     handleScroll () {
-      console.log(this.$refs.menuWrapper.scrollTop);
       if (this.$refs.menuWrapper.scrollTop < 139) {
         this.selectIndex = 0;
       }
@@ -260,7 +259,7 @@ export default {
     overflow-y: scroll;
     color: #282828;
     font-size: 0.426667rem;
-    background: #b8cfff;
+    background: #ffffff;
     background-size: 100% 100%;
     flex: 1;
     .content-top {
@@ -328,7 +327,7 @@ export default {
         }
         .content-bottom-rules {
           margin: 0.28rem;
-          padding: 0.3rem 0.4rem;
+          // padding: 0.3rem 0.4rem;
           border-radius: 0.4rem;
           box-sizing: border-box;
           font-size: 0.37rem;
@@ -339,13 +338,13 @@ export default {
           justify-content: center;
           .rules-img {
             height: 0.8rem;
-            width: 7.2rem;
-            margin-top: 0.41rem;
+            width: 7.6rem;
+            margin-top: 0.44rem;
           }
           .rules-img2 {
-            width: 7.4rem;
+            width: 8.8rem;
             height: 7rem;
-            margin-top: 0.41rem;
+            margin-top: 0.44rem;
           }
           p {
             .rules-img1 {
