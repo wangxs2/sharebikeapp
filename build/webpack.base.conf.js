@@ -19,9 +19,6 @@ const vuxLoader = require('vux-loader')
 
 module.exports = {
     context: path.resolve(__dirname, '../'),
-    externals: {
-        'AMap': 'AMap',
-    },
     entry: {
         app: './src/main.js'
     },
@@ -100,6 +97,10 @@ module.exports = {
         net: 'empty',
         tls: 'empty',
         child_process: 'empty'
+    },
+    externals: {
+        'AMap': 'AMap',
+        "BMap": "BMap"
     },
     plugins: [
         new webpack.ProvidePlugin({

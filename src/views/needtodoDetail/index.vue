@@ -2,19 +2,23 @@
 
 <template>
   <div class="container">
-    <mt-popup class="imgMask" v-model="popupVisible" position="right">
-      <span
-        class="iconfont icon-guandiao"
-        style="color:#fff;position:fixed;right:15px;top:15px"
-        @click="popupVisible=false"
-      ></span>
-      <mt-swipe style="width:100%;height:64%" :continuous='false' :touchstart='true' :speed ='10'	:auto="0" :defaultIndex='indexImage'>
-        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index" >
-          <img
-            :src="Ip+iteam"
-            v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
-            width="100%"
-          >
+    <mt-popup class="imgMask"
+              v-model="popupVisible"
+              position="right">
+      <span class="iconfont icon-guandiao"
+            style="color:#fff;position:fixed;right:15px;top:15px"
+            @click="popupVisible=false"></span>
+      <mt-swipe style="width:100%;height:64%"
+                :continuous='false'
+                :touchstart='true'
+                :speed='10'
+                :auto="0"
+                :defaultIndex='indexImage'>
+        <mt-swipe-item v-for="(iteam,index) in lageImg"
+                       :key="index">
+          <img :src="Ip+iteam"
+               v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
+               width="100%">
         </mt-swipe-item>
       </mt-swipe>
       <!-- <img
@@ -29,188 +33,185 @@
     </mt-popup>
     <div class="header">
       <mt-header title="详情">
-        <mt-button icon="back" slot="left" style="font-size:24px" @click="iconClick"></mt-button>
+        <mt-button icon="back"
+                   slot="left"
+                   style="font-size:24px"
+                   @click="iconClick"></mt-button>
       </mt-header>
     </div>
     <div class="content">
       <div class="superList">
-          <div class="topsa" style="margin-top:0.3rem">
-            <div class="fontext">派单信息</div>
-            <div :class="iteamList.status == 2 ? 'red' : 'green'">{{iteamList.status == 0 ? '未处理' : iteamList.status == 1 ?"处理中":iteamList.status == 2 ?"已处理":iteamList.status == 3 ?"已转派":"已完成"}}</div>
+        <div class="topsa"
+             style="margin-top:0.3rem">
+          <div class="fontext">派单信息</div>
+          <div :class="iteamList.status == 2 ? 'red' : 'green'">{{iteamList.status == 0 ? '未处理' : iteamList.status == 1 ?"处理中":iteamList.status == 2 ?"已处理":iteamList.status == 3 ?"已转派":"已完成"}}</div>
+        </div>
+      </div>
+      <div class="superList">
+        <div class="topcloum">
+          <div class="topcloumson">
+            <p class="leftfont">单号</p>
+            <p class="leftfont1">{{iteamList.sheetCode}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">时间</p>
+            <p class="leftfont1">{{FormatDate(iteamList.dispatchTime)}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">地点</p>
+            <p class="leftfont1">{{iteamList.handleAddr}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">派单人</p>
+            <p class="leftfont1">{{iteamList.dispatchUserName}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">处理方式</p>
+            <p class="leftfont1">{{iteamList.dealMethod==1?"整理":iteamList.dealMethod==2?"清运":"整理且清运"}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">企业</p>
+            <p class="leftfont1">{{iteamList.orgName}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">派单照片</p>
+            <p class="leftfont1">
+              <img v-for="(iteam,index) in iteamList.dispachPhotoURLs"
+                   :src="Ip+iteam"
+                   :key="index"
+                   alt
+                   srcset
+                   @click="handOpen(iteamList.dispachPhotoURLs,index)">
+            </p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">备注</p>
+            <p class="leftfont1">{{iteamList.dispachRemark}}</p>
           </div>
         </div>
-        <div class="superList">
-          <div class="topcloum">
-            <div class="topcloumson">
-              <p class="leftfont">单号</p>
-              <p class="leftfont1">{{iteamList.sheetCode}}</p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">时间</p>
-              <p class="leftfont1">{{FormatDate(iteamList.dispatchTime)}}</p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">地点</p>
-              <p class="leftfont1">{{iteamList.handleAddr}}</p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">派单人</p>
-              <p class="leftfont1">{{iteamList.dispatchUserName}}</p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">处理方式</p>
-              <p
-                class="leftfont1"
-              >{{iteamList.dealMethod==1?"整理":iteamList.dealMethod==2?"清运":"整理且清运"}}</p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">企业</p>
-              <p class="leftfont1">{{iteamList.orgName}}</p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">派单照片</p>
-              <p class="leftfont1">
-                <img
-                  v-for="(iteam,index) in iteamList.dispachPhotoURLs"
-                  :src="Ip+iteam"
-                  :key="index"
-                  alt
-                  srcset
-                  @click="handOpen(iteamList.dispachPhotoURLs,index)"
-                >
-              </p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">备注</p>
-              <p class="leftfont1">{{iteamList.dispachRemark}}</p>
-            </div>
-          </div>
+      </div>
+      <div class="superList"
+           style="">
+        <div class="topsa">
+          <div class="fontext">派单/转派记录</div>
+          <div></div>
         </div>
-        <div class="superList" style="">
-          <div class="topsa">
-            <div class="fontext">派单/转派记录</div>
-            <div></div>
-          </div>
+      </div>
+      <div class="superList">
+        <div class="topsa"
+             style="height:0.3rem;border:none;border-radius:0">
+          <div></div>
+          <div></div>
         </div>
-        <div class="superList">
-          <div class="topsa" style="height:0.3rem;border:none;border-radius:0">
-            <div></div>
-            <div></div>
-          </div>
-        </div>
-        <div class="superList">
-          <div
-            class="topcloum"
-            style="padding:0 0.3rem"
-            v-for="(item,index) in iteamList.sendRecordList"
-            :key="index"
-          >
-            <div class="topcloumson" style="padding-bottom:0">
-              <div style="margin-top:-0.1rem">
-                <span>{{splitsa(item.sendTime)}} {{splitsa1(item.sendTime)}}</span>
-                <p
-                  :class="item.read==0?'reaed-two':'reaed-sa'"
-                  style="display: block;width:1.1rem;height:0.4rem;padding:0rem;line-height:0.46rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem"
-                >{{item.read==0?'未读':'已读'}}</p>
+      </div>
+      <div class="superList">
+        <div class="topcloum"
+             style="padding:0 0.3rem"
+             v-for="(item,index) in iteamList.sendRecordList"
+             :key="index">
+          <div class="topcloumson"
+               style="padding-bottom:0">
+            <div style="margin-top:-0.1rem">
+              <span>{{splitsa(item.sendTime)}} {{splitsa1(item.sendTime)}}</span>
+              <p :class="index==iteamList.sendRecordList.length-1?(item.read==0?'reaed-two':'reaed-sa'):(item.read==0?'reaed-sa1':'reaed-sa')"
+                 style="display: block;width:1.1rem;height:0.4rem;padding:0rem;line-height:0.46rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem">{{index==iteamList.sendRecordList.length-1?(item.read==0?'未读':'已读'):(item.read==0?'已转派':'已读')}}</p>
+            </div>
+            <div class="topcloum"
+                 style="margin:0;padding:0;align-items: center;padding-top:0rem;padding-left:0.2rem">
+              <p style="width:0.26rem;height:0.26rem;border-radius:50%;background:#5076ff;"></p>
+              <p v-if="index!==iteamList.sendRecordList.length-1"
+                 style="display:flex;flex:1;width:1px;border-left: 1px dashed #5076ff;"></p>
+            </div>
+            <div class="topcloum"
+                 style="margin:0;padding:0;flex:1;padding-left:0.2rem;margin-top:-0.1rem">
+              <div class="topcloumson">
+                <p class="leftfont"
+                   style="width:22%">{{index==0?'派单人':'转派人'}}</p>
+                <p class="leftfont1"
+                   style="width:78%">{{item.sendMan}}</p>
               </div>
-              <div
-                class="topcloum"
-                style="margin:0;padding:0;align-items: center;padding-top:0rem;padding-left:0.2rem"
-              >
-                <p style="width:0.26rem;height:0.26rem;border-radius:50%;background:#5076ff;"></p>
-                <p
-                  v-if="index!==iteamList.sendRecordList.length-1"
-                  style="display:flex;flex:1;width:1px;border-left: 1px dashed #5076ff;"
-                ></p>
+              <div class="topcloumson">
+                <p class="leftfont"
+                   style="width:22%">接单人</p>
+                <p class="leftfont1"
+                   style="width:78%">{{item.receiveMan}}</p>
               </div>
-              <div
-                class="topcloum"
-                style="margin:0;padding:0;flex:1;padding-left:0.2rem;margin-top:-0.1rem"
-              >
-                <div class="topcloumson">
-                  <p class="leftfont" style="width:22%">{{index==0?'派单人':'转派人'}}</p>
-                  <p class="leftfont1" style="width:78%">{{item.sendMan}}</p>
-                </div>
-                <div class="topcloumson">
-                  <p class="leftfont" style="width:22%">接单人</p>
-                  <p class="leftfont1" style="width:78%">{{item.receiveMan}}</p>
-                </div>
-                <div class="topcloumson">
-                  <p class="leftfont" style="width:22%">备注</p>
-                  <p class="leftfont1" style="width:78%">{{item.sendRemark}}</p>
-                </div>
+              <div class="topcloumson">
+                <p class="leftfont"
+                   style="width:22%">备注</p>
+                <p class="leftfont1"
+                   style="width:78%">{{item.sendRemark}}</p>
               </div>
             </div>
           </div>
         </div>
-        <div class="superList">
-          <div class="topsa" style="margin-top:0.3rem">
-            <div class="fontext">处理信息</div>
-            <div></div>
+      </div>
+      <div class="superList">
+        <div class="topsa"
+             style="margin-top:0.3rem">
+          <div class="fontext">处理信息</div>
+          <div></div>
+        </div>
+      </div>
+      <div class="superList">
+        <div class="topsa"
+             style="padding-top:0.3rem;padding-bottom:0.2rem;border-radius:0">
+          <div style="width:50%;text-align: center">
+            <p style="font-size:0.3rem;color:#666666">整理总数</p>
+            <p style="font-size:0.5rem;margin-top:0.1rem">{{iteamList.arrangeNum==undefined?0:iteamList.arrangeNum}}</p>
+          </div>
+          <div style="width:50%;text-align: center">
+            <p style="font-size:0.3rem;color:#666666">清运总数</p>
+            <p style="font-size:0.5rem;margin-top:0.1rem">{{iteamList.cleanNum==undefined?0:iteamList.cleanNum}}</p>
           </div>
         </div>
-        <div class="superList">
-          <div class="topsa" style="padding-top:0.3rem;padding-bottom:0.2rem;border-radius:0">
-            <div style="width:50%;text-align: center">
-              <p style="font-size:0.3rem;color:#666666">整理总数</p>
-              <p
-                style="font-size:0.5rem;margin-top:0.1rem"
-              >{{iteamList.arrangeNum==undefined?0:iteamList.arrangeNum}}</p>
-            </div>
-            <div style="width:50%;text-align: center">
-              <p style="font-size:0.3rem;color:#666666">清运总数</p>
-              <p
-                style="font-size:0.5rem;margin-top:0.1rem"
-              >{{iteamList.cleanNum==undefined?0:iteamList.cleanNum}}</p>
-            </div>
-          </div>
+      </div>
+      <div class="superList"
+           v-show="ifCleanByBike==1&&iteamList.dispatchDealDetailList.length!==0">
+        <div class="topsa"
+             style="height:6rem;padding:0rem;border-radius:0">
+          <div id="Myechart"></div>
         </div>
-        <div class="superList" v-show="ifCleanByBike==1&&iteamList.dispatchDealDetailList.length!==0">
-          <div class="topsa" style="height:6rem;padding:0rem;border-radius:0">
-            <div id="Myechart"></div>
+      </div>
+      <div class="superList"
+           style="margin-bottom:0.2rem">
+        <div class="topcloum">
+          <div class="topcloumson">
+            <p class="leftfont">处理人</p>
+            <p class="leftfont1">{{iteamList.handleUserName}}</p>
           </div>
-        </div>
-        <div class="superList" style="margin-bottom:0.2rem">
-          <div class="topcloum">
-            <div class="topcloumson">
-              <p class="leftfont">处理人</p>
-              <p class="leftfont1">{{iteamList.handleUserName}}</p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">处理时间</p>
-              <p class="leftfont1" v-if="iteamList.handleTime!==undefined">{{FormatDate(iteamList.handleTime)}}</p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">处理时长</p>
-              <p class="leftfont1">{{iteamList.dealTimeHour}}</p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">处理前</p>
-              <p class="leftfont1">
-                <img
-                  v-for="(iteam,index) in iteamList.handleBeforeURLs"
-                  :src="Ip+iteam"
-                  :key="index"
-                  alt
-                  srcset
-                  @click="handOpen(iteamList.handleBeforeURLs,index)"
-                >
-              </p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">处理后</p>
-              <p class="leftfont1">
-                <img
-                  v-for="(iteam,index) in iteamList.handleAfterURLs"
-                  :src="Ip+iteam"
-                  :key="index"
-                  alt
-                  srcset
-                  @click="handOpen(iteamList.handleAfterURLs,index)"
-                >
-              </p>
-            </div>
-            <!-- <div class="topcloumson">
+          <div class="topcloumson">
+            <p class="leftfont">处理时间</p>
+            <p class="leftfont1"
+               v-if="iteamList.handleTime!==undefined">{{FormatDate(iteamList.handleTime)}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">处理时长</p>
+            <p class="leftfont1">{{iteamList.dealTimeHour}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">处理前</p>
+            <p class="leftfont1">
+              <img v-for="(iteam,index) in iteamList.handleBeforeURLs"
+                   :src="Ip+iteam"
+                   :key="index"
+                   alt
+                   srcset
+                   @click="handOpen(iteamList.handleBeforeURLs,index)">
+            </p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">处理后</p>
+            <p class="leftfont1">
+              <img v-for="(iteam,index) in iteamList.handleAfterURLs"
+                   :src="Ip+iteam"
+                   :key="index"
+                   alt
+                   srcset
+                   @click="handOpen(iteamList.handleAfterURLs,index)">
+            </p>
+          </div>
+          <!-- <div class="topcloumson">
               <p class="leftfont">整理数</p>
               <p class="leftfont1">{{iteamList.arrangeNum}}</p>
             </div>
@@ -218,8 +219,8 @@
               <p class="leftfont">清运数</p>
               <p class="leftfont1">{{iteamList.cleanNum}}</p>
             </div> -->
-          </div>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -229,50 +230,50 @@ import { Loadmore } from "mint-ui";
 import { Indicator } from "mint-ui";
 export default {
   computed: {},
-  data() {
+  data () {
     return {
       slide: [],
       slide1: [],
-      lageImg:[],//轮播显示图片
+      lageImg: [],//轮播显示图片
       eachartNode: null, //echarts
       ifCleanByBike: "", //是否分成企业填写整理数
-      indexImage:0,
+      indexImage: 0,
       sheetCode: "",
       rotateS: 0,
       bigImage: "",
       popupVisible: false,
       iteamList: {},
       //c查询条件
-        viewTypesa:'',
-        areakids:[],
-        areaarr:[],
-        searchCondition:{},
-        menuListTop:[],
-        downIcon:-1,
+      viewTypesa: '',
+      areakids: [],
+      areaarr: [],
+      searchCondition: {},
+      menuListTop: [],
+      downIcon: -1,
     };
   },
   components: {},
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       var worldMapContainer = document.getElementById('Myechart');
       //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
       var resizeWorldMapContainer = function () {
-          worldMapContainer.style.width = window.innerWidth-30+'px';
-          worldMapContainer.style.height = '6rem';
+        worldMapContainer.style.width = window.innerWidth - 30 + 'px';
+        worldMapContainer.style.height = '6rem';
       };
       //设置容器高宽
       resizeWorldMapContainer();
       this.eachartNode = this.$echarts.init(worldMapContainer);
       this.getComanylist();
-      window.onresize =()=>{
+      window.onresize = () => {
         this.eachartNode.resize();
       }
     });
   },
-  created() {
+  created () {
     if (this.$route.query.id) {
       this.sheetCode = this.$route.query.id;
-      this.viewTypesa= this.$route.query.viewTypesa;
+      this.viewTypesa = this.$route.query.viewTypesa;
       this.searchCondition = this.$route.query.searchCondition;
       this.menuListTop = this.$route.query.menuListTop;
       this.downIcon = this.$route.query.downIcon;
@@ -281,30 +282,31 @@ export default {
       this.getMessage(this.sheetCode);
     }
     this.getComanylist();
-    window.watchBackWXS=this.watchBackWXS;
+    window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
-    handOpen(val,index) {
+    handOpen (val, index) {
+      this.eachartNode.dispatchAction({ type: "hideTip" });
       console.log(index);
       this.rotateS = 0;
-      this.lageImg=[];
+      this.lageImg = [];
       this.popupVisible = true;
       val.forEach(iteam => {
         iteam = iteam.replace(".400x400.jpg", ".square.jpg");
         this.lageImg.push(iteam);
       });
-      this.indexImage=index;
+      this.indexImage = index;
     },
     //获取分企业添加的列表
-    getComanylist() {
+    getComanylist () {
       this.$fetchGet("cleanConfig/ifCleanByBike")
         .then(res => {
           this.ifCleanByBike = res;
         })
-        .catch(res => {});
+        .catch(res => { });
     },
     //echarts
-    initCanvas(company, arrangeNum, cleanNum) {
+    initCanvas (company, arrangeNum, cleanNum) {
       console.log(this.eachartNode);
       let option = {
         color: ["#958BFF", "#FF688D"],
@@ -417,33 +419,38 @@ export default {
       };
       this.eachartNode.setOption(option);
     },
-    watchBackWXS(){
-      this.iconClick();
+    watchBackWXS () {
+      if (this.popupVisible) {
+        this.popupVisible = false
+      } else {
+        this.iconClick();
+      }
+
     },
-    splitsa(val){
-      return val.split(" ")[0].split("-")[1]+"-"+val.split(" ")[0].split("-")[2]
+    splitsa (val) {
+      return val.split(" ")[0].split("-")[1] + "-" + val.split(" ")[0].split("-")[2]
     },
-    splitsa1(val){
-      return val.split(" ")[1].split(":")[0]+":"+val.split(" ")[1].split(":")[1]
+    splitsa1 (val) {
+      return val.split(" ")[1].split(":")[0] + ":" + val.split(" ")[1].split(":")[1]
     },
-    rotate() {
+    rotate () {
       this.rotateS = this.rotateS + 90;
     },
-    iconClick() {
+    iconClick () {
       this.$router.push({
         path: "/layout/needtodo",
         query: {
           name: "2",
-          searchCondition:this.searchCondition,
-          menuListTop:this.menuListTop,
-          downIcon:this.downIcon,
-          areaarr:this.areaarr,
-          areakids:this.areakids,
-          viewTypesa:this.viewTypesa,
+          searchCondition: this.searchCondition,
+          menuListTop: this.menuListTop,
+          downIcon: this.downIcon,
+          areaarr: this.areaarr,
+          areakids: this.areakids,
+          viewTypesa: this.viewTypesa,
         }
       });
     },
-    getMessage(val) {
+    getMessage (val) {
       let slide = [];
       let slide1 = [];
       let slide2 = [];
@@ -459,7 +466,7 @@ export default {
           Indicator.close();
           this.iteamList = res.dispatchDetail;
           if (res.dispatchDetail.dispatchDealDetailList.length > 0) {
-            this.$nextTick(function() {
+            this.$nextTick(function () {
               res.dispatchDetail.dispatchDealDetailList.forEach(item => {
                 slide.push(item.orgName);
                 slide1.push(item.arrangeNum);
@@ -470,7 +477,7 @@ export default {
             });
           }
         })
-        .catch(res => {});
+        .catch(res => { });
     }
   }
 };
@@ -484,9 +491,9 @@ export default {
   color: #41cd76;
 }
 p {
-      margin: 0;
-      padding: 0;
-    }
+  margin: 0;
+  padding: 0;
+}
 .container {
   width: 100%;
   height: 100%;
@@ -518,72 +525,75 @@ p {
     display: flex;
     flex-direction: column;
     .superList {
-        width: 100%;
+      width: 100%;
+      box-sizing: border-box;
+
+      border-radius: 2px;
+      .topsa {
+        display: flex;
+        justify-content: space-between;
         box-sizing: border-box;
+        margin: 0 0.3rem;
+        background: #fff;
+        padding: 0.3rem;
+        border-top-left-radius: 0.12rem;
+        border-top-right-radius: 0.12rem;
+        border-bottom: 1px solid #f2f2f2;
+        .fontext {
+          position: relative;
+          margin-left: 0.3rem;
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0.015rem;
+            left: 0px;
+            width: 0.1rem;
+            height: 0.4rem;
 
-        border-radius: 2px;
-        .topsa {
-          display: flex;
-          justify-content: space-between;
-          box-sizing: border-box;
-          margin: 0 0.3rem;
-          background: #fff;
-          padding: 0.3rem;
-          border-top-left-radius: 0.12rem;
-          border-top-right-radius: 0.12rem;
-          border-bottom: 1px solid #f2f2f2;
-          .fontext {
-            position: relative;
-            margin-left: 0.3rem;
-            &::before {
-              content: "";
-              position: absolute;
-              top: 0.015rem;
-              left: 0px;
-              width: 0.1rem;
-              height: 0.4rem;
-
-              background: #5076ff;
-              margin-left: -0.25rem;
-            }
+            background: #5076ff;
+            margin-left: -0.25rem;
           }
         }
-        .topcloum {
-          background: #fff;
+      }
+      .topcloum {
+        background: #fff;
 
+        display: flex;
+        box-sizing: border-box;
+        margin: 0 0.3rem;
+        padding: 0.3rem;
+        flex-direction: column;
+        border-bottom-left-radius: 0.12rem;
+        border-bottom-right-radius: 0.12rem;
+        .topcloumson {
           display: flex;
-          box-sizing: border-box;
-          margin: 0 0.3rem;
-          padding: 0.3rem;
-          flex-direction: column;
-          border-bottom-left-radius: 0.12rem;
-          border-bottom-right-radius: 0.12rem;
-          .topcloumson {
-            display: flex;
-            justify-content: flex-start;
-            padding-bottom: 0.3rem;
-            .reaed-sa {
-              background: #aaaaaa;
-            }
-            .reaed-two {
-              background: #ff0000;
-            }
-            .leftfont {
-              width: 25%;
-              color: #999999;
-              font-size: 0.37rem;
-            }
-            .leftfont1 {
-              width: 75%;
-              img {
-                margin-right: 0.2rem;
-                width: 2.5rem;
-                height: 2.5rem;
-              }
+          justify-content: flex-start;
+          padding-bottom: 0.3rem;
+          .reaed-sa {
+            background: #aaaaaa;
+          }
+          .reaed-sa1 {
+            background: #5076ff;
+          }
+          .reaed-two {
+            background: #ff0000;
+          }
+          .leftfont {
+            width: 25%;
+            color: #999999;
+            font-size: 0.37rem;
+          }
+          .leftfont1 {
+            width: 75%;
+            img {
+              margin-right: 0.2rem;
+              width: 2.5rem;
+              height: 2.5rem;
             }
           }
         }
       }
+    }
   }
 }
 </style>

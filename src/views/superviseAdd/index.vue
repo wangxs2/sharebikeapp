@@ -1,197 +1,191 @@
 
 <template>
   <div class="container">
-    <mt-popup class="imgMask" v-model="popupVisible1" position="right">
-      <span
-        class="iconfont icon-guandiao"
-        style="color:#fff;position:fixed;right:15px;top:15px"
-        @click="popupVisible1=false"
-      ></span>
-      <mt-swipe style="width:100%;height:64%" :continuous='false' :touchstart='true' :speed ='10'	:auto="0" :defaultIndex='indexImage'>
-        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index" >
-          <img
-            :src="Ip+iteam"
-            v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
-            width="100%"
-          >
+    <mt-popup class="imgMask"
+              v-model="popupVisible1"
+              position="right">
+      <span class="iconfont icon-guandiao"
+            style="color:#fff;position:fixed;right:15px;top:15px"
+            @click="popupVisible1=false"></span>
+      <mt-swipe style="width:100%;height:64%"
+                :continuous='false'
+                :touchstart='true'
+                :speed='10'
+                :auto="0"
+                :defaultIndex='indexImage'>
+        <mt-swipe-item v-for="(iteam,index) in lageImg"
+                       :key="index">
+          <img :src="Ip+iteam"
+               v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
+               width="100%">
         </mt-swipe-item>
       </mt-swipe>
     </mt-popup>
     <div class="header">
-      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png"
+           alt
+           @click="toHome">
       <div class="header-title">派单</div>
       <div></div>
     </div>
     <div class="content">
       <div class="witeSa">
         <div class="iteamForm">
-          <img
-            src="../../assets/image/selfcheck/icon_1_time@3x.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
+          <img src="../../assets/image/selfcheck/icon_1_time@3x.png"
+               width="24"
+               height="24"
+               alt
+               srcset>
           <div class="rightsa">
             <span>时间</span>
-            <span
-              style="text-align:right;"
-            >{{FormatDate(formMessage.dispatchTime)}}</span>
+            <span style="text-align:right;">{{FormatDate(formMessage.dispatchTime)}}</span>
           </div>
         </div>
       </div>
-      <div class="witeSa" style="margin-top:0.2rem">
-        <div class="iteamForm" style="0.4rem 0.3rem">
-          <img
-            src="../../assets/image/selfcheck/icon_2_address@3x.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
+      <div class="witeSa"
+           style="margin-top:0.2rem">
+        <div class="iteamForm"
+             style="0.4rem 0.3rem">
+          <img src="../../assets/image/selfcheck/icon_2_address@3x.png"
+               width="24"
+               height="24"
+               alt
+               srcset>
           <div class="rightsa1">
             <span style="width:20%">地点</span>
-            <input
-              style="width:100%;text-align:right;word-break:break-all;background:#ffffff"
-              :disabled="true"
-              maxlength="60"
-              placeholder="点击图标获取当前位置"
-              v-model="formMessage.handleAddr"
-            >
-            <img
-              src="../../assets/image/icon_2_address2.png"
-              width="24"
-              height="24"
-              alt
-              srcset
-              @click="placeClick"
-            >
+            <input style="width:100%;text-align:right;word-break:break-all;background:#ffffff"
+                   :disabled="true"
+                   maxlength="60"
+                   placeholder="点击图标获取当前位置"
+                   v-model="formMessage.handleAddr">
+            <img src="../../assets/image/icon_2_address2.png"
+                 width="24"
+                 height="24"
+                 alt
+                 srcset
+                 @click="placeClick">
           </div>
         </div>
       </div>
       <div class="iteamImage">
         <div style="padding-left:0.3rem">
-          <img
-            src="../../assets/image/selfcheck/icon_4_picture.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
+          <img src="../../assets/image/selfcheck/icon_4_picture.png"
+               width="24"
+               height="24"
+               alt
+               srcset>
           <span>现场照片</span>
         </div>
         <div class="imageList">
-          <div v-for="(iteam,index) in dispachPhotoUrls" :key="index" class="detailIcon">
-            <img :src="Ip+iteam" alt srcset width="100px" height="100px" @click="handOpen(dispachPhotoUrls,index)">
+          <div v-for="(iteam,index) in dispachPhotoUrls"
+               :key="index"
+               class="detailIcon">
+            <img :src="Ip+iteam"
+                 alt
+                 srcset
+                 width="100px"
+                 height="100px"
+                 @click="handOpen(dispachPhotoUrls,index)">
             <span @click="detailImage(1,index)">
-              <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
+              <img src="@/assets/image/close@2x.png"
+                   width="30"
+                   height="30"
+                   alt
+                   srcset>
             </span>
           </div>
-          <div
-            v-if="dispachPhotoUrls.length<5"
-            style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
-            @click="clickImage"
-          >
-            <img src="../../assets/image/icon_add.png" width="52px" height="52px" alt srcset>
+          <div v-if="dispachPhotoUrls.length<5"
+               style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
+               @click="clickImage">
+            <img src="../../assets/image/icon_add.png"
+                 width="52px"
+                 height="52px"
+                 alt
+                 srcset>
           </div>
         </div>
       </div>
-      <div class="witeSa" style="margin-top:0.2rem;padding:0.3rem;padding-bottom:0">
-        <div
-          class="iteamForm"
-          style="border-bottom:1px solid #f2f2f2;padding:0;padding-bottom:0.3rem"
-        >
-          <img
-            src="../../assets/image/supervise/icon_4_company@3x.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
+      <div class="witeSa"
+           style="margin-top:0.2rem;padding:0.3rem;padding-bottom:0">
+        <div class="iteamForm"
+             style="border-bottom:1px solid #f2f2f2;padding:0;padding-bottom:0.3rem">
+          <img src="../../assets/image/supervise/icon_4_company@3x.png"
+               width="24"
+               height="24"
+               alt
+               srcset>
           <div class="rightsa">派单</div>
         </div>
       </div>
       <div class="witeSa">
         <div class="iteamForm">
-          <p
-            class="detail-btn"
-            v-for="(item,index) in options"
-            :key="index"
-            :viewType="item.id"
-            @click="chooseOrder($event)"
-          >{{item.name}}</p>
+          <p class="detail-btn"
+             v-for="(item,index) in options"
+             :key="index"
+             :viewType="item.id"
+             @click="chooseOrder($event)">{{item.name}}</p>
         </div>
       </div>
-      <div class="witeSa" style="margin-top:0.2rem;padding:0.3rem;padding-bottom:0">
-        <div
-          class="iteamForm"
-          style="border-bottom:1px solid #f2f2f2;padding:0;padding-bottom:0.3rem"
-        >
-          <img
-            src="../../assets/image/selfcheck/icon_3_before processing@3x.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
+      <div class="witeSa"
+           style="margin-top:0.2rem;padding:0.3rem;padding-bottom:0">
+        <div class="iteamForm"
+             style="border-bottom:1px solid #f2f2f2;padding:0;padding-bottom:0.3rem">
+          <img src="../../assets/image/selfcheck/icon_3_before processing@3x.png"
+               width="24"
+               height="24"
+               alt
+               srcset>
           <div class="rightsa">处理方式</div>
         </div>
       </div>
       <div class="witeSa">
         <div class="iteamForm">
-          <p
-            style="width:1.7rem;height:0.85rem;line-height:0.85rem"
-            class="detail-btn"
-            v-for="(item,index) in options1"
-            :key="index"
-            :viewType="item.value"
-            @click="chooseOrder1($event)"
-          >{{item.label}}</p>
+          <p style="width:1.7rem;height:0.85rem;line-height:0.85rem"
+             class="detail-btn"
+             v-for="(item,index) in options1"
+             :key="index"
+             :viewType="item.value"
+             @click="chooseOrder1($event)">{{item.label}}</p>
         </div>
       </div>
-      <div
-        class="witeSa"
-        style="margin-top:0.2rem;padding-left:0.3rem;margin-bottom:0.3rem;padding-top:0.2rem"
-      >
+      <div class="witeSa"
+           style="margin-top:0.2rem;padding-left:0.3rem;margin-bottom:0.3rem;padding-top:0.2rem">
         <div class="topsa">
-          <img
-            src="../../assets/image/selfcheck/icon_7_note@3x.png"
-            width="22"
-            height="22"
-            alt
-            srcset
-          >
-          <div
-            style="width:100%;margin-top:0.05rem;padding-left:0.3rem;display:flex;justify-content: space-between"
-          >
+          <img src="../../assets/image/selfcheck/icon_7_note@3x.png"
+               width="22"
+               height="22"
+               alt
+               srcset>
+          <div style="width:100%;margin-top:0.05rem;padding-left:0.3rem;display:flex;justify-content: space-between">
             <span>备注</span>
             <span style="text-align:right;margin-right:0.3rem;color:#757575">最多输入180个文字</span>
           </div>
         </div>
-        <div class="bottomsa" style="padding-top:0.2rem;padding-right:0.2rem">
-          <textarea
-            maxlength="180"
-            style="width:100%;"
-            rows="8"
-            placeholder="请输入备注"
-            v-model="formMessage.remark"
-          ></textarea>
+        <div class="bottomsa"
+             style="padding-top:0.2rem;padding-right:0.2rem">
+          <textarea maxlength="180"
+                    style="width:100%;"
+                    rows="8"
+                    placeholder="请输入备注"
+                    v-model="formMessage.remark"></textarea>
         </div>
       </div>
     </div>
     <div class="bottom">
-      <button
-        type="button"
-        :class="isDisable==false?'buttonSa1 buttonSa2': 'buttonSa1 buttonSa3'"
-        @click="submit()"
-        :disabled="isDisable"
-      >派单</button>
+      <button type="button"
+              :class="isDisable==false?'buttonSa1 buttonSa2': 'buttonSa1 buttonSa3'"
+              @click="submit()"
+              :disabled="isDisable">派单</button>
     </div>
-    <mt-popup v-model="popupVisible" class="mapwhere" position="right">
+    <mt-popup v-model="popupVisible"
+              class="mapwhere"
+              position="right">
       <div class="header">
         <div style="display: flex;justify-content: space-between;align-items: center;width:100%">
           <div style="display: flex;justify-content:flex-start;align-items: center;">
-            <span class="iconfont icon-fanhui" style="font-size:28px" @click="popupVisible=false"></span>
+            <span class="iconfont icon-fanhui"
+                  style="font-size:28px"
+                  @click="popupVisible=false"></span>
             <p style="margin:0;padding:0">位置</p>
           </div>
           <div @click="sendAddress">确定</div>
@@ -200,36 +194,29 @@
       <div id="myMap"></div>
       <div class="addres-search">
         <div style="width:85%;height:100%;background:#f2f2f2;position:relative">
-          <span
-            style="position:absolute;top:0.2rem;left:0.2rem;color:#aaaaaa"
-            class="iconfont icon-iconset0157"
-          ></span>
-          <input
-            type="text"
-            v-model="addressCtrol"
-            @keyup="suggestSa"
-            style="width:100%;height:100%;padding:0.18rem;border-radius:4px;text-indent:0.6rem"
-            placeholder="搜索"
-          >
+          <span style="position:absolute;top:0.2rem;left:0.2rem;color:#aaaaaa"
+                class="iconfont icon-iconset0157"></span>
+          <input type="text"
+                 v-model="addressCtrol"
+                 @keyup="suggestSa"
+                 style="width:100%;height:100%;padding:0.18rem;border-radius:4px;text-indent:0.6rem"
+                 placeholder="搜索">
         </div>
       </div>
       <div class="placeList">
-        <p v-if="placeData.length==0" style="color:666666;padding-left:0.2rem">搜索不到相应地址，请重新操作</p>
-        <div
-          v-for="(iteam,index) in placeData"
-          :key="index"
-          class="address"
-          @click="getAddress(iteam,index)"
-        >
+        <p v-if="placeData.length==0"
+           style="color:666666;padding-left:0.2rem">搜索不到相应地址，请重新操作</p>
+        <div v-for="(iteam,index) in placeData"
+             :key="index"
+             class="address"
+             @click="getAddress(iteam,index)">
           <div>
             <h5>{{iteam.name}}</h5>
             <p>{{iteam.addr}}</p>
           </div>
-          <span
-            v-if="changeId==index"
-            class="iconfont icon-xuanzhong"
-            style="font-size:22px;color:#1caa20"
-          ></span>
+          <span v-if="changeId==index"
+                class="iconfont icon-xuanzhong"
+                style="font-size:22px;color:#1caa20"></span>
         </div>
       </div>
     </mt-popup>
@@ -240,7 +227,7 @@ import { MessageBox } from "mint-ui";
 import { Indicator } from "mint-ui";
 export default {
   computed: {},
-  data() {
+  data () {
     return {
       time: "",
       isDisable: false,
@@ -270,10 +257,10 @@ export default {
       sheetCode: "",
       iteamList: {},
       dispachPhotoUrls: [],
-      addrinfors:null,
+      addrinfors: null,
       placeData: [],
-      lageImg:[],//轮播显示图片
-      indexImage:0,
+      lageImg: [],//轮播显示图片
+      indexImage: 0,
       formMessage: {
         dispatchTime: Date.now(),
         handleAddr: "",
@@ -294,10 +281,10 @@ export default {
     };
   },
   components: {},
-  mounted() {
-    
+  mounted () {
+
   },
-  created() {
+  created () {
     if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
       this.searchCondition = this.$route.query.searchCondition;
       this.menuListTop = this.$route.query.menuListTop;
@@ -311,28 +298,29 @@ export default {
     window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
-    clickImage() {
+    clickImage () {
       this.downPictur("bikeImg");
     },
-    watchBackWXS() {
-      if(this.popupVisible){
-        this.popupVisible=false
-      }else{
+    watchBackWXS () {
+      if (this.popupVisible || this.popupVisible1) {
+        this.popupVisible = false
+        this.popupVisible1 = false
+      } else {
         this.toHome();
       }
     },
-    rotate() {
+    rotate () {
       this.rotateS = this.rotateS + 90;
     },
-    getLocation(val) {
+    getLocation (val) {
       return val;
     },
-    placeClick() {
+    placeClick () {
       if (this.downAddress() == false || this.getLocation() == false) {
         MessageBox.alert("", {
           message: "请在权限管理里面打开定位权限",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       } else {
         if (this.formMessage.handleAddr) {
           this.getMap(false);
@@ -342,7 +330,7 @@ export default {
         this.popupVisible = true;
       }
     },
-    getAddress(row, index) {
+    getAddress (row, index) {
       console.log(row);
       if (row.title) {
         this.formMessage.handleAddr = row.city + row.address + row.title;
@@ -354,26 +342,26 @@ export default {
       }
       this.popupVisible = false;
     },
-    handOpen(val,index) {
+    handOpen (val, index) {
       // this.rotateS = 0;
       // this.popupVisible1 = true;
       // val = val.replace(".400x400.jpg", ".square.jpg");
       // this.bigImage = val;
       console.log(index);
       this.rotateS = 0;
-      this.lageImg=[];
+      this.lageImg = [];
       this.popupVisible1 = true;
       val.forEach(iteam => {
         iteam = iteam.replace(".400x400.jpg", ".square.jpg");
         this.lageImg.push(iteam);
       });
-      this.indexImage=index;
+      this.indexImage = index;
     },
-    getImage(val, row) {
+    getImage (val, row) {
       this.dispachPhotoUrls.push(row);
       this.formMessage.dispachPhoto.push(val);
     },
-    detailImage(index, id) {
+    detailImage (index, id) {
       MessageBox.confirm("是否确认删除图片?").then(action => {
         if (action == "confirm") {
           //确认的回调
@@ -382,11 +370,11 @@ export default {
         }
       });
     },
-    getAddress(row, index) {
+    getAddress (row, index) {
       console.log(row);
       let marker = new AMap.Marker({
-          icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
-          position: [row.lng, row.lat]
+        icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+        position: [row.lng, row.lat]
       });
       this.myMap = new AMap.Map("myMap", {
         resizeEnable: true,
@@ -399,14 +387,16 @@ export default {
       this.changeId = index;
       this.addrinfors = row;
     },
-    getMap(flag) {
+    getMap (flag) {
       this.myMap = new AMap.Map("myMap");
       this.placeSearch = new AMap.PlaceSearch({
         city: "全国",
         map: this.myMap,
         children: 0,
         type:
-          "风景名胜|商务住宅|政府机构及社会团体|交通设施服务|公司企业|道路附属设施|地名地址信息|公共设施",
+          "公共设施|公司企业|商务住宅|风景名胜|政府机构及社会团体",
+        // 公共设施|公司企业|商务住宅|风景名胜|政府机构及社会团体
+        //"风景名胜|商务住宅|政府机构及社会团体|交通设施服务|公司企业|道路附属设施|地名地址信息|公共设施",
         extensions: "all",
         autoFitView: false
       });
@@ -436,33 +426,33 @@ export default {
         let marker = new AMap.Marker({
           icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
           position: [this.formMessage.longitude, this.formMessage.latitude]
-      });
-      this.myMap.add(marker);
+        });
+        this.myMap.add(marker);
         let location = [this.formMessage.longitude, this.formMessage.latitude];
         this.myMap.setZoomAndCenter(20, location);
         this.addressMapSa(location, true);
         //unshift()
       }
     },
-    addCompCtrol() {
-       let geolocation = new AMap.Geolocation({
-          enableHighAccuracy: true, //是否使用高精度定位，默认:true
-          timeout: 10000, //超过10秒后停止定位，默认：无穷大
-          maximumAge: 0, //定位结果缓存0毫秒，默认：0
-          convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-          showButton: true, //显示定位按钮，默认：true
-          buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
-          buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-          showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
-          showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
-          panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
-          zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-        });
-        return geolocation;
-        // this.myMap.addControl(geolocation);
+    addCompCtrol () {
+      let geolocation = new AMap.Geolocation({
+        enableHighAccuracy: true, //是否使用高精度定位，默认:true
+        timeout: 10000, //超过10秒后停止定位，默认：无穷大
+        maximumAge: 0, //定位结果缓存0毫秒，默认：0
+        convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+        showButton: true, //显示定位按钮，默认：true
+        buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
+        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+        showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
+        showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
+        panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
+        zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+      });
+      return geolocation;
+      // this.myMap.addControl(geolocation);
     },
     //高德地图关键字提示
-    suggestSa() {
+    suggestSa () {
       this.placeSearch.search(this.addressCtrol, (status, result) => {
         console.log(result);
         // return;
@@ -473,7 +463,7 @@ export default {
               ? iteam.pname + iteam.adname
               : iteam.pname + iteam.cityname + iteam.adname;
           return {
-            addr: addrPrefix + iteam.address,
+            addr: iteam.address === iteam.adname ? addrPrefix : addrPrefix + iteam.address,
             lng: iteam.location.lng,
             lat: iteam.location.lat,
             name: iteam.name
@@ -481,8 +471,8 @@ export default {
         });
       });
     },
-     //经纬度获取周边
-    addressMapSa(position, flag) {
+    //经纬度获取周边
+    addressMapSa (position, flag) {
       this.mapRangeSearch(position).then(res => {
         let addrPrefix =
           res.addressComponent.province +
@@ -506,11 +496,11 @@ export default {
           });
           this.changeId = 0;
         }
-        
+
       });
     },
     //确定
-    sendAddress() {
+    sendAddress () {
       if (this.addrinfors) {
         this.addressCtrol = "";
         this.formMessage.handleAddr = this.addrinfors.addr;
@@ -521,14 +511,14 @@ export default {
         MessageBox.alert("", {
           message: "请选择地址",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       }
       // this.formMessage.handleAddr=this.a
     },
-    handleClose() {
+    handleClose () {
       // console.log("close event");
     },
-    chooseOrder(e) {
+    chooseOrder (e) {
       if (e.target.className.indexOf("detail-selected") == -1) {
         e.target.className = "detail-btn detail-selected"; //切换按钮样式
         //写逻辑
@@ -541,7 +531,7 @@ export default {
         }
       }
     },
-    chooseOrder1(e) {
+    chooseOrder1 (e) {
       let arr = ["1"];
       let arr1 = ["2"];
       let arr2 = ["1", "2"];
@@ -566,7 +556,7 @@ export default {
       }
       console.log(this.dealMethod);
     },
-    toHome() {
+    toHome () {
       this.$router.push({
         path: "/layout/supervise",
         query: {
@@ -578,47 +568,47 @@ export default {
         }
       });
     },
-    getAll() {
+    getAll () {
       this.$fetchGet("count/bikeCompany").then(res => {
         this.options = res;
       });
     },
-    save() {
+    save () {
       this.$fetchPost("selfcheck", this.formMessage)
-        .then(res => {})
+        .then(res => { })
         .catch(res => {
           MessageBox.alert("", {
             message: "登录超时",
             title: "提示"
-          }).then(action => {});
+          }).then(action => { });
         });
     },
-    submit() {
+    submit () {
       if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择待清理地点",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       } else if (this.formMessage.handleAddr.length > 60) {
         MessageBox.alert("", {
           message: "清理地点长度不能大于60",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       } else if (this.dealMethod == "") {
         MessageBox.alert("", {
           message: "请选择清运方式",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       } else if (this.dispachPhotoUrls.length == 0) {
         MessageBox.alert("", {
           message: "请上传现场照片",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       } else if (this.value.length == 0) {
         MessageBox.alert("", {
           message: "请选择派单企业",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       } else {
         MessageBox.confirm("", {
           message: "是否确认派单",
@@ -661,7 +651,7 @@ export default {
                 MessageBox.alert("", {
                   message: "请求超时",
                   title: "提示"
-                }).then(action => {});
+                }).then(action => { });
               });
           } else {
             console.log(2);

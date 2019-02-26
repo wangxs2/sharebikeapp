@@ -2,23 +2,24 @@
 
 <template>
   <div class="container">
-    <mt-popup class="imgMask" v-model="popupVisible" position="right">
-      <span
-        class="iconfont icon-guandiao"
-        style="color:#fff;position:fixed;right:15px;top:15px"
-        @click="popupVisible=false"
-      ></span>
+    <mt-popup class="imgMask"
+              v-model="popupVisible"
+              position="right">
+      <span class="iconfont icon-guandiao"
+            style="color:#fff;position:fixed;right:15px;top:15px"
+            @click="popupVisible=false"></span>
 
-      <mt-swipe
-        style="width:100%;height:64%"
-        :continuous="false"
-        :touchstart="true"
-        :speed="10"
-        :auto="0"
-        :defaultIndex="indexImage"
-      >
-        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index">
-          <img :src="Ip+iteam" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" width="100%">
+      <mt-swipe style="width:100%;height:64%"
+                :continuous="false"
+                :touchstart="true"
+                :speed="10"
+                :auto="0"
+                :defaultIndex="indexImage">
+        <mt-swipe-item v-for="(iteam,index) in lageImg"
+                       :key="index">
+          <img :src="Ip+iteam"
+               v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
+               width="100%">
         </mt-swipe-item>
       </mt-swipe>
       <!-- <img
@@ -32,30 +33,28 @@
       >-->
     </mt-popup>
     <div class="header">
-      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png"
+           alt
+           @click="toHome">
       <div class="header-title">派单处理详情</div>
-      <div style="font-size:18px" @click="iconClick">{{status==2?"反馈":""}}</div>
+      <div style="font-size:18px"
+           @click="iconClick">{{status==2?"反馈":""}}</div>
     </div>
     <main>
-      <p
-        style="width:100%;height:1rem;background: -webkit-linear-gradient(left, #6698ff, #5076ff);"
-      ></p>
+      <p style="width:100%;height:1rem;background: -webkit-linear-gradient(left, #6698ff, #5076ff);"></p>
       <nav @click="selectComany($event)">
-        <div
-          v-for="item in iteamList"
-          :key="item.id"
-          :companyId="item.id"
-          :class="[activeComany == item.id ? 'nav-active' : '']"
-          class="nav-item"
-        >{{item.orgName}}</div>
+        <div v-for="item in iteamList"
+             :key="item.id"
+             :companyId="item.id"
+             :class="[activeComany == item.id ? 'nav-active' : '']"
+             class="nav-item">{{item.orgName}}</div>
       </nav>
       <section>
         <div class="superList">
-          <div class="topsa" style="margin-top:0.3rem">
+          <div class="topsa"
+               style="margin-top:0.3rem">
             <div class="fontext">派单信息</div>
-            <div
-              :class="listdetail.status == 2 ? 'red' : 'green'"
-            >{{listdetail.status == 0 ? '未处理' : listdetail.status == 1 ?"处理中":listdetail.status == 2 ?"已处理":listdetail.status == 3 ?"已转派":"已完成"}}</div>
+            <div :class="listdetail.status == 2 ? 'red' : 'green'">{{listdetail.status == 0 ? '未处理' : listdetail.status == 1 ?"处理中":listdetail.status == 2 ?"已处理":listdetail.status == 3 ?"已转派":"已完成"}}</div>
           </div>
         </div>
         <div class="superList">
@@ -78,9 +77,7 @@
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理方式</p>
-              <p
-                class="leftfont1"
-              >{{listdetail.dealMethod==1?"整理":listdetail.dealMethod==2?"清运":"整理且清运"}}</p>
+              <p class="leftfont1">{{listdetail.dealMethod==1?"整理":listdetail.dealMethod==2?"清运":"整理且清运"}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">企业</p>
@@ -89,14 +86,12 @@
             <div class="topcloumson">
               <p class="leftfont">派单照片</p>
               <p class="leftfont1">
-                <img
-                  v-for="(iteam,index) in listdetail.dispachPhotoURLs"
-                  :src="Ip+iteam"
-                  :key="index"
-                  alt
-                  srcset
-                  @click="handOpen(listdetail.dispachPhotoURLs,index)"
-                >
+                <img v-for="(iteam,index) in listdetail.dispachPhotoURLs"
+                     :src="Ip+iteam"
+                     :key="index"
+                     alt
+                     srcset
+                     @click="handOpen(listdetail.dispachPhotoURLs,index)">
               </p>
             </div>
             <div class="topcloumson">
@@ -106,88 +101,87 @@
           </div>
         </div>
         <div class="superList">
-          <div class="topsa" style="margin-top:0.3rem">
+          <div class="topsa"
+               style="margin-top:0.3rem">
             <div class="fontext">派单/转派记录</div>
             <div></div>
           </div>
         </div>
         <div class="superList">
-          <div class="topsa" style="height:0.3rem;border:none;border-radius:0">
+          <div class="topsa"
+               style="height:0.3rem;border:none;border-radius:0">
             <div></div>
             <div></div>
           </div>
         </div>
         <div class="superList">
-          <div
-            class="topcloum"
-            style="padding:0 0.3rem"
-            v-for="(item,index) in listdetail.sendRecordList"
-            :key="index"
-          >
-            <div class="topcloumson" style="padding-bottom:0">
+          <div class="topcloum"
+               style="padding:0 0.3rem"
+               v-for="(item,index) in listdetail.sendRecordList"
+               :key="index">
+            <div class="topcloumson"
+                 style="padding-bottom:0">
               <div style="margin-top:-0.1rem">
                 <span>{{splitsa(item.sendTime)}} {{splitsa1(item.sendTime)}}</span>
                 <!-- <br> -->
-                <p
-                  :class="item.read==0?'reaed-two':'reaed-sa'"
-                  style="display: block;width:1.1rem;height:0.4rem;padding:0rem;line-height:0.46rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem"
-                >{{item.read==0?'未读':'已读'}}</p>
+                <p :class="index==listdetail.sendRecordList.length-1?(item.read==0?'reaed-two':'reaed-sa'):(item.read==0?'reaed-sa1':'reaed-sa')"
+                   style="display: block;width:1.1rem;height:0.4rem;padding:0rem;line-height:0.46rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem">{{index==listdetail.sendRecordList.length-1?(item.read==0?'未读':'已读'):(item.read==0?'已转派':'已读')}}</p>
               </div>
-              <div
-                class="topcloum"
-                style="margin:0;padding:0;align-items: center;padding-top:0rem;padding-left:0.2rem"
-              >
+              <div class="topcloum"
+                   style="margin:0;padding:0;align-items: center;padding-top:0rem;padding-left:0.2rem">
                 <p style="width:0.26rem;height:0.26rem;border-radius:50%;background:#5076ff;"></p>
-                <p
-                  v-if="index!==listdetail.sendRecordList.length-1"
-                  style="display:flex;flex:1;width:1px;border-left: 1px dashed #5076ff;"
-                ></p>
+                <p v-if="index!==listdetail.sendRecordList.length-1"
+                   style="display:flex;flex:1;width:1px;border-left: 1px dashed #5076ff;"></p>
               </div>
-              <div
-                class="topcloum"
-                style="margin:0;padding:0;flex:1;padding-left:0.2rem;margin-top:-0.1rem"
-              >
+              <div class="topcloum"
+                   style="margin:0;padding:0;flex:1;padding-left:0.2rem;margin-top:-0.1rem">
                 <div class="topcloumson">
-                  <p class="leftfont" style="width:22%">{{index==0?'派单人':'转派人'}}</p>
-                  <p class="leftfont1" style="width:78%">{{item.sendMan}}</p>
+                  <p class="leftfont"
+                     style="width:22%">{{index==0?'派单人':'转派人'}}</p>
+                  <p class="leftfont1"
+                     style="width:78%">{{item.sendMan}}</p>
                 </div>
                 <div class="topcloumson">
-                  <p class="leftfont" style="width:22%">接单人</p>
-                  <p class="leftfont1" style="width:78%">{{item.receiveMan}}</p>
+                  <p class="leftfont"
+                     style="width:22%">接单人</p>
+                  <p class="leftfont1"
+                     style="width:78%">{{item.receiveMan}}</p>
                 </div>
                 <div class="topcloumson">
-                  <p class="leftfont" style="width:22%">备注</p>
-                  <p class="leftfont1" style="width:78%">{{item.sendRemark}}</p>
+                  <p class="leftfont"
+                     style="width:22%">备注</p>
+                  <p class="leftfont1"
+                     style="width:78%">{{item.sendRemark}}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="superList">
-          <div class="topsa" style="margin-top:0.3rem">
+          <div class="topsa"
+               style="margin-top:0.3rem">
             <div class="fontext">处理信息</div>
             <div></div>
           </div>
         </div>
 
         <div class="superList">
-          <div class="iteamsa" style="padding-top:0.3rem;padding-bottom:0.2rem">
+          <div class="iteamsa"
+               style="padding-top:0.3rem;padding-bottom:0.2rem">
             <div style="width:50%;text-align: center">
               <p style="font-size:0.3rem;color:#666666">整理总数</p>
-              <p
-                style="font-size:0.5rem;margin-top:0.1rem"
-              >{{listdetail.arrangeNum==undefined?0:listdetail.arrangeNum}}</p>
+              <p style="font-size:0.5rem;margin-top:0.1rem">{{listdetail.arrangeNum==undefined?0:listdetail.arrangeNum}}</p>
             </div>
             <div style="width:50%;text-align: center">
               <p style="font-size:0.3rem;color:#666666">清运总数</p>
-              <p
-                style="font-size:0.5rem;margin-top:0.1rem"
-              >{{listdetail.cleanNum==undefined?0:listdetail.cleanNum}}</p>
+              <p style="font-size:0.5rem;margin-top:0.1rem">{{listdetail.cleanNum==undefined?0:listdetail.cleanNum}}</p>
             </div>
           </div>
         </div>
-        <div class="superList" v-show="ifCleanByBike==1&&listdetail.dispatchDealDetailList.length!==0">
-          <div class="iteamsa" style="height:6rem;padding-bottom:0.2rem">
+        <div class="superList"
+             v-show="ifCleanByBike==1&&listdetail.dispatchDealDetailList.length!==0">
+          <div class="iteamsa"
+               style="height:6rem;padding-bottom:0.2rem">
             <div id="Myechart"></div>
           </div>
         </div>
@@ -199,10 +193,8 @@
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理时间</p>
-              <p
-                class="leftfont1"
-                v-if="listdetail.handleTime!==undefined"
-              >{{FormatDate(listdetail.handleTime)}}</p>
+              <p class="leftfont1"
+                 v-if="listdetail.handleTime!==undefined">{{FormatDate(listdetail.handleTime)}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理时长</p>
@@ -211,27 +203,23 @@
             <div class="topcloumson">
               <p class="leftfont">处理前</p>
               <p class="leftfont1">
-                <img
-                  v-for="(iteam,index) in listdetail.handleBeforeURLs"
-                  :src="Ip+iteam"
-                  :key="index"
-                  alt
-                  srcset
-                  @click="handOpen(listdetail.handleBeforeURLs,index)"
-                >
+                <img v-for="(iteam,index) in listdetail.handleBeforeURLs"
+                     :src="Ip+iteam"
+                     :key="index"
+                     alt
+                     srcset
+                     @click="handOpen(listdetail.handleBeforeURLs,index)">
               </p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理后</p>
               <p class="leftfont1">
-                <img
-                  v-for="(iteam,index) in listdetail.handleAfterURLs"
-                  :src="Ip+iteam"
-                  :key="index"
-                  alt
-                  srcset
-                  @click="handOpen(listdetail.handleAfterURLs,index)"
-                >
+                <img v-for="(iteam,index) in listdetail.handleAfterURLs"
+                     :src="Ip+iteam"
+                     :key="index"
+                     alt
+                     srcset
+                     @click="handOpen(listdetail.handleAfterURLs,index)">
               </p>
             </div>
             <!-- <div class="topcloumson">
@@ -254,7 +242,7 @@ import { Loadmore } from "mint-ui";
 import { Indicator } from "mint-ui";
 export default {
   computed: {},
-  data() {
+  data () {
     return {
       slide: [],
       imgArray: [],
@@ -283,25 +271,25 @@ export default {
     };
   },
   components: {},
-  mounted() {
-    
+  mounted () {
+
     this.$nextTick(() => {
       var worldMapContainer = document.getElementById('Myechart');
       //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
       var resizeWorldMapContainer = function () {
-          worldMapContainer.style.width = window.innerWidth-30+'px';
-          worldMapContainer.style.height = '6rem';
+        worldMapContainer.style.width = window.innerWidth - 30 + 'px';
+        worldMapContainer.style.height = '6rem';
       };
       //设置容器高宽
       resizeWorldMapContainer();
       this.eachartNode = this.$echarts.init(worldMapContainer);
       this.getComanylist();
-      window.onresize =()=>{
+      window.onresize = () => {
         this.eachartNode.resize();
       }
     });
   },
-  created() {
+  created () {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.supervise) {
       this.sheetCode = this.$route.query.supervise;
@@ -316,26 +304,30 @@ export default {
       this.getMessage(this.sheetCode);
     }
     window.watchBackWXS = this.watchBackWXS;
-    
+
   },
   methods: {
-    handleClose() {
+    handleClose () {
       console.log("close event");
     },
     //获取分企业添加的列表
-    getComanylist() {
+    getComanylist () {
       this.$fetchGet("cleanConfig/ifCleanByBike")
         .then(res => {
           this.ifCleanByBike = res;
         })
-        .catch(res => {});
+        .catch(res => { });
     },
-    watchBackWXS() {
-      this.toHome();
+    watchBackWXS () {
+      if (this.popupVisible) {
+        this.popupVisible = false
+      } else {
+        this.toHome();
+      }
     },
     //echarts
-    initCanvas(company, arrangeNum, cleanNum) {
-      
+    initCanvas (company, arrangeNum, cleanNum) {
+
       console.log(this.eachartNode);
       let option = {
         color: ["#958BFF", "#FF688D"],
@@ -448,7 +440,7 @@ export default {
       };
       this.eachartNode.setOption(option);
     },
-    toHome() {
+    toHome () {
       this.$router.push({
         path: "/layout/supervise",
         query: {
@@ -460,23 +452,25 @@ export default {
         }
       });
     },
-    rotate() {
+    rotate () {
       this.rotateS = this.rotateS + 90;
     },
-    handleChange(val) {
+    handleChange (val) {
       // console.log(val)
     },
-    splitsa(val) {
+    splitsa (val) {
       return (
         val.split(" ")[0].split("-")[1] + "-" + val.split(" ")[0].split("-")[2]
       );
     },
-    splitsa1(val) {
+    splitsa1 (val) {
       return (
         val.split(" ")[1].split(":")[0] + ":" + val.split(" ")[1].split(":")[1]
       );
     },
-    handOpen(val, index) {
+    //打开图片弹框
+    handOpen (val, index) {
+      this.eachartNode.dispatchAction({ type: "hideTip" });
       // this.rotateS = 0;
       // this.popupVisible = true;
       // val = val.replace(".400x400.jpg", ".square.jpg");
@@ -491,7 +485,7 @@ export default {
       });
       this.indexImage = index;
     },
-    iconClick() {
+    iconClick () {
       this.$router.push({
         path: "/feedBack",
         query: {
@@ -507,7 +501,7 @@ export default {
       });
     },
     // 选择公司
-    selectComany(e) {
+    selectComany (e) {
       let slide = [];
       let slide1 = [];
       let slide2 = [];
@@ -520,7 +514,7 @@ export default {
           this.listdetail = iteam;
           console.log(iteam.dispatchDealDetailList);
           if (iteam.dispatchDealDetailList.length > 0) {
-            this.$nextTick(function() {
+            this.$nextTick(function () {
               iteam.dispatchDealDetailList.forEach(item => {
                 slide.push(item.orgName);
                 slide1.push(item.arrangeNum);
@@ -533,7 +527,7 @@ export default {
         }
       });
     },
-    getMessage(val) {
+    getMessage (val) {
       this.iteamList = [];
       let slide = [];
       let slide1 = [];
@@ -563,7 +557,7 @@ export default {
             this.initCanvas(slide, slide1, slide2);
           }
         })
-        .catch(res => {});
+        .catch(res => { });
     }
   }
 };
@@ -730,6 +724,9 @@ export default {
           border-bottom-right-radius: 0.12rem;
           .reaed-sa {
             background: #aaaaaa;
+          }
+          .reaed-sa1 {
+            background: #5076ff;
           }
           .reaed-two {
             background: #ff0000;

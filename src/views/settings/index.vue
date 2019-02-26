@@ -1,51 +1,71 @@
 <template>
   <div class="container">
     <div class="header">
-      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toUserInfo">
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png"
+           alt
+           @click="toUserInfo">
       <div class="header-title">设置</div>
       <div></div>
     </div>
     <div class="content">
       <div class="content-top">
-        <div class="info-box" @click="toPassword">
+        <div class="info-box"
+             @click="toPassword">
           <div class="info-title">修改密码</div>
-          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt>
+          <img class="info-img"
+               src="@/assets/image/settings/icon_next page@2x.png"
+               alt>
         </div>
-        <div class="info-box" @click="toProblemFeedback
+        <div class="info-box"
+             @click="toProblemFeedback
         ">
           <div class="info-title">意见反馈</div>
-          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt>
+          <img class="info-img"
+               src="@/assets/image/settings/icon_next page@2x.png"
+               alt>
         </div>
-        <div class="info-box" @click="popupVisible = true">
+        <div class="info-box"
+             @click="popupVisible = true">
           <div class="info-title">版本更新{{version}}</div>
-          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt>
+          <img class="info-img"
+               src="@/assets/image/settings/icon_next page@2x.png"
+               alt>
         </div>
-        <div class="info-box" v-if="userInfo.userName!=='caicc'" @click="todownload">
+        <div class="info-box"
+             v-if="userInfo.userName!=='caicc'"
+             @click="todownload">
           <div class="info-title">下载方式</div>
-          <img class="info-img" src="@/assets/image/settings/icon_next page@2x.png" alt>
+          <img class="info-img"
+               src="@/assets/image/settings/icon_next page@2x.png"
+               alt>
         </div>
       </div>
       <div class="content-bottom">
         <div class="bottom-btn">
-          <div class="submit" @click="logOut">退出登录</div>
+          <div class="submit"
+               @click="logOut">退出登录</div>
         </div>
       </div>
       <!-- 版本信息弹框↓ -->
-      <mt-popup class="version-popup-box" v-model="popupVisible" position="right">
+      <mt-popup class="version-popup-box"
+                v-model="popupVisible"
+                position="right">
         <div class="version-popup">
-          <img
-            class="close-popup"
-            src="@/assets/image/settings/icon_close@2x.png"
-            alt
-            @click="popupVisible = false"
-          >
+          <img class="close-popup"
+               src="@/assets/image/settings/icon_close@2x.png"
+               alt
+               @click="popupVisible = false">
           <div class="version-popup-top">
-            <img class="logo" src="@/assets/image/settings/ios-template-120.png" alt>
+            <img class="logo"
+                 src="@/assets/image/settings/ios-template-120.png"
+                 alt>
             <div class="cur-version">版本{{version}} {{versionTime}}</div>
             <div class="new-version">当前版本已是最新版本</div>
           </div>
           <div class="version-popup-bottom">
-            <ul class="version-detail" v-for="(item,index) in versionDetail" :key="index">
+            <ul class="version-detail"
+                v-for="(item,index) in versionDetail"
+                :key="index">
               <li class="version-detail-li">
                 <span style="text-indent: -0.6rem;margin-left: 0.6rem;">{{item}}</span>
               </li>
@@ -66,7 +86,7 @@ export default {
   computed: {
     ...mapGetters(["userInfo"])
   },
-  data() {
+  data () {
     return {
       popupVisible: false,
       version: "",
@@ -75,21 +95,26 @@ export default {
     };
   },
   components: {},
-  mounted() {},
-  created() {
+  mounted () { },
+  created () {
     this.getVersion();
-    window.watchBackWXS=this.watchBackWXS;
+    window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
     //返回个人中心
-    toUserInfo() {
+    toUserInfo () {
       this.$router.push("/layout/me");
     },
-    watchBackWXS(){
+    watchBackWXS () {
+      if (this.popupVisible) {
+        this.popupVisible = false
+      } else {
         this.toUserInfo();
+      }
+
     },
     //获取版本号
-    getVersion() {
+    getVersion () {
       this.$fetchGet("sysInfo/getAPPversion").then(data => {
         if (data.status == 0) {
           this.version = data.version;
@@ -105,18 +130,18 @@ export default {
       //   });
     },
     //去修改密码
-    toPassword() {
+    toPassword () {
       this.$router.push("/password");
     },
     //去意见反馈
-    toProblemFeedback() {
+    toProblemFeedback () {
       this.$router.push("/problemFeedback");
     },
-    todownload() {
+    todownload () {
       this.$router.push("/downloadmode");
     },
     //退出登录
-    logOut() {
+    logOut () {
       MessageBox({
         title: "提示",
         message: "是否确认退出？",

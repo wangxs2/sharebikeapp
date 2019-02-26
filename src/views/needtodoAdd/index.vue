@@ -146,8 +146,9 @@
               <span
                 style="display: block;margin-top:0.1rem;font-size:0.3rem;color:#555555;margin-left:0.09rem"
               >{{splitsa(item.sendTime)}}</span>-->
-              <p :class="item.read==0?'reaed-two':'reaed-sa'"
-                 style="display: block;width:1.1rem;height:0.4rem;line-height:0.46rem;padding:0rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem">{{item.read==0?'未读':'已读'}}</p>
+
+              <p :class="index==formMessage.sendRecordList.length-1?(item.read==0?'reaed-two':'reaed-sa'):(item.read==0?'reaed-sa1':'reaed-sa')"
+                 style="display: block;width:1.1rem;height:0.4rem;line-height:0.46rem;padding:0rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem">{{index==formMessage.sendRecordList.length-1?(item.read==0?'未读':'已读'):(item.read==0?'已转派':'已读')}}</p>
             </div>
             <div class="topcloum"
                  style="margin:0;padding:0;align-items: center;padding-top:0rem;padding-left:0.2rem">
@@ -159,7 +160,7 @@
                  style="margin:0;padding:0;flex:1;padding-left:0.2rem;margin-top:-0.1rem">
               <div class="topcloumson">
                 <p class="leftfont"
-                   style="width:22%">转派人</p>
+                   style="width:22%">{{index==0?'派单人':'转派人'}}</p>
                 <p class="leftfont1"
                    style="width:78%">{{item.sendMan}}</p>
               </div>
@@ -554,7 +555,12 @@ export default {
       this.popupVisible2 = true;
     },
     watchBackWXS () {
-      this.toHome();
+      if (this.popupVisible) {
+        this.popupVisible = false
+      } else {
+        this.toHome();
+      }
+
     },
     //获取分企业添加的列表
     // getComanylist() {
@@ -1125,6 +1131,9 @@ p {
         border-bottom-right-radius: 0.12rem;
         .reaed-sa {
           background: #aaaaaa;
+        }
+        .reaed-sa1 {
+          background: #5076ff;
         }
         .reaed-two {
           background: #ff0000;

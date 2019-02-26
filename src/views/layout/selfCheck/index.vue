@@ -213,7 +213,7 @@ export default {
       this.searchCondition = this.$route.query.searchCondition;
       this.menuListTop = this.$route.query.menuListTop;
       this.downIcon = this.$route.query.downIcon;
-      console.log(this.menuListTop);
+      // console.log(this.menuListTop);
       if (this.$route.query.areaarr.length == 0) {
         this.getorgsTree();
       } else {
@@ -227,9 +227,10 @@ export default {
     }
     this.getBikeCompany();
     this.getBikeMen();
+    this.getMap();
   },
   mounted () {
-    this.getMap();
+
   },
   methods: {
     //获取当前城市
@@ -297,7 +298,7 @@ export default {
     },
     //区域切换
     areaTypeclick (val, index) {
-      console.log(val);
+      // console.log(val);
       this.areaflag = false;
       this.areakids = [];
       this.viewType = val.id;
