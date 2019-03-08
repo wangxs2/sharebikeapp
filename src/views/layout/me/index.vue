@@ -104,7 +104,7 @@
         </div>
       </div>
       <!-- style="display:none" -->
-      <div class="static-box-count"
+      <!-- <div class="static-box-count"
            @click="getinstallationCount">
         <div style="display: flex;justify-content:flex-start;align-items: center;padding:0.2rem">
           <img style="width:22px;height:22px"
@@ -117,7 +117,7 @@
              src="@/assets/image/settings/icon_next page@2x.png"
              alt>
 
-      </div>
+      </div> -->
       <div class="static-box">
         <div style="display: flex;justify-content:flex-start;align-items: center;border-bottom:1px solid #E1E1E1;padding:0.2rem">
           <img style="width:22px;height:22px"

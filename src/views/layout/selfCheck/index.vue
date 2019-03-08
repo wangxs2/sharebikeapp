@@ -4,7 +4,7 @@
     <div class="header">
       <!-- {{district}} -->
       <span v-if="addressFlag"
-            style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">定位中...</span>
+            style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{gpsadress}}</span>
       <span v-if="!addressFlag"
             style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
             class="iconfont icon-location">{{district}}</span>
@@ -128,6 +128,7 @@ export default {
   data () {
     return {
       addressFlag: true,
+      gpsadress: '定位中...',
       selected: "/layout/selfCheck",
       viewType: "",
       district: '',
@@ -252,6 +253,9 @@ export default {
         if (status == 'complete') {
           this.district = result.addressComponent.district;
           this.addressFlag = false;
+        } else {
+          // alert(1)
+          this.gpsadress = '定位失败'
         }
       });
     },
@@ -708,7 +712,7 @@ export default {
             box-sizing: border-box;
             border-radius: 12px;
             color: #ffffff;
-            font-size: 0.35rem;
+            font-size: 0.3rem;
           }
           .ofo {
             background: #fbc303;
@@ -716,7 +720,7 @@ export default {
             box-sizing: border-box;
             border-radius: 12px;
             color: #333333;
-            font-size: 0.35rem;
+            font-size: 0.3rem;
           }
           .haluo {
             background: #01a1ff;
@@ -724,7 +728,7 @@ export default {
             box-sizing: border-box;
             border-radius: 12px;
             color: #ffffff;
-            font-size: 0.35rem;
+            font-size: 0.3rem;
           }
           .jiujiu {
             background: #fd3121;
@@ -733,7 +737,7 @@ export default {
             border-radius: 12px;
             color: #ffffff;
             text-align: center;
-            font-size: 0.35rem;
+            font-size: 0.3rem;
           }
           .xiangqi {
             background: #00cb4b;
@@ -742,7 +746,7 @@ export default {
             border-radius: 12px;
             color: #ffffff;
             text-align: center;
-            font-size: 0.35rem;
+            font-size: 0.3rem;
           }
           .other {
             background: #9a6eff;
@@ -755,7 +759,7 @@ export default {
             text-align: center;
             box-sizing: border-box;
             border-radius: 12px;
-            font-size: 0.35rem;
+            font-size: 0.3rem;
           }
         }
         .bottomRight {

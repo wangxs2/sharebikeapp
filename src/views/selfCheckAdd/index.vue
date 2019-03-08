@@ -70,16 +70,16 @@
           </div>
         </div>
         <div class="iteamForm"
-             style="padding-bottom:0.4rem">
+             style="padding-bottom:0.4rem"
+             @click="placeClick">
           <img src="../../assets/image/selfcheck/icon_2_address@3x.png"
                width="24"
                height="24"
                alt
                srcset>
-          <div class="rightsa1"
-               @click="placeClick">
-            <span style="margin-top:0.1rem;">地点</span>
-            <input style="width:80%;text-align:right;word-break:break-all;background:#ffffff"
+          <div class="rightsa1">
+            <span style="margin-top:0.1rem">地点</span>
+            <input style="width:75%;text-align:right;word-break:break-all;background:#ffffff"
                    maxlength="60"
                    :disabled="true"
                    placeholder="点击图标获取当前位置"
@@ -205,7 +205,7 @@
                  :key="index"
                  :class="index == (bikeCleanCompany1.length-1) ? 'border-bike':'border-bike2'"
                  style="display: flex;flex:1;flex-direction: column;justify-content:center;align-items: center;margin:0.2rem;">
-              <h7 style="color:#333333;font-size:0.52rem;margin-bottom:0.11rem;margin:0">{{iteam.arrangeNum==''||iteam.arrangeNum==undefined?0:iteam.arrangeNum}}</h7>
+              <h7 style="color:#333333;font-size:0.52rem;margin-bottom:0.11rem;margin:0">{{(iteam.arrangeNum==''||iteam.arrangeNum==undefined)?0:iteam.arrangeNum}}</h7>
               <span class="companyBike"
                     style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
                     :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
@@ -321,7 +321,7 @@
           <div style="display: flex;justify-content:flex-start;align-items: center;">
             <span class="iconfont icon-fanhui"
                   style="font-size:28px"
-                  @click="popupVisible=false"></span>
+                  @click="addCompCtrolsa"></span>
             <p style="margin:0;padding:0">位置</p>
           </div>
           <div @click="sendAddress">确定</div>
@@ -372,6 +372,8 @@ export default {
   data () {
     return {
       placeSearch: null,
+      markerSa: null,
+      markerSalist: [],
       changeId: -1,
       changeId1: -1,
       rotateS: 0,
@@ -437,13 +439,14 @@ export default {
       this.areaarr = this.$route.query.areaarr;
     }
     this.downAddress();
-    // this.getComanylist();
     this.getbikeCleanCompany();
     window.getImage = this.getImage;
     window.getLocation = this.getLocation;
     window.watchBackWXS = this.watchBackWXS;
   },
-  mounted () { },
+  mounted () {
+
+  },
   methods: {
 
     getLocation (val) {
@@ -451,16 +454,25 @@ export default {
     },
     submitBike () {
       this.popupVisible2 = false;
+      console.log(this.sum(this.bikeCleanCompany));
       if (this.bikeTitle == "整理" && this.sum(this.bikeCleanCompany) !== 0) {
         this.isNumberbike = true;
         this.formMessage.arrangeNum = this.sum(this.bikeCleanCompany);
-        // console.log(this.sum(this.bikeCleanCompany));
-      } else if (
+
+      } else if (this.bikeTitle == "整理" && this.sum(this.bikeCleanCompany) == 0) {
+        this.isNumberbike = false;
+        this.formMessage.arrangeNum = 0;
+      }
+      else if (
         this.bikeTitle == "清运" &&
         this.sum1(this.bikeCleanCompany) !== 0
       ) {
         this.isNumberbike1 = true;
         this.formMessage.cleanNum = this.sum1(this.bikeCleanCompany);
+      } else if (this.bikeTitle == "清运" &&
+        this.sum1(this.bikeCleanCompany) == 0) {
+        this.isNumberbike1 = false;
+        this.formMessage.cleanNum = 0;
       }
 
       if (this.bikeCleanCompany.length > 3) {
@@ -477,6 +489,7 @@ export default {
       if (this.popupVisible || this.popupVisible1) {
         this.popupVisible = false;
         this.popupVisible1 = false;
+        this.addressCtrol = ''
       } else {
         this.toHome();
       }
@@ -499,6 +512,10 @@ export default {
         }
       }, 0);
       return s;
+    },
+    addCompCtrolsa () {
+      this.addressCtrol = '';
+      this.popupVisible = false;
     },
     dealDetailList (val) {
       this.bikeTitle = val;
@@ -571,6 +588,7 @@ export default {
     },
     getAddress (row, index) {
       //   console.log(row);
+      // this.myMap.clear();
       let marker = new AMap.Marker({
         icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
         position: [row.lng, row.lat]
@@ -578,7 +596,7 @@ export default {
       this.myMap = new AMap.Map("myMap", {
         resizeEnable: true,
         center: [row.lng, row.lat],
-        zoom: 20
+        zoom: 18
       });
       // 构造点标记
       this.myMap.add(marker);
@@ -589,12 +607,14 @@ export default {
 
     getMap (flag) {
       this.myMap = new AMap.Map("myMap");
+      this.myMap.on('click', this.showInfoClick);
       this.placeSearch = new AMap.PlaceSearch({
         city: "全国",
         map: this.myMap,
         children: 0,
-        type: "公共设施|公司企业|商务住宅|风景名胜|政府机构及社会团体",
+        type: "汽车服务|汽车销售|汽车维修|摩托车服务|餐饮服务|购物服务|生活服务|体育休闲服务|医疗保健服务|住宿服务|风景名胜|商务住宅|政府机构及社会团体|科教文化服务|交通设施服务|金融保险服务|公司企业|公共设施",
         // type: "风景名胜|商务住宅|政府机构及社会团体|交通设施服务|公司企业|道路附属设施|地名地址信息|公共设施",
+        // type: "风景名胜|商务住宅|政府机构及社会团体|交通设施服务|公司企业|住宿服务|公共设施|汽车服务|汽车销售|汽车维修|摩托车服务|餐饮服务|购物服务|生活服务|体育休闲服务",
         extensions: "all",
         autoFitView: false
       });
@@ -614,11 +634,10 @@ export default {
         });
         this.myMap.addControl(geolocation);
         geolocation.getCurrentPosition((status, result) => {
+          console.log(result.position);
           this.addressMapSa(result.position);
           this.formMessage.gpsLongitude = result.position.lng;
           this.formMessage.gpsLatitude = result.position.lat;
-          // var lat = result.position.lat;
-          // var lng = result.position.lng;
         });
       } else {
         let marker = new AMap.Marker({
@@ -629,8 +648,54 @@ export default {
         let location = [this.formMessage.longitude, this.formMessage.latitude];
         this.myMap.setZoomAndCenter(20, location);
         this.addressMapSa(location, true);
-        //unshift()
       }
+    },
+    //地图点击事件
+    showInfoClick (e) {
+      if (this.markerSa) {
+        this.markerSa.setMap(null);
+        this.markerSa = null;
+      }
+      this.addressMapSa1(e.lnglat);
+
+    },
+    // 实例化点标记
+    addMarker (val) {
+      // this.myMap.remove(markers);
+      this.markerSa = new AMap.Marker({
+        map: this.myMap,
+        icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+        position: val,
+        // offset: new AMap.Pixel(-10, -10)
+      });
+      // this.markerSalist.push(this.markerSa);
+      // this.myMap = new AMap.Map("myMap", {
+      //   resizeEnable: true,
+      //   center: val,
+      //   zoom: 18
+      // });
+      // map.remove(marker);
+      this.markerSa.setMap(this.myMap);
+    },
+    //点击获取经纬度获取周边
+    addressMapSa1 (position) {
+      this.mapRangeSearch(position).then(res => {
+        let addrPrefix =
+          res.addressComponent.province +
+          res.addressComponent.city +
+          res.addressComponent.district;
+        let addr;
+        this.placeData = res.pois.map(iteam => {
+          // if()
+          return {
+            addr: addrPrefix + iteam.address,
+            lng: iteam.location.lng,
+            lat: iteam.location.lat,
+            name: iteam.name
+          };
+        });
+      });
+      this.addMarker(position);
     },
     addCompCtrol () {
       let geolocation = new AMap.Geolocation({
@@ -644,7 +709,7 @@ export default {
         showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
         showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
         panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
-        zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+        zoomToAccuracy: false //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
       });
       return geolocation;
       // this.myMap.addControl(geolocation);
@@ -652,7 +717,7 @@ export default {
     //高德地图关键字提示
     suggestSa () {
       this.placeSearch.search(this.addressCtrol, (status, result) => {
-        console.log(result);
+        // console.log(result);
         // return;
         let addrPrefix = "";
         this.placeData = result.poiList.pois.map(iteam => {
@@ -661,7 +726,7 @@ export default {
               iteam.pname + iteam.adname :
               iteam.pname + iteam.cityname + iteam.adname;
           return {
-            addr: iteam.address === iteam.adname ? addrPrefix : addrPrefix + iteam.address,
+            addr: iteam.address === iteam.adname ? addrPrefix + iteam.name : addrPrefix + iteam.address,
             lng: iteam.location.lng,
             lat: iteam.location.lat,
             name: iteam.name
@@ -669,6 +734,7 @@ export default {
         });
       });
     },
+
     //经纬度获取周边
     addressMapSa (position, flag) {
       this.mapRangeSearch(position).then(res => {

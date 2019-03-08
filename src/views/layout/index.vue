@@ -134,9 +134,14 @@ export default {
       return
     },
     getRouterIndex (val) {
-      this.selectIndex = this.menuList.findIndex(iteam => {
-        return val.path == iteam.pathUrl || val.path == iteam.pathUrlTodo;
-      });
+      // this.selectIndex = this.menuList.findIndex(iteam => {
+      //   return val.path == iteam.pathUrl || val.path == iteam.pathUrlTodo;
+      // });
+      for (var i = this.menuList.length - 1; i >= 0; i--) {
+        if (val.path == this.menuList[i].pathUrl || val.path == this.menuList[i].pathUrlTodo) {
+          this.selectIndex = i;
+        }
+      }
     },
     toRouterIndex (val, index) {
       // console.log(val,index);

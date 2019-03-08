@@ -1,7 +1,7 @@
 
 <template>
   <div class="container">
-    <div id="myMap"></div>
+    <!-- <div id="myMap"></div> -->
     <mt-popup class="imgMask"
               v-model="popupVisible"
               position="right">
@@ -60,6 +60,20 @@
         </div>
       </div>
     </mt-popup>
+    <mt-popup v-model="popupVisible1"
+              class="mapwhere"
+              position="right">
+      <div class="header">
+        <img src="@/assets/image/infoModification/nav_1_back@2x.png"
+             alt
+             @click="popupVisible1=false">
+        <div class="header-title">处理地址</div>
+        <div></div>
+      </div>
+
+      <div id="myMap"></div>
+
+    </mt-popup>
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png"
            alt
@@ -88,7 +102,9 @@
           </div>
           <div class="topcloumson">
             <p class="leftfont">地点</p>
-            <p class="leftfont1">{{formMessage.handleAddr}}</p>
+            <p class="leftfont1"
+               style="color:blue;text-decoration:underline"
+               @click="getMap1()">{{formMessage.handleAddr}}</p>
           </div>
           <div class="topcloumson">
             <p class="leftfont">派单人</p>
@@ -441,6 +457,7 @@ export default {
       time: "",
       popupVisible: false,
       popupVisible2: false,
+      popupVisible1: false,
       isNumberbike: false,
       isNumberbike1: false,
       bigImage: "",
@@ -464,7 +481,7 @@ export default {
       bikeCleanCompany1: [],
       bikeCleanCompany2: [],
       formMessage: {
-        handleTime: Date.now(),
+        // handleTime: Date.now(),
         handleAddr: "",
         arrangeNum: "",
         gpsLongitude: "",
@@ -530,13 +547,22 @@ export default {
       if (this.bikeTitle == "整理" && this.sum(this.bikeCleanCompany) !== 0) {
         this.isNumberbike = true;
         this.formMessage.arrangeNum = this.sum(this.bikeCleanCompany);
-        // console.log(this.sum(this.bikeCleanCompany));
-      } else if (
+      } else if (this.bikeTitle == "整理" && this.sum(this.bikeCleanCompany) == 0) {
+        this.isNumberbike = false;
+        this.formMessage.arrangeNum = 0;
+      }
+      else if (
         this.bikeTitle == "清运" &&
         this.sum1(this.bikeCleanCompany) !== 0
       ) {
         this.isNumberbike1 = true;
         this.formMessage.cleanNum = this.sum1(this.bikeCleanCompany);
+      } else if (
+        this.bikeTitle == "清运" &&
+        this.sum1(this.bikeCleanCompany) == 0
+      ) {
+        this.isNumberbike1 = true;
+        this.formMessage.cleanNum = 0;
       }
 
       if (this.bikeCleanCompany.length > 3) {
@@ -555,8 +581,9 @@ export default {
       this.popupVisible2 = true;
     },
     watchBackWXS () {
-      if (this.popupVisible) {
-        this.popupVisible = false
+      if (this.popupVisible || this.popupVisible1) {
+        this.popupVisible = false;
+        this.popupVisible1 = false
       } else {
         this.toHome();
       }
@@ -584,26 +611,52 @@ export default {
         }
       });
     },
+    getMap1 () {
+      this.popupVisible1 = true;
+      this.getMap();
+    },
     getMap () {
       this.myMap = new AMap.Map("myMap");
-      let geolocation = new AMap.Geolocation({
-        enableHighAccuracy: true, //是否使用高精度定位，默认:true
-        timeout: 10000, //超过10秒后停止定位，默认：无穷大
-        maximumAge: 0, //定位结果缓存0毫秒，默认：0
-        convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-        showButton: true, //显示定位按钮，默认：true
-        buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
-        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-        showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
-        showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
-        panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
-        zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-      });
+      let geolocation = new AMap.Geolocation();
       geolocation.getCurrentPosition((status, result) => {
 
         this.formMessage.gpsLongitude = result.position.lng;
         this.formMessage.gpsLatitude = result.position.lat;
-        // console.log(this.formMessage.gpsLongitude);
+
+        var markers = [{
+          icon: require('../../assets/image/supervise/iconren.png'),
+          label: {
+            offset: new AMap.Pixel(-20, -30),
+            content: "<div class='info'>处理位置</div>"
+          },
+          position: [this.formMessage.gaodeLongitude, this.formMessage.gaodeLatitude]
+        }, {
+          icon: require('../../assets/image/supervise/iconpr.png'),
+          label: {
+            offset: new AMap.Pixel(-20, -30),
+            content: "<div class='info'>当前位置</div>"
+          },
+          position: [result.position.lng, result.position.lat]
+        }];
+
+        // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
+        markers.forEach((marker) => {
+          new AMap.Marker({
+            map: this.myMap,
+            icon: marker.icon,
+            label: marker.label,
+            position: [marker.position[0], marker.position[1]],
+            offset: new AMap.Pixel(-13, -30)
+          });
+        });
+        this.myMap.setFitView();
+
+
+
+
+
+
+
       });
     },
     iconClick () {
@@ -707,9 +760,9 @@ export default {
               this.sheetCode1 = res.dispatchDetail.sheetCode;
               // console.log(this.sheetCode1);
               this.formMessage = res.dispatchDetail;
-              if (this.formMessage.handleTime == undefined) {
-                this.formMessage.handleTime = Date.now();
-              }
+              // if (this.formMessage.handleTime == undefined) {
+              //   this.formMessage.handleTime = Date.now();
+              // }
               this.handleBefore = res.dispatchDetail.handleBefore.split(";");
               this.handleAfter = res.dispatchDetail.handleAfter.split(";");
               if (res.dispatchDetail.arrangeNum > 0 && this.ifCleanByBike == 1) {
@@ -752,7 +805,6 @@ export default {
       });
     },
     save () {
-      // this.getMap();
       console.log(this.formMessage.gpsLongitude);
       if (this.formMessage.handleBeforeURLs.length == 0) {
         MessageBox.alert("", {
@@ -962,6 +1014,36 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .mapwhere {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    background: #fff;
+    flex-direction: column;
+    .header {
+      height: 1.173333rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      background: -webkit-linear-gradient(left, #6698ff, #5076ff);
+      color: #fff;
+      font-size: 0.48rem;
+      padding: 0 0.32rem;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      img {
+        height: 0.48rem;
+        width: 0.266667rem;
+      }
+    }
+
+    #myMap {
+      width: 100%;
+      flex: 1;
+    }
   }
   .header {
     height: 1.173333rem;

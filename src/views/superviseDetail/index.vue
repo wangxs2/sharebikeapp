@@ -32,6 +32,20 @@
         @click="rotate()"
       >-->
     </mt-popup>
+    <mt-popup v-model="popupVisible1"
+              class="mapwhere"
+              position="right">
+      <div class="header">
+        <img src="@/assets/image/infoModification/nav_1_back@2x.png"
+             alt
+             @click="popupVisible1=false">
+        <div class="header-title">处理地址</div>
+        <div></div>
+      </div>
+
+      <div id="myMap"></div>
+
+    </mt-popup>
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png"
            alt
@@ -69,7 +83,9 @@
             </div>
             <div class="topcloumson">
               <p class="leftfont">地点</p>
-              <p class="leftfont1">{{listdetail.handleAddr}}</p>
+              <p class="leftfont1"
+                 style="color:blue;text-decoration:underline"
+                 @click="getMap()">{{listdetail.handleAddr}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">派单人</p>
@@ -164,8 +180,17 @@
             <div></div>
           </div>
         </div>
-
-        <div class="superList">
+        <div class="superList"
+             v-if="listdetail.status !== 2">
+          <div class="iteamQs">
+            <img src="@/assets/image/supervise/image_zanwu@2x.png"
+                 alt=""
+                 srcset="">
+            <p>{{listdetail.status == 0?'尚未处理，暂无处理信息':listdetail.status == 1?'企业正在处理，暂无处理信息':'已转派：已转派，暂无处理信息'}} </p>
+          </div>
+        </div>
+        <div class="superList"
+             v-if="listdetail.status == 2">
           <div class="iteamsa"
                style="padding-top:0.3rem;padding-bottom:0.2rem">
             <div style="width:50%;text-align: center">
@@ -178,14 +203,16 @@
             </div>
           </div>
         </div>
-        <div class="superList"
+        <div v-if="listdetail.status == 2"
+             class="superList"
              v-show="ifCleanByBike==1&&listdetail.dispatchDealDetailList.length!==0">
           <div class="iteamsa"
                style="height:6rem;padding-bottom:0.2rem">
             <div id="Myechart"></div>
           </div>
         </div>
-        <div class="superList">
+        <div v-if="listdetail.status == 2"
+             class="superList">
           <div class="topcloum">
             <div class="topcloumson">
               <p class="leftfont">处理人</p>
@@ -222,14 +249,6 @@
                      @click="handOpen(listdetail.handleAfterURLs,index)">
               </p>
             </div>
-            <!-- <div class="topcloumson">
-              <p class="leftfont">整理数</p>
-              <p class="leftfont1">{{listdetail.arrangeNum}}</p>
-            </div>
-            <div class="topcloumson">
-              <p class="leftfont">清运数</p>
-              <p class="leftfont1">{{listdetail.cleanNum}}</p>
-            </div>-->
           </div>
         </div>
       </section>
@@ -248,6 +267,7 @@ export default {
       imgArray: [],
       rotateS: 0,
       popupVisible: false,
+      popupVisible1: false,//地图
       listdetail: {},
       showIndicators: false,
       activeComany: "", // 选中的单车企业
@@ -267,7 +287,8 @@ export default {
       lageImg: [], //轮播显示图片
       indexImage: 0,
       downIcon: -1,
-      eachartNode: null //echarts
+      eachartNode: null, //echarts
+      myMap: null,
     };
   },
   components: {},
@@ -319,8 +340,9 @@ export default {
         .catch(res => { });
     },
     watchBackWXS () {
-      if (this.popupVisible) {
+      if (this.popupVisible || this.popupVisible1) {
         this.popupVisible = false
+        this.popupVisible1 = false
       } else {
         this.toHome();
       }
@@ -470,7 +492,10 @@ export default {
     },
     //打开图片弹框
     handOpen (val, index) {
-      this.eachartNode.dispatchAction({ type: "hideTip" });
+      if (this.listdetail.status == 2) {
+        this.eachartNode.dispatchAction({ type: "hideTip" });
+      }
+
       // this.rotateS = 0;
       // this.popupVisible = true;
       // val = val.replace(".400x400.jpg", ".square.jpg");
@@ -499,6 +524,58 @@ export default {
           areakids: this.areakids
         }
       });
+    },
+    getMap () {
+      this.popupVisible1 = true;
+      this.myMap = new AMap.Map("myMap");
+      let geolocation = new AMap.Geolocation();
+      geolocation.getCurrentPosition((status, result) => {
+        console.log(result.position);
+        var markers = [{
+          icon: require('../../assets/image/supervise/iconren.png'),
+          label: {
+            offset: new AMap.Pixel(-20, -30),
+            content: "<div class='info'>处理位置</div>"
+          },
+          position: [this.listdetail.gaodeLongitude, this.listdetail.gaodeLatitude]
+        }, {
+          icon: require('../../assets/image/supervise/iconpr.png'),
+          label: {
+            offset: new AMap.Pixel(-20, -30),
+            content: "<div class='info'>当前位置</div>"
+          },
+          position: [result.position.lng, result.position.lat]
+        }];
+
+        // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
+        markers.forEach((marker) => {
+          new AMap.Marker({
+            map: this.myMap,
+            icon: marker.icon,
+            label: marker.label,
+            position: [marker.position[0], marker.position[1]],
+            offset: new AMap.Pixel(-13, -30)
+          });
+        });
+        this.myMap.setFitView();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      });
+
     },
     // 选择公司
     selectComany (e) {
@@ -562,6 +639,8 @@ export default {
   }
 };
 </script>
+<style>
+</style>
 
 <style lang="scss" scoped>
 .green {
@@ -570,6 +649,7 @@ export default {
 .red {
   color: #41cd76;
 }
+
 .container {
   width: 100%;
   height: 100%;
@@ -585,6 +665,36 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .mapwhere {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    background: #fff;
+    flex-direction: column;
+    .header {
+      height: 1.173333rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      background: -webkit-linear-gradient(left, #6698ff, #5076ff);
+      color: #fff;
+      font-size: 0.48rem;
+      padding: 0 0.32rem;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      img {
+        height: 0.48rem;
+        width: 0.266667rem;
+      }
+    }
+
+    #myMap {
+      width: 100%;
+      flex: 1;
+    }
   }
   .header {
     height: 1.173333rem;
@@ -683,6 +793,26 @@ export default {
           .timesa {
             display: flex;
             flex-direction: column;
+          }
+        }
+        .iteamQs {
+          box-sizing: border-box;
+          margin: 0 0.3rem;
+          padding: 0.5rem 0;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          background: #fff;
+          img {
+            width: 5.22rem;
+            height: 4.88rem;
+          }
+          p {
+            font-size: 0.4rem;
+            color: rgb(101, 101, 101);
+            padding-top: 0.5rem;
           }
         }
 

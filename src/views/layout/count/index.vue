@@ -4,33 +4,30 @@
       <h1 style="margin-left:0.96rem;width:50%;text-align:right">统计</h1>
       <h1 class="animated-tada"
           style="width:50%;text-align:right"
-          v-if="ruleStatus=='true'"
-          @click="rulesBox=!rulesBox">
+          v-if="ruleStatus=='true'">
         <span style="font-size:0.6rem"
-              class="iconfont icon-paper"></span>
+              class="iconfont icon-paper"
+              @click="getinstallationCount"></span>
       </h1>
       <h1 style="width:50%;text-align:right"
-          v-if="ruleStatus=='false'"
-          @click="rulesBox=!rulesBox">
+          v-if="ruleStatus=='false'">
         <span style="font-size:0.6rem"
-              class="iconfont icon-paper"></span>
+              class="iconfont icon-paper"
+              @click="getinstallationCount"></span>
       </h1>
       <div class="historical-rules"
            v-if="rulesBox">
         <div class="rules-box"
              @click="toDaily('day')">
-          <!-- <img src="@/assets/image/evaluation/history.png" alt srcset> -->
           <span>日报</span>
         </div>
         <div class="rules-box"
              @click="toDaily('week')">
-          <!-- <img src="@/assets/image/evaluation/ruls@2x (1).png" alt srcset> -->
           <span>周报</span>
         </div>
         <div class="rules-box"
              @click="toDaily('month')"
              style="border:none">
-          <!-- <img src="@/assets/image/evaluation/ruls@2x (1).png" alt srcset> -->
           <span>月报</span>
         </div>
       </div>
@@ -43,7 +40,7 @@
              :class="[activeComany == item.id ? 'nav-active' : '']"
              class="nav-item">{{item.name}}</div>
       </nav>
-      <section>
+      <div class="sectionSa">
         <div class="tab-btns"
              @click="selectView">
           <div class="btn-left"
@@ -110,7 +107,7 @@
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </main>
 
     <!-- 时间选择 -->
@@ -152,10 +149,6 @@ export default {
   mounted () {
     this.$nextTick(function () {
       this.eachartNode = this.$echarts.init(document.getElementById("Echart"));
-      // window.onresize = () => {
-      //   alert(2);
-      //   this.eachartNode.resize();
-      // };
       window.addEventListener("resize", function () {
         this.eachartNode.resize();
       });
@@ -231,9 +224,13 @@ export default {
         }
       });
     },
+    getinstallationCount () {
+      this.$router.push("/statisticalforms");
+    },
+
     // 选择视图
     selectView (e) {
-      console.log(e.target);
+      // console.log(e.target);
       let type = e.target.getAttribute("viewType");
       if (type) {
         this.viewType = type;
@@ -462,7 +459,7 @@ export default {
         }
       }
     }
-    section {
+    .sectionSa {
       width: 100%;
       flex: 1;
       height: 1px;
@@ -470,9 +467,11 @@ export default {
       flex-direction: column;
       align-items: center;
       .tab-btns {
-        display: flex;
-        margin: 10px 0 10px 0;
+        // display: flex;
+        // justify-content: flex-start;
+        margin: 10px 0;
         .btn-left {
+          float: left;
           box-sizing: border-box;
           padding: 6px 20px;
           font-size: 0.373333rem;
@@ -483,8 +482,10 @@ export default {
           border-right: none;
         }
         .btn-right {
+          float: right;
           box-sizing: border-box;
           padding: 6px 20px;
+          margin-bottom: 6px;
           // line-height: normal;
           font-size: 0.373333rem;
           color: #5076ff;

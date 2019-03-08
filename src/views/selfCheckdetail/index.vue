@@ -30,6 +30,20 @@
         @click="rotate()"
       >-->
     </mt-popup>
+    <mt-popup v-model="popupVisible1"
+              class="mapwhere"
+              position="right">
+      <div class="header">
+        <img src="@/assets/image/infoModification/nav_1_back@2x.png"
+             alt
+             @click="popupVisible1=false">
+        <div class="header-title">处理地址</div>
+        <div></div>
+      </div>
+
+      <div id="myMap"></div>
+
+    </mt-popup>
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png"
            alt
@@ -65,7 +79,7 @@
                src="../../assets/image/jiedao.png"
                width="59"
                height="58">
-          <div style="width:70%;margin-left:0.3rem;display: flex;flex-direction:column;">
+          <div style="width:80%;margin-left:0.3rem;display: flex;flex-direction:column;">
             <p style="display: flex;justify-content: space-between;width:100%;flex:1">
               <span>{{iteamList.orgName}}</span>
               <span :class="iteamList.status == 1 ? 'green' : 'red'">{{iteamList.status == 1 ? '处理中' : "已处理"}}</span>
@@ -82,7 +96,8 @@
                height="24"
                alt
                srcset>
-          <p style="margin-left:0.2rem;margin-top:0.1rem">{{iteamList.handleAddr}}</p>
+          <p style="margin-left:0.2rem;margin-top:0.1rem;color:blue;text-decoration:underline"
+             @click="getMap()">{{iteamList.handleAddr}}</p>
         </div>
       </div>
       <p style="background: #fff;padding:0.2rem 0.3rem;">处理人：{{iteamList.handleUserName}}</p>
@@ -178,6 +193,7 @@ export default {
       slide1: [],
       searchCondition: {},
       menuListTop: [],
+      popupVisible1: false,
       downIcon: -1,
       sheetCode: "",
       rotateS: 0,
@@ -234,8 +250,9 @@ export default {
         .catch(res => { });
     },
     watchBackWXS () {
-      if (this.popupVisible) {
-        this.popupVisible = false
+      if (this.popupVisible || this.popupVisible1) {
+        this.popupVisible = false;
+        this.popupVisible1 = false
       } else {
         this.toHome();
       }
@@ -370,6 +387,58 @@ export default {
       };
       this.eachartNode.setOption(option);
     },
+    getMap () {
+      this.popupVisible1 = true;
+      this.myMap = new AMap.Map("myMap");
+      let geolocation = new AMap.Geolocation();
+      geolocation.getCurrentPosition((status, result) => {
+        console.log(result.position);
+        var markers = [{
+          icon: require('../../assets/image/supervise/iconren.png'),
+          label: {
+            offset: new AMap.Pixel(-20, -30),
+            content: "<div class='info'>处理位置</div>"
+          },
+          position: [this.iteamList.gaodeLongitude, this.iteamList.gaodeLatitude]
+        }, {
+          icon: require('../../assets/image/supervise/iconpr.png'),
+          label: {
+            offset: new AMap.Pixel(-20, -30),
+            content: "<div class='info'>当前位置</div>"
+          },
+          position: [result.position.lng, result.position.lat]
+        }];
+
+        // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
+        markers.forEach((marker) => {
+          new AMap.Marker({
+            map: this.myMap,
+            icon: marker.icon,
+            label: marker.label,
+            position: [marker.position[0], marker.position[1]],
+            offset: new AMap.Pixel(-13, -30)
+          });
+        });
+        this.myMap.setFitView();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      });
+
+    },
     toHome () {
       this.$router.push({
         path: "/layout/selfCheck",
@@ -456,6 +525,36 @@ export default {
     justify-content: center;
     align-items: center;
   }
+  .mapwhere {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    background: #fff;
+    flex-direction: column;
+    .header {
+      height: 1.173333rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      background: -webkit-linear-gradient(left, #6698ff, #5076ff);
+      color: #fff;
+      font-size: 0.48rem;
+      padding: 0 0.32rem;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      img {
+        height: 0.48rem;
+        width: 0.266667rem;
+      }
+    }
+
+    #myMap {
+      width: 100%;
+      flex: 1;
+    }
+  }
   .header {
     height: 1.173333rem;
     display: flex;
@@ -496,7 +595,8 @@ export default {
         height: 100%;
       }
       .iteamsa {
-        box-sizing: border-box;
+        // box-sizing: border-box;
+        // height: 80px;
         padding: 0.3rem;
         flex: 1;
         display: flex;

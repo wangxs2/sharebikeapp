@@ -109,9 +109,9 @@
                 <p style="line-height:1.15;text-align:center"
                    :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'">{{item.orgName}}</p>
                 <p v-if="item.dealTime!==undefined"
-                   style="flex:1;padding-top:0.2rem">{{item.dealTime}}</p>
+                   style="flex:1;padding-top:0.2rem;font-size:0.3rem;">{{item.dealTime}}</p>
                 <p v-if="item.read==1&&item.dealTime==undefined"
-                   style="flex:1;padding-top:0.2rem;color:#aaaaaa;font-size:0.3rem">已读</p>
+                   style="flex:1;padding-top:0.2rem;color:#aaaaaa;font-size:0.3rem">企业已读</p>
                 <p v-if="item.read==0&&item.dealTime==undefined"
                    style="flex:1;padding-top:0.2rem;color:#ff0000;font-size:0.3rem">未读</p>
               </div>
@@ -734,7 +734,7 @@ export default {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin-right: 0.2rem;
+            margin-right: 0.1rem;
             p {
               margin: 0;
               padding: 0;
@@ -746,7 +746,7 @@ export default {
               box-sizing: border-box;
               border-radius: 12px;
               color: #ffffff;
-              font-size: 0.35rem;
+              font-size: 0.3rem;
             }
             .ofo {
               background: #fbc303;
@@ -754,7 +754,7 @@ export default {
               box-sizing: border-box;
               border-radius: 12px;
               color: #333333;
-              font-size: 0.35rem;
+              font-size: 0.3rem;
             }
             .haluo {
               background: #01a1ff;
@@ -762,7 +762,7 @@ export default {
               box-sizing: border-box;
               border-radius: 12px;
               color: #ffffff;
-              font-size: 0.35rem;
+              font-size: 0.3rem;
             }
             .jiujiu {
               background: #fd3121;
@@ -770,7 +770,7 @@ export default {
               box-sizing: border-box;
               border-radius: 12px;
               color: #ffffff;
-              font-size: 0.35rem;
+              font-size: 0.3rem;
             }
             .xiangqi {
               background: #00cb4b;
@@ -778,7 +778,7 @@ export default {
               box-sizing: border-box;
               border-radius: 12px;
               color: #ffffff;
-              font-size: 0.35rem;
+              font-size: 0.3rem;
             }
             .other {
               background: transparent;
@@ -786,7 +786,7 @@ export default {
               // padding: 0.04rem 0.15rem;
               box-sizing: border-box;
               border-radius: 12px;
-              font-size: 0.35rem;
+              font-size: 0.3rem;
               width: 2.4rem;
               overflow: hidden;
               text-overflow: ellipsis;

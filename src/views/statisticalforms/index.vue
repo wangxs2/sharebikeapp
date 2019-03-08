@@ -11,6 +11,30 @@
       <div class="content-top">
         <div class="info-box"
              style="margin-top:0"
+             @click="toDaily('day')">
+          <div class="info-title">治理日报</div>
+          <img class="info-img"
+               src="@/assets/image/settings/icon_next page@2x.png"
+               alt>
+        </div>
+        <div class="info-box"
+             style="margin-top:0"
+             @click="toDaily('week')">
+          <div class="info-title">治理周报</div>
+          <img class="info-img"
+               src="@/assets/image/settings/icon_next page@2x.png"
+               alt>
+        </div>
+        <div class="info-box"
+             style="margin-top:0"
+             @click="toDaily('month')">
+          <div class="info-title">治理月报</div>
+          <img class="info-img"
+               src="@/assets/image/settings/icon_next page@2x.png"
+               alt>
+        </div>
+        <div class="info-box"
+             style="margin-top:0"
              @click="toPassword">
           <div class="info-title">共享单车保有量日统计表</div>
           <img class="info-img"
@@ -70,12 +94,19 @@ export default {
   methods: {
     //返回个人中心
     toUserInfo () {
-      this.$router.push("/layout/me");
+      this.$router.push("/layout/count");
     },
     watchBackWXS () {
       this.toUserInfo();
     },
-
+    toDaily (val) {
+      this.$router.push({
+        path: "/statisticsDaily",
+        query: {
+          dailyType: val
+        }
+      });
+    },
     //去保有量统计表
     toPassword () {
       this.$router.push("/installationCount");
@@ -124,6 +155,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 0.2rem;
       .info-title {
         margin-left: 0.32rem;
       }
@@ -132,104 +164,6 @@ export default {
         width: 0.373333rem;
         height: 0.373333rem;
         overflow: hidden;
-      }
-    }
-  }
-  .bottom-btn {
-    width: 100%;
-    height: 1.173333rem;
-    padding: 0 0.64rem;
-    box-sizing: border-box;
-    background-color: #f2f2f2;
-    margin-bottom: 2.08rem;
-    .submit {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        -90deg,
-        rgba(80, 118, 255, 1),
-        rgba(102, 152, 255, 1)
-      );
-      border-radius: 0.586667rem;
-      color: #fff;
-      font-size: 0.426667rem;
-    }
-  }
-  .version-popup-box {
-    height: 14rem;
-    width: 100%;
-    background: transparent;
-    color: #282828;
-    .version-popup {
-      margin: 0 auto;
-      background: #fff;
-      height: 14rem;
-      width: 7.72rem;
-      border-radius: 0.16rem;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      padding: 0.4rem;
-      .close-popup {
-        position: absolute;
-        right: 0.32rem;
-        top: 0.32rem;
-        height: 0.48rem;
-        width: 0.48rem;
-      }
-      .version-popup-top {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 4.64rem;
-        flex-shrink: 0;
-        border-bottom: 0.026667rem dashed #dddddd;
-        padding-top: 0.7rem;
-        box-sizing: border-box;
-        .logo {
-          height: 1.706667rem;
-          width: 1.706667rem;
-          margin-bottom: 0.2rem;
-        }
-        .cur-version {
-          font-size: 0.4rem;
-          font-weight: bold;
-          line-height: 2;
-        }
-        .new-version {
-          font-size: 0.373333rem;
-          font-weight: 400;
-          color: rgba(101, 101, 101, 1);
-          line-height: 2;
-        }
-      }
-      .version-popup-bottom {
-        padding: 0.2rem 0.4rem;
-        flex: 1;
-        font-size: 0.4rem;
-        overflow: scroll;
-        .version-detail {
-          padding: 0;
-          margin: 0;
-          line-height: 2;
-          list-style: none;
-          .version-detail-li {
-            display: flex;
-            align-items: center;
-            .dot {
-              display: inline-block;
-              width: 8px;
-              height: 8px;
-              background: rgba(255, 174, 31, 1);
-              border-radius: 50%;
-              margin-right: 0.4rem;
-            }
-          }
-        }
       }
     }
   }

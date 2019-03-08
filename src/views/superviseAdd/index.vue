@@ -45,7 +45,8 @@
       <div class="witeSa"
            style="margin-top:0.2rem">
         <div class="iteamForm"
-             style="0.4rem 0.3rem">
+             style="0.4rem 0.3rem"
+             @click="placeClick">
           <img src="../../assets/image/selfcheck/icon_2_address@3x.png"
                width="24"
                height="24"
@@ -62,8 +63,7 @@
                  width="24"
                  height="24"
                  alt
-                 srcset
-                 @click="placeClick">
+                 srcset>
           </div>
         </div>
       </div>
@@ -185,7 +185,7 @@
           <div style="display: flex;justify-content:flex-start;align-items: center;">
             <span class="iconfont icon-fanhui"
                   style="font-size:28px"
-                  @click="popupVisible=false"></span>
+                  @click="addCompCtrolsa"></span>
             <p style="margin:0;padding:0">位置</p>
           </div>
           <div @click="sendAddress">确定</div>
@@ -239,6 +239,7 @@ export default {
       bigImage: "",
       addressCtrol: "",
       myMap: null,
+      markerSa: null,
       value: [],
       value1: [],
       options: [],
@@ -301,8 +302,13 @@ export default {
     clickImage () {
       this.downPictur("bikeImg");
     },
+    addCompCtrolsa () {
+      this.addressCtrol = '';
+      this.popupVisible = false;
+    },
     watchBackWXS () {
       if (this.popupVisible || this.popupVisible1) {
+        this.addressCtrol = '';
         this.popupVisible = false
         this.popupVisible1 = false
       } else {
@@ -389,6 +395,7 @@ export default {
     },
     getMap (flag) {
       this.myMap = new AMap.Map("myMap");
+      this.myMap.on('click', this.showInfoClick);
       this.placeSearch = new AMap.PlaceSearch({
         city: "全国",
         map: this.myMap,
@@ -433,6 +440,53 @@ export default {
         this.addressMapSa(location, true);
         //unshift()
       }
+    },
+    //地图点击事件
+    showInfoClick (e) {
+      if (this.markerSa) {
+        this.markerSa.setMap(null);
+        this.markerSa = null;
+      }
+      this.addressMapSa1(e.lnglat);
+
+    },
+    // 实例化点标记
+    addMarker (val) {
+      // this.myMap.remove(markers);
+      this.markerSa = new AMap.Marker({
+        map: this.myMap,
+        icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+        position: val,
+        // offset: new AMap.Pixel(-10, -10)
+      });
+      // this.markerSalist.push(this.markerSa);
+      // this.myMap = new AMap.Map("myMap", {
+      //   resizeEnable: true,
+      //   center: val,
+      //   zoom: 18
+      // });
+      // map.remove(marker);
+      this.markerSa.setMap(this.myMap);
+    },
+    //点击获取经纬度获取周边
+    addressMapSa1 (position) {
+      this.mapRangeSearch(position).then(res => {
+        let addrPrefix =
+          res.addressComponent.province +
+          res.addressComponent.city +
+          res.addressComponent.district;
+        let addr;
+        this.placeData = res.pois.map(iteam => {
+          // if()
+          return {
+            addr: addrPrefix + iteam.address,
+            lng: iteam.location.lng,
+            lat: iteam.location.lat,
+            name: iteam.name
+          };
+        });
+      });
+      this.addMarker(position);
     },
     addCompCtrol () {
       let geolocation = new AMap.Geolocation({

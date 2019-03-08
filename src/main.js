@@ -8,6 +8,7 @@ import 'mint-ui/lib/style.css'
 import './assets/css/global.css'
 import router from './router'
 import './permission' //路由判断
+import 'babel-polyfill' //兼容ie
 import store from './stores' //vuex
 import 'lib-flexible'
 import 'animate.css'

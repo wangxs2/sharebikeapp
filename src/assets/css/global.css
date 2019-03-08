@@ -13,11 +13,37 @@ body,
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-touch-callout: none;
+  display: -webkit-box;
 }
 .mint-loadmore-text {
   color: #aeaeae;
 }
+.amap-logo img {
+  display: none;
+}
+.amap-marker-label {
+  border: 0;
+  background-color: #ffffff;
+  padding: 8px;
+}
 
+.info {
+  position: relative;
+  top: 0;
+  right: 0;
+  min-width: 0;
+  font-size: 14px;
+}
+.amap-copyright {
+  opacity: 0;
+}
+.mint-swipe-items-wrap {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
 .imageClean {
   display: flex;
   flex-wrap: wrap;
