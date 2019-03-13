@@ -83,9 +83,14 @@
             </div>
             <div class="topcloumson">
               <p class="leftfont">地点</p>
-              <p class="leftfont1"
+              <div class="leftfont1"
+                   @click="getMap()">
+                <p style="margin-top:0.1rem;color:#333333;text-decoration:underline">{{listdetail.handleSecAddr}}</p>
+                <p style="margin-top:0.1rem;color:#aeaeae;text-decoration:underline">{{listdetail.handleAddr}}</p>
+              </div>
+              <!-- <p class="leftfont1"
                  style="color:blue;text-decoration:underline"
-                 @click="getMap()">{{listdetail.handleAddr}}</p>
+                 @click="getMap()">{{listdetail.handleAddr}}</p> -->
             </div>
             <div class="topcloumson">
               <p class="leftfont">派单人</p>
@@ -181,7 +186,7 @@
           </div>
         </div>
         <div class="superList"
-             v-if="listdetail.status !== 2">
+             v-show="listdetail.status !== 2">
           <div class="iteamQs">
             <img src="@/assets/image/supervise/image_zanwu@2x.png"
                  alt=""
@@ -190,7 +195,7 @@
           </div>
         </div>
         <div class="superList"
-             v-if="listdetail.status == 2">
+             v-show="listdetail.status == 2">
           <div class="iteamsa"
                style="padding-top:0.3rem;padding-bottom:0.2rem">
             <div style="width:50%;text-align: center">
@@ -203,15 +208,14 @@
             </div>
           </div>
         </div>
-        <div v-if="listdetail.status == 2"
-             class="superList"
-             v-show="ifCleanByBike==1&&listdetail.dispatchDealDetailList.length!==0">
+        <div v-show="listdetail.status == 2"
+             class="superList">
           <div class="iteamsa"
                style="height:6rem;padding-bottom:0.2rem">
             <div id="Myechart"></div>
           </div>
         </div>
-        <div v-if="listdetail.status == 2"
+        <div v-show="listdetail.status == 2"
              class="superList">
           <div class="topcloum">
             <div class="topcloumson">
@@ -295,9 +299,9 @@ export default {
   mounted () {
 
     this.$nextTick(() => {
-      var worldMapContainer = document.getElementById('Myechart');
+      let worldMapContainer = document.getElementById('Myechart');
       //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
-      var resizeWorldMapContainer = function () {
+      let resizeWorldMapContainer = function () {
         worldMapContainer.style.width = window.innerWidth - 30 + 'px';
         worldMapContainer.style.height = '6rem';
       };
@@ -405,6 +409,7 @@ export default {
           {
             type: "value",
             axisTick: { show: false }, //是否显示刻度
+            minInterval: 1,
             axisLine: {
               lineStyle: {
                 type: "solid",
@@ -460,7 +465,7 @@ export default {
           }
         ]
       };
-      this.eachartNode.setOption(option);
+      this.eachartNode.setOption(option, true);
     },
     toHome () {
       this.$router.push({
@@ -619,7 +624,7 @@ export default {
       })
         .then(res => {
           Indicator.close();
-          console.log("-------------------------");
+          console.log(res);
           slide3 = res[0].dispatchDealDetailList;
           console.log(slide3);
           this.iteamList = res;
@@ -644,7 +649,7 @@ export default {
 
 <style lang="scss" scoped>
 .green {
-  color: #ffc000;
+  color: red;
 }
 .red {
   color: #41cd76;

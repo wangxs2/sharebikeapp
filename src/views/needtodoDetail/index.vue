@@ -73,9 +73,14 @@
           </div>
           <div class="topcloumson">
             <p class="leftfont">地点</p>
-            <p class="leftfont1"
+            <div class="leftfont1"
+                 @click="getMap()">
+              <p style="margin-top:0.1rem;color:#333333;text-decoration:underline">{{iteamList.handleSecAddr}}</p>
+              <p style="margin-top:0.1rem;color:#aeaeae;text-decoration:underline">{{iteamList.handleAddr}}</p>
+            </div>
+            <!-- <p class="leftfont1"
                style="color:blue;text-decoration:underline"
-               @click="getMap()">{{iteamList.handleAddr}}</p>
+               @click="getMap()">{{iteamList.handleAddr}}</p> -->
           </div>
           <div class="topcloumson">
             <p class="leftfont">派单人</p>

@@ -72,6 +72,22 @@
         <div class="iteamForm"
              style="padding-bottom:0.4rem"
              @click="placeClick">
+          <img src="@/assets/image/selfcheck/icon_2_address@3x.png"
+               width="24"
+               height="24"
+               alt
+               srcset>
+          <div style="flex:1;padding-left:0.2rem;">
+            <p style="margin:0;padding-bottom:0.1rem;">{{formMessage.handleSecAddr}}</p>
+            <p style="margin:0;color:#aeaeae;font-size:0.36rem">{{formMessage.handleAddr}}</p>
+          </div>
+          <span class="iconfont icon-jiantou1"
+                style="color:#999999;font-size:0.8rem;text-align:right"></span>
+
+        </div>
+        <!-- <div class="iteamForm"
+             style="padding-bottom:0.4rem"
+             @click="placeClick">
           <img src="../../assets/image/selfcheck/icon_2_address@3x.png"
                width="24"
                height="24"
@@ -84,14 +100,15 @@
                    :disabled="true"
                    placeholder="点击图标获取当前位置"
                    v-model="formMessage.handleAddr">
-            <!-- <p style="flex:1;height:0.4rem;text-align:right;word-break:break-all;overflow-x:scroll;margin:0">{{formMessage.handleAddr}}</p> -->
+            <p style="flex:1;height:0.4rem;text-align:right;word-break:break-all;overflow-x:scroll;margin:0">{{formMessage.handleAddr}}</p>
+            <p style="flex:1;height:0.4rem;text-align:right;word-break:break-all;overflow-x:scroll;margin:0">{{formMessage.handleAddr}}</p>
             <img src="../../assets/image/icon_2_address2.png"
                  width="24"
                  height="24"
                  alt
                  srcset>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div class="iteamImage">
@@ -334,7 +351,6 @@
                 class="iconfont icon-iconset0157"></span>
           <input type="text"
                  v-model="addressCtrol"
-                 @keyup="suggestSa"
                  style="width:100%;height:100%;padding:0.18rem;border-radius:4px;text-indent:0.6rem"
                  placeholder="搜索">
         </div>
@@ -366,6 +382,7 @@ import {
 import {
   Indicator
 } from "mint-ui";
+import { constants } from 'zlib';
 
 export default {
   computed: {},
@@ -390,6 +407,7 @@ export default {
       ifbikeListone: false,
       time: "",
       myMap: null,
+      positionPicker: null,
       slide1: [],
       slide: [],
       placeData: [],
@@ -409,9 +427,11 @@ export default {
       imageName: "",
       //点击地址的对象信息
       addrinfors: null,
+      objAddress: {},
       formMessage: {
         createTime: Date.now(),
         handleAddr: "",
+        handleSecAddr: "请选择地点",
         arrangeNum: "",
         cleanNum: "",
         remark: "",
@@ -427,7 +447,25 @@ export default {
     };
   },
   components: {},
-  mounted () { },
+  watch: {
+    addressCtrol: function (val, old) {
+      this.placeSearch.search(val, (status, result) => {
+        let addrPrefix = "";
+        this.placeData = result.poiList.pois.map(iteam => {
+          addrPrefix =
+            iteam.pname === iteam.cityname ?
+              iteam.pname + iteam.adname :
+              iteam.pname + iteam.cityname + iteam.adname;
+          return {
+            addr: iteam.address === iteam.adname ? addrPrefix + iteam.name : addrPrefix + iteam.address,
+            lng: iteam.location.lng,
+            lat: iteam.location.lat,
+            name: iteam.name
+          };
+        });
+      });
+    }
+  },
   created () {
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
@@ -454,7 +492,6 @@ export default {
     },
     submitBike () {
       this.popupVisible2 = false;
-      console.log(this.sum(this.bikeCleanCompany));
       if (this.bikeTitle == "整理" && this.sum(this.bikeCleanCompany) !== 0) {
         this.isNumberbike = true;
         this.formMessage.arrangeNum = this.sum(this.bikeCleanCompany);
@@ -568,7 +605,6 @@ export default {
       }
     },
     detailImage (index, id) {
-      // console.log(index)
       MessageBox.confirm("是否确认删除图片?").then(action => {
         if (action == "confirm") {
           //确认的回调
@@ -576,7 +612,6 @@ export default {
             this.formMessage.handleBefore.splice(id, 1);
             this.formMessage.handleBeforeURLs.splice(id, 1);
           } else {
-            // console.log("进入整理后")
             this.formMessage.handleAfter.splice(id, 1);
             this.formMessage.handleAfterURLs.splice(id, 1);
           }
@@ -587,27 +622,23 @@ export default {
       this.rotateS = this.rotateS + 90;
     },
     getAddress (row, index) {
-      //   console.log(row);
-      // this.myMap.clear();
-      let marker = new AMap.Marker({
-        icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
-        position: [row.lng, row.lat]
-      });
       this.myMap = new AMap.Map("myMap", {
         resizeEnable: true,
         center: [row.lng, row.lat],
         zoom: 18
       });
       // 构造点标记
-      this.myMap.add(marker);
-      this.myMap.addControl(this.addCompCtrol());
+      this.addMarker([row.lng, row.lat]);
+      this.showInfoDragstart();
       this.changeId = index;
-      this.addrinfors = row;
     },
 
     getMap (flag) {
       this.myMap = new AMap.Map("myMap");
-      this.myMap.on('click', this.showInfoClick);
+      // this.myMap.on('click', this.showInfoClick);
+      // this.myMap.on('dragstart', this.showInfoDragstart);
+      this.showInfoDragstart();
+
       this.placeSearch = new AMap.PlaceSearch({
         city: "全国",
         map: this.myMap,
@@ -618,33 +649,32 @@ export default {
         extensions: "all",
         autoFitView: false
       });
+      let geolocation = new AMap.Geolocation({
+        enableHighAccuracy: true, //是否使用高精度定位，默认:true
+        timeout: 10000, //超过10秒后停止定位，默认：无穷大
+        maximumAge: 0, //定位结果缓存0毫秒，默认：0
+        convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+        showButton: true, //显示定位按钮，默认：true
+        buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
+        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+        showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
+        showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
+        panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
+        zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+      });
       if (flag) {
-        let geolocation = new AMap.Geolocation({
-          enableHighAccuracy: true, //是否使用高精度定位，默认:true
-          timeout: 10000, //超过10秒后停止定位，默认：无穷大
-          maximumAge: 0, //定位结果缓存0毫秒，默认：0
-          convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-          showButton: true, //显示定位按钮，默认：true
-          buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
-          buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-          showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
-          showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
-          panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
-          zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-        });
+
         this.myMap.addControl(geolocation);
         geolocation.getCurrentPosition((status, result) => {
-          console.log(result.position);
+
           this.addressMapSa(result.position);
           this.formMessage.gpsLongitude = result.position.lng;
           this.formMessage.gpsLatitude = result.position.lat;
         });
       } else {
-        let marker = new AMap.Marker({
-          icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
-          position: [this.formMessage.longitude, this.formMessage.latitude]
-        });
-        this.myMap.add(marker);
+        // this.positionPicker.stop();
+        this.myMap.addControl(geolocation);
+        // this.addMarker([this.formMessage.longitude, this.formMessage.latitude]);
         let location = [this.formMessage.longitude, this.formMessage.latitude];
         this.myMap.setZoomAndCenter(20, location);
         this.addressMapSa(location, true);
@@ -659,12 +689,53 @@ export default {
       this.addressMapSa1(e.lnglat);
 
     },
+    //开始拖拽
+    showInfoDragstart () {
+
+      if (this.markerSa) {
+        this.markerSa.setMap(null);
+        this.markerSa = null;
+      }
+      AMapUI.loadUI(['misc/PositionPicker'], (PositionPicker) => {
+        this.positionPicker = new PositionPicker({
+          mode: 'dragMap',//设定为拖拽地图模式，可选'dragMap'、'dragMarker'，默认为'dragMap'
+          map: this.myMap,//依赖地图对象
+          iconStyle: {//自定义外观
+            url: require('../../assets/image/login/icon@3x.png'),//图片地址
+            size: [48, 48],  //要显示的点大小，将缩放图片
+            ancher: [24, 40],//锚点的位置，即被size缩放之后，图片的什么位置作为选中的位置
+          }
+        });
+
+        this.positionPicker.start();
+
+        this.objAddress = {};
+        this.positionPicker.on('success', (positionResult) => {
+          // this.placeData = []
+          this.objAddress.addr = positionResult.address;
+          this.objAddress.name = positionResult.nearestJunction;
+          this.objAddress.lng = positionResult.position.lng;
+          this.objAddress.lat = positionResult.position.lat;
+
+          this.addressMapSa(positionResult.position);
+
+        });
+        this.positionPicker.on('fail', (positionResult) => {
+          this.placeData = [];
+
+        });
+        //TODO:事件绑定、结果处理等
+      });
+
+    },
+
     // 实例化点标记
     addMarker (val) {
       // this.myMap.remove(markers);
       this.markerSa = new AMap.Marker({
         map: this.myMap,
-        icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+        icon: require('../../assets/image/login/icon@3x.png'),
+        size: [48, 48],
         position: val,
         // offset: new AMap.Pixel(-10, -10)
       });
@@ -680,6 +751,7 @@ export default {
     //点击获取经纬度获取周边
     addressMapSa1 (position) {
       this.mapRangeSearch(position).then(res => {
+
         let addrPrefix =
           res.addressComponent.province +
           res.addressComponent.city +
@@ -715,28 +787,28 @@ export default {
       // this.myMap.addControl(geolocation);
     },
     //高德地图关键字提示
-    suggestSa () {
-      this.placeSearch.search(this.addressCtrol, (status, result) => {
-        // console.log(result);
-        // return;
-        let addrPrefix = "";
-        this.placeData = result.poiList.pois.map(iteam => {
-          addrPrefix =
-            iteam.pname === iteam.cityname ?
-              iteam.pname + iteam.adname :
-              iteam.pname + iteam.cityname + iteam.adname;
-          return {
-            addr: iteam.address === iteam.adname ? addrPrefix + iteam.name : addrPrefix + iteam.address,
-            lng: iteam.location.lng,
-            lat: iteam.location.lat,
-            name: iteam.name
-          };
-        });
-      });
-    },
+    //已经放到了watch监听值得变化
+    // suggestSa () {
+    //   this.placeSearch.search(this.addressCtrol, (status, result) => {
+    //     let addrPrefix = "";
+    //     this.placeData = result.poiList.pois.map(iteam => {
+    //       addrPrefix =
+    //         iteam.pname === iteam.cityname ?
+    //           iteam.pname + iteam.adname :
+    //           iteam.pname + iteam.cityname + iteam.adname;
+    //       return {
+    //         addr: iteam.address === iteam.adname ? addrPrefix + iteam.name : addrPrefix + iteam.address,
+    //         lng: iteam.location.lng,
+    //         lat: iteam.location.lat,
+    //         name: iteam.name
+    //       };
+    //     });
+    //   });
+    // },
 
     //经纬度获取周边
     addressMapSa (position, flag) {
+      // this.changeId = -1;
       this.mapRangeSearch(position).then(res => {
         let addrPrefix =
           res.addressComponent.province +
@@ -752,32 +824,35 @@ export default {
             name: iteam.name
           };
         });
+        this.placeData.unshift(this.objAddress);
         if (flag) {
           this.placeData.unshift({
             addr: this.formMessage.handleAddr,
+            name: this.formMessage.handleSecAddr,
             lng: this.formMessage.longitude,
             lat: this.formMessage.latitude
           });
-          this.changeId = 0;
+          // this.changeId = 0;
         }
 
       });
     },
     //确定
     sendAddress () {
-      if (this.addrinfors) {
+      if (this.changeId !== -1) {
         this.addressCtrol = "";
-        this.formMessage.handleAddr = this.addrinfors.addr;
-        this.formMessage.longitude = this.addrinfors.lng;
-        this.formMessage.latitude = this.addrinfors.lat;
+        this.formMessage.handleAddr = this.placeData[this.changeId].addr;
+        this.formMessage.handleSecAddr = this.placeData[this.changeId].name;
+        this.formMessage.longitude = this.placeData[this.changeId].lng;
+        this.formMessage.latitude = this.placeData[this.changeId].lat;
         this.popupVisible = false;
+        // this.changeId = -1;
       } else {
         MessageBox.alert("", {
           message: "请选择地址",
           title: "提示"
         }).then(action => { });
       }
-      // this.formMessage.handleAddr=this.a
     },
     handOpen (val, index) {
       this.rotateS = 0;
@@ -808,7 +883,6 @@ export default {
       }
     },
     handleClose () {
-      // console.log("close event");
     },
     getMessage (val) {
       this.$fetchGet("cleanConfig/ifCleanByBike").then(res => {
@@ -818,6 +892,7 @@ export default {
         })
           .then(res => {
             if (res) {
+              console.log(res);
               this.formMessage = res;
               this.formMessage.handleBefore = res.handleBefore.split(";");
               this.formMessage.handleAfter = res.handleAfter.split(";");
@@ -910,7 +985,6 @@ export default {
       this.formMessage.createTime = this.FormatDate1(
         this.formMessage.createTime
       );
-      // console.log(this.formMessage.createTime);
       if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择清理地点",

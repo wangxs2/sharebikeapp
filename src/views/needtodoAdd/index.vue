@@ -102,9 +102,14 @@
           </div>
           <div class="topcloumson">
             <p class="leftfont">地点</p>
-            <p class="leftfont1"
+            <div class="leftfont1"
+                 @click="getMap1()">
+              <p style="margin-top:0.1rem;color:#333333;text-decoration:underline">{{formMessage.handleSecAddr}}</p>
+              <p style="margin-top:0.1rem;color:#aeaeae;text-decoration:underline">{{formMessage.handleAddr}}</p>
+            </div>
+            <!-- <p class="leftfont1"
                style="color:blue;text-decoration:underline"
-               @click="getMap1()">{{formMessage.handleAddr}}</p>
+               @click="getMap1()">{{formMessage.handleAddr}}</p> -->
           </div>
           <div class="topcloumson">
             <p class="leftfont">派单人</p>

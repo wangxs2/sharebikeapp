@@ -2,37 +2,36 @@
 
 <template>
   <div class="container">
-    <mt-popup class="imgMask" v-model="popupVisible" position="right">
-      <span
-        class="iconfont icon-guandiao"
-        style="color:#fff;position:fixed;right:15px;top:15px"
-        @click="popupVisible=false"
-      ></span>
-      <img
-        :src="Ip+bigImage"
-        alt
-        srcset
-        v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
-        width="100%"
-      >
-      <img
-        src="../../assets/image/login/rotate.svg"
-        alt
-        srcset
-        width="50"
-        height="50"
-        style="position:fixed;right:44%;bottom:15px;"
-        @click="rotate()"
-      >
+    <mt-popup class="imgMask"
+              v-model="popupVisible"
+              position="right">
+      <span class="iconfont icon-guandiao"
+            style="color:#fff;position:fixed;right:15px;top:15px"
+            @click="popupVisible=false"></span>
+      <img :src="Ip+bigImage"
+           alt
+           srcset
+           v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
+           width="100%">
+      <img src="../../assets/image/login/rotate.svg"
+           alt
+           srcset
+           width="50"
+           height="50"
+           style="position:fixed;right:44%;bottom:15px;"
+           @click="rotate()">
     </mt-popup>
     <div class="header">
-      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="iconClick">
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png"
+           alt
+           @click="iconClick">
       <div class="header-title">2018年12月考评列表</div>
       <div>{{currentPage+1}}/{{totalSingular}}</div>
     </div>
     <div class="content">
       <div class="superList">
-        <div class="topsa" style="margin-top:0.2rem">
+        <div class="topsa"
+             style="margin-top:0.2rem">
           <div class="fontext">详情</div>
           <div></div>
         </div>
@@ -51,60 +50,55 @@
             <p class="leftfont">地点</p>
             <p class="leftfont1">{{iteamList.handleAddr}}</p>
           </div>
-          <div class="topcloumson" v-if="iteamList.sheetType=='DISPATCH'">
+          <div class="topcloumson"
+               v-if="iteamList.sheetType=='DISPATCH'">
             <p class="leftfont">派单人</p>
             <p class="leftfont1">{{iteamList.dispachUserName}}</p>
           </div>
           <div class="topcloumson">
             <p class="leftfont">处理方式</p>
-            <p
-              class="leftfont1"
-            >{{iteamList.dealMethod==1?"整理":iteamList.dealMethod==2?"清运":"整理且清运"}}</p>
+            <p class="leftfont1">{{iteamList.dealMethod==1?"整理":iteamList.dealMethod==2?"清运":"整理且清运"}}</p>
           </div>
-          <div class="topcloumson" v-if="iteamList.sheetType=='DISPATCH'">
+          <div class="topcloumson"
+               v-if="iteamList.sheetType=='DISPATCH'">
             <p class="leftfont">派单照片</p>
             <p class="leftfont1">
-              <img
-                v-for="(iteam,index) in iteamList.dispachPhotoURLs"
-                :src="Ip+iteam"
-                :key="index"
-                alt
-                srcset
-                @click="handOpen(iteam)"
-              >
+              <img v-for="(iteam,index) in iteamList.dispachPhotoURLs"
+                   :src="Ip+iteam"
+                   :key="index"
+                   alt
+                   srcset
+                   @click="handOpen(iteam)">
             </p>
           </div>
           <div class="topcloumson">
             <p class="leftfont">处理前</p>
             <p class="leftfont1">
-              <img
-                v-for="(iteam,index) in iteamList.handleBeforeURLs"
-                :src="Ip+iteam"
-                :key="index"
-                alt
-                srcset
-                @click="handOpen(iteam)"
-              >
+              <img v-for="(iteam,index) in iteamList.handleBeforeURLs"
+                   :src="Ip+iteam"
+                   :key="index"
+                   alt
+                   srcset
+                   @click="handOpen(iteam)">
             </p>
           </div>
           <div class="topcloumson">
             <p class="leftfont">处理后</p>
             <p class="leftfont1">
-              <img
-                v-for="(iteam,index) in iteamList.handleAfterURLs"
-                :src="Ip+iteam"
-                :key="index"
-                alt
-                srcset
-                @click="handOpen(iteam)"
-              >
+              <img v-for="(iteam,index) in iteamList.handleAfterURLs"
+                   :src="Ip+iteam"
+                   :key="index"
+                   alt
+                   srcset
+                   @click="handOpen(iteam)">
             </p>
           </div>
           <div class="topcloumson">
             <p class="leftfont">整理数</p>
             <p class="leftfont1">{{iteamList.arrangeNum}}</p>
           </div>
-          <div class="topcloumson" v-if="iteamList.sheetType=='DISPATCH'">
+          <div class="topcloumson"
+               v-if="iteamList.sheetType=='DISPATCH'">
             <p class="leftfont">清运数</p>
             <p class="leftfont1">{{iteamList.cleanNum}}</p>
           </div>
@@ -127,144 +121,126 @@
         </div>
       </div>
       <div class="superList">
-        <div class="topsa" style="margin-top:0.2rem">
+        <div class="topsa"
+             style="margin-top:0.2rem">
           <div class="fontext">考评情况</div>
           <div></div>
         </div>
       </div>
-      <div class="superList" style="margin-bottom:0rem;">
-        <div class="topcloum" style=" border-bottom-left-radius:0;border-bottom-right-radius:0;">
-          <div class="topcloumson" style="padding-bottom:0.16rem">
+      <div class="superList"
+           style="margin-bottom:0rem;">
+        <div class="topcloum"
+             style=" border-bottom-left-radius:0;border-bottom-right-radius:0;">
+          <div class="topcloumson"
+               style="padding-bottom:0.16rem">
             <div style="padding-top:0.1rem;font-size: 0.38rem">拍照角度</div>
             <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <img
-                v-if="startNumber>index||startNumber==index"
-                v-for="(iteam,index) in 5"
-                @click="chooseOrder(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/stars.png"
-                alt
-                srcset
-              >
-              <img
-                v-if="startNumber<index"
-                v-for="(iteam,index) in 5"
-                @click="chooseOrder(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/starnor@2x.png"
-                alt
-                srcset
-              >
+              <img v-if="startNumber>index||startNumber==index"
+                   v-for="(iteam,index) in 5"
+                   @click="chooseOrder(index)"
+                   style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                   :key="index"
+                   src="@/assets/image/evaluation/stars.png"
+                   alt
+                   srcset>
+              <img v-if="startNumber<index"
+                   v-for="(iteam,index) in 5"
+                   @click="chooseOrder(index)"
+                   style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                   :key="index"
+                   src="@/assets/image/evaluation/starnor@2x.png"
+                   alt
+                   srcset>
             </div>
           </div>
-          <p
-            style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem"
-          >照片角度是否一致，是否能看出是同一个地点，照片的视野范围是否太小。</p>
-          <div class="topcloumson" style="padding-bottom:0.16rem">
+          <p style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem">照片角度是否一致，是否能看出是同一个地点，照片的视野范围是否太小。</p>
+          <div class="topcloumson"
+               style="padding-bottom:0.16rem">
             <div style="padding-top:0.1rem;font-size: 0.38rem">治理数量</div>
             <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <img
-                v-if="startNumber1>index||startNumber1==index"
-                v-for="(iteam,index) in 5"
-                @click="chooseOrder1(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/stars.png"
-                alt
-                srcset
-              >
-              <img
-                v-if="startNumber1<index"
-                v-for="(iteam,index) in 5"
-                @click="chooseOrder1(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/starnor@2x.png"
-                alt
-                srcset
-              >
+              <img v-if="startNumber1>index||startNumber1==index"
+                   v-for="(iteam,index) in 5"
+                   @click="chooseOrder1(index)"
+                   style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                   :key="index"
+                   src="@/assets/image/evaluation/stars.png"
+                   alt
+                   srcset>
+              <img v-if="startNumber1<index"
+                   v-for="(iteam,index) in 5"
+                   @click="chooseOrder1(index)"
+                   style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                   :key="index"
+                   src="@/assets/image/evaluation/starnor@2x.png"
+                   alt
+                   srcset>
             </div>
           </div>
-          <p
-            style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem"
-          >实际整理或清运数量是否与照片展现的一致，整理和清运数量是否写反。</p>
-          <div class="topcloumson" style="padding-bottom:0.16rem">
+          <p style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem">实际整理或清运数量是否与照片展现的一致，整理和清运数量是否写反。</p>
+          <div class="topcloumson"
+               style="padding-bottom:0.16rem">
             <div style="padding-top:0.1rem;font-size: 0.38rem">整理照片</div>
             <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <img
-                v-if="startNumber2>index||startNumber2==index"
-                v-for="(iteam,index) in 5"
-                @click="chooseOrder2(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/stars.png"
-                alt
-                srcset
-              >
-              <img
-                v-if="startNumber2<index"
-                v-for="(iteam,index) in 5"
-                @click="chooseOrder2(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/starnor@2x.png"
-                alt
-                srcset
-              >
+              <img v-if="startNumber2>index||startNumber2==index"
+                   v-for="(iteam,index) in 5"
+                   @click="chooseOrder2(index)"
+                   style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                   :key="index"
+                   src="@/assets/image/evaluation/stars.png"
+                   alt
+                   srcset>
+              <img v-if="startNumber2<index"
+                   v-for="(iteam,index) in 5"
+                   @click="chooseOrder2(index)"
+                   style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                   :key="index"
+                   src="@/assets/image/evaluation/starnor@2x.png"
+                   alt
+                   srcset>
             </div>
           </div>
-          <p
-            style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem"
-          >整理后，其他企业的单车或社会车辆是否停放错乱，照片是否清晰。</p>
-          <div class="topcloumson" style="padding-bottom:0.16rem;">
+          <p style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem">整理后，其他企业的单车或社会车辆是否停放错乱，照片是否清晰。</p>
+          <div class="topcloumson"
+               style="padding-bottom:0.16rem;">
             <div style="padding-top:0.1rem;font-size: 0.38rem">处理方式</div>
             <div style="display:flex;justify-content: flex-start;margin-left:0.36rem">
-              <img
-                v-if="startNumber3>index||startNumber3==index"
-                v-for="(iteam,index) in 5"
-                @click="chooseOrder3(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/stars.png"
-                alt
-                srcset
-              >
-              <img
-                v-if="startNumber3<index"
-                v-for="(iteam,index) in 5"
-                @click="chooseOrder3(index)"
-                style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
-                :key="index"
-                src="@/assets/image/evaluation/starnor@2x.png"
-                alt
-                srcset
-              >
+              <img v-if="startNumber3>index||startNumber3==index"
+                   v-for="(iteam,index) in 5"
+                   @click="chooseOrder3(index)"
+                   style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                   :key="index"
+                   src="@/assets/image/evaluation/stars.png"
+                   alt
+                   srcset>
+              <img v-if="startNumber3<index"
+                   v-for="(iteam,index) in 5"
+                   @click="chooseOrder3(index)"
+                   style="width:0.6rem;height:0.6rem;margin-right:0.2rem"
+                   :key="index"
+                   src="@/assets/image/evaluation/starnor@2x.png"
+                   alt
+                   srcset>
             </div>
           </div>
-          <p
-            style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem"
-          >派单的处理方式与企业的处理方式是否一致，反例：派单要求清运，而企业只做了整理的处理。</p>
+          <p style="color:#999999;font-size:0.3rem;padding-left:2rem;padding-bottom:0.3rem">派单的处理方式与企业的处理方式是否一致，反例：派单要求清运，而企业只做了整理的处理。</p>
         </div>
       </div>
       <div class="superList">
-        <div class="topsa" style="margin-top:0rem;padding-top:0rem;border-radius:0">
+        <div class="topsa"
+             style="margin-top:0rem;padding-top:0rem;border-radius:0">
           <div class="fontext">备注</div>
           <div></div>
         </div>
       </div>
       <div class="superList">
         <div class="topcloum">
-          <textarea
-            name
-            style="border:1px solid #eeeeee;padding-top:0.2rem;text-indent:0.2rem"
-            placeholder="请输入备注内容"
-            id
-            cols="30"
-            v-model="remark"
-            rows="4"
-          ></textarea>
+          <textarea name
+                    style="border:1px solid #eeeeee;padding-top:0.2rem;text-indent:0.2rem"
+                    placeholder="请输入备注内容"
+                    id
+                    cols="30"
+                    v-model="remark"
+                    rows="4"></textarea>
         </div>
       </div>
       <div class="superList">
@@ -277,19 +253,16 @@
           </div>
         </div>
       </div>
-      <div class="superList" style="margin-top:0.3rem">
+      <div class="superList"
+           style="margin-top:0.3rem">
         <div style="display: flex;justify-content:center;margin:0 0.3rem;">
-          <button
-            class="button-number"
-            v-if="prePage"
-            style="width:48%;background: -webkit-linear-gradient(left, #6698FF, #5076FF);margin-right:2%"
-            @click="onSingle"
-          >上一单</button>
-          <button
-            class="button-number"
-            style="width:48%;background: -webkit-linear-gradient(left, #FF9B42, #FF7743);margin-left:2%"
-            @click="Submission"
-          >{{nextPage==true?'下一单':'提交'}}</button>
+          <button class="button-number"
+                  v-if="prePage"
+                  style="width:48%;background: -webkit-linear-gradient(left, #6698FF, #5076FF);margin-right:2%"
+                  @click="onSingle">上一单</button>
+          <button class="button-number"
+                  style="width:48%;background: -webkit-linear-gradient(left, #FF9B42, #FF7743);margin-left:2%"
+                  @click="Submission">{{nextPage==true?'下一单':'提交'}}</button>
         </div>
       </div>
     </div>
@@ -303,7 +276,7 @@ import { MessageBox } from "mint-ui";
 let pathsaTwo;
 export default {
   computed: {},
-  data() {
+  data () {
     return {
       slide: [],
       slide1: [],
@@ -331,8 +304,8 @@ export default {
     };
   },
   components: {},
-  mounted() {},
-  created() {
+  mounted () { },
+  created () {
     if (this.$route.query.assessmentId) {
       this.assessmentId = this.$route.query.assessmentId;
       this.currentPage = this.$route.query.pageSize;
@@ -342,7 +315,7 @@ export default {
   },
   computed: {},
   watch: {
-    currentPage: function(val, old) {
+    currentPage: function (val, old) {
       if (val == 0) {
         this.prePage = false;
         this.nextPage = true;
@@ -354,7 +327,7 @@ export default {
         this.nextPage = true;
       }
     },
-    achievementTimely1: function(val, old) {
+    achievementTimely1: function (val, old) {
       this.achievementTimely =
         val +
         this.achievementTimelysa +
@@ -362,7 +335,7 @@ export default {
         this.achievementTimely3 +
         this.achievementTimely4;
     },
-    achievementTimely2: function(val, old) {
+    achievementTimely2: function (val, old) {
       this.achievementTimely =
         val +
         this.achievementTimelysa +
@@ -370,7 +343,7 @@ export default {
         this.achievementTimely3 +
         this.achievementTimely4;
     },
-    achievementTimely3: function(val, old) {
+    achievementTimely3: function (val, old) {
       this.achievementTimely =
         val +
         this.achievementTimelysa +
@@ -378,7 +351,7 @@ export default {
         this.achievementTimely2 +
         this.achievementTimely4;
     },
-    achievementTimely4: function(val, old) {
+    achievementTimely4: function (val, old) {
       this.achievementTimely =
         val +
         this.achievementTimelysa +
@@ -386,23 +359,23 @@ export default {
         this.achievementTimely3 +
         this.achievementTimely2;
     },
-    achievementTimely: (val, old) => {}
+    achievementTimely: (val, old) => { }
   },
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     console.log(from.path);
     pathsaTwo = from.path;
     next();
   },
-  mounted() {},
+  mounted () { },
   methods: {
-    handOpen(val) {
+    handOpen (val) {
       this.rotateS = 0;
       this.popupVisible = true;
       val = val.replace(".400x400.jpg", ".square.jpg");
       this.bigImage = val;
     },
     //拍照角度
-    chooseOrder(index) {
+    chooseOrder (index) {
       // let number=0;
       this.startNumber = index;
       this.achievementTimely1 = this.achievementSa1(index);
@@ -411,40 +384,40 @@ export default {
       //  }
     },
     //处理数量
-    chooseOrder1(index) {
+    chooseOrder1 (index) {
       this.startNumber1 = index;
       this.achievementTimely2 = this.achievementSa1(index);
     },
     //整理照片
-    chooseOrder2(index) {
+    chooseOrder2 (index) {
       this.startNumber2 = index;
       this.achievementTimely3 = this.achievementSa1(index);
     },
     //处理方式
-    chooseOrder3(index) {
+    chooseOrder3 (index) {
       this.startNumber3 = index;
       this.achievementTimely4 = this.achievementSa1(index);
     },
-    splitsa(val) {
+    splitsa (val) {
       return (
         val.split(" ")[0].split("-")[1] + "-" + val.split(" ")[0].split("-")[2]
       );
     },
-    splitsa1(val) {
+    splitsa1 (val) {
       return (
         val.split(" ")[1].split(":")[0] + ":" + val.split(" ")[1].split(":")[1]
       );
     },
-    rotate() {
+    rotate () {
       this.rotateS = this.rotateS + 90;
     },
-    iconClick() {
+    iconClick () {
       this.$router.push({
         path: pathsaTwo
       });
     },
     //计算派单响应及时性成绩
-    achievementSa(val) {
+    achievementSa (val) {
       let achievement;
       if (val < 30) {
         achievement = 100 * 0.4;
@@ -460,7 +433,7 @@ export default {
       return achievement;
     },
     //计算成绩
-    achievementSa1(val) {
+    achievementSa1 (val) {
       let achievement;
       if (val == 0) {
         achievement = 3;
@@ -476,7 +449,7 @@ export default {
       return achievement;
     },
     //下一单
-    Submission() {
+    Submission () {
       console.log(this.currentPage);
       if (
         this.startNumber == -1 ||
@@ -487,7 +460,7 @@ export default {
         MessageBox.alert("", {
           message: "请完成各项评分！",
           title: "评分失败"
-        }).then(action => {});
+        }).then(action => { });
       } else {
         this.$fetchPut(
           "evaluation/saveEvaluationDetail",
@@ -558,13 +531,13 @@ export default {
             MessageBox.alert("", {
               message: res.message,
               title: "评分失败"
-            }).then(action => {});
+            }).then(action => { });
           }
         });
       }
     },
     //上一单
-    onSingle() {
+    onSingle () {
       let number = this.currentPage;
       this.currentPage = number - 1;
       this.$fetchGet("evaluation/monthEvaluationDetail", {
@@ -590,14 +563,14 @@ export default {
           this.achievementTimely4;
       });
     },
-    getMessage1() {
+    getMessage1 () {
       this.$fetchGet("evaluation/monthEvaluationDetail", {
         evaluateId: this.assessmentId
       }).then(res => {
         this.totalData = res;
       });
     },
-    getMessage() {
+    getMessage () {
       Indicator.open({
         text: "加载中...",
         spinnerType: "fading-circle"
@@ -614,7 +587,7 @@ export default {
           );
           this.achievementTimely = this.achievementTimelysa;
         })
-        .catch(res => {});
+        .catch(res => { });
     }
   }
 };

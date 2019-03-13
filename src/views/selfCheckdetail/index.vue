@@ -96,8 +96,11 @@
                height="24"
                alt
                srcset>
-          <p style="margin-left:0.2rem;margin-top:0.1rem;color:blue;text-decoration:underline"
-             @click="getMap()">{{iteamList.handleAddr}}</p>
+          <div @click="getMap()">
+            <p style="margin-left:0.2rem;margin-top:0.1rem;color:#333333;text-decoration:underline">{{iteamList.handleSecAddr}}</p>
+            <p style="margin-left:0.2rem;margin-top:0.1rem;color:#aeaeae;text-decoration:underline">{{iteamList.handleAddr}}</p>
+          </div>
+
         </div>
       </div>
       <p style="background: #fff;padding:0.2rem 0.3rem;">处理人：{{iteamList.handleUserName}}</p>
@@ -314,6 +317,7 @@ export default {
         yAxis: [
           {
             type: "value",
+            minInterval: 1,
             axisTick: { show: false },//是否显示刻度
             axisLine: {
               lineStyle: {
@@ -388,6 +392,7 @@ export default {
       this.eachartNode.setOption(option);
     },
     getMap () {
+      this.eachartNode.dispatchAction({ type: "hideTip" });
       this.popupVisible1 = true;
       this.myMap = new AMap.Map("myMap");
       let geolocation = new AMap.Geolocation();
@@ -477,6 +482,7 @@ export default {
       })
         .then(res => {
           Indicator.close();
+          console.log(res);
           this.iteamList = res;
           slide3 = res.selfCheckDealDetailList;
           if (res.selfCheckDealDetailList.length > 0) {
