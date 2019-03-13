@@ -401,6 +401,7 @@ export default {
       downIcon: -1,
       addressCtrol: "",
       popupVisible1: false,
+      flagAddres: false,//是否发起搜索地址
       popupVisible2: false,
       popupVisible: false,
       bigImage: "",
@@ -622,23 +623,32 @@ export default {
       this.rotateS = this.rotateS + 90;
     },
     getAddress (row, index) {
-      this.myMap = new AMap.Map("myMap", {
-        resizeEnable: true,
-        center: [row.lng, row.lat],
-        zoom: 18
-      });
-      // 构造点标记
-      this.addMarker([row.lng, row.lat]);
-      this.showInfoDragstart();
       this.changeId = index;
+      this.myMap.setCenter([row.lng, row.lat]);
+      this.markerSa.setPosition([row.lng, row.lat])
+      // }
     },
 
     getMap (flag) {
       this.myMap = new AMap.Map("myMap");
-      // this.myMap.on('click', this.showInfoClick);
-      // this.myMap.on('dragstart', this.showInfoDragstart);
-      this.showInfoDragstart();
 
+      // var gps = [121.49717265, 31.27648185];
+      // AMap.convertFrom(gps, 'gps', function (status, result) {
+      //   if (result.info === 'ok') {
+      //     var lnglats = result.locations; // Array.<LngLat>
+      //     console.log(lnglats[0].lng, lnglats[0].lat);
+      //   }
+      // });
+
+
+      this.myMap.on('dragging', (e) => {
+        this.markerSa.setPosition([this.myMap.getCenter().lng, this.myMap.getCenter().lat])
+      });
+      this.myMap.on('dragend', (e) => {
+        this.markerSa.setPosition([this.myMap.getCenter().lng, this.myMap.getCenter().lat])
+        this.addressMapSa([this.myMap.getCenter().lng, this.myMap.getCenter().lat]);
+      });
+      // this.showInfoDragstart();y
       this.placeSearch = new AMap.PlaceSearch({
         city: "全国",
         map: this.myMap,
@@ -666,36 +676,36 @@ export default {
 
         this.myMap.addControl(geolocation);
         geolocation.getCurrentPosition((status, result) => {
-
+          console.log(result.position);
+          this.addMarker(result.position);
           this.addressMapSa(result.position);
           this.formMessage.gpsLongitude = result.position.lng;
           this.formMessage.gpsLatitude = result.position.lat;
         });
       } else {
-        // this.positionPicker.stop();
         this.myMap.addControl(geolocation);
-        // this.addMarker([this.formMessage.longitude, this.formMessage.latitude]);
+        this.addMarker([this.formMessage.longitude, this.formMessage.latitude]);
         let location = [this.formMessage.longitude, this.formMessage.latitude];
         this.myMap.setZoomAndCenter(20, location);
         this.addressMapSa(location, true);
       }
     },
     //地图点击事件
-    showInfoClick (e) {
-      if (this.markerSa) {
-        this.markerSa.setMap(null);
-        this.markerSa = null;
-      }
-      this.addressMapSa1(e.lnglat);
+    // showInfoClick (e) {
+    //   if (this.markerSa) {
+    //     this.markerSa.setMap(null);
+    //     this.markerSa = null;
+    //   }
+    //   this.addressMapSa1(e.lnglat);
 
-    },
+    // },
     //开始拖拽
     showInfoDragstart () {
-
       if (this.markerSa) {
         this.markerSa.setMap(null);
         this.markerSa = null;
       }
+      // console.log('懂了')
       AMapUI.loadUI(['misc/PositionPicker'], (PositionPicker) => {
         this.positionPicker = new PositionPicker({
           mode: 'dragMap',//设定为拖拽地图模式，可选'dragMap'、'dragMarker'，默认为'dragMap'
@@ -708,16 +718,22 @@ export default {
         });
 
         this.positionPicker.start();
-
+        let arr = [];
         this.objAddress = {};
         this.positionPicker.on('success', (positionResult) => {
           // this.placeData = []
+          console.log(positionResult);
           this.objAddress.addr = positionResult.address;
           this.objAddress.name = positionResult.nearestJunction;
           this.objAddress.lng = positionResult.position.lng;
           this.objAddress.lat = positionResult.position.lat;
-
+          // if (!this.flagAddres) {
           this.addressMapSa(positionResult.position);
+          // } else {
+          // this.placeData.push(this.objAddress);
+          // this.placeData = arr
+          // }
+
 
         });
         this.positionPicker.on('fail', (positionResult) => {
@@ -731,44 +747,37 @@ export default {
 
     // 实例化点标记
     addMarker (val) {
-      // this.myMap.remove(markers);
+
       this.markerSa = new AMap.Marker({
         map: this.myMap,
         icon: require('../../assets/image/login/icon@3x.png'),
-        size: [48, 48],
         position: val,
         // offset: new AMap.Pixel(-10, -10)
       });
-      // this.markerSalist.push(this.markerSa);
-      // this.myMap = new AMap.Map("myMap", {
-      //   resizeEnable: true,
-      //   center: val,
-      //   zoom: 18
-      // });
-      // map.remove(marker);
+
       this.markerSa.setMap(this.myMap);
     },
     //点击获取经纬度获取周边
-    addressMapSa1 (position) {
-      this.mapRangeSearch(position).then(res => {
+    // addressMapSa1 (position) {
+    //   this.mapRangeSearch(position).then(res => {
 
-        let addrPrefix =
-          res.addressComponent.province +
-          res.addressComponent.city +
-          res.addressComponent.district;
-        let addr;
-        this.placeData = res.pois.map(iteam => {
-          // if()
-          return {
-            addr: addrPrefix + iteam.address,
-            lng: iteam.location.lng,
-            lat: iteam.location.lat,
-            name: iteam.name
-          };
-        });
-      });
-      this.addMarker(position);
-    },
+    //     let addrPrefix =
+    //       res.addressComponent.province +
+    //       res.addressComponent.city +
+    //       res.addressComponent.district;
+    //     let addr;
+    //     this.placeData = res.pois.map(iteam => {
+    //       // if()
+    //       return {
+    //         addr: addrPrefix + iteam.address,
+    //         lng: iteam.location.lng,
+    //         lat: iteam.location.lat,
+    //         name: iteam.name
+    //       };
+    //     });
+    //   });
+    //   this.addMarker(position);
+    // },
     addCompCtrol () {
       let geolocation = new AMap.Geolocation({
         enableHighAccuracy: true, //是否使用高精度定位，默认:true
@@ -809,6 +818,7 @@ export default {
     //经纬度获取周边
     addressMapSa (position, flag) {
       // this.changeId = -1;
+      // this.markerSa.setPosition(position)
       this.mapRangeSearch(position).then(res => {
         let addrPrefix =
           res.addressComponent.province +
@@ -824,7 +834,7 @@ export default {
             name: iteam.name
           };
         });
-        this.placeData.unshift(this.objAddress);
+        // this.placeData.unshift(this.objAddress);
         if (flag) {
           this.placeData.unshift({
             addr: this.formMessage.handleAddr,
@@ -846,7 +856,7 @@ export default {
         this.formMessage.longitude = this.placeData[this.changeId].lng;
         this.formMessage.latitude = this.placeData[this.changeId].lat;
         this.popupVisible = false;
-        // this.changeId = -1;
+        this.changeId = -1;
       } else {
         MessageBox.alert("", {
           message: "请选择地址",

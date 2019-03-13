@@ -414,20 +414,20 @@ export default {
       });
     },
     getAddress (row, index) {
-      this.myMap = new AMap.Map("myMap", {
-        resizeEnable: true,
-        center: [row.lng, row.lat],
-        zoom: 20
-      });
-      // 构造点标记
-      // this.myMap.add(marker)
-      this.addMarker([row.lng, row.lat]);
-      this.showInfoDragstart();
+
       this.changeId = index;
+      this.myMap.setCenter([row.lng, row.lat]);
+      this.markerSa.setPosition([row.lng, row.lat])
     },
     getMap (flag) {
       this.myMap = new AMap.Map("myMap");
-      this.showInfoDragstart();
+      this.myMap.on('dragging', (e) => {
+        this.markerSa.setPosition(this.myMap.getCenter())
+      });
+      this.myMap.on('dragend', (e) => {
+        this.markerSa.setPosition(this.myMap.getCenter())
+        this.addressMapSa([this.myMap.getCenter().lng, this.myMap.getCenter().lat]);
+      });
       this.placeSearch = new AMap.PlaceSearch({
         city: "全国",
         map: this.myMap,
@@ -446,7 +446,7 @@ export default {
         showButton: true, //显示定位按钮，默认：true
         buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
         buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-        showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
+        showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
         showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
         panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
         zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
@@ -456,11 +456,13 @@ export default {
         this.myMap.addControl(geolocation);
         geolocation.getCurrentPosition((status, result) => {
           this.addressMapSa(result.position);
+          this.addMarker(result.position);
           this.formMessage.gpsLongitude = result.position.lng;
           this.formMessage.gpsLatitude = result.position.lat;
         });
       } else {
         this.myMap.addControl(geolocation);
+        this.addMarker([this.formMessage.longitude, this.formMessage.latitude]);
         let location = [this.formMessage.longitude, this.formMessage.latitude];
         this.myMap.setZoomAndCenter(20, location);
         this.addressMapSa(location, true);
@@ -480,17 +482,10 @@ export default {
       // this.myMap.remove(markers);
       this.markerSa = new AMap.Marker({
         map: this.myMap,
-        icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+        icon: require('../../assets/image/login/icon@3x.png'),
         position: val,
-        // offset: new AMap.Pixel(-10, -10)
       });
-      // this.markerSalist.push(this.markerSa);
-      // this.myMap = new AMap.Map("myMap", {
-      //   resizeEnable: true,
-      //   center: val,
-      //   zoom: 18
-      // });
-      // map.remove(marker);
+
       this.markerSa.setMap(this.myMap);
     },
     //点击获取经纬度获取周边
@@ -605,7 +600,7 @@ export default {
             name: iteam.name
           };
         });
-        this.placeData.unshift(this.objAddress);
+        // this.placeData.unshift(this.objAddress);
         if (flag) {
           this.placeData.unshift({
             addr: this.formMessage.handleAddr,
