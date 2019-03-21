@@ -401,7 +401,7 @@ export default {
       downIcon: -1,
       addressCtrol: "",
       popupVisible1: false,
-      flagAddres: false,//是否发起搜索地址
+      flagAddres: true,//是否发起搜索地址
       popupVisible2: false,
       popupVisible: false,
       bigImage: "",
@@ -623,16 +623,20 @@ export default {
       this.rotateS = this.rotateS + 90;
     },
     getAddress (row, index) {
+      this.flagAddres = false;
       this.changeId = index;
       this.myMap.setCenter([row.lng, row.lat]);
       this.markerSa.setPosition([row.lng, row.lat])
-      // }
     },
 
     getMap (flag) {
-      this.myMap = new AMap.Map("myMap");
+      this.myMap = new AMap.Map("myMap", {
+        animateEnable: false,
+        resizeEnable: true,
+        preloadMode: true
+      });
 
-      // var gps = [121.49717265, 31.27648185];
+      // var gps = [121.43715452, 31.19440914];
       // AMap.convertFrom(gps, 'gps', function (status, result) {
       //   if (result.info === 'ok') {
       //     var lnglats = result.locations; // Array.<LngLat>
@@ -640,22 +644,21 @@ export default {
       //   }
       // });
 
-
-      this.myMap.on('dragging', (e) => {
+      this.myMap.on('dragstart', (e) => {
+        this.flagAddres = true;
+      });
+      this.myMap.on('mapmove', (e) => {
         this.markerSa.setPosition([this.myMap.getCenter().lng, this.myMap.getCenter().lat])
       });
-      this.myMap.on('dragend', (e) => {
-        this.markerSa.setPosition([this.myMap.getCenter().lng, this.myMap.getCenter().lat])
+      this.myMap.on('moveend', (e) => {
         this.addressMapSa([this.myMap.getCenter().lng, this.myMap.getCenter().lat]);
       });
-      // this.showInfoDragstart();y
       this.placeSearch = new AMap.PlaceSearch({
         city: "全国",
-        map: this.myMap,
+        // map: this.myMap,//不展示
+        showCover: false,
         children: 0,
         type: "汽车服务|汽车销售|汽车维修|摩托车服务|餐饮服务|购物服务|生活服务|体育休闲服务|医疗保健服务|住宿服务|风景名胜|商务住宅|政府机构及社会团体|科教文化服务|交通设施服务|金融保险服务|公司企业|公共设施",
-        // type: "风景名胜|商务住宅|政府机构及社会团体|交通设施服务|公司企业|道路附属设施|地名地址信息|公共设施",
-        // type: "风景名胜|商务住宅|政府机构及社会团体|交通设施服务|公司企业|住宿服务|公共设施|汽车服务|汽车销售|汽车维修|摩托车服务|餐饮服务|购物服务|生活服务|体育休闲服务",
         extensions: "all",
         autoFitView: false
       });
@@ -795,30 +798,11 @@ export default {
       return geolocation;
       // this.myMap.addControl(geolocation);
     },
-    //高德地图关键字提示
-    //已经放到了watch监听值得变化
-    // suggestSa () {
-    //   this.placeSearch.search(this.addressCtrol, (status, result) => {
-    //     let addrPrefix = "";
-    //     this.placeData = result.poiList.pois.map(iteam => {
-    //       addrPrefix =
-    //         iteam.pname === iteam.cityname ?
-    //           iteam.pname + iteam.adname :
-    //           iteam.pname + iteam.cityname + iteam.adname;
-    //       return {
-    //         addr: iteam.address === iteam.adname ? addrPrefix + iteam.name : addrPrefix + iteam.address,
-    //         lng: iteam.location.lng,
-    //         lat: iteam.location.lat,
-    //         name: iteam.name
-    //       };
-    //     });
-    //   });
-    // },
-
     //经纬度获取周边
     addressMapSa (position, flag) {
-      // this.changeId = -1;
-      // this.markerSa.setPosition(position)
+      if (!this.flagAddres) {
+        return
+      }
       this.mapRangeSearch(position).then(res => {
         let addrPrefix =
           res.addressComponent.province +

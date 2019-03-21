@@ -275,6 +275,7 @@ export default {
       dispachPhotoUrls: [],
       addrinfors: null,
       positionPicker: null,
+      flagAddres: true,
       objAddress: {},
       placeData: [],
       lageImg: [],//轮播显示图片
@@ -414,23 +415,32 @@ export default {
       });
     },
     getAddress (row, index) {
-
+      this.flagAddres = false;
       this.changeId = index;
       this.myMap.setCenter([row.lng, row.lat]);
       this.markerSa.setPosition([row.lng, row.lat])
     },
     getMap (flag) {
       this.myMap = new AMap.Map("myMap");
-      this.myMap.on('dragging', (e) => {
-        this.markerSa.setPosition(this.myMap.getCenter())
+      // this.myMap.on('dragging', (e) => {
+      //   this.markerSa.setPosition(this.myMap.getCenter())
+      // });
+      // this.myMap.on('dragend', (e) => {
+      //   this.markerSa.setPosition(this.myMap.getCenter())
+      //   this.addressMapSa([this.myMap.getCenter().lng, this.myMap.getCenter().lat]);
+      // });
+      this.myMap.on('dragstart', (e) => {
+        this.flagAddres = true;
       });
-      this.myMap.on('dragend', (e) => {
-        this.markerSa.setPosition(this.myMap.getCenter())
+      this.myMap.on('mapmove', (e) => {
+        this.markerSa.setPosition([this.myMap.getCenter().lng, this.myMap.getCenter().lat])
+      });
+      this.myMap.on('moveend', (e) => {
         this.addressMapSa([this.myMap.getCenter().lng, this.myMap.getCenter().lat]);
       });
       this.placeSearch = new AMap.PlaceSearch({
         city: "全国",
-        map: this.myMap,
+        // map: this.myMap,
         children: 0,
         type: "汽车服务|汽车销售|汽车维修|摩托车服务|餐饮服务|购物服务|生活服务|体育休闲服务|医疗保健服务|住宿服务|风景名胜|商务住宅|政府机构及社会团体|科教文化服务|交通设施服务|金融保险服务|公司企业|公共设施",
         // 公共设施|公司企业|商务住宅|风景名胜|政府机构及社会团体
@@ -585,6 +595,9 @@ export default {
     },
     //经纬度获取周边
     addressMapSa (position, flag) {
+      if (!this.flagAddres) {
+        return
+      }
       this.mapRangeSearch(position).then(res => {
         let addrPrefix =
           res.addressComponent.province +
