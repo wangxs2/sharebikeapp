@@ -106,14 +106,13 @@ module.exports = {
     child_process: 'empty'
   },
   externals: {
-    AMap: 'AMap',
-    AMapUI: 'AMapUI',
-    BMap: 'BMap'
+    AMap: 'AMap'
   },
   plugins: [
     new webpack.ProvidePlugin({
       $: 'zepto',
-      Zepto: 'zepto'
+      Zepto: 'zepto',
+      AMap: 'AMap'
     })
     // 'vux-ui'
   ]

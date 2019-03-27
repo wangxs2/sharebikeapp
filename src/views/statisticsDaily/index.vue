@@ -64,6 +64,7 @@
           <div class="content-bottom-img">
             <h1 style="font-size:0.5rem;margin:0;margin-top:0.2rem;text-align:center">{{dataDetail.title}}</h1>
             <p style="font-size:0.4rem;margin:0;color:#afbffe;text-align:center;margin-right:0.6rem">《单车治理》{{dataDetail.dayDate}}</p>
+
           </div>
         </div>
         <div class="content-bottom-box"
@@ -78,7 +79,9 @@
                srcset>
           <div class="content-bottom-rules"
                style="width:100%;margin-top:1.8rem;padding-bottom:0.5rem">
+            <p style="font-size:0.4rem;margin:0;color:#afbffe;text-align:center;">《生成时间》{{new Date(dataDetail.createTime).Format('yyyy-MM-dd')}}</p>
             <div class="content-bottom-list">
+
               <p style="margin:0;padding:0.3rem;line-height:0.62rem;padding-bottom:0;text-indent:0.8rem">{{dataDetail.status==0?dataDetail.dispatchDealSummary:dataDetail.cleanByUserSummary}}</p>
               <p style="margin:0;padding:0.3rem;line-height:0.62rem;padding-bottom:0;text-indent:0.8rem"
                  v-html="dispatchContentSummary"></p>
@@ -214,6 +217,23 @@
                           <span style="text-align:center;color:#666666;font-size:0.34rem">完成率</span>
                         </div>
                       </div>
+                      <div style="display:flex;justify-content: space-between;width:100%;border-bottom:1px solid #F2F2F2">
+                        <div style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%">
+                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.qualified}}</span>
+                          <span style="text-align:center;color:#666666;font-size:0.34rem">合格数</span>
+                        </div>
+                        <div style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%">
+                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{(item.done-item.qualified)}}</span>
+                          <span style="text-align:center;color:#666666;font-size:0.34rem">不合格数</span>
+                        </div>
+                        <div style="display:flex;flex-direction: column;justify-content:center;padding:0.2rem;margin:0.1rem 0;width:100%">
+                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{((item.qualifiedRate)*100).toFixed(2)}}%</span>
+                          <span style="text-align:center;color:#666666;font-size:0.34rem">合格率</span>
+                        </div>
+                      </div>
                       <div style="display:flex;justify-content: space-between;width:100%;">
                         <div style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%">
                           <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
@@ -282,20 +302,23 @@
                   <div class="content-bottom-list"
                        style="padding:0.3rem;border-left:1px solid #FEB621">
                     <div style="display:flex;flex-direction: column;border:1px solid #F2F2F2;width:100%;">
-                      <!-- <div style="display:flex;justify-content: space-between;width:100%;border-bottom:1px solid #F2F2F2">
+                      <div style="display:flex;justify-content: space-between;width:100%;border-bottom:1px solid #F2F2F2">
                         <div style='display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.done}}</span>
-                          <span style="text-align:center;color:#666666;font-size:0.34rem">已处理</span>
+                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''"
+                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.qualified}}</span>
+                          <span style="text-align:center;color:#666666;font-size:0.34rem">合格数</span>
                         </div>
                         <div style='display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{(item.doing+item.willdo)}}</span>
-                          <span style="text-align:center;color:#666666;font-size:0.34rem">未处理</span>
+                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''"
+                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{(item.done-item.qualified)}}</span>
+                          <span style="text-align:center;color:#666666;font-size:0.34rem">不合格数</span>
                         </div>
                         <div style='display:flex;flex-direction: column;justify-content:center;padding:0.2rem;margin:0.1rem 0;width:100%'>
-                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''" style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{(item.doneRate)*100/100}}%</span>
-                          <span style="text-align:center;color:#666666;font-size:0.34rem">完成率</span>
+                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':''"
+                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{(item.qualifiedRate)*100/100}}%</span>
+                          <span style="text-align:center;color:#666666;font-size:0.34rem">合格率</span>
                         </div>
-                      </div>-->
+                      </div>
                       <div style="display:flex;justify-content: space-between;width:100%;">
                         <div style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%">
                           <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"

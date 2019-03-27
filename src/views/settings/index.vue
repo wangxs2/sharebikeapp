@@ -151,6 +151,7 @@ export default {
           this.$fetchGet("login/logout").then(res => {
             if (res == "login") {
               // this.$stores.getters.cacheModule=;
+              localStorage.removeItem("isnumbersa");
               this.$store.commit("SET_CACHE", false);
               this.$router.push("/login");
             }

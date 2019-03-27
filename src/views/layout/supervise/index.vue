@@ -126,7 +126,6 @@
     </scroller>
   </div>
 </template>
-
 <script>
 import { Loadmore } from "mint-ui";
 import { Toast } from "mint-ui";

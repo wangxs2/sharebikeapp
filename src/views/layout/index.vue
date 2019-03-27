@@ -200,7 +200,7 @@ export default {
     width: 100%;
     height: 1.4rem;
     border-top: 1px solid #f6f6f6;
-    z-index: 8887;
+    z-index: 100;
     background: #fff;
     .menu-iteam {
       flex: 1;

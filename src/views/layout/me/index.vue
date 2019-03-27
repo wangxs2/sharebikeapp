@@ -207,6 +207,8 @@ export default {
       userCount: {},
       ruleStatus: '',
       nowData: "",
+      isJunan: false,//是否显示区
+      isDate: false,
       userInfo: {}
     };
   },
@@ -219,6 +221,7 @@ export default {
     this.getData();
     this.getRules();
     this.getArea();
+
   },
   methods: {
 
@@ -227,6 +230,7 @@ export default {
         // this.userCount = res;
       });
     },
+
     //获取数据
     getData () {
       this.$fetchGet("count/countByUser").then(res => {

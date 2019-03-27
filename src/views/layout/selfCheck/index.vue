@@ -1,123 +1,166 @@
 
 <template>
   <div class="containerSaone">
-    <div class="header">
-      <!-- {{district}} -->
-      <span v-if="addressFlag"
-            style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{gpsadress}}</span>
-      <span v-if="!addressFlag"
-            style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
-            class="iconfont icon-location">{{district}}</span>
-      <span style="width:48%;text-align:center">自查</span>
-      <span style="font-size:24px;width:25%;text-align:right;padding-right:2%"
-            class="iconfont icon-gengduo"
-            @click="iconClick"></span>
+    <span @click="popupVisible1=true"
+          v-if="isJunan&&isDate"
+          class="questionnaire"></span>
+    <!-- <a href="https://chengchuang.wjx.cn/jq/36628228.aspx" class="questionnaire"></a> -->
+    <div class="text-box"
+         v-if="popupVisible1">
+      <div class="header">
+        <img src="@/assets/image/infoModification/nav_1_back@2x.png"
+             alt
+             @click="popupVisible1=false">
+        <div class="header-title"></div>
+        <div></div>
+      </div>
+      <iframe src="https://chengchuang.wjx.cn/jq/36628228.aspx"
+              frameborder="0"></iframe>
     </div>
-    <div class="version-popup-box">
+    <div v-if="!popupVisible1">
+
+      <div class="header">
+        <span v-if="addressFlag"
+              style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{gpsadress}}</span>
+        <span v-if="!addressFlag"
+              style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+              class="iconfont icon-location">{{district}}</span>
+        <span style="width:48%;text-align:center">自查</span>
+        <span style="font-size:24px;width:25%;text-align:right;padding-right:2%"
+              class="iconfont icon-gengduo"
+              @click="iconClick"></span>
+      </div>
+      <div class="version-popup-box">
+        <div class="version-popup">
+          <div v-for="(iteam,index) in menuListTop"
+               :key="index"
+               @click="sort(iteam,index)">
+            <span class="version-popup-font"
+                  :class="[iteam.menuName == '' ? '' : 'version-popup-font-active']">{{iteam.menuName == ''?iteam.name:iteam.menuName}}</span>
+            <span style="color:#AAAAAA"
+                  class="iconfont icon-jiantou"
+                  v-if="downIcon==index"></span>
+            <span style="color:#AAAAAA"
+                  class="iconfont icon-arrow-up"
+                  v-if="downIcon!==index"></span>
+          </div>
+        </div>
+      </div>
+      <!-- 查询列表 -->
+      <div class="version-popup-box1"
+           v-if="downIcon1">
+        <div class="version-popup">
+          <div class="variable">
+            <div class="menself">
+              <p v-if="menuListCenter.length==0"
+                 style="color:#999999;text-align:center">暂无数据</p>
+              <div style="padding:0rem;background: #f2f2f2;">
+                <div class="areacheck"
+                     v-if="areaarr.length>0&&downIcon==0">
+                  <p class="areachecklist"
+                     @click="areaTypeclick(iteam,index)"
+                     :class="[viewType == iteam.id ? 'tab-active' : '']"
+                     v-for="(iteam, index) in areaarr"
+                     :key="index">{{iteam.name}}</p>
+                </div>
+              </div>
+              <div>
+                <p class="menselflist"
+                   @click="menuListClick(item)"
+                   v-for="(item, index) in menuListCenter"
+                   :key="index"
+                   :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']">{{downIcon==2?item.realName:item.name}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="bottomsa">
+            <p @click="menReset()">重置</p>
+            <p @click="submit()"
+               style="border:none">确定</p>
+          </div>
+        </div>
+      </div>
+      <!-- 查询列表 -->
+      <div class="noneList"
+           v-if="noneList">
+        <img src="../../../assets/image/selfcheck/image_no data@3x.png"
+             width="200"
+             height="180"
+             alt>
+        <p style="color:#989898">暂时没有自查数据哦~</p>
+      </div>
+      <scroller style="top:2.4rem;bottom:55px;height:82%;overflow:hidden"
+                v-if="!noneList"
+                :on-infinite="infinite"
+                :on-refresh="refresh"
+                infiniteText="上拉加载"
+                noDataText="--我也是有底线的--"
+                ref="my_scroller">
+        <div class="iteamsa">
+          <div class="iteamListSa"
+               v-for="(iteam, index) in pageList"
+               :key="index"
+               @click="detailClick(iteam)">
+            <div class="leftSa"
+                 style="width:2.6rem;height:2.6rem">
+              <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]"
+                   alt
+                   style="width:2.6rem;height:2.6rem"
+                   srcset>
+            </div>
+            <div class="rightSa">
+              <div style="display:flex;flex-direction: column;flex:1;max-width: 100%;">
+                <div class="topRight">
+                  <p style="flex:1;">{{FormatDate(iteam.updateTime)}}</p>
+                  <p style="font-size:0.32rem;line-height:1.5;"
+                     :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</p>
+                </div>
+                <div class="centersa">
+                  <p style="line-height:1.5;"
+                     :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'">{{iteam.orgName}}</p>
+                  <p style="color:#666666;margin-left:0.2rem">整理</p>
+                  <p style="color:#5076FF;margin-left:0.1rem">{{iteam.arrangeNum==0?'-':iteam.arrangeNum}}</p>
+                  <p style="color:#666666;margin-left:0.2rem">清运</p>
+                  <p style="color:#5076FF;margin-left:0.1rem">{{iteam.cleanNum==0?'-':iteam.cleanNum}}</p>
+                </div>
+              </div>
+              <div class="bottomRight">
+                <span class="iconfont icon-weizhi"></span>
+                <span class="moreFont">{{iteam.handleAddr}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </scroller>
+    </div>
+
+    <!-- 问卷调查弹框↓ -->
+    <mt-popup class="version-popup-box-juan"
+              v-model="popupVisible"
+              position="right">
+      <img @click="popupVisible=false"
+           class="close-popup"
+           src="@/assets/image/icon_close@3x.png"
+           alt=""
+           srcset="">
       <div class="version-popup">
-        <div v-for="(iteam,index) in menuListTop"
-             :key="index"
-             @click="sort(iteam,index)">
-          <span class="version-popup-font"
-                :class="[iteam.menuName == '' ? '' : 'version-popup-font-active']">{{iteam.menuName == ''?iteam.name:iteam.menuName}}</span>
-          <span style="color:#AAAAAA"
-                class="iconfont icon-jiantou"
-                v-if="downIcon==index"></span>
-          <span style="color:#AAAAAA"
-                class="iconfont icon-arrow-up"
-                v-if="downIcon!==index"></span>
+
+        <div class="version-popup-top">
+          <img class="logo"
+               src="@/assets/image/image@3x.png"
+               alt>
+
+        </div>
+        <div class="version-popup-bottom">
+          请于4月5号之前
+          及时进行问卷调查,如果已提交请忽略
         </div>
       </div>
-    </div>
-    <!-- 查询列表 -->
-    <div class="version-popup-box1"
-         v-if="downIcon1">
-      <div class="version-popup">
-        <div class="variable">
-          <div class="menself">
-            <p v-if="menuListCenter.length==0"
-               style="color:#999999;text-align:center">暂无数据</p>
-            <div style="padding:0rem;background: #f2f2f2;">
-              <div class="areacheck"
-                   v-if="areaarr.length>0&&downIcon==0">
-                <p class="areachecklist"
-                   @click="areaTypeclick(iteam,index)"
-                   :class="[viewType == iteam.id ? 'tab-active' : '']"
-                   v-for="(iteam, index) in areaarr"
-                   :key="index">{{iteam.name}}</p>
-              </div>
-            </div>
-            <div>
-              <p class="menselflist"
-                 @click="menuListClick(item)"
-                 v-for="(item, index) in menuListCenter"
-                 :key="index"
-                 :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']">{{downIcon==2?item.realName:item.name}}</p>
-            </div>
-          </div>
-        </div>
-        <div class="bottomsa">
-          <p @click="menReset()">重置</p>
-          <p @click="submit()"
-             style="border:none">确定</p>
-        </div>
-      </div>
-    </div>
-    <!-- 查询列表 -->
-    <div class="noneList"
-         v-if="noneList">
-      <img src="../../../assets/image/selfcheck/image_no data@3x.png"
-           width="200"
-           height="180"
-           alt>
-      <p style="color:#989898">暂时没有自查数据哦~</p>
-    </div>
-    <scroller style="top:2.4rem;bottom:55px;height:82%;overflow:hidden"
-              v-if="!noneList"
-              :on-infinite="infinite"
-              :on-refresh="refresh"
-              infiniteText="上拉加载"
-              noDataText="--我也是有底线的--"
-              ref="my_scroller">
-      <div class="iteamsa">
-        <div class="iteamListSa"
-             v-for="(iteam, index) in pageList"
-             :key="index"
-             @click="detailClick(iteam)">
-          <div class="leftSa"
-               style="width:2.6rem;height:2.6rem">
-            <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]"
-                 alt
-                 style="width:2.6rem;height:2.6rem"
-                 srcset>
-          </div>
-          <div class="rightSa">
-            <div style="display:flex;flex-direction: column;flex:1;max-width: 100%;">
-              <div class="topRight">
-                <p style="flex:1;">{{FormatDate(iteam.updateTime)}}</p>
-                <p style="font-size:0.32rem;line-height:1.5;"
-                   :class="iteam.status == 1 ? 'green' : 'red'">{{iteam.status == 1 ? '处理中' : "已处理"}}</p>
-              </div>
-              <div class="centersa">
-                <p style="line-height:1.5;"
-                   :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'">{{iteam.orgName}}</p>
-                <p style="color:#666666;margin-left:0.2rem">整理</p>
-                <p style="color:#5076FF;margin-left:0.1rem">{{iteam.arrangeNum==0?'-':iteam.arrangeNum}}</p>
-                <p style="color:#666666;margin-left:0.2rem">清运</p>
-                <p style="color:#5076FF;margin-left:0.1rem">{{iteam.cleanNum==0?'-':iteam.cleanNum}}</p>
-              </div>
-            </div>
-            <div class="bottomRight">
-              <span class="iconfont icon-weizhi"></span>
-              <span class="moreFont">{{iteam.handleAddr}}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </scroller>
+    </mt-popup>
+    <!-- 问卷调查弹框↓ -->
   </div>
 </template>
-
+ 
 <script>
 import { Loadmore } from "mint-ui";
 import { Toast } from "mint-ui";
@@ -134,7 +177,8 @@ export default {
       district: '',
       viewType2: "",
       viewType3: "",
-      popupVisible: true,
+      popupVisible: false,
+      popupVisible1: false,
       areaflag: true, //是否包含flag
       menType: "",
       downIcon: -1,
@@ -205,7 +249,10 @@ export default {
       areaarr: [],
       areaarr1: [],
       areakids: [],
-      menData: []
+      menData: [],
+      isJunan: false,//是否显示区
+      isDate: false,
+      isnumbersa: 0,
     };
   },
   components: {},
@@ -228,12 +275,50 @@ export default {
     }
     this.getBikeCompany();
     this.getBikeMen();
-    this.getMap();
+    this.getMap()
+    // setTimeout(this.getMap(), 2000)
+    this.getNumber();
+    window.watchBackWXS = this.watchBackWXS;
   },
   mounted () {
-
+    let dd = Date.now();
+    let str = 1554393600000
+    if (dd - str >= 0) {
+      this.isDate = false
+    } else {
+      this.isDate = true
+    }
+    console.log(this.isDate)
   },
   methods: {
+    watchBackWXS () {
+      if (this.popupVisible1) {
+        this.popupVisible1 = false
+      }
+
+    },
+    //获取所属区域
+    getNumber () {
+      let arr = [];
+      let num;
+      this.$fetchGet("cleanConfig/getCleanArea").then(res => {
+        res.forEach(element => {
+          arr.push(element.key)
+
+        });
+        num = arr.indexOf('1057')
+        if (num > -1) {
+          this.isJunan = true
+        } else {
+          this.isJunan = false
+        }
+        // console.log('------------' + localStorage.getItem("isnumbersa"))
+        if (this.isJunan & this.isDate & localStorage.getItem("isnumbersa") == null) {
+          this.popupVisible = true
+          localStorage.setItem("isnumbersa", 1);
+        }
+      });
+    },
     //获取当前城市
     getMap () {
       let geolocation = new AMap.Geolocation({
@@ -492,6 +577,88 @@ export default {
   background-color: transparent;
 }
 .containerSaone {
+  .text-box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    // background: #282828;
+    z-index: 4444;
+
+    display: flex;
+    flex-direction: column;
+    .header {
+      height: 1.173333rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      background: -webkit-linear-gradient(left, #6698ff, #5076ff);
+      color: #fff;
+      font-size: 0.48rem;
+      padding: 0 0.32rem;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      img {
+        height: 0.48rem;
+        width: 0.266667rem;
+      }
+    }
+    iframe {
+      flex: 1;
+      -webkit-overflow-scrolling: touch;
+      overflow-y: scroll;
+    }
+  }
+  .questionnaire {
+    background-image: url("../../../assets/image/icon_wenjuan@3x.png");
+    width: 2.7rem;
+    height: 1.14rem;
+    display: block;
+    background-size: 100% 100%;
+    position: fixed;
+    bottom: 1.9rem;
+    right: 0;
+    z-index: 88;
+  }
+  .version-popup-box-juan {
+    height: 8rem;
+    width: 100%;
+    background: transparent;
+    color: #282828;
+    position: relative;
+    .close-popup {
+      position: absolute;
+      right: 45%;
+      bottom: -0.32rem;
+      height: 0.8rem;
+      width: 0.8rem;
+    }
+    .version-popup {
+      margin: 0 auto;
+      background: #fff;
+      height: 7rem;
+      width: 6.6rem;
+      border-radius: 0.16rem;
+      display: flex;
+      flex-direction: column;
+
+      .version-popup-top {
+        .logo {
+          width: 100%;
+          height: 3.8rem;
+        }
+      }
+      .version-popup-bottom {
+        flex: 1;
+        text-align: center;
+        color: #333333;
+        box-sizing: border-box;
+        padding: 0.5rem 1rem;
+        font-size: 0.46rem;
+        line-height: 1.5;
+      }
+    }
+  }
   width: 100%;
   height: 100%;
   display: flex;
@@ -507,7 +674,7 @@ export default {
     position: fixed;
     top: 1.173333rem;
     left: 0;
-    z-index: 8888;
+    z-index: 88;
     .version-popup {
       display: flex;
       width: 100%;
@@ -543,7 +710,7 @@ export default {
     position: fixed;
     top: 2.369rem;
     left: 0;
-    z-index: 8888;
+    z-index: 88;
     .version-popup {
       display: flex;
       width: 100%;

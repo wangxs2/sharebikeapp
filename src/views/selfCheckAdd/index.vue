@@ -636,13 +636,13 @@ export default {
         preloadMode: true
       });
 
-      // var gps = [121.43715452, 31.19440914];
-      // AMap.convertFrom(gps, 'gps', function (status, result) {
-      //   if (result.info === 'ok') {
-      //     var lnglats = result.locations; // Array.<LngLat>
-      //     console.log(lnglats[0].lng, lnglats[0].lat);
-      //   }
-      // });
+      var gps = [121.43043332, 31.19653539];
+      AMap.convertFrom(gps, 'gps', function (status, result) {
+        if (result.info === 'ok') {
+          var lnglats = result.locations; // Array.<LngLat>
+          console.log(lnglats[0].lng, lnglats[0].lat);
+        }
+      });
 
       this.myMap.on('dragstart', (e) => {
         this.flagAddres = true;
