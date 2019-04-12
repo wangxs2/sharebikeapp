@@ -62,6 +62,12 @@
         </div>
       </div>
       <div class="superList">
+        <img class="hegeimg"
+             v-if="iteamList.qualified==2"
+             src="@/assets/image/selfcheck/hege@3x.png">
+        <img class="hegeimg"
+             v-if="iteamList.qualified==0"
+             src="@/assets/image/selfcheck/buhege@3x.png">
         <div class="topcloum">
           <div class="topcloumson">
             <p class="leftfont">单号</p>
@@ -634,6 +640,14 @@ p {
       box-sizing: border-box;
 
       border-radius: 2px;
+      position: relative;
+      .hegeimg {
+        width: 2.76rem;
+        height: 2.76rem;
+        position: absolute;
+        right: 0.5rem;
+        top: -0.5rem;
+      }
       .topsa {
         display: flex;
         justify-content: space-between;

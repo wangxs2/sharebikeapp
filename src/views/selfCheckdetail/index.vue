@@ -44,6 +44,28 @@
       <div id="myMap"></div>
 
     </mt-popup>
+    <mt-popup class="qualified-box"
+              v-model="popupVisible3"
+              position="right">
+      <div class="version-popup">
+        <div class="version-popup-top">不合格原因</div>
+        <div class="version-popup-center">
+          <p class="version-popup-center-box"
+             v-for="(item,index) in options"
+             :key="index">
+            <span :viewType="item.label"
+                  @click="chooseOrder($event)"
+                  class="detail-btn"></span><span>{{item.label}}</span>
+          </p>
+        </div>
+        <div class="version-popup-bottom">
+          <div @click="popupVisible3=false"
+               style="color:#999999">取消</div>
+          <div @click="noQualified()"
+               style="border:none;color:#5076FF">确定</div>
+        </div>
+      </div>
+    </mt-popup>
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png"
            alt
@@ -54,6 +76,7 @@
     <div class="content">
       <div class="selfcheckList"
            style="border-bottom:1px solid #f2f2f2;">
+
         <div class="iteamsa">
           <img v-if="iteamList.orgId==1007"
                src="../../assets/image/OFO.png"
@@ -90,6 +113,12 @@
       </div>
       <div class="selfcheckList"
            style="margin-bottom:0.3rem">
+        <img class="hegeimg"
+             v-if="iteamList.qualified==2"
+             src="@/assets/image/selfcheck/hege@3x.png">
+        <img class="hegeimg"
+             v-if="iteamList.qualified==0"
+             src="@/assets/image/selfcheck/buhege@3x.png">
         <div class="iteamsa">
           <img src="../../assets/image/selfcheck/icon_2_address@3x.png"
                width="24"
@@ -180,6 +209,13 @@
              style="margin-left:0.2rem;flex:1">{{iteamList.remark}}</p>
         </div>
       </div>
+      <div v-if="iteamList.status!== 1&iteamList.qualified== 3"
+           class="evaluation-button">
+        <button @click="popupVisible3=true"
+                style="background:#FF4545">不合格</button>
+        <button @click="qualified()"
+                style="background:#56CA37">合格</button>
+      </div>
     </div>
   </div>
 </template>
@@ -188,19 +224,44 @@
 import { Loadmore } from "mint-ui";
 import { Indicator } from "mint-ui";
 import { setTimeout } from "timers";
+import { MessageBox } from "mint-ui";
 export default {
   computed: {},
   data () {
     return {
       slide: [],
       slide1: [],
+      options: [
+        {
+          label: "其他单车停放混乱",
+          value: "1"
+        },
+        {
+          label: "整理、清运数量差别太大",
+          value: "2"
+        },
+        {
+          label: "图片不合格",
+          value: "3"
+        },
+        {
+          label: "处理地点有误",
+          value: "4"
+        },
+        {
+          label: "处理方式有误",
+          value: "5"
+        }
+      ],
       searchCondition: {},
       menuListTop: [],
       popupVisible1: false,
+      popupVisible3: false,
       downIcon: -1,
       sheetCode: "",
       rotateS: 0,
       bigImage: "",
+      unqualifiedReason: [],//不合格理由
       indexImage: -1, //轮播默认图片
       ifCleanByBike: "", //是否分成企业填写整理数
       lageImg: [],
@@ -243,6 +304,62 @@ export default {
   methods: {
     rotate () {
       this.rotateS = this.rotateS + 90;
+    },
+    //是否确认合格
+    qualified () {
+      MessageBox.confirm('确认处理合格?').then(action => {
+        this.$fetchPut("selfcheck/selfCheckQualifiedFeedBack", {
+          sheetCode: this.sheetCode,
+          qualified: 2,
+          unqualifiedReason: ''
+        }).then(res => {
+          if (res.status == 0) {
+            MessageBox.alert("", {
+              message: "操作成功",
+              title: "提示"
+            }).then(action => { });
+          } else {
+            MessageBox.alert("", {
+              message: res.message,
+              title: "提示"
+            }).then(action => { });
+          }
+        });
+      });
+    },
+    noQualified () {
+      this.$fetchPut("selfcheck/selfCheckQualifiedFeedBack", {
+        sheetCode: this.sheetCode,
+        qualified: 0,
+        unqualifiedReason: this.unqualifiedReason.join(',')
+      }).then(res => {
+        if (res.status == 0) {
+          MessageBox.alert("", {
+            message: "操作成功",
+            title: "提示"
+          }).then(action => { });
+        } else {
+          MessageBox.alert("", {
+            message: res.message,
+            title: "提示"
+          }).then(action => { });
+        }
+        this.popupVisible3 = false
+      });
+    },
+    chooseOrder (e) {
+      // console.log(e.target.childNodes[0]);
+      if (e.target.className.indexOf("detail-selected") == -1) {
+        e.target.className = "detail-btn detail-selected"; //切换按钮样式
+        //写逻辑
+        this.unqualifiedReason.push(e.target.getAttribute("viewType"));
+      } else {
+        e.target.className = "detail-btn"; //切换按钮样式
+        let index = this.value.indexOf(e.target.getAttribute("viewType"));
+        if (index > -1) {
+          this.unqualifiedReason.splice(index, 1);
+        }
+      }
     },
     //获取分企业添加的列表
     getComanylist () {
@@ -288,7 +405,7 @@ export default {
         grid: {
           top: '4%',
           left: "1%",
-          right: "1%",
+          right: "5%",
           bottom: "12%",
           containLabel: true
         },
@@ -531,6 +648,60 @@ export default {
     justify-content: center;
     align-items: center;
   }
+  .qualified-box {
+    height: 10rem;
+    width: 100%;
+    background: transparent;
+    .version-popup {
+      height: 100%;
+      width: 86%;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      .version-popup-top {
+        color: #282828;
+        text-align: center;
+        height: 1.4rem;
+        line-height: 1.4rem;
+      }
+      .version-popup-center {
+        flex: 1;
+        color: #666666;
+        box-sizing: border-box;
+        padding: 0 1rem;
+        text-align: left;
+        .version-popup-center-box {
+          display: flex;
+          align-items: center;
+          .detail-btn {
+            display: inline-block;
+            width: 0.48rem;
+            height: 0.48rem;
+            background-image: url("../../assets/image/selfcheck/icon_select_nor@3x.png");
+            background-size: 100% 100%;
+            margin-right: 0.2rem;
+          }
+          .detail-selected {
+            background-image: url("../../assets/image/selfcheck/icon_select_pre@3x.png");
+          }
+        }
+      }
+      .version-popup-bottom {
+        display: flex;
+        justify-content: flex-start;
+        height: 0.88rem;
+        line-height: 0.88rem;
+        border-top: 1px solid #dddddd;
+        div {
+          width: 50%;
+          text-align: center;
+          border-right: 1px solid #dddddd;
+        }
+      }
+    }
+  }
   .mapwhere {
     width: 100%;
     height: 100%;
@@ -587,6 +758,7 @@ export default {
     padding: 0.3rem;
     box-sizing: border-box;
     flex-direction: column;
+
     p {
       margin: 0;
       padding: 0;
@@ -596,6 +768,14 @@ export default {
       box-sizing: border-box;
       background: #fff;
       border-radius: 2px;
+      position: relative;
+      .hegeimg {
+        width: 2.76rem;
+        height: 2.76rem;
+        position: absolute;
+        right: 0.5rem;
+        top: -1rem;
+      }
       #Echart {
         width: 100%;
         height: 100%;
@@ -611,6 +791,19 @@ export default {
           display: flex;
           flex-direction: column;
         }
+      }
+    }
+    .evaluation-button {
+      display: flex;
+      justify-content: space-between;
+
+      button {
+        color: #fff;
+        width: 48%;
+        height: 1rem;
+        border-radius: 4px;
+        margin-top: 0.3rem;
+        margin-bottom: 0.5rem;
       }
     }
     .iteamListsa {
