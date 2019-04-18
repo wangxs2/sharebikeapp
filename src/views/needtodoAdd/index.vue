@@ -848,7 +848,6 @@ export default {
       }
     },
     submit () {
-
       if (this.formMessage.handleBeforeURLs.length == 0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",

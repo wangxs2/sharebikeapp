@@ -1,51 +1,44 @@
 
 <template>
   <div class="container">
-    <mt-popup class="imgMask" v-model="popupVisible" position="right">
-      <span
-        class="iconfont icon-guandiao"
-        style="color:#fff;position:fixed;right:15px;top:15px"
-        @click="popupVisible=false"
-      ></span>
-      <img
-        :src="Ip+bigImage"
-        alt
-        srcset
-        width="100%"
-        v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
-        @click="popupVisible=false"
-      >
-      <img
-        src="../../assets/image/login/rotate.svg"
-        alt
-        srcset
-        width="50"
-        height="50"
-        style="position:fixed;right:50%;bottom:15px;"
-        @click="rotate()"
-      >
+    <mt-popup class="imgMask"
+              v-model="popupVisible"
+              position="right">
+      <span class="iconfont icon-guandiao"
+            style="color:#fff;position:fixed;right:15px;top:15px"
+            @click="popupVisible=false"></span>
+      <img :src="Ip+bigImage"
+           alt
+           srcset
+           width="100%"
+           v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
+           @click="popupVisible=false">
+      <img src="../../assets/image/login/rotate.svg"
+           alt
+           srcset
+           width="50"
+           height="50"
+           style="position:fixed;right:50%;bottom:15px;"
+           @click="rotate()">
     </mt-popup>
     <!-- 重新信息弹框↓ -->
-    <mt-popup
-      class="version-popup-box"
-      :closeOnClickModal="wesa"
-      v-model="popupVisible1"
-      position="right"
-    >
+    <mt-popup class="version-popup-box"
+              :closeOnClickModal="wesa"
+              v-model="popupVisible1"
+              position="right">
       <div class="version-popup">
         <div class="version-popup-top">重新派单，请选择企业</div>
         <div class="version-popup-content">
-          <p
-            class="detail-btn"
-            v-for="(item,index) in options"
-            :key="index"
-            :viewType="item.id"
-            @click="chooseOrder($event)"
-          >{{item.name}}</p>
+          <p class="detail-btn"
+             v-for="(item,index) in options"
+             :key="index"
+             :viewType="item.id"
+             @click="chooseOrder($event)">{{item.name}}</p>
         </div>
         <div class="version-popup-bottom">
           <div @click="popupVisible1 = false">取消</div>
-          <div @click="leaflets" style="border-left: 1px solid #eeeeee;color:#5076FF">确定</div>
+          <div @click="leaflets"
+               style="border-left: 1px solid #eeeeee;color:#5076FF">确定</div>
         </div>
       </div>
     </mt-popup>
@@ -59,7 +52,9 @@
           @click="iconClick"
         ></mt-button>
       </mt-header> -->
-      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome">
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png"
+           alt
+           @click="toHome">
       <div class="header-title">处理情况反馈</div>
       <div></div>
     </div>
@@ -67,64 +62,74 @@
       <div class="witeSa">
         <div class="iteamForm">
           <p style="color:#666666">单号</p>
-          <p v-model="formMessage.dispatchTime" style="text-align:right;">{{formMessage.sheetCode}}</p>
+          <p v-model="formMessage.dispatchTime"
+             style="text-align:right;">{{formMessage.sheetCode}}</p>
         </div>
       </div>
-      <div class="witeSa" style="margin-top:0.2rem">
+      <div class="witeSa"
+           style="margin-top:0.2rem">
         <div class="iteamForm">
           <p style="color:#666666">处理方式</p>
-          <p
-            v-model="formMessage.dispatchTime"
-            style="text-align:right;"
-          >{{dealMethod==1?"整理":dealMethod==2?"清运":"整理且清运"}}</p>
+          <p v-model="formMessage.dispatchTime"
+             style="text-align:right;">{{dealMethod==1?"整理":dealMethod==2?"清运":"整理且清运"}}</p>
         </div>
       </div>
-      <div
-        class="witeSa"
-        style="margin-top:0.2rem;padding-left:0.3rem;margin-bottom:0.3rem;padding-top:0.2rem"
-      >
+      <div class="witeSa"
+           style="margin-top:0.2rem;padding-left:0.3rem;margin-bottom:0.3rem;padding-top:0.2rem">
         <div class="topsa">
-          <img src="../../assets/image/icon_3@2x.png" width="24" height="24" alt srcset>
-          <div
-            style="width:100%;margin-top:0.05rem;padding-left:0.3rem;display:flex;justify-content: space-between"
-          >
+          <img src="../../assets/image/icon_3@2x.png"
+               width="24"
+               height="24"
+               alt
+               srcset>
+          <div style="width:100%;margin-top:0.05rem;padding-left:0.3rem;display:flex;justify-content: space-between">
             <span>处理情况</span>
             <span style="text-align:right;margin-right:0.3rem;color:#757575"></span>
           </div>
         </div>
-        <div class="bottomsa" style="padding-top:0.2rem;padding-right:0.2rem">
-          <textarea
-            style="width:100%;"
-            rows="8"
-            placeholder="请输入处理情况"
-            v-model="formMessage.dealCondition"
-          ></textarea>
+        <div class="bottomsa"
+             style="padding-top:0.2rem;padding-right:0.2rem">
+          <textarea style="width:100%;"
+                    rows="8"
+                    placeholder="请输入处理情况"
+                    v-model="formMessage.dealCondition"></textarea>
         </div>
       </div>
       <div class="iteamImage">
         <div style="padding-left:0.3rem">
-          <img
-            src="../../assets/image/selfcheck/icon_4_picture.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
+          <img src="../../assets/image/selfcheck/icon_4_picture.png"
+               width="24"
+               height="24"
+               alt
+               srcset>
           <span>核实照片</span>
         </div>
         <div class="imageList">
-          <div v-for="(iteam,index) in formMessage.handleAfterURLs" :key="index" class="detailIcon">
-            <img :src="Ip+iteam" alt srcset width="100px" height="100px" @click="handOpen(iteam)">
+          <div v-for="(iteam,index) in formMessage.handleAfterURLs"
+               :key="index"
+               class="detailIcon">
+            <img :src="Ip+iteam"
+                 alt
+                 srcset
+                 width="100px"
+                 height="100px"
+                 @click="handOpen(iteam)">
             <span @click="detailImage(1,index)">
-              <img src="@/assets/image/close@2x.png" width="30" height="30" alt srcset>
+              <img src="@/assets/image/close@2x.png"
+                   width="30"
+                   height="30"
+                   alt
+                   srcset>
             </span>
           </div>
-          <div
-            v-if="formMessage.handleAfterURLs.length<5"
-            style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
-            @click="clickImage"
-          >
-            <img src="../../assets/image/icon_add.png" width="52px" height="52px" alt srcset>
+          <div v-if="formMessage.handleAfterURLs.length<5"
+               style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
+               @click="clickImage">
+            <img src="../../assets/image/icon_add.png"
+                 width="52px"
+                 height="52px"
+                 alt
+                 srcset>
           </div>
         </div>
       </div>
@@ -144,8 +149,12 @@
       </div>-->
     </div>
     <div class="bottom">
-      <button type="button" class="buttonSa" @click="save()">重新派单</button>
-      <button type="button" class="buttonSa1" @click="submit()">完成</button>
+      <button type="button"
+              class="buttonSa"
+              @click="save()">重新派单</button>
+      <button type="button"
+              class="buttonSa1"
+              @click="submit()">完成</button>
     </div>
   </div>
 </template>
@@ -154,7 +163,7 @@
 import { MessageBox } from "mint-ui";
 export default {
   computed: {},
-  data() {
+  data () {
     return {
       time: "",
       statuSa: "",
@@ -172,11 +181,11 @@ export default {
       options: [],
       value: [],
       //首页的查询条件
-      areakids:[],
-      areaarr:[],
-      searchCondition:{},
-      menuListTop:[],
-      downIcon:-1,
+      areakids: [],
+      areaarr: [],
+      searchCondition: {},
+      menuListTop: [],
+      downIcon: -1,
       //首页的查询条件
       formMessage: {
         dealCondition: "",
@@ -186,14 +195,14 @@ export default {
     };
   },
   components: {},
-  mounted() {},
-  created() {
+  mounted () { },
+  created () {
     this.getAll();
     if (this.$route.query.message) {
       this.formMessage.sheetCode = this.$route.query.message;
       this.dealMethod = this.$route.query.dealMethod;
       this.statuSa = this.$route.query.statuSa;
-      if(this.$route.query.downIcon||this.$route.query.downIcon==0){
+      if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
         this.searchCondition = this.$route.query.searchCondition;
         this.menuListTop = this.$route.query.menuListTop;
         this.downIcon = this.$route.query.downIcon;
@@ -202,46 +211,46 @@ export default {
       }
     }
     window.getImage = this.getImage;
-    window.watchBackWXS=this.watchBackWXS;
+    window.watchBackWXS = this.watchBackWXS;
   },
-  mounted() {
-    console.log(this.$store.getters.imageUrl);
+  mounted () {
+    // console.log(this.$store.getters.imageUrl);
   },
   methods: {
-    getAll() {
+    getAll () {
       this.$fetchGet("count/bikeCompany").then(res => {
         this.options = res;
       });
     },
-    watchBackWXS(){
+    watchBackWXS () {
       this.toHome();
     },
-    rotate() {
+    rotate () {
       this.rotateS = this.rotateS + 90;
     },
-    getCompany(val) {
+    getCompany (val) {
       this.value = val;
-      console.log(this.value);
+      // console.log(this.value);
     },
-    handOpen(val) {
+    handOpen (val) {
       this.popupVisible = true;
       this.bigImage = val;
     },
-    toHome() {
+    toHome () {
       this.$router.push({
         path: "/superviseDetail",
         query: {
           supervise: this.formMessage.sheetCode,
           statuSa: this.statuSa,
-          searchCondition:this.searchCondition,
-          menuListTop:this.menuListTop,
-          downIcon:this.downIcon,
-          areaarr:this.areaarr,
-          areakids:this.areakids,
+          searchCondition: this.searchCondition,
+          menuListTop: this.menuListTop,
+          downIcon: this.downIcon,
+          areaarr: this.areaarr,
+          areakids: this.areakids,
         }
       });
     },
-    chooseOrder(e) {
+    chooseOrder (e) {
       if (e.target.className.indexOf("detail-selected") == -1) {
         e.target.className = "detail-btn detail-selected"; //切换按钮样式
         //写逻辑
@@ -254,14 +263,14 @@ export default {
         }
       }
     },
-    clickImage() {
+    clickImage () {
       this.downPictur("bikeImg");
     },
-    getImage(val, row) {
+    getImage (val, row) {
       this.dispachPhoto.push(val);
       this.formMessage.handleAfterURLs.push(row);
     },
-    detailImage(id) {
+    detailImage (id) {
       MessageBox.confirm("是否确认删除图片?").then(action => {
         if (action == "confirm") {
           //确认的回调
@@ -270,16 +279,16 @@ export default {
         }
       });
     },
-    handleClose() {
-      console.log("close event");
+    handleClose () {
+      // console.log("close event");
     },
-    leaflets() {
-      if(this.value.length==0){
+    leaflets () {
+      if (this.value.length == 0) {
         MessageBox.alert("", {
           message: "请选择派单企业",
           title: "提示"
-        }).then(action => {});
-      }else{
+        }).then(action => { });
+      } else {
         MessageBox.confirm("", {
           message: "是否确认重新派单",
           title: "提示"
@@ -297,7 +306,7 @@ export default {
                   MessageBox.alert("", {
                     message: res.message,
                     title: "提示"
-                  }).then(action => {});
+                  }).then(action => { });
                 } else {
                   MessageBox.alert("", {
                     message: "保存成功",
@@ -311,40 +320,40 @@ export default {
                 MessageBox.alert("", {
                   message: "请求超时",
                   title: "提示"
-                }).then(action => {});
+                }).then(action => { });
               });
           }
         });
       }
     },
-    save() {
-      
+    save () {
+
       if (this.formMessage.dealCondition == "") {
         MessageBox.alert("", {
           message: "请输入处理情况",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       } else if (this.dispachPhoto.length == 0) {
         MessageBox.alert("", {
           message: "请上传核实照片",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       } else {
         this.popupVisible1 = true;
 
       }
     },
-    submit() {
+    submit () {
       if (this.formMessage.dealCondition == "") {
         MessageBox.alert("", {
           message: "请输入处理情况",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       } else if (this.dispachPhoto.length == 0) {
         MessageBox.alert("", {
           message: "请上传核实照片",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       } else {
         MessageBox.confirm("", {
           message: "是否确认提交",
@@ -362,7 +371,7 @@ export default {
                   MessageBox.alert("", {
                     message: res.message,
                     title: "提示"
-                  }).then(action => {});
+                  }).then(action => { });
                 } else {
                   MessageBox.alert("", {
                     message: "保存成功",
@@ -376,7 +385,7 @@ export default {
                 MessageBox.alert("", {
                   message: "请求超时",
                   title: "提示"
-                }).then(action => {});
+                }).then(action => { });
               });
           }
         });

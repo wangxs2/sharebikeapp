@@ -244,7 +244,7 @@ export default {
       this.searchCondition = this.$route.query.searchCondition;
       this.menuListTop = this.$route.query.menuListTop;
       this.downIcon = this.$route.query.downIcon;
-      console.log(this.$route.query.areaarr);
+      // console.log(this.$route.query.areaarr);
       if (this.$route.query.areaarr.length == 0) {
         this.getorgsTree();
       } else {
@@ -313,7 +313,7 @@ export default {
     },
     //区域切换
     areaTypeclick (val, index) {
-      console.log(val);
+      // console.log(val);
       this.areaflag = false;
       this.areakids = [];
       this.viewType = val.id;
@@ -388,7 +388,7 @@ export default {
     //切换图片；
     sort (iteam, index) {
       this.downIcon = index;
-      console.log(this.downIcon);
+      // console.log(this.downIcon);
       this.downIcon1 = true;
       if (this.downIcon == 0) {
         this.menuListCenter = this.areakids;

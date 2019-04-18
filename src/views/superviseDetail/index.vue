@@ -62,9 +62,9 @@
         </div>
         <div class="version-popup-bottom">
           <div @click="popupVisible3=false"
-               style="color:#999999">取消</div>
+               style="color:black">取消</div>
           <div @click="noQualified()"
-               style="border:none;color:#5076FF">确定</div>
+               style="border:none;color:#26a2ff">确定</div>
         </div>
       </div>
     </mt-popup>
@@ -116,9 +116,6 @@
                 <p style="margin-top:0.1rem;color:#333333;text-decoration:underline">{{listdetail.handleSecAddr}}</p>
                 <p style="margin-top:0.1rem;color:#aeaeae;text-decoration:underline">{{listdetail.handleAddr}}</p>
               </div>
-              <!-- <p class="leftfont1"
-                 style="color:blue;text-decoration:underline"
-                 @click="getMap()">{{listdetail.handleAddr}}</p> -->
             </div>
             <div class="topcloumson">
               <p class="leftfont">派单人</p>
@@ -283,8 +280,37 @@
             </div>
           </div>
         </div>
-
-        <div v-if="listdetail.status == 2&listdetail.qualified==3"
+        <div class="superList"
+             v-if="listdetail.qualified!==3">
+          <div class="topsa"
+               style="margin-top:0.3rem">
+            <div class="fontext">反馈信息</div>
+            <div></div>
+          </div>
+        </div>
+        <div v-if="listdetail.qualified!==3"
+             class="superList">
+          <div class="topcloum">
+            <div class="topcloumson">
+              <p class="leftfont">反馈时间</p>
+              <p class="leftfont1">{{FormatDate(listdetail.updateTime)}}</p>
+            </div>
+            <div class="topcloumson">
+              <p class="leftfont">反馈人员</p>
+              <p class="leftfont1">{{listdetail.qualifieUserName}}</p>
+            </div>
+            <div class="topcloumson">
+              <p class="leftfont">反馈情况</p>
+              <p class="leftfont1">{{listdetail.qualified==0?'不合格':listdetail.qualified==2?'合格':''}}</p>
+            </div>
+            <div v-if="listdetail.qualified==0"
+                 class="topcloumson">
+              <p class="leftfont">不合格原因</p>
+              <p class="leftfont1">{{listdetail.unqualifiedReason}}</p>
+            </div>
+          </div>
+        </div>
+        <div v-if="listdetail.status == 2&listdetail.qualified==3&(roleCode=='global'||roleCode=='dispatch')"
              class="evaluation-button">
           <button @click="popupVisible3=true"
                   style="background:#FF4545">不合格</button>
@@ -407,7 +433,9 @@ export default {
             MessageBox.alert("", {
               message: "操作成功",
               title: "提示"
-            }).then(action => { });
+            }).then(action => {
+              this.getMessage(this.sheetCode);
+            });
             this.getMessage(this.sheetCode);
           } else {
             MessageBox.alert("", {
@@ -428,7 +456,9 @@ export default {
           MessageBox.alert("", {
             message: "操作成功",
             title: "提示"
-          }).then(action => { });
+          }).then(action => {
+            this.getMessage(this.sheetCode);
+          });
           this.getMessage(this.sheetCode);
         } else {
           MessageBox.alert("", {
@@ -805,6 +835,7 @@ export default {
         color: #282828;
         text-align: center;
         height: 1.4rem;
+        font-size: 0.45rem;
         line-height: 1.4rem;
       }
       .version-popup-center {
@@ -832,8 +863,8 @@ export default {
       .version-popup-bottom {
         display: flex;
         justify-content: flex-start;
-        height: 0.88rem;
-        line-height: 0.88rem;
+        height: 1.06rem;
+        line-height: 1.06rem;
         border-top: 1px solid #dddddd;
         div {
           width: 50%;

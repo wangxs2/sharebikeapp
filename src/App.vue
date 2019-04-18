@@ -16,19 +16,19 @@ import { MessageBox } from "mint-ui";
 import base64 from "@/libs/base.js";
 export default {
   name: "App",
-  data() {
+  data () {
     return {
       routeArr: []
     };
   },
 
-  mounted() {
-    console.log(AMap);
+  mounted () {
+    // console.log(AMap);
   },
-  created() {
+  created () {
     // window.watchBackWXS=this.watchBackWXS;
     window.getPush = this.getPush;
-    
+
   },
   methods: {
     // watchBackWXS(){
@@ -40,7 +40,7 @@ export default {
     //     this.$router.go(-1);
     //   }
     // },
-    getPush(userName, password, url) {
+    getPush (userName, password, url) {
       if (userName) {
         let b = new base64();
         let data = {
@@ -86,20 +86,20 @@ export default {
               MessageBox.alert("", {
                 message: res.info,
                 title: "提示"
-              }).then(action => {});
+              }).then(action => { });
             }
           })
           .catch(res => {
             MessageBox.alert("", {
               message: res,
               title: "提示"
-            }).then(action => {});
+            }).then(action => { });
           });
       } else {
         return;
       }
     },
-    getSa(userName, password) {}
+    getSa (userName, password) { }
   }
 };
 </script>

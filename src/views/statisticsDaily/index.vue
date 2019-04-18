@@ -158,7 +158,7 @@
               <div style="padding-top:0.98rem">
                 <div class="content-bottom-list"
                      style="padding:0.3rem;border-left:1px solid #FEB621">
-                  <h6 style="margin:0;font-size:0.4rem;margin-bottom:0.2rem">当日派单处理</h6>
+                  <h6 style="margin:0;font-size:0.4rem;margin-bottom:0.2rem">当{{dailyType=='week'?'周':dailyType=='month'?'月':'日'}}派单处理</h6>
                   <div style="display:flex;justify-content: space-between;width:100%;">
                     <p style="margin:0">整理总车辆数：{{dispatchCount}}</p>
                     <p style="margin:0">清运总车辆数：{{checkCount}}</p>
@@ -261,7 +261,7 @@
               <div style="padding-top:0.98rem">
                 <div class="content-bottom-list"
                      style="padding:0.3rem;border-left:1px solid #FEB621">
-                  <h6 style="margin:0;font-size:0.4rem;margin-bottom:0.2rem">当日自查</h6>
+                  <h6 style="margin:0;font-size:0.4rem;margin-bottom:0.2rem">当{{dailyType=='week'?'周':dailyType=='month'?'月':'日'}}自查</h6>
                   <div style="display:flex;justify-content: space-between;width:100%;">
                     <p style="margin:0">整理总车辆数：{{dispatchCount1}}</p>
                     <p style="margin:0">清运总车辆数：{{checkCount1}}</p>
@@ -343,7 +343,7 @@
             </div>
           </div>
         </div>
-        <p style="text-align:center;font-size:0.32rem;color:#FFFFFF">今日治理日报到此结束，谢谢查阅</p>
+        <p style="text-align:center;font-size:0.32rem;color:#FFFFFF">治理{{dailyType=='week'?'周':dailyType=='month'?'月':'日'}}报到此结束，谢谢查阅</p>
         <div class="rules-bottom-img"></div>
       </div>
     </div>
@@ -409,7 +409,7 @@ export default {
       } else {
         this.dayDate = val.Format("yyyy-MM");
       }
-      console.log(this.dayDate);
+      // console.log(this.dayDate);
       this.getData();
     },
     changeCompany (val) {
@@ -430,7 +430,6 @@ export default {
       }).then(res => {
         if (res.status == 1) {
           this.dataDetail = res;
-          console.log(this.dataDetail.type);
           res.detailByOrgList.forEach(element => {
             this.dispatchCount += element.arrangeNum;
             this.checkCount += element.cleanNum;
@@ -441,7 +440,6 @@ export default {
               this.checkCount1 += element.cleanNum;
             });
           }
-
           if (res.dispatchContentSummary) {
             this.dispatchContentSummary = res.dispatchContentSummary.split(
               "<###>"

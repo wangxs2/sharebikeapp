@@ -211,7 +211,7 @@ export default {
         this.searchCondition = this.$route.query.searchCondition;
         this.menuListTop = this.$route.query.menuListTop;
         this.downIcon = this.$route.query.downIcon;
-        console.log(this.$route.query.areaarr);
+        // console.log(this.$route.query.areaarr);
         if (this.$route.query.areaarr.length == 0) {
           this.getorgsTree();
         } else {

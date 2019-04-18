@@ -60,9 +60,9 @@
         </div>
         <div class="version-popup-bottom">
           <div @click="popupVisible3=false"
-               style="color:#999999">取消</div>
+               style="color:black">取消</div>
           <div @click="noQualified()"
-               style="border:none;color:#5076FF">确定</div>
+               style="border:none;color:#26a2ff">确定</div>
         </div>
       </div>
     </mt-popup>
@@ -159,7 +159,6 @@
         </div>
       </div>
       <p style="background: #fff;padding:0.2rem 0.3rem;border-bottom:1px solid #f2f2f2">处理统计</p>
-      <!-- <div class="iteamList" style="margin-top:0px;margin-bottom:1px">处理统计</div> -->
       <div class="selfcheckList">
         <div class="iteamsa"
              style="padding-top:0.5rem;padding-bottom:0.2rem">
@@ -202,6 +201,16 @@
         </div>
       </div>
       <div class="selfcheckList"
+           style="margin-bottom:0.3rem;"
+           v-if="iteamList.qualified!==3">
+        <p style="background: #fff;padding:0.2rem 0.3rem;border-bottom:1px solid #f2f2f2">反馈信息</p>
+        <p style="background: #fff;padding:0.1rem 0.3rem;"><span style="color:#666666">反馈时间：</span>{{FormatDate(iteamList.updateTime)}}</p>
+        <p style="background: #fff;padding:0.1rem 0.3rem;"><span style="color:#666666">反馈人员：</span>{{iteamList.qualifieUserName}}</p>
+        <p style="background: #fff;padding:0.1rem 0.3rem;"><span style="color:#666666">反馈情况：</span>{{iteamList.qualified==0?'不合格':iteamList.qualified==2?'合格':''}}</p>
+        <p v-if="iteamList.qualified==0"
+           style="background: #fff;padding:0.1rem 0.3rem;padding-bottom:0.2rem;border-bottom:1px solid #f2f2f2;"><span style="color:#666666">不合格原因：</span>{{iteamList.unqualifiedReason}}</p>
+      </div>
+      <div class="selfcheckList"
            style="margin-bottom:0.1rem;">
         <div class="iteamsa">
           <p style="display: flex;">备注：</p>
@@ -209,7 +218,7 @@
              style="margin-left:0.2rem;flex:1">{{iteamList.remark}}</p>
         </div>
       </div>
-      <div v-if="iteamList.status!== 1&iteamList.qualified== 3"
+      <div v-if="iteamList.status!== 1&iteamList.qualified== 3&(roleCode=='global'||roleCode=='dispatch')"
            class="evaluation-button">
         <button @click="popupVisible3=true"
                 style="background:#FF4545">不合格</button>
@@ -230,6 +239,7 @@ export default {
   data () {
     return {
       slide: [],
+      roleCode: '',//角色编码
       slide1: [],
       options: [
         {
@@ -288,6 +298,7 @@ export default {
     })
   },
   created () {
+    this.roleCode = localStorage.roleCode;
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
       this.searchCondition = this.$route.query.searchCondition;
@@ -317,7 +328,9 @@ export default {
             MessageBox.alert("", {
               message: "操作成功",
               title: "提示"
-            }).then(action => { });
+            }).then(action => {
+              this.getMessage(this.sheetCode);
+            });
           } else {
             MessageBox.alert("", {
               message: res.message,
@@ -337,7 +350,9 @@ export default {
           MessageBox.alert("", {
             message: "操作成功",
             title: "提示"
-          }).then(action => { });
+          }).then(action => {
+            this.getMessage(this.sheetCode);
+          });
         } else {
           MessageBox.alert("", {
             message: res.message,
@@ -514,7 +529,7 @@ export default {
       this.myMap = new AMap.Map("myMap");
       let geolocation = new AMap.Geolocation();
       geolocation.getCurrentPosition((status, result) => {
-        console.log(result.position);
+        // console.log(result.position);
         var markers = [{
           icon: require('../../assets/image/supervise/iconren.png'),
           label: {
@@ -575,7 +590,7 @@ export default {
     },
     handOpen (val, index) {
       this.eachartNode.dispatchAction({ type: "hideTip" });
-      console.log(index);
+      // console.log(index);
       this.rotateS = 0;
       this.lageImg = [];
       this.popupVisible = true;
@@ -599,7 +614,7 @@ export default {
       })
         .then(res => {
           Indicator.close();
-          console.log(res);
+          // console.log(res);
           this.iteamList = res;
           slide3 = res.selfCheckDealDetailList;
           if (res.selfCheckDealDetailList.length > 0) {
@@ -664,6 +679,7 @@ export default {
         color: #282828;
         text-align: center;
         height: 1.4rem;
+        font-size: 0.45rem;
         line-height: 1.4rem;
       }
       .version-popup-center {
@@ -691,8 +707,8 @@ export default {
       .version-popup-bottom {
         display: flex;
         justify-content: flex-start;
-        height: 0.88rem;
-        line-height: 0.88rem;
+        height: 1.06rem;
+        line-height: 1.06rem;
         border-top: 1px solid #dddddd;
         div {
           width: 50%;

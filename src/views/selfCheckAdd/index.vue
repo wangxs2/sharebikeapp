@@ -484,7 +484,7 @@ export default {
     window.watchBackWXS = this.watchBackWXS;
   },
   mounted () {
-
+    console.log(this.getCurrentPosition())
   },
   methods: {
 
@@ -640,7 +640,6 @@ export default {
       AMap.convertFrom(gps, 'gps', function (status, result) {
         if (result.info === 'ok') {
           var lnglats = result.locations; // Array.<LngLat>
-          console.log(lnglats[0].lng, lnglats[0].lat);
         }
       });
 
@@ -679,7 +678,6 @@ export default {
 
         this.myMap.addControl(geolocation);
         geolocation.getCurrentPosition((status, result) => {
-          console.log(result.position);
           this.addMarker(result.position);
           this.addressMapSa(result.position);
           this.formMessage.gpsLongitude = result.position.lng;
@@ -708,7 +706,6 @@ export default {
         this.markerSa.setMap(null);
         this.markerSa = null;
       }
-      // console.log('懂了')
       AMapUI.loadUI(['misc/PositionPicker'], (PositionPicker) => {
         this.positionPicker = new PositionPicker({
           mode: 'dragMap',//设定为拖拽地图模式，可选'dragMap'、'dragMarker'，默认为'dragMap'
@@ -725,7 +722,6 @@ export default {
         this.objAddress = {};
         this.positionPicker.on('success', (positionResult) => {
           // this.placeData = []
-          console.log(positionResult);
           this.objAddress.addr = positionResult.address;
           this.objAddress.name = positionResult.nearestJunction;
           this.objAddress.lng = positionResult.position.lng;
@@ -886,7 +882,6 @@ export default {
         })
           .then(res => {
             if (res) {
-              console.log(res);
               this.formMessage = res;
               this.formMessage.handleBefore = res.handleBefore.split(";");
               this.formMessage.handleAfter = res.handleAfter.split(";");
