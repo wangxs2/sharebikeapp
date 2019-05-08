@@ -624,10 +624,8 @@ export default {
       this.myMap = new AMap.Map("myMap");
       let geolocation = new AMap.Geolocation();
       geolocation.getCurrentPosition((status, result) => {
-
         this.formMessage.gpsLongitude = result.position.lng;
         this.formMessage.gpsLatitude = result.position.lat;
-
         var markers = [{
           icon: require('../../assets/image/supervise/iconren.png'),
           label: {
@@ -655,12 +653,6 @@ export default {
           });
         });
         this.myMap.setFitView();
-
-
-
-
-
-
 
       });
     },
@@ -810,7 +802,6 @@ export default {
       });
     },
     save () {
-      console.log(this.formMessage.gpsLongitude);
       if (this.formMessage.handleBeforeURLs.length == 0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
@@ -911,16 +902,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// input {
-//   width: 80%;
-//   margin: 0 1rem;
-//   text-align: right;
-// }
-// textarea {
-//   width: 80%;
-//   margin: 0.733333rem 1rem 0 1rem;
-//   text-align: right;
-// }
 p {
   margin: 0;
   padding: 0;

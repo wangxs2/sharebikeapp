@@ -34,7 +34,7 @@
       <div class="version-popup">
         <div class="variable">
           <div class="menself">
-            <p v-if="menuListCenter.length==0"
+            <p v-if="menuListCenter.length==0&qualifiedFlag==false"
                style="color:#999999;text-align:center">暂无数据</p>
             <div style="padding:0rem;background: #f2f2f2;">
               <div class="areacheck"
@@ -53,6 +53,21 @@
                  :key="index"
                  :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']">{{downIcon==2?item.realName:item.name}}</p>
             </div>
+          </div>
+          <div class="qualified-box"
+               v-if="qualifiedFlag">
+            <p>工单状态</p>
+            <p class="status-list"
+               @click="statusclick(iteam,index)"
+               :class="[viewType10 == iteam.id ? 'tab-active' : '']"
+               v-for="(iteam, index) in statusData"
+               :key="iteam.id">{{iteam.name}}</p>
+            <p>工单评价</p>
+            <p class="status-list"
+               :class="[viewType11 == item.id ? 'tab-active' : '']"
+               v-for="(item,index) in qualifiedStatus"
+               :key="'info1-'+index"
+               @click="qualifiedclick(item,index)">{{item.name}}</p>
           </div>
         </div>
         <div class="bottomsa">
@@ -114,6 +129,10 @@
                    style="flex:1;padding-top:0.2rem;color:#aaaaaa;font-size:0.3rem">企业已读</p>
                 <p v-if="item.read==0&&item.dealTime==undefined"
                    style="flex:1;padding-top:0.2rem;color:#ff0000;font-size:0.3rem">未读</p>
+                <p v-if="item.qualified==2"
+                   style="flex:1;color:#41cd76;font-size:0.3rem">合格</p>
+                <p v-if="item.qualified==0"
+                   style="flex:1;color:#ff3030;font-size:0.3rem">不合格</p>
               </div>
             </div>
             <div class="bottomRight">
@@ -137,10 +156,13 @@ export default {
     return {
       district: '',
       addressFlag: true,
+      qualifiedFlag: false,//工单
       selected: "/layout/supervise",
       viewType: "",
       viewType2: "",
       viewType3: -1,
+      viewType10: -1,
+      viewType11: -1,
       popupVisible: true,
       requestFlage: true, //请求是我自己写的还是自带的刷新的
       areaflag: true, //是否包含flag
@@ -192,6 +214,16 @@ export default {
           id: 4
         }
       ],
+      qualifiedStatus: [
+        {
+          name: "不合格",
+          id: 0
+        },
+        {
+          name: "合格",
+          id: 2
+        }
+      ],
       areaname: {
         name: "区域",
         id: ""
@@ -214,7 +246,9 @@ export default {
         pageSize: 15,
         createBy: "",
         areaId: "",
-        orgId: ""
+        status: "",
+        orgId: "",
+        qualified: "",
       },
       areaflag: true, //是否包含flag
       UserArea: [],
@@ -242,6 +276,8 @@ export default {
   created () {
     if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
       this.searchCondition = this.$route.query.searchCondition;
+      this.viewType10 = this.$route.query.searchCondition.status;
+      this.viewType11 = this.$route.query.searchCondition.qualified;
       this.menuListTop = this.$route.query.menuListTop;
       this.downIcon = this.$route.query.downIcon;
       // console.log(this.$route.query.areaarr);
@@ -380,6 +416,16 @@ export default {
       this.downIcon1 = false;
       this.getListData2();
     },
+    //合格不合格
+    statusclick (row, index) {
+      this.viewType10 = row.id
+      this.searchCondition.status = row.id
+    },
+    //合格不合格
+    qualifiedclick (row, index) {
+      this.viewType11 = row.id
+      this.searchCondition.qualified = row.id
+    },
     //确定
     submit () {
       this.downIcon1 = false;
@@ -392,12 +438,16 @@ export default {
       this.downIcon1 = true;
       if (this.downIcon == 0) {
         this.menuListCenter = this.areakids;
+        this.qualifiedFlag = false
       } else if (this.downIcon == 1) {
+        this.qualifiedFlag = false
         this.menuListCenter = this.company;
       } else if (this.downIcon == 2) {
+        this.qualifiedFlag = false
         this.menuListCenter = this.menData;
       } else if (this.downIcon == 3) {
-        this.menuListCenter = this.statusData;
+        this.qualifiedFlag = true
+        this.menuListCenter = [];
       }
     },
 
@@ -626,6 +676,25 @@ export default {
             margin-bottom: 0rem;
             color: #333333;
             border-bottom: 1px solid #eeeeee;
+          }
+        }
+        .qualified-box {
+          box-sizing: border-box;
+          padding: 0.3rem;
+          .status-list {
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            color: #999999;
+            border: 1px solid #eeeeee;
+            border-radius: 4px;
+            margin: 0;
+            margin-right: 0.4rem;
+            margin-bottom: 0.2rem;
+            cursor: pointer;
+          }
+          .tab-active {
+            background: #5076ff;
+            color: #fff;
           }
         }
       }

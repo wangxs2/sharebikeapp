@@ -49,7 +49,6 @@ export default {
       }
       return new Promise((resolve, reject) => {
         geocoder.getAddress(positions, function(status, result) {
-          // console.log(result);
           if (status == 'complete') {
             resolve(result.regeocode)
           } else {
@@ -65,10 +64,10 @@ export default {
         addControl()
       }
       return new Promise((resolve, reject) => {
-        geolocation.getCurrentPosition(function(status, result) {
-          console.log(result)
+        geolocation.getCurrentPosition((status, result) => {
+          console.log(status)
           if (status == 'complete') {
-            resolve(result.position)
+            resolve(result)
           } else {
             reject(status)
           }

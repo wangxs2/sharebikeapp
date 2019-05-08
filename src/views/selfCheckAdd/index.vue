@@ -484,7 +484,7 @@ export default {
     window.watchBackWXS = this.watchBackWXS;
   },
   mounted () {
-    console.log(this.getCurrentPosition())
+
   },
   methods: {
 

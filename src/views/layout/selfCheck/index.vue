@@ -52,7 +52,7 @@
         <div class="version-popup">
           <div class="variable">
             <div class="menself">
-              <p v-if="menuListCenter.length==0"
+              <p v-if="menuListCenter.length==0&qualifiedFlag==false"
                  style="color:#999999;text-align:center">暂无数据</p>
               <div style="padding:0rem;background: #f2f2f2;">
                 <div class="areacheck"
@@ -71,6 +71,21 @@
                    :key="index"
                    :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']">{{downIcon==2?item.realName:item.name}}</p>
               </div>
+            </div>
+            <div class="qualified-box"
+                 v-if="qualifiedFlag">
+              <p>工单状态</p>
+              <p class="status-list"
+                 @click="statusclick(iteam,index)"
+                 :class="[viewType10 == iteam.id ? 'tab-active' : '']"
+                 v-for="(iteam, index) in statusData"
+                 :key="iteam.id">{{iteam.name}}</p>
+              <p>工单评价</p>
+              <p class="status-list"
+                 :class="[viewType11 == item.id ? 'tab-active' : '']"
+                 v-for="(item,index) in qualifiedStatus"
+                 :key="'info1-'+index"
+                 @click="qualifiedclick(item,index)">{{item.name}}</p>
             </div>
           </div>
           <div class="bottomsa">
@@ -102,11 +117,23 @@
                :key="index"
                @click="detailClick(iteam)">
             <div class="leftSa"
-                 style="width:2.6rem;height:2.6rem">
-              <img :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]"
+                 v-bind:style="{'backgroundImage':iteam.status == 1 ? 'url('+Ip + iteam.handleBeforeURLs[0]+')' : 'url('+Ip + iteam.handleAfterURLs[0]+')'}">
+              <!-- <img class="left-qualified"
+                   :src="iteam.status == 1 ? Ip + iteam.handleBeforeURLs[0] : Ip + iteam.handleAfterURLs[0]"
                    alt
                    style="width:2.6rem;height:2.6rem"
-                   srcset>
+                   srcset> -->
+              <img v-if="iteam.qualified==0"
+                   class="left-qualified"
+                   src="../../../assets/image/不合格@3x.png"
+                   alt=""
+                   srcset="">
+              <img v-if="iteam.qualified==2"
+                   class="left-qualified"
+                   src="../../../assets/image/合格@3x.png"
+                   alt=""
+                   srcset="">
+              <!-- <img src="../../../assets/image/合格@3x.png" alt="" srcset=""> -->
             </div>
             <div class="rightSa">
               <div style="display:flex;flex-direction: column;flex:1;max-width: 100%;">
@@ -165,6 +192,7 @@
 import { Loadmore } from "mint-ui";
 import { Toast } from "mint-ui";
 import { Indicator } from "mint-ui";
+import { fail } from 'assert';
 export default {
   name: "zicha",
   computed: {},
@@ -177,12 +205,15 @@ export default {
       district: '',
       viewType2: "",
       viewType3: "",
+      viewType10: -1,
+      viewType11: -1,//合格不合格
       popupVisible: false,
       popupVisible1: false,
       areaflag: true, //是否包含flag
       menType: "",
       downIcon: -1,
       downIcon1: false,
+      qualifiedFlag: false,
       menuName: "",
       menuListTop: [
         {
@@ -217,6 +248,16 @@ export default {
           id: 2
         }
       ],
+      qualifiedStatus: [
+        {
+          name: "不合格",
+          id: 0
+        },
+        {
+          name: "合格",
+          id: 2
+        }
+      ],
       areaname: {
         name: "区域",
         id: ""
@@ -241,7 +282,8 @@ export default {
         handleBy: "",
         areaId: "",
         orgId: "",
-        status: ""
+        status: "",
+        qualified: "",
       },
       UserArea: [],
       pageList: [],
@@ -260,6 +302,8 @@ export default {
     if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
       this.searchCondition = this.$route.query.searchCondition;
       this.menuListTop = this.$route.query.menuListTop;
+      this.viewType10 = this.$route.query.searchCondition.status;
+      this.viewType11 = this.$route.query.searchCondition.qualified;
       this.downIcon = this.$route.query.downIcon;
       // console.log(this.menuListTop);
       if (this.$route.query.areaarr.length == 0) {
@@ -426,9 +470,9 @@ export default {
         this.menuListTop[this.downIcon].menuName = row.realName;
         this.searchCondition.handleBy = row.id;
       } else if (this.downIcon == 3) {
-        this.menuListTop[this.downIcon].label = row.id;
-        this.menuListTop[this.downIcon].menuName = row.name;
-        this.searchCondition.status = row.id;
+        // this.menuListTop[this.downIcon].label = row.id;
+        // this.menuListTop[this.downIcon].menuName = row.name;
+        // this.searchCondition.status = row.id;
       }
     },
     //重置
@@ -450,6 +494,8 @@ export default {
         this.menuListTop[this.downIcon].label = "";
         this.menuListTop[this.downIcon].menuName = "";
         this.searchCondition.status = "";
+        this.viewType10 = -1
+        this.viewType11 = -1
       }
       this.downIcon1 = false;
       this.getListData2();
@@ -464,13 +510,18 @@ export default {
       this.downIcon = index;
       this.downIcon1 = true;
       if (this.downIcon == 0) {
+        this.qualifiedFlag = false
         this.menuListCenter = this.areakids;
       } else if (this.downIcon == 1) {
+        this.qualifiedFlag = false
         this.menuListCenter = this.company;
       } else if (this.downIcon == 2) {
+        this.qualifiedFlag = false
         this.menuListCenter = this.menData;
+        this.qualifiedFlag = false
       } else if (this.downIcon == 3) {
-        this.menuListCenter = this.statusData;
+        this.menuListCenter = [];
+        this.qualifiedFlag = true
       }
     },
 
@@ -482,6 +533,16 @@ export default {
         this.deleteChildren(originTree);
         this.areakids = originTree;
       });
+    },
+    //合格不合格
+    statusclick (row, index) {
+      this.viewType10 = row.id
+      this.searchCondition.status = row.id
+    },
+    //合格不合格
+    qualifiedclick (row, index) {
+      this.viewType11 = row.id
+      this.searchCondition.qualified = row.id
     },
     parseChildren (pid, json) {
       //格式父级权限
@@ -744,8 +805,6 @@ export default {
             line-height: 1rem;
             align-items: center;
             flex-direction: row;
-            // padding: 0rem 0.3rem;
-            // padding-right: 0.3rem;
             .areachecklist {
               margin: 0;
               overflow: hidden;
@@ -754,7 +813,6 @@ export default {
               flex: 1;
               height: 1rem;
               text-align: center;
-              // padding: 0;
             }
             .tab-active1 {
               color: #5076ff;
@@ -781,6 +839,25 @@ export default {
             margin-bottom: 0rem;
             color: #333333;
             border-bottom: 1px solid #eeeeee;
+          }
+        }
+        .qualified-box {
+          box-sizing: border-box;
+          padding: 0.3rem;
+          .status-list {
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            color: #999999;
+            border: 1px solid #eeeeee;
+            border-radius: 4px;
+            margin: 0;
+            margin-right: 0.4rem;
+            margin-bottom: 0.2rem;
+            cursor: pointer;
+          }
+          .tab-active {
+            background: #5076ff;
+            color: #fff;
           }
         }
       }
@@ -833,6 +910,21 @@ export default {
       box-sizing: border-box;
       padding: 0.3rem;
       border-bottom: 1px solid #eeeeee;
+      .leftSa {
+        width: 2.6rem;
+        height: 2.6rem;
+        position: relative;
+        // background-image: url("../../../assets/image/不合格@3x.png");
+        background-size: 100% 100%;
+        // z-index: -1;
+        .left-qualified {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1.58rem;
+          height: 1.6rem;
+        }
+      }
       .rightSa {
         width: 0;
         display: flex;

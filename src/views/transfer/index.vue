@@ -3,86 +3,80 @@
   <div class="container">
     <div class="header">
       <mt-header title="转派">
-        <mt-button icon="back" slot="left" style="font-size:24px" @click="iconClick"></mt-button>
+        <mt-button icon="back"
+                   slot="left"
+                   style="font-size:24px"
+                   @click="iconClick"></mt-button>
       </mt-header>
     </div>
     <div class="content">
       <div class="witeSa">
-        <div class="iteamForm" style="padding-top:0.4rem">
+        <div class="iteamForm"
+             style="padding-top:0.4rem">
           <p>
-            <img
-              src="../../assets/image/selfcheck/icon_2_address@3x.png"
-              width="24"
-              height="24"
-              alt
-              srcset
-            >
+            <img src="../../assets/image/selfcheck/icon_2_address@3x.png"
+                 width="24"
+                 height="24"
+                 alt
+                 srcset>
           </p>
           <p style="margin:0 0.2rem;margin-top:0.1rem">地点</p>
-          <p
-            v-model="formMessage.dispatchTime"
-            style="justify-content:flex-end;margin-top:0.1rem;display: flex;flex:1;"
-          >{{formMessage.handleAddr}}</p>
+          <p style="justify-content:flex-end;margin-top:0.1rem;display: flex;flex:1;">{{formMessage.handleAddr}}</p>
         </div>
       </div>
-      <div class="witeSa" style="margin-top:0.2rem;border-bottom:1px solid #f2f2f2">
-        <div class="iteamForm" style="padding-top:0.4rem">
-          <img
-            src="../../assets/image/supervise/icon_4_company@3x.png"
-            width="24"
-            height="24"
-            alt
-            srcset
-          >
+      <div class="witeSa"
+           style="margin-top:0.2rem;border-bottom:1px solid #f2f2f2">
+        <div class="iteamForm"
+             style="padding-top:0.4rem">
+          <img src="../../assets/image/supervise/icon_4_company@3x.png"
+               width="24"
+               height="24"
+               alt
+               srcset>
           <p style="margin:0 0.2rem;margin-top:0.1rem">转派</p>
         </div>
       </div>
       <div class="witeSa">
         <div class="topcloum">
-          <div class="topcloumson" v-for="(item,index) in options" :key="index">
-            <p
-              class="detail-btn"
-              :viewType="item.id"
-              :class="viewType==item.id?'detail-selected':''"
-              @click="selectView"
-            ></p>
+          <div class="topcloumson"
+               v-for="(item,index) in options"
+               :key="index">
+            <p class="detail-btn"
+               :viewType="item.id"
+               :class="viewType==item.id?'detail-selected':''"
+               @click="selectView"></p>
             <p style="margin:0 0.2rem">{{item.realName}}</p>
             <p :class="item.areas==''?'grey':''">{{item.areas==''?"（无负责区域）":'（'+item.areas+'）'}}</p>
           </div>
         </div>
       </div>
-      <div
-        class="witeSa"
-        style="margin-top:0.2rem;padding-left:0.3rem;margin-bottom:0.3rem;padding-top:0.2rem"
-      >
+      <div class="witeSa"
+           style="margin-top:0.2rem;padding-left:0.3rem;margin-bottom:0.3rem;padding-top:0.2rem">
         <div class="topsa">
-          <img
-            src="../../assets/image/selfcheck/icon_7_note@3x.png"
-            width="22"
-            height="22"
-            alt
-            srcset
-          >
-          <div
-            style="width:100%;margin-top:0.05rem;padding-left:0.3rem;display:flex;justify-content: space-between"
-          >
+          <img src="../../assets/image/selfcheck/icon_7_note@3x.png"
+               width="22"
+               height="22"
+               alt
+               srcset>
+          <div style="width:100%;margin-top:0.05rem;padding-left:0.3rem;display:flex;justify-content: space-between">
             <span>备注</span>
             <span style="text-align:right;margin-right:0.3rem;color:#757575">最多输入180个文字</span>
           </div>
         </div>
-        <div class="bottomsa" style="padding-top:0.2rem;padding-right:0.2rem">
-          <textarea
-            maxlength="180"
-            style="width:100%;"
-            rows="8"
-            placeholder="请输入备注"
-            v-model="formMessage.remark"
-          ></textarea>
+        <div class="bottomsa"
+             style="padding-top:0.2rem;padding-right:0.2rem">
+          <textarea maxlength="180"
+                    style="width:100%;"
+                    rows="8"
+                    placeholder="请输入备注"
+                    v-model="formMessage.remark"></textarea>
         </div>
       </div>
     </div>
     <div class="bottom">
-      <button type="button" class="buttonSa1" @click="submit()">转派</button>
+      <button type="button"
+              class="buttonSa1"
+              @click="submit()">转派</button>
     </div>
   </div>
 </template>
@@ -91,7 +85,7 @@
 import { MessageBox } from "mint-ui";
 export default {
   computed: {},
-  data() {
+  data () {
     return {
       time: "",
       valuesa: "",
@@ -129,10 +123,13 @@ export default {
     };
   },
   components: {},
-  mounted() {
-    // this.getMap();
+  mounted () {
+    this.getCurrentPosition().then(res => {
+      this.formMessage.gpsLongitude = res.position.lng
+      this.formMessage.gpsLatitude = res.position.lat
+    })
   },
-  created() {
+  created () {
     if (this.$route.query.message) {
       this.sheetCode = this.$route.query.message;
       this.sheetCode1 = this.$route.query.sheetCode1;
@@ -145,10 +142,10 @@ export default {
       this.getMessage();
       this.getAll();
     }
-    window.watchBackWXS=this.watchBackWXS;
+    window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
-    iconClick() {
+    iconClick () {
       this.$router.push({
         path: "/needtodoAdd",
         query: {
@@ -163,39 +160,17 @@ export default {
         }
       });
     },
-    watchBackWXS(){
+    watchBackWXS () {
       this.iconClick();
     },
-    selectView(e) {
+    selectView (e) {
       let type = e.target.getAttribute("viewType");
       if (type) {
         this.viewType = type;
         this.value = type;
       }
     },
-
-    getMap() {
-      this.myMap = new BMap.Map("myMap", { enableMapClick: false });
-      let myCity = new BMap.Geolocation();
-      let geoc = new BMap.Geocoder();
-      myCity.getCurrentPosition(rs => {
-        let ggPoint = new BMap.Point(rs.longitude, rs.latitude);
-        var marker = new BMap.Marker(ggPoint); // 创建标注
-        this.myMap.addOverlay(marker);
-        this.myMap.centerAndZoom(ggPoint, 16);
-        geoc.getLocation(
-          ggPoint,
-          rs => {
-            console.log(rs);
-            this.formMessage.gpsLongitude = rs.surroundingPois[0].point.lng;
-            this.formMessage.gpsLatitude = rs.surroundingPois[0].point.lat;
-            let addComp = rs.addressComponents;
-          },
-          { poiRadius: 200, numPois: 20 }
-        );
-      });
-    },
-    getAll() {
+    getAll () {
       this.valuesa = "";
       this.$fetchGet("dispatch/listUser", {
         sheetCode: this.sheetCode1
@@ -203,7 +178,7 @@ export default {
         this.options = res;
       });
     },
-    getMessage() {
+    getMessage () {
       this.$fetchGet("dispatch/dispatchDetail", {
         id: this.sheetCode
       })
@@ -215,25 +190,27 @@ export default {
             }
           }
         })
-        .catch(res => {});
+        .catch(res => { });
     },
-    submit() {
+    submit () {
       if (this.value == "") {
         MessageBox.alert("", {
           message: "请选择转派人",
           title: "提示"
-        }).then(action => {});
+        }).then(action => { });
       } else {
         this.sendMessage.userId = this.value;
         this.sendMessage.id = this.sheetCode;
         this.sendMessage.remark = this.formMessage.remark;
+        this.sendMessage.gpsLongitude = this.formMessage.gpsLongitude
+        this.sendMessage.gpsLatitude = this.formMessage.gpsLatitude
         this.$fetchPost("dispatch/turnDispatchDetail", this.sendMessage)
           .then(res => {
             if (res.status == -1) {
               MessageBox.alert("", {
                 message: res.message,
                 title: "提示"
-              }).then(action => {});
+              }).then(action => { });
             } else {
               MessageBox.alert("", {
                 message: "保存成功",
@@ -247,7 +224,7 @@ export default {
             MessageBox.alert("", {
               message: "请求超时",
               title: "提示"
-            }).then(action => {});
+            }).then(action => { });
           });
       }
     }
@@ -309,8 +286,7 @@ p {
           border-bottom: 1px solid #f2f2f2;
           align-items: center;
           padding: 0.3rem 0;
-          .ballsa {
-          }
+
           .detail-btn {
             width: 0.5rem;
             height: 0.5rem;
