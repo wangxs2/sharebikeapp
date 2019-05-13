@@ -87,29 +87,23 @@
                :key="index"
                @click="detailClick(iteam)">
             <div class="leftSa"
-                 style="width:2.6rem;height:2.6rem">
-              <img style="width:2.6rem;height:2.6rem"
-                   v-if="iteam.dispachPhotoURLs.length!==0&&iteam.status!==2"
-                   :src="Ip + iteam.dispachPhotoURLs[0]"
-                   alt
-                   srcset>
-              <img style="width:2.6rem;height:2.6rem"
-                   v-if="iteam.dispachPhotoURLs.length==0"
-                   src="../../../assets/image/selfcheck/image_no data@3x.png"
-                   alt
-                   srcset>
-              <img style="width:2.6rem;height:2.6rem"
-                   v-if="iteam.status==2"
-                   :src="Ip + iteam.handleAfterURLs[0]"
-                   alt
-                   srcset>
+                 v-bind:style="{'backgroundImage':iteam.status == 2 ? 'url('+Ip + iteam.handleAfterURLs[0]+')' :iteam.dispachPhotoURLs.length!==0&&iteam.status!==2? 'url('+Ip + iteam.dispachPhotoURLs[0]+')':iteam.dispachPhotoURLs.length==0?'url(../../../assets/image/selfcheck/image_no data@3x.png)':''}">
+              <img v-if="iteam.qualified==0"
+                   class="left-qualified"
+                   src="../../../assets/image/不合格@3x.png"
+                   alt=""
+                   srcset="">
+              <img v-if="iteam.qualified==2"
+                   class="left-qualified"
+                   src="../../../assets/image/合格@3x.png"
+                   alt=""
+                   srcset="">
             </div>
             <div class="rightSa">
               <div class="topRight">
                 <span>{{FormatDate(iteam.dispatchTime)}}</span>
                 <span style="font-size:0.32rem;line-height:1.5;"
                       :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"已转派":"已完成"}}</span>
-                <!-- <p style="width:0.1rem"></p> -->
               </div>
               <div class="centersa">
                 <p style="margin-top:0.2rem">
@@ -157,8 +151,23 @@ export default {
           name: "处理人",
           menuName: "",
           label: ""
+        }, {
+          name: "工单状态",
+          menuName: "",
+          label: -1
         }
       ],
+      qualifiedStatus: [
+        {
+          name: "不合格",
+          id: 0
+        },
+        {
+          name: "合格",
+          id: 2
+        }
+      ],
+      qualified: '',
       menuListCenter: [],
       menType: "",
       downIcon: -1,
@@ -179,7 +188,8 @@ export default {
         pageSize: 15,
         status: "",
         handleBy: "",
-        areaId: ""
+        areaId: "",
+        qualified: '',
       },
       company: [
         {
@@ -279,10 +289,18 @@ export default {
         if (type == 1) {
           this.searchCondition.page = 0;
           this.searchCondition.status = "";
+          if (this.menuListTop[2].label == 0 || this.menuListTop[2].label == 2) {
+            this.searchCondition.qualified = "";
+          }
+          // this.menuListTop[2].label = -1;
+          // this.menuListTop[2].menuName = "";
           this.getListData2();
         } else if (type == 2) {
           this.searchCondition.page = 0;
           this.searchCondition.status = 2;
+          if (this.menuListTop[2].label == 0 || this.menuListTop[2].label == 2) {
+            this.searchCondition.qualified = this.menuListTop[2].label;
+          }
           this.getListData2();
         }
       }
@@ -312,6 +330,10 @@ export default {
         this.menuListTop[this.downIcon].label = row.id;
         this.menuListTop[this.downIcon].menuName = row.realName;
         this.searchCondition.handleBy = row.id;
+      } else if (this.downIcon == 2) {
+        this.menuListTop[this.downIcon].label = row.id;
+        this.menuListTop[this.downIcon].menuName = row.name;
+        this.searchCondition.qualified = row.id;
       }
     },
     //重置
@@ -325,6 +347,10 @@ export default {
         this.menuListTop[this.downIcon].label = "";
         this.menuListTop[this.downIcon].menuName = "";
         this.searchCondition.handleBy = "";
+      } else if (this.downIcon == 2) {
+        this.menuListTop[this.downIcon].label = -1;
+        this.menuListTop[this.downIcon].menuName = "";
+        this.searchCondition.qualified = '';
       }
       this.downIcon1 = false;
       this.getListData2();
@@ -342,6 +368,8 @@ export default {
         this.menuListCenter = this.areakids;
       } else if (this.downIcon == 1) {
         this.menuListCenter = this.menData;
+      } else if (this.downIcon == 2) {
+        this.menuListCenter = this.qualifiedStatus;
       }
     },
 
@@ -443,7 +471,8 @@ export default {
         pageSize: 15,
         status: this.searchCondition.status,
         handleBy: this.searchCondition.handleBy,
-        areaId: this.searchCondition.areaId
+        areaId: this.searchCondition.areaId,
+        qualified: this.searchCondition.qualified,
       }).then(res => {
         this.pageList = res.list;
       });
@@ -524,6 +553,19 @@ export default {
         margin-bottom: 0.2rem;
         padding: 0.3rem;
         border-bottom: 1px solid #eeeeee;
+        .leftSa {
+          width: 2.6rem;
+          height: 2.6rem;
+          position: relative;
+          background-size: 100% 100%;
+          .left-qualified {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.58rem;
+            height: 1.6rem;
+          }
+        }
         .rightSa {
           width: 0;
           display: flex;

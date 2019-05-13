@@ -17,7 +17,6 @@ export const constantRouterMap = [
     path: '/layout',
     name: '主页',
     component: _import('layout/index'),
-
     children: [
       {
         path: 'selfCheck',

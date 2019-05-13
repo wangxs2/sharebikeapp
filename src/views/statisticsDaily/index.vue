@@ -79,7 +79,8 @@
                srcset>
           <div class="content-bottom-rules"
                style="width:100%;margin-top:1.8rem;padding-bottom:0.5rem">
-            <p style="font-size:0.4rem;margin:0;color:#afbffe;text-align:center;">《生成时间》{{new Date(dataDetail.createTime).Format('yyyy-MM-dd')}}</p>
+            <p style="font-size:0.4rem;margin:0;color:#afbffe;text-align:center;"
+               v-if='dataDetail.createTime!==undefined'>《生成时间》{{new Date(dataDetail.createTime).Format('yyyy-MM-dd')}}</p>
             <div class="content-bottom-list">
 
               <p style="margin:0;padding:0.3rem;line-height:0.62rem;padding-bottom:0;text-indent:0.8rem">{{dataDetail.status==0?dataDetail.dispatchDealSummary:dataDetail.cleanByUserSummary}}</p>

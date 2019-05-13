@@ -21,9 +21,9 @@
 
       <div class="header">
         <span v-if="addressFlag"
-              style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{gpsadress}}</span>
+              style="font-size:0.4rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{{gpsadress}}</span>
         <span v-if="!addressFlag"
-              style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+              style="font-size:0.4rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
               class="iconfont icon-location">{{district}}</span>
         <span style="width:48%;text-align:center">自查</span>
         <span style="font-size:24px;width:25%;text-align:right;padding-right:2%"
@@ -305,7 +305,6 @@ export default {
       this.viewType10 = this.$route.query.searchCondition.status;
       this.viewType11 = this.$route.query.searchCondition.qualified;
       this.downIcon = this.$route.query.downIcon;
-      // console.log(this.menuListTop);
       if (this.$route.query.areaarr.length == 0) {
         this.getorgsTree();
       } else {
@@ -332,7 +331,6 @@ export default {
     } else {
       this.isDate = true
     }
-    console.log(this.isDate)
   },
   methods: {
     watchBackWXS () {
@@ -356,7 +354,6 @@ export default {
         } else {
           this.isJunan = false
         }
-        // console.log('------------' + localStorage.getItem("isnumbersa"))
         if (this.isJunan & this.isDate & localStorage.getItem("isnumbersa") == null) {
           this.popupVisible = true
           localStorage.setItem("isnumbersa", 1);
@@ -376,6 +373,7 @@ export default {
         showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
         showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
         panToLocation: false, //定位成功后将定位到的位置作为地图中心点，默认：true
+        useNative: true,
         zoomToAccuracy: false //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
       });
       geolocation.getCurrentPosition((status, result) => {
@@ -383,7 +381,6 @@ export default {
           this.district = result.addressComponent.district;
           this.addressFlag = false;
         } else {
-          // alert(1)
           this.gpsadress = '定位失败'
         }
       });
@@ -431,7 +428,6 @@ export default {
     },
     //区域切换
     areaTypeclick (val, index) {
-      // console.log(val);
       this.areaflag = false;
       this.areakids = [];
       this.viewType = val.id;
@@ -494,6 +490,7 @@ export default {
         this.menuListTop[this.downIcon].label = "";
         this.menuListTop[this.downIcon].menuName = "";
         this.searchCondition.status = "";
+        this.searchCondition.qualified = "";
         this.viewType10 = -1
         this.viewType11 = -1
       }
@@ -617,7 +614,8 @@ export default {
         handleBy: this.searchCondition.handleBy,
         areaId: this.searchCondition.areaId,
         orgId: this.searchCondition.orgId,
-        status: this.searchCondition.status
+        status: this.searchCondition.status,
+        qualified: this.searchCondition.qualified,
       }).then(res => {
         done();
         this.bottom = self.bottom + 10;

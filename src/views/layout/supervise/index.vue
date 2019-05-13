@@ -3,9 +3,9 @@
   <div class="containerSa1">
     <div class="header">
       <span v-if="addressFlag"
-            style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">定位中...</span>
+            style="font-size:0.4rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">定位中...</span>
       <span v-if="!addressFlag"
-            style="font-size:0.46rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+            style="font-size:0.4rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
             class="iconfont icon-location">{{district}}</span>
       <span style="width:48%;text-align:center">督办</span>
       <span style="font-size:24px;width:25%;text-align:right;padding-right:2%"
@@ -280,7 +280,6 @@ export default {
       this.viewType11 = this.$route.query.searchCondition.qualified;
       this.menuListTop = this.$route.query.menuListTop;
       this.downIcon = this.$route.query.downIcon;
-      // console.log(this.$route.query.areaarr);
       if (this.$route.query.areaarr.length == 0) {
         this.getorgsTree();
       } else {
@@ -310,6 +309,7 @@ export default {
         showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
         showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
         panToLocation: false, //定位成功后将定位到的位置作为地图中心点，默认：true
+        useNative: true,
         zoomToAccuracy: false //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
       });
       geolocation.getCurrentPosition((status, result) => {
@@ -349,7 +349,6 @@ export default {
     },
     //区域切换
     areaTypeclick (val, index) {
-      // console.log(val);
       this.areaflag = false;
       this.areakids = [];
       this.viewType = val.id;
@@ -412,6 +411,9 @@ export default {
         this.menuListTop[this.downIcon].label = -1;
         this.menuListTop[this.downIcon].menuName = "";
         this.searchCondition.status = "";
+        this.searchCondition.qualified = "";
+        this.viewType10 = -1
+        this.viewType11 = -1
       }
       this.downIcon1 = false;
       this.getListData2();
@@ -434,7 +436,6 @@ export default {
     //切换图片；
     sort (iteam, index) {
       this.downIcon = index;
-      // console.log(this.downIcon);
       this.downIcon1 = true;
       if (this.downIcon == 0) {
         this.menuListCenter = this.areakids;
@@ -526,7 +527,6 @@ export default {
     },
     refresh: function (done) {
       //下拉刷新
-      // console.log("refresh");
       this.searchCondition.page = 1;
       this.searchCondition.pageSize = 15;
       this.$fetchGet("dispatch/pageDispatch", {
@@ -535,7 +535,8 @@ export default {
         createBy: this.searchCondition.createBy,
         areaId: this.searchCondition.areaId,
         orgId: this.searchCondition.orgId,
-        status: this.searchCondition.status
+        status: this.searchCondition.status,
+        qualified: this.searchCondition.qualified,
       }).then(res => {
         this.pageList = res.list;
         done();
