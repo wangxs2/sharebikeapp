@@ -465,6 +465,16 @@ export default {
           };
         });
       });
+    },
+    bikeCleanCompany: function (val) {
+      console.log(val)
+      val.forEach((iteam) => {
+        if (iteam.arrangeNum > 100 || iteam.cleanNum > 100) {
+          iteam.arrangeNum = 0
+          iteam.cleanNum = 0
+          return
+        }
+      })
     }
   },
   created () {
@@ -492,6 +502,13 @@ export default {
       return val;
     },
     submitBike () {
+      this.bikeCleanCompany.forEach((iteam) => {
+        if (iteam.arrangeNum > 100 || iteam.cleanNum > 100) {
+          iteam.arrangeNum = 0
+          iteam.cleanNum = 0
+          return
+        }
+      })
       this.popupVisible2 = false;
       if (this.bikeTitle == "整理" && this.sum(this.bikeCleanCompany) !== 0) {
         this.isNumberbike = true;
@@ -939,6 +956,11 @@ export default {
           message: "请上传整理前照片",
           title: "提示"
         }).then(action => { });
+      } else if (this.formMessage.arrangeNum > 100 || this.formMessage.cleanNum > 100) {
+        MessageBox.alert("", {
+          message: "整理或清运数量有误",
+          title: "提示"
+        }).then(action => { });
       } else {
         let obj = {};
         this.formMessage.handleBefore;
@@ -999,7 +1021,7 @@ export default {
         (this.formMessage.arrangeNum == "" &&
           this.formMessage.cleanNum == "") ||
         (this.formMessage.arrangeNum < 0 || this.formMessage.cleanNum < 0) ||
-        (this.formMessage.arrangeNum == 0 && this.formMessage.cleanNum == 0)
+        (this.formMessage.arrangeNum == 0 && this.formMessage.cleanNum == 0) || this.formMessage.arrangeNum > 100 || this.formMessage.cleanNum > 100
       ) {
         MessageBox.alert("", {
           message: "整理或清运数量有误",

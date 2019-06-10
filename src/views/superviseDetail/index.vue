@@ -293,7 +293,7 @@
           <div class="topcloum">
             <div class="topcloumson">
               <p class="leftfont">反馈时间</p>
-              <p class="leftfont1">{{FormatDate(listdetail.updateTime)}}</p>
+              <p class="leftfont1">{{listdetail.updateTime==undefined?'':FormatDate(listdetail.updateTime)}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">反馈人员</p>
@@ -775,12 +775,18 @@ export default {
           console.log(slide3);
           this.iteamList = res;
           if (this.activeComany) {
+            this.iteamList.forEach((iteam, index) => {
+              if (iteam.id == this.activeComany) {
+                this.listdetail = res[index];
+              }
+            })
             this.activeComany = this.activeComany;
           } else {
             this.activeComany = res[0].id;
+            this.listdetail = res[0];
           }
-
-          this.listdetail = res[0];
+          // this.activeComany = res[0].id;
+          // this.listdetail = res[0];
           if (res[0].dispatchDealDetailList.length > 0) {
             slide3.forEach(iteam => {
               slide.push(iteam.orgName);
