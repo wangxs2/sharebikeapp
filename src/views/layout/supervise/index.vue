@@ -276,8 +276,16 @@ export default {
   created () {
     if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
       this.searchCondition = this.$route.query.searchCondition;
-      this.viewType10 = this.$route.query.searchCondition.status;
-      this.viewType11 = this.$route.query.searchCondition.qualified;
+      if (this.$route.query.searchCondition.status) {
+        this.viewType10 = this.$route.query.searchCondition.status;
+      } else {
+        this.viewType10 = -1;
+      }
+      if (this.$route.query.searchCondition.qualified) {
+        this.viewType11 = this.$route.query.searchCondition.qualified;
+      } else {
+        this.viewType11 = -1;
+      }
       this.menuListTop = this.$route.query.menuListTop;
       this.downIcon = this.$route.query.downIcon;
       if (this.$route.query.areaarr.length == 0) {

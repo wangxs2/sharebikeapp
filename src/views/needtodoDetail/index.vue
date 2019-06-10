@@ -173,6 +173,7 @@
           </div>
         </div>
       </div>
+
       <div class="superList">
         <div class="topsa"
              style="margin-top:0.3rem">
@@ -200,8 +201,7 @@
           <div id="Myechart"></div>
         </div>
       </div>
-      <div class="superList"
-           style="margin-bottom:0.2rem">
+      <div class="superList">
         <div class="topcloum">
           <div class="topcloumson">
             <p class="leftfont">处理人</p>
@@ -246,6 +246,37 @@
               <p class="leftfont">清运数</p>
               <p class="leftfont1">{{iteamList.cleanNum}}</p>
             </div> -->
+        </div>
+      </div>
+      <div class="superList"
+           v-if="iteamList.qualified!==3">
+        <div class="topsa"
+             style="margin-top:0.3rem">
+          <div class="fontext">反馈信息</div>
+          <div></div>
+        </div>
+      </div>
+      <div v-if="iteamList.qualified!==3"
+           class="superList"
+           style="margin-bottom:0.2rem">
+        <div class="topcloum">
+          <div class="topcloumson">
+            <p class="leftfont">反馈时间</p>
+            <p class="leftfont1">{{iteamList.updateTime==undefined?'':FormatDate(iteamList.updateTime)}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">反馈人员</p>
+            <p class="leftfont1">{{iteamList.qualifieUserName}}</p>
+          </div>
+          <div class="topcloumson">
+            <p class="leftfont">反馈情况</p>
+            <p class="leftfont1">{{iteamList.qualified==0?'不合格':iteamList.qualified==2?'合格':''}}</p>
+          </div>
+          <div v-if="iteamList.qualified==0"
+               class="topcloumson">
+            <p class="leftfont">不合格原因</p>
+            <p class="leftfont1">{{iteamList.unqualifiedReason}}</p>
+          </div>
         </div>
       </div>
     </div>
