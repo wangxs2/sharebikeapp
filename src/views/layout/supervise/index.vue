@@ -68,6 +68,12 @@
                v-for="(item,index) in qualifiedStatus"
                :key="'info1-'+index"
                @click="qualifiedclick(item,index)">{{item.name}}</p>
+            <!-- <p>是否超时</p>
+            <p class="status-list"
+               :class="[viewType11 == item.id ? 'tab-active' : '']"
+               v-for="(item,index) in qualifiedStatus"
+               :key="'info1-'+index"
+               @click="qualifiedclick(item,index)">{{item.name}}</p> -->
           </div>
         </div>
         <div class="bottomsa">
@@ -212,7 +218,16 @@ export default {
         {
           name: "已完成",
           id: 4
-        }
+        },
+        {
+          name: "超时",
+          id: 5
+        },
+        {
+          name: "未超时",
+          id: 6
+        },
+
       ],
       qualifiedStatus: [
         {

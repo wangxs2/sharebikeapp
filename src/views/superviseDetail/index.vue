@@ -22,15 +22,6 @@
                width="100%">
         </mt-swipe-item>
       </mt-swipe>
-      <!-- <img
-        src="../../assets/image/login/rotate.svg"
-        alt
-        srcset
-        width="50"
-        height="50"
-        style="position:fixed;right:44%;bottom:15px;"
-        @click="rotate()"
-      >-->
     </mt-popup>
     <mt-popup v-model="popupVisible1"
               class="mapwhere"
@@ -90,7 +81,12 @@
           <div class="topsa"
                style="margin-top:0.3rem">
             <div class="fontext">派单信息</div>
-            <div :class="listdetail.status == 2 ? 'red' : 'green'">{{listdetail.status == 0 ? '未处理' : listdetail.status == 1 ?"处理中":listdetail.status == 2 ?"已处理":listdetail.status == 3 ?"已转派":"已完成"}}</div>
+            <div class="overimg">
+              <div v-if="listdetail.overTimeFlag==1||listdetail.overTimeFlag==2"
+                   class="overTimeFlag"></div>
+              <div :class="listdetail.status == 2 ? 'red' : 'green'">{{listdetail.status == 0 ? '未处理' : listdetail.status == 1 ?"处理中":listdetail.status == 2 ?"已处理":listdetail.status == 3 ?"已转派":"已完成"}}</div>
+            </div>
+
           </div>
         </div>
         <div class="superList">
@@ -1051,6 +1047,18 @@ export default {
           border-top-left-radius: 0.12rem;
           border-top-right-radius: 0.12rem;
           border-bottom: 1px solid #f2f2f2;
+          .overimg {
+            display: flex;
+            justify-content: flex-start;
+            .overTimeFlag {
+              width: 0.57rem;
+              height: 0.51rem;
+              background-image: url("../../assets/image/me/overtimg.gif");
+              background-size: 100% 100%;
+              margin-right: 0.12rem;
+            }
+          }
+
           .fontext {
             position: relative;
             margin-left: 0.3rem;
@@ -1096,8 +1104,10 @@ export default {
               color: #999999;
               font-size: 0.37rem;
             }
+            .topcloum {
+              overflow: hidden;
+            }
             .leftfont1 {
-              width: 75%;
               img {
                 margin-right: 0.2rem;
                 width: 2.7rem;

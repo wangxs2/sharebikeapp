@@ -235,7 +235,7 @@
                           <span style="text-align:center;color:#666666;font-size:0.34rem">合格率</span>
                         </div>
                       </div>
-                      <div style="display:flex;justify-content: space-between;width:100%;">
+                      <div style="display:flex;justify-content: space-between;width:100%;border-bottom:1px solid #F2F2F2">
                         <div style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%">
                           <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
                                 style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.arrangeNum}}</span>
@@ -251,6 +251,19 @@
                                 style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.avgDealTimeHour==undefined?'-':item.avgDealTimeHour}}</span>
                           <span style="text-align:center;color:#666666;font-size:0.34rem">处理时长</span>
                         </div>
+                      </div>
+                      <div style="display:flex;justify-content: space-between;width:100%;">
+                        <div style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%">
+                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.timeOutProcess}}</span>
+                          <span style="text-align:center;color:#666666;font-size:0.34rem">超时处理</span>
+                        </div>
+                        <div style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%">
+                          <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
+                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.timeOutUnprocess}}</span>
+                          <span style="text-align:center;color:#666666;font-size:0.34rem">超时未处理</span>
+                        </div>
+
                       </div>
                     </div>
                   </div>
