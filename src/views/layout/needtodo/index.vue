@@ -114,6 +114,10 @@
                   <span style="color:#666666;">处理时长：</span>
                   <span style="color:#5076FF;">{{iteam.dealTimeHour}}</span>
                 </p>
+                <p v-if="iteam.overTimeFlag==1||iteam.overTimeFlag==2">
+                  <span style="color:#666666;">工单状态：</span>
+                  <span style="color:#5076FF;">{{(iteam.overTimeFlag==1||iteam.overTimeFlag==2)?'超时':''}}</span>
+                </p>
               </div>
               <div class="bottomRight">
                 <span class="iconfont icon-location"></span>
@@ -155,6 +159,7 @@ export default {
           name: "工单状态",
           menuName: "",
           label: -1
+
         }
       ],
       qualifiedStatus: [
@@ -165,7 +170,16 @@ export default {
         {
           name: "合格",
           id: 2
-        }
+        },
+        {
+          name: "超时未处理",
+          id: 7
+        },
+        {
+          name: "超时已处理",
+          id: 8
+        },
+
       ],
       qualified: '',
       menuListCenter: [],
@@ -291,16 +305,18 @@ export default {
           this.searchCondition.status = "";
           if (this.menuListTop[2].label == 0 || this.menuListTop[2].label == 2) {
             this.searchCondition.qualified = "";
+          } else {
+            this.searchCondition.qualified = this.menuListTop[2].label;
           }
-          // this.menuListTop[2].label = -1;
-          // this.menuListTop[2].menuName = "";
+
           this.getListData2();
         } else if (type == 2) {
           this.searchCondition.page = 0;
           this.searchCondition.status = 2;
-          if (this.menuListTop[2].label == 0 || this.menuListTop[2].label == 2) {
-            this.searchCondition.qualified = this.menuListTop[2].label;
-          }
+          this.searchCondition.qualified = this.menuListTop[2].label;
+          // if (this.menuListTop[2].label !== -1) {
+          //   this.searchCondition.qualified = this.menuListTop[2].label;
+          // }
           this.getListData2();
         }
       }
@@ -358,7 +374,7 @@ export default {
     //确定
     submit () {
       this.downIcon1 = false;
-      this.getListData();
+      this.getListData2();
     },
     //切换图片；
     sort (iteam, index) {

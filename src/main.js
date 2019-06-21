@@ -14,7 +14,6 @@ import 'lib-flexible'
 import 'animate.css'
 // import axios from 'axios'
 // Vue.prototype.$axios = axios
-
 import $ from 'zepto'
 import common from './libs/common.js'
 import Vconsole from 'vconsole'

@@ -139,6 +139,12 @@
                    style="flex:1;color:#41cd76;font-size:0.3rem">合格</p>
                 <p v-if="item.qualified==0"
                    style="flex:1;color:#ff3030;font-size:0.3rem">不合格</p>
+                <!-- <p v-if="item.overtimeflag==0||item.overtimeflag==3"
+                   style="flex:1;color:#41cd76;font-size:0.3rem">未超时</p> -->
+                <p v-if="item.overtimeflag==1||item.overtimeflag==2"
+                   style="flex:1;color:#ff3030;font-size:0.3rem">超时</p>
+                <!-- <p v-if="item.overtimeflag==2"
+                   style="flex:1;color:#ff3030;font-size:0.3rem">超时已处理</p> -->
               </div>
             </div>
             <div class="bottomRight">
@@ -220,13 +226,14 @@ export default {
           id: 4
         },
         {
-          name: "超时",
-          id: 5
+          name: "超时未处理",
+          id: 7
         },
         {
-          name: "未超时",
-          id: 6
+          name: "超时已处理",
+          id: 8
         },
+
 
       ],
       qualifiedStatus: [
@@ -707,7 +714,7 @@ export default {
           padding: 0.3rem;
           .status-list {
             display: inline-block;
-            padding: 0.15rem 0.6rem;
+            padding: 0.15rem 0.4rem;
             color: #999999;
             border: 1px solid #eeeeee;
             border-radius: 4px;

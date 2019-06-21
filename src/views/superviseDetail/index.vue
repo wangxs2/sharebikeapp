@@ -64,8 +64,7 @@
            alt
            @click="toHome">
       <div class="header-title">派单处理详情</div>
-      <div style="font-size:18px"
-           @click="iconClick">{{status==2?"反馈":""}}</div>
+      <div style="font-size:18px"></div>
     </div>
     <main>
       <p style="width:100%;height:1rem;background: -webkit-linear-gradient(left, #6698ff, #5076ff);"></p>

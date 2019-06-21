@@ -190,8 +190,7 @@
     <div class="bottom">
       <button type="button"
               :class="isDisable==false?'buttonSa1 buttonSa2': 'buttonSa1 buttonSa3'"
-              @click="submit()"
-              :disabled="isDisable">派单</button>
+              @click="submit()">派单</button>
     </div>
     <mt-popup v-model="popupVisible"
               class="mapwhere"
@@ -747,7 +746,7 @@ export default {
           let obj = {};
           let arrsa = [];
           if (action == "confirm") {
-            this.isDisable = true;
+            // this.isDisable = true;
             arrsa = this.formMessage.dispachPhoto;
             obj.dispatch = this.formMessage;
             obj.dispatch.dispachPhoto = arrsa.join(";");
@@ -757,7 +756,7 @@ export default {
 
             this.$fetchPost("dispatch/saveDispatch", obj, "json")
               .then(res => {
-                this.isDisable = false;
+                // this.isDisable = false;
                 if (res.status == -1) {
                   MessageBox.alert("", {
                     message: res.message,
