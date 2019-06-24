@@ -963,7 +963,7 @@ export default {
         }).then(action => { });
       } else {
         let obj = {};
-        this.formMessage.handleBefore;
+        console.log(this.formMessage.handleBefore)
         obj.selfCheck = this.formMessage;
         obj.selfCheckDealDetailList = this.bikeCleanCompany;
         obj.selfCheck.handleBefore = this.formMessage.handleBefore.join(";");
@@ -975,7 +975,15 @@ export default {
               MessageBox.alert("", {
                 message: res.message,
                 title: "提示"
-              }).then(action => { });
+              }).then(action => {
+                this.formMessage.handleBefore = this.formMessage.handleBefore.split(
+                  ";"
+                );
+                this.formMessage.handleAfter = this.formMessage.handleAfter.split(
+                  ";"
+                );
+                // this.$router.push("/superviseAdd");
+              });
             } else {
               MessageBox.alert("", {
                 message: "保存成功",
@@ -989,7 +997,14 @@ export default {
             MessageBox.alert("", {
               message: "请求超时",
               title: "提示"
-            }).then(action => { });
+            }).then(action => {
+              this.formMessage.handleBefore = this.formMessage.handleBefore.split(
+                ";"
+              );
+              this.formMessage.handleAfter = this.formMessage.handleAfter.split(
+                ";"
+              );
+            });
           });
       }
     },
@@ -1032,6 +1047,7 @@ export default {
           message: "是否确认提交",
           title: "提示"
         }).then(action => {
+          console.log(this.formMessage.handleBefore)
           if (action == "confirm") {
             let obj = {};
             obj.selfCheck = this.formMessage;
@@ -1065,7 +1081,7 @@ export default {
                 }).then(action => { });
               });
           } else {
-            return;
+            console.log(1);
           }
         });
       }

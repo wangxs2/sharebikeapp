@@ -753,7 +753,6 @@ export default {
             obj.dispatch.dealMethod = this.dealMethod;
             obj.orgIdList = this.value;
             obj.finish = 1;
-
             this.$fetchPost("dispatch/saveDispatch", obj, "json")
               .then(res => {
                 // this.isDisable = false;

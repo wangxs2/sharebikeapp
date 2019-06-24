@@ -87,7 +87,12 @@
         <div class="topsa"
              style="margin-top:0.3rem">
           <div class="fontext">派单信息</div>
-          <div :class="formMessage.status == 2 ? 'red' : formMessage.status == 0?'blue':'green'">{{formMessage.status == 0 ? '未处理' : formMessage.status == 1 ?"处理中":formMessage.status == 2 ?"已处理":formMessage.status == 3 ?"已转派":"已完成"}}</div>
+          <div class="overimg">
+            <div v-if="formMessage.overTimeFlag==1||formMessage.overTimeFlag==2"
+                 class="overTimeFlag"></div>
+            <div :class="formMessage.status == 2 ? 'red' : formMessage.status == 0?'blue':'green'">{{formMessage.status == 0 ? '未处理' : formMessage.status == 1 ?"处理中":formMessage.status == 2 ?"已处理":formMessage.status == 3 ?"已转派":"已完成"}}</div>
+          </div>
+
         </div>
       </div>
       <div class="superList">
@@ -1210,6 +1215,17 @@ p {
         border-top-left-radius: 0.12rem;
         border-top-right-radius: 0.12rem;
         border-bottom: 1px solid #f2f2f2;
+        .overimg {
+          display: flex;
+          justify-content: flex-start;
+          .overTimeFlag {
+            width: 0.57rem;
+            height: 0.51rem;
+            background-image: url("../../assets/image/me/overtimg.gif");
+            background-size: 100% 100%;
+            margin-right: 0.12rem;
+          }
+        }
         .fontext {
           position: relative;
           margin-left: 0.3rem;
