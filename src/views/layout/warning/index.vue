@@ -5,86 +5,65 @@
     </div>
     <!-- <div style="text-align:center;padding-top:.33rem;color:#aaa">开发中</div> -->
     <div class="content">
-      <div class="noneList" v-if="warningData.length==0">
-        <img
-          src="../../../assets/image/selfcheck/image_no data@3x.png"
-          width="200"
-          height="180"
-          alt
-        >
+      <div class="noneList"
+           v-if="warningData.length==0">
+        <img src="../../../assets/image/selfcheck/image_no data@3x.png"
+             width="200"
+             height="180"
+             alt>
         <p style="color:#989898">没有数据~</p>
       </div>
       <div>
-        <div class="warning-box" v-for="(iteam,index) in warningData" :key="index">
+        <div class="warning-box"
+             v-for="(iteam,index) in warningData"
+             :key="index">
           <div class="warning-box-top">
-            <img
-              v-if="iteam.orgId==1007"
-              src="../../../assets/image/OFO.png"
-              width="39"
-              height="38"
-            >
-            <img
-              v-if="iteam.orgId==1006"
-              src="../../../assets/image/mobike.png"
-              width="39"
-              height="38"
-            >
-            <img
-              v-if="iteam.orgId==1014"
-              src="../../../assets/image/jiujiu.png"
-              width="39"
-              height="38"
-            >
-            <img
-              v-if="iteam.orgId==1015"
-              src="../../../assets/image/haluo.png"
-              width="39"
-              height="38"
-            >
-            <img
-              v-if="iteam.orgId==1059"
-              src="../../../assets/image/xiangqi.png"
-              width="39"
-              height="38"
-            >
-            <img
-              v-if="iteam.orgId==999"
-              src="../../../assets/image/other.png"
-              width="39"
-              height="38"
-            >
-            <img
-              v-if="iteam.orgId!==1006&&iteam.orgId!==1007&&iteam.orgId!==1014&&iteam.orgId!==1015&&iteam.orgId!==1059&&iteam.orgId!==999"
-              src="../../../assets/image/zhongdian.png"
-              width="39"
-              height="38"
-            >
-            <div
-              style="margin-left:0.2rem;color:#282828;font-size:0.45rem"
-            >{{FormatDate(iteam.createTime)}}</div>
+            <img v-if="iteam.orgId==1007"
+                 src="../../../assets/image/OFO.png"
+                 width="39"
+                 height="38">
+            <img v-if="iteam.orgId==1006"
+                 src="../../../assets/image/mobike.png"
+                 width="39"
+                 height="38">
+            <img v-if="iteam.orgId==1014"
+                 src="../../../assets/image/jiujiu.png"
+                 width="39"
+                 height="38">
+            <img v-if="iteam.orgId==1015"
+                 src="../../../assets/image/haluo.png"
+                 width="39"
+                 height="38">
+            <img v-if="iteam.orgId==1059"
+                 src="../../../assets/image/xiangqi.png"
+                 width="39"
+                 height="38">
+            <img v-if="iteam.orgId==999"
+                 src="../../../assets/image/other.png"
+                 width="39"
+                 height="38">
+            <img v-if="iteam.orgId!==1006&&iteam.orgId!==1007&&iteam.orgId!==1014&&iteam.orgId!==1015&&iteam.orgId!==1059&&iteam.orgId!==999"
+                 src="../../../assets/image/zhongdian.png"
+                 width="39"
+                 height="38">
+            <div style="margin-left:0.2rem;color:#282828;font-size:0.45rem">{{FormatDate(iteam.createTime)}}</div>
           </div>
           <div class="warning-box-content">
             <div>
-              <p
-                style="margin-bottom:0.1rem;font-size:0.5rem;color:#3964FF"
-              >{{iteam.lockActiveNums+iteam.lockNoActiveNums}}</p>
+              <p style="margin-bottom:0.1rem;font-size:0.5rem;color:#3964FF">{{iteam.lockActiveNums+iteam.lockNoActiveNums}}</p>
               <p style="color:#989898;font-size:0.3rem;">总车辆数(辆)</p>
             </div>
             <div>
-              <p
-                style="margin-bottom:0.1rem;font-size:0.5rem;color:#3964FF"
-              >{{iteam.regionalWarningNumber}}</p>
+              <p style="margin-bottom:0.1rem;font-size:0.5rem;color:#3964FF">{{iteam.regionalWarningNumber}}</p>
               <p style="color:#989898;font-size:0.3rem;">预警数(辆)</p>
             </div>
           </div>
           <div class="warning-box-bottom">
-            <img
-              src="../../../assets/image/warning/icon_address@2x.png"
-              width="22"
-              height="22"
-              alt
-              srcset
-            >
+            <img src="../../../assets/image/warning/icon_address@2x.png"
+                 width="22"
+                 height="22"
+                 alt
+                 srcset>
             <div style="margin-left:0.2rem;color:#282828;">{{iteam.regionalName}}</div>
           </div>
           <!-- <div class="warning-total">
@@ -108,39 +87,39 @@ import { Loadmore } from "mint-ui";
 import { Indicator } from "mint-ui";
 export default {
   computed: {},
-  data() {
+  data () {
     return {
       warningData: []
     };
   },
   components: {},
-  mounted() {},
-  created() {
+  mounted () { },
+  created () {
     this.getData();
   },
-  mounted() {},
+  mounted () { },
   methods: {
     //去预警详情页
-    detailClick() {
+    detailClick () {
       this.$router.push("/warningDetail");
     },
     //获取派单数据
-    getData() {
-      Indicator.open({
-        text: "加载中...",
-        spinnerType: "fading-circle"
-      });
+    getData () {
+      // Indicator.open({
+      //   text: "加载中...",
+      //   spinnerType: "fading-circle"
+      // });
       this.$fetchGet("warn/getWarning")
         .then(res => {
           Indicator.close();
           this.warningData = res;
         })
         .catch(() => {
-          Indicator.close();
-          Indicator.open({
-            text: "请求超时",
-            spinnerType: "fading-circle"
-          });
+          // Indicator.close();
+          // Indicator.open({
+          //   text: "请求超时",
+          //   spinnerType: "fading-circle"
+          // });
         });
     }
   }

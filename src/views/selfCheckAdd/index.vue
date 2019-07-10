@@ -1064,7 +1064,14 @@ export default {
                   MessageBox.alert("", {
                     message: res.message,
                     title: "提示"
-                  }).then(action => { });
+                  }).then(action => {
+                    this.formMessage.handleBefore = this.formMessage.handleBefore.split(
+                      ";"
+                    );
+                    this.formMessage.handleAfter = this.formMessage.handleAfter.split(
+                      ";"
+                    );
+                  });
                 } else {
                   MessageBox.alert("", {
                     message: "保存成功",
@@ -1078,7 +1085,14 @@ export default {
                 MessageBox.alert("", {
                   message: "请求超时",
                   title: "提示"
-                }).then(action => { });
+                }).then(action => {
+                  this.formMessage.handleBefore = this.formMessage.handleBefore.split(
+                    ";"
+                  );
+                  this.formMessage.handleAfter = this.formMessage.handleAfter.split(
+                    ";"
+                  );
+                });
               });
           } else {
             console.log(1);

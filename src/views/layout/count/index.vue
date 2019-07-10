@@ -163,16 +163,16 @@ export default {
     },
     // 获取统计数据
     getCount () {
-      Indicator.open({
-        text: "加载中...",
-        spinnerType: "fading-circle"
-      });
+      // Indicator.open({
+      //   text: "加载中...",
+      //   spinnerType: "fading-circle"
+      // });
       this.$fetchGet("count/countDeviceClickWeekOrDay", {
         orgId: this.activeComany,
         countType: this.dateType,
         date: this.dateValue
       }).then(res => {
-        Indicator.close();
+        // Indicator.close();
         this.dateData = res.timeArea;
         this.tabData = res.table;
         let dataxItem = "",
