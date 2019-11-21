@@ -925,7 +925,7 @@ export default {
                   }).then(action => { });
                 } else {
                   MessageBox.alert("", {
-                    message: "保存成功",
+                    message: "提交成功",
                     title: "提示"
                   }).then(action => {
                     this.$router.push("/layout/needtodo");

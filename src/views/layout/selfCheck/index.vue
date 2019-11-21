@@ -502,7 +502,7 @@ export default {
         this.viewType10 = -1
         this.viewType11 = -1
       }
-      this.downIcon1 = false;
+      //this.downIcon1 = false;
       this.getListData2();
     },
     //确定

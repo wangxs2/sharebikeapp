@@ -680,8 +680,10 @@ export default {
         this.dealMethod = "1";
       } else if (this.value1.length == 1 && this.value1[0] == 2) {
         this.dealMethod = "2";
-      } else {
+      } else if (this.value1.length == 2 && (this.value1[0] == 1||this.value1[0] == 2)) {
         this.dealMethod = "3";
+      }else if(this.value1.length == 0){
+        this.dealMethod = "";
       }
       console.log(this.dealMethod);
     },
@@ -713,6 +715,7 @@ export default {
         });
     },
     submit () {
+      console.log(this.dealMethod)
       if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择待清理地点",
@@ -768,7 +771,7 @@ export default {
                   });
                 } else {
                   MessageBox.alert("", {
-                    message: "保存成功",
+                    message: "提交成功",
                     title: "提示"
                   }).then(action => {
                     this.$router.push("/layout/supervise");

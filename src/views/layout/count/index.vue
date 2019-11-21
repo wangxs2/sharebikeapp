@@ -95,12 +95,12 @@
                     :key="index">
                   <td style="width:10%;">{{index + 1}}</td>
                   <td style="width:20%;">{{dateData[index]}}</td>
-                  <td style="width:15%;">{{item.arrange}}/{{item.arrangeNum}}</td>
-                  <td style="width:15%;">{{item.clean}}/{{item.cleanNum}}</td>
+                  <td style="width:15%;">{{item.arrangeTimes}}/{{item.arrangeNum}}</td>
+                  <td style="width:15%;">{{item.cleanTimes}}/{{item.cleanNum}}</td>
                   <td style="width:20%;">
-                    自查：{{item.selfCheck}}次
+                    自查：{{item.selfCheckTimes}}次
                     <br>
-                    督办：{{item.dispatch}}次
+                    督办：{{item.dispatchTimes}}次
                   </td>
                 </tr>
               </table>

@@ -415,7 +415,7 @@ export default {
       } else if (this.downIcon == 2) {
         this.menuListTop[this.downIcon].label = row.id;
         this.menuListTop[this.downIcon].menuName = row.realName;
-        this.searchCondition.handleBy = row.id;
+        this.searchCondition.createBy = row.id;
       } else if (this.downIcon == 3) {
         this.menuListTop[this.downIcon].label = row.id;
         this.menuListTop[this.downIcon].menuName = row.name;
@@ -436,7 +436,7 @@ export default {
       } else if (this.downIcon == 2) {
         this.menuListTop[this.downIcon].label = "";
         this.menuListTop[this.downIcon].menuName = "";
-        this.searchCondition.handleBy = "";
+        this.searchCondition.createBy = "";
       } else if (this.downIcon == 3) {
         this.menuListTop[this.downIcon].label = -1;
         this.menuListTop[this.downIcon].menuName = "";
@@ -445,7 +445,7 @@ export default {
         this.viewType10 = -1
         this.viewType11 = -1
       }
-      this.downIcon1 = false;
+      // this.downIcon1 = false;
       this.getListData2();
     },
     //合格不合格

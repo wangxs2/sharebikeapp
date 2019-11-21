@@ -6,7 +6,7 @@
     <!-- <div style="text-align:center;padding-top:.33rem;color:#aaa">开发中</div> -->
     <div class="content">
       <div class="noneList"
-           v-if="warningData.length==0">
+           v-if="isimg">
         <img src="../../../assets/image/selfcheck/image_no data@3x.png"
              width="200"
              height="180"
@@ -89,7 +89,8 @@ export default {
   computed: {},
   data () {
     return {
-      warningData: []
+      warningData: [],
+      isimg:false
     };
   },
   components: {},
@@ -113,6 +114,11 @@ export default {
         .then(res => {
           Indicator.close();
           this.warningData = res;
+          if(this.warningData.length==0){
+            this.isimg=true
+          }else{
+            this.isimg=false
+          }
         })
         .catch(() => {
           // Indicator.close();

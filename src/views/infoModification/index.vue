@@ -150,7 +150,7 @@ export default {
               ? this.updetailImage
               : this.userInfoNew.image
           };
-          this.$fetchPut("user/updateUser", updateData).then(res => {
+          this.$fetchPut("user/updateAppUser", updateData,'json').then(res => {
             if (res.status === 0) {
               Toast("操作成功");
               this.$store.dispatch("GetUserInfo");

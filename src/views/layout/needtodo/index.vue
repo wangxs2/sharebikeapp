@@ -368,7 +368,7 @@ export default {
         this.menuListTop[this.downIcon].menuName = "";
         this.searchCondition.qualified = '';
       }
-      this.downIcon1 = false;
+      // this.downIcon1 = false;
       this.getListData2();
     },
     //确定
