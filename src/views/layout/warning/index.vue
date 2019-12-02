@@ -87,13 +87,13 @@
               <p style="margin-bottom:0.1rem;font-size:0.5rem;color:#3964FF">
                 {{ iteam.type==1?iteam.bicycleNum:iteam.lockActiveNums + iteam.lockNoActiveNums }}
               </p>
-              <p style="color:#989898;font-size:0.3rem;">总车辆数(辆)</p>
+              <p style="color:#989898;font-size:0.3rem;">{{iteam.type==1?'当前车辆数(辆)':'总车辆数(辆)'}}</p>
             </div>
             <div>
               <p style="margin-bottom:0.1rem;font-size:0.5rem;color:#3964FF">
                 {{ iteam.type==1?iteam.predictBicycleNum:iteam.regionalWarningNumber }}
               </p>
-              <p style="color:#989898;font-size:0.3rem;">预警数(辆)</p>
+              <p style="color:#989898;font-size:0.3rem;">{{iteam.type==1?'下一小时预测数(辆)':'预警数(辆)'}}</p>
             </div>
           </div>
           <div class="warning-box-bottom">
