@@ -16,17 +16,26 @@ export const constantRouterMap = [
       {
         path: 'selfCheck',
         name: '自查',
-        component: () => import('@/views/layout/selfCheck')
+        component: () => import('@/views/layout/selfCheck'),
+        meta: {
+          keepAlive: true // 需要被缓存
+        }
       },
       {
         path: 'supervise',
         name: '派单',
-        component: () => import('@/views/layout/supervise')
+        component: () => import('@/views/layout/supervise'),
+        meta: {
+          keepAlive: true // 需要被缓存
+        }
       },
       {
         path: 'needtodo',
         name: '待办',
-        component: () => import('@/views/layout/needtodo')
+        component: () => import('@/views/layout/needtodo'),
+        meta: {
+          keepAlive: true // 需要被缓存
+        }
       },
       {
         path: 'count',

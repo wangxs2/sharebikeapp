@@ -3,107 +3,112 @@
   <div class="containerSa2">
     <div class="header">
       <div></div>
-      <div class="tab-btns"
-           @click="selectView">
-        <div class="btn-left"
-             viewType="1"
-             :class="[viewTypesa == 1 ? 'tab-active' : '']">待办</div>
-        <div class="btn-right"
-             viewType="2"
-             :class="[viewTypesa == 2 ? 'tab-active' : '']">已办</div>
+      <div class="tab-btns" @click="selectView">
+        <div class="btn-left" viewType="1" :class="[viewTypesa == 1 ? 'tab-active' : '']">待办</div>
+        <div class="btn-right" viewType="2" :class="[viewTypesa == 2 ? 'tab-active' : '']">已办</div>
       </div>
       <div></div>
     </div>
     <div class="content">
       <div class="version-popup-box">
         <div class="version-popup">
-          <div v-for="(iteam,index) in menuListTop"
-               :key="index"
-               @click="sort(iteam,index)">
-            <span class="version-popup-font"
-                  :class="[iteam.menuName == '' ? '' : 'version-popup-font-active']">{{iteam.menuName == ''?iteam.name:iteam.menuName}}</span>
-            <span style="color:#AAAAAA"
-                  class="iconfont icon-jiantou"
-                  v-if="downIcon==index"></span>
-            <span style="color:#AAAAAA"
-                  class="iconfont icon-arrow-up"
-                  v-if="downIcon!==index"></span>
+          <div v-for="(iteam,index) in menuListTop" :key="index" @click="sort(iteam,index)">
+            <span
+              class="version-popup-font"
+              :class="[iteam.menuName == '' ? '' : 'version-popup-font-active']"
+            >{{iteam.menuName == ''?iteam.name:iteam.menuName}}</span>
+            <span style="color:#AAAAAA" class="iconfont icon-jiantou" v-if="downIcon==index"></span>
+            <span style="color:#AAAAAA" class="iconfont icon-arrow-up" v-if="downIcon!==index"></span>
           </div>
         </div>
       </div>
       <!-- 查询的划分 -->
-      <div class="version-popup-box1"
-           v-if="downIcon1">
+      <div class="version-popup-box1" v-if="downIcon1">
         <div class="version-popup">
           <div class="variable">
             <div class="menself">
-              <p v-if="menuListCenter.length==0"
-                 style="color:#999999;text-align:center">暂无数据</p>
+              <p v-if="menuListCenter.length==0" style="color:#999999;text-align:center">暂无数据</p>
               <div style="padding:0rem;background: #f2f2f2;">
-                <div class="areacheck"
-                     v-if="areaarr.length>0&&downIcon==0">
-                  <p class="areachecklist"
-                     @click="areaTypeclick(iteam,index)"
-                     :class="[viewType == iteam.id ? 'tab-active' : '']"
-                     v-for="(iteam, index) in areaarr"
-                     :key="index">{{iteam.name}}</p>
+                <div class="areacheck" v-if="areaarr.length>0&&downIcon==0">
+                  <p
+                    class="areachecklist"
+                    @click="areaTypeclick(iteam,index)"
+                    :class="[viewType == iteam.id ? 'tab-active' : '']"
+                    v-for="(iteam, index) in areaarr"
+                    :key="index"
+                  >{{iteam.name}}</p>
                 </div>
               </div>
               <div>
-                <p class="menselflist"
-                   @click="menuListClick(item)"
-                   v-for="(item, index) in menuListCenter"
-                   :key="index"
-                   :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']">{{downIcon==1?item.realName:item.name}}</p>
+                <p
+                  class="menselflist"
+                  @click="menuListClick(item)"
+                  v-for="(item, index) in menuListCenter"
+                  :key="index"
+                  :class="[menuListTop[downIcon].label == item.id||menuListTop[downIcon].label == item.shortName ? 'menselflist-active' : '']"
+                >{{downIcon==1?item.realName:item.name}}</p>
               </div>
             </div>
           </div>
           <div class="bottomsa">
             <p @click="menReset()">重置</p>
-            <p @click="submit()"
-               style="border:none">确定</p>
+            <p @click="submit()" style="border:none">确定</p>
           </div>
         </div>
       </div>
       <!-- 查询的划分 -->
-      <div class="noneList"
-           v-if="noneList">
-        <img src="../../../assets/image/selfcheck/image_no data@3x.png"
-             width="200"
-             height="180"
-             alt>
+      <div class="noneList" v-if="noneList">
+        <img
+          src="../../../assets/image/selfcheck/image_no data@3x.png"
+          width="200"
+          height="180"
+          alt
+        />
         <p style="color:#989898">暂时没有数据哦~</p>
       </div>
-      <scroller style="top: 2.4rem;bottom:55px;height:82%;overflow:hidden"
-                v-if="!noneList"
-                :on-infinite="infinite"
-                :on-refresh="refresh"
-                infiniteText="上拉加载"
-                noDataText="--我也是有底线的--"
-                ref="my_scroller">
+      <scroller
+        style="top: 2.4rem;bottom:55px;height:82%;overflow:hidden"
+        v-if="!noneList"
+        :on-infinite="infinite"
+        :on-refresh="refresh"
+        infiniteText="上拉加载"
+        noDataText="--我也是有底线的--"
+        ref="my_scroller"
+      >
         <div class="iteamsa">
-          <div class="iteamListSa"
-               v-for="(iteam, index) in pageList"
-               :key="index"
-               @click="detailClick(iteam)">
-            <div class="leftSa"
-                 v-bind:style="{'backgroundImage':iteam.status == 2 ? 'url('+Ip + iteam.handleAfterURLs[0]+')' :iteam.dispachPhotoURLs.length!==0&&iteam.status!==2? 'url('+Ip + iteam.dispachPhotoURLs[0]+')':iteam.dispachPhotoURLs.length==0?'url(../../../assets/image/selfcheck/image_no data@3x.png)':''}">
-              <img v-if="iteam.qualified==0"
-                   class="left-qualified"
-                   src="../../../assets/image/不合格@3x.png"
-                   alt=""
-                   srcset="">
-              <img v-if="iteam.qualified==2"
-                   class="left-qualified"
-                   src="../../../assets/image/合格@3x.png"
-                   alt=""
-                   srcset="">
+          <div
+            class="iteamListSa"
+            v-for="(iteam, index) in pageList"
+            :key="index"
+            @click="detailClick(iteam)"
+            :style="{background:mysiteCode==iteam.sheetCode?'#eeeeee':'#ffffff'}"
+          >
+            <div
+              class="leftSa"
+              v-bind:style="{'backgroundImage':iteam.status == 2 ? 'url('+Ip + iteam.handleAfterURLs[0]+')' :iteam.dispachPhotoURLs.length!==0&&iteam.status!==2? 'url('+Ip + iteam.dispachPhotoURLs[0]+')':iteam.dispachPhotoURLs.length==0?'url(../../../assets/image/selfcheck/image_no data@3x.png)':''}"
+            >
+              <img
+                v-if="iteam.qualified==0"
+                class="left-qualified"
+                src="../../../assets/image/不合格@3x.png"
+                alt
+                srcset
+              />
+              <img
+                v-if="iteam.qualified==2"
+                class="left-qualified"
+                src="../../../assets/image/合格@3x.png"
+                alt
+                srcset
+              />
             </div>
             <div class="rightSa">
               <div class="topRight">
                 <span>{{FormatDate(iteam.dispatchTime)}}</span>
-                <span style="font-size:0.32rem;line-height:1.5;"
-                      :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'">{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"已转派":"已完成"}}</span>
+                <span
+                  style="font-size:0.32rem;line-height:1.5;"
+                  :class="iteam.status == 2 ? 'red':iteam.status == 0 ? 'blue':iteam.status == 4 ? 'pink' : 'green'"
+                >{{iteam.status == 0 ? '未处理' : iteam.status == 1 ?"处理中":iteam.status == 2 ?"已处理":iteam.status == 3 ?"已转派":"已完成"}}</span>
               </div>
               <div class="centersa">
                 <p style="margin-top:0.2rem">
@@ -116,7 +121,9 @@
                 </p>
                 <p v-if="iteam.overTimeFlag==1||iteam.overTimeFlag==2">
                   <span style="color:#666666;">工单状态：</span>
-                  <span style="color:#5076FF;">{{(iteam.overTimeFlag==1||iteam.overTimeFlag==2)?'超时':''}}</span>
+                  <span
+                    style="color:#5076FF;"
+                  >{{(iteam.overTimeFlag==1||iteam.overTimeFlag==2)?'超时':''}}</span>
                 </p>
               </div>
               <div class="bottomRight">
@@ -136,7 +143,7 @@ import { Loadmore } from "mint-ui";
 import { Indicator } from "mint-ui";
 export default {
   computed: {},
-  data () {
+  data() {
     return {
       viewType: "",
       popupVisible: true,
@@ -155,11 +162,11 @@ export default {
           name: "处理人",
           menuName: "",
           label: ""
-        }, {
+        },
+        {
           name: "工单状态",
           menuName: "",
           label: -1
-
         }
       ],
       qualifiedStatus: [
@@ -178,10 +185,9 @@ export default {
         {
           name: "超时已处理",
           id: 8
-        },
-
+        }
       ],
-      qualified: '',
+      qualified: "",
       menuListCenter: [],
       menType: "",
       downIcon: -1,
@@ -196,6 +202,7 @@ export default {
         id: ""
       },
       noneList: false,
+      mysiteCode:'',
       searchCondition: {
         //分页属性
         page: 0,
@@ -203,7 +210,7 @@ export default {
         status: "",
         handleBy: "",
         areaId: "",
-        qualified: '',
+        qualified: ""
       },
       company: [
         {
@@ -226,63 +233,94 @@ export default {
     };
   },
   components: {},
-  created () {
-    if (this.$route.query.name == "2") {
-      this.activeComany = 2;
-      this.searchCondition.status = 2;
-      this.viewTypesa = this.$route.query.viewTypesa;
-      if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
-        this.searchCondition = this.$route.query.searchCondition;
-        this.menuListTop = this.$route.query.menuListTop;
-        this.downIcon = this.$route.query.downIcon;
-        // console.log(this.$route.query.areaarr);
-        if (this.$route.query.areaarr.length == 0) {
-          this.getorgsTree();
-        } else {
-          this.areakids = this.$route.query.areakids;
-          this.areaarr = this.$route.query.areaarr;
-          this.viewType = this.areaarr[this.areaarr.length - 1].id;
-        }
-      }
-      this.getBikeMen();
-      this.getListData2();
+  created() {
+    // if (this.$route.query.name == "2") {
+    //   this.activeComany = 2;
+    //   this.searchCondition.status = 2;
+    //   this.viewTypesa = this.$route.query.viewTypesa;
+    //   if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
+    //     this.searchCondition = this.$route.query.searchCondition;
+    //     this.menuListTop = this.$route.query.menuListTop;
+    //     this.downIcon = this.$route.query.downIcon;
+    //     // console.log(this.$route.query.areaarr);
+    //     if (this.$route.query.areaarr.length == 0) {
+    //       this.getorgsTree();
+    //     } else {
+    //       this.areakids = this.$route.query.areakids;
+    //       this.areaarr = this.$route.query.areaarr;
+    //       this.viewType = this.areaarr[this.areaarr.length - 1].id;
+    //     }
+    //   }
+    //   this.getBikeMen();
+    //   this.getListData2();
+    // } else {
+    //   this.getBikeMen();
+    //   this.getorgsTree();
+    // }
+    this.getBikeMen();
+    this.getorgsTree();
+  },
+  beforeRouteLeave(to, from, next) {
+    // 设置下一个路由的 meta
+    // alert(2)
+    sessionStorage.askPositonthree =
+      this.$refs.my_scroller &&
+      this.$refs.my_scroller.getPosition() &&
+      this.$refs.my_scroller.getPosition().top;
+    to.meta.keepAlive = false; // B 跳转到 A 时，让 A 缓存，即不刷新
+    next();
+  },
+  beforeRouteEnter(to, from, next) {
+    
+    if (!sessionStorage.askPositonthree || from.path == "/") {
+      //当前页面刷新不需要切换位置
+      sessionStorage.askPositonthree = "";
+      next();
     } else {
-      this.getBikeMen();
-      this.getorgsTree();
+      next(vm => {
+        // console.log(vm)
+        if (vm && vm.$refs.my_scroller) {
+          //通过vm实例访问this
+          setTimeout(function() {
+            vm.$refs.my_scroller.scrollTo(0, sessionStorage.askPositonthree, true);
+          }, 0); //同步转异步操作
+        }
+      });
     }
   },
-  mounted () { },
+  mounted() {},
   methods: {
-    detailClick (row) {
+    detailClick(row) {
       if (row.status == 2) {
         this.$router.push({
           path: "/needtodoDetail",
           query: {
-            id: row.id,
-            viewTypesa: this.viewTypesa,
-            searchCondition: this.searchCondition,
-            menuListTop: this.menuListTop,
-            downIcon: this.downIcon,
-            areakids: this.areakids,
-            areaarr: this.areaarr
+            id: row.id
+            // viewTypesa: this.viewTypesa,
+            // searchCondition: this.searchCondition,
+            // menuListTop: this.menuListTop,
+            // downIcon: this.downIcon,
+            // areakids: this.areakids,
+            // areaarr: this.areaarr
           }
         });
       } else {
         this.$router.push({
           path: "/needtodoAdd",
           query: {
-            id: row.id,
-            viewTypesa: this.viewTypesa,
-            searchCondition: this.searchCondition,
-            menuListTop: this.menuListTop,
-            downIcon: this.downIcon,
-            areakids: this.areakids,
-            areaarr: this.areaarr
+            id: row.id
+            // viewTypesa: this.viewTypesa,
+            // searchCondition: this.searchCondition,
+            // menuListTop: this.menuListTop,
+            // downIcon: this.downIcon,
+            // areakids: this.areakids,
+            // areaarr: this.areaarr
           }
         });
       }
+      this.mysiteCode=row.sheetCode
     },
-    areaTypeclick (val, index) {
+    areaTypeclick(val, index) {
       this.areaflag = false;
       this.areakids = [];
       this.viewType = val.id;
@@ -294,7 +332,7 @@ export default {
     },
 
     //代办切换
-    selectView (e) {
+    selectView(e) {
       let type = e.target.getAttribute("viewType");
       if (type) {
         this.viewTypesa = type;
@@ -303,7 +341,10 @@ export default {
         if (type == 1) {
           this.searchCondition.page = 0;
           this.searchCondition.status = "";
-          if (this.menuListTop[2].label == 0 || this.menuListTop[2].label == 2) {
+          if (
+            this.menuListTop[2].label == 0 ||
+            this.menuListTop[2].label == 2
+          ) {
             this.searchCondition.qualified = "";
           } else {
             this.searchCondition.qualified = this.menuListTop[2].label;
@@ -323,7 +364,7 @@ export default {
     },
     //切换图片；
     //点击查询列表
-    menuListClick (row) {
+    menuListClick(row) {
       if (this.downIcon == 0) {
         this.menuListTop[this.downIcon].label = row.id;
         this.areaname.id = row.id;
@@ -353,7 +394,7 @@ export default {
       }
     },
     //重置
-    menReset () {
+    menReset() {
       if (this.downIcon == 0) {
         this.viewType = "";
         this.menuListTop[this.downIcon].label = "";
@@ -366,18 +407,18 @@ export default {
       } else if (this.downIcon == 2) {
         this.menuListTop[this.downIcon].label = -1;
         this.menuListTop[this.downIcon].menuName = "";
-        this.searchCondition.qualified = '';
+        this.searchCondition.qualified = "";
       }
       // this.downIcon1 = false;
       this.getListData2();
     },
     //确定
-    submit () {
+    submit() {
       this.downIcon1 = false;
       this.getListData2();
     },
     //切换图片；
-    sort (iteam, index) {
+    sort(iteam, index) {
       this.downIcon = index;
       this.downIcon1 = true;
       if (this.downIcon == 0) {
@@ -389,7 +430,7 @@ export default {
       }
     },
 
-    getorgsTree () {
+    getorgsTree() {
       //获取组织树数据
       this.$fetchGet("org/getUserArea").then(res => {
         this.UserArea = res;
@@ -398,7 +439,7 @@ export default {
         this.areakids = originTree;
       });
     },
-    parseChildren (pid, json) {
+    parseChildren(pid, json) {
       //格式父级权限
       var arr = [];
       $.each(json, (index, item) => {
@@ -410,7 +451,7 @@ export default {
       });
       return arr;
     },
-    deleteChildren (menuData) {
+    deleteChildren(menuData) {
       //删除空的child
       $.each(menuData, (index, item) => {
         if (item.children && item.children.length) {
@@ -421,13 +462,13 @@ export default {
       });
     },
     // 获取单车企业数据
-    getBikeCompany () {
+    getBikeCompany() {
       this.$fetchGet("count/bikeCompany").then(res => {
         this.companyData = res;
       });
     },
     //获取处理人数据
-    getBikeMen () {
+    getBikeMen() {
       this.$fetchGet("dispatch/listSearchUser", {
         type: "3"
       }).then(res => {
@@ -435,7 +476,7 @@ export default {
       });
     },
     // 导航标签
-    selectComany (e) {
+    selectComany(e) {
       let id = e.target.getAttribute("companyId");
       this.activeComany = id;
       if (id == 1) {
@@ -446,15 +487,15 @@ export default {
         this.getListData2();
       }
     },
-    iconClick () {
+    iconClick() {
       this.$router.push("/selfCheckAdd");
     },
-    getListData () {
+    getListData() {
       this.pageList = [];
       this.searchCondition.page = 0;
       this.searchCondition.pageSize = 15;
     },
-    getListData2 () {
+    getListData2() {
       this.searchCondition.page = 1;
       this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
         res => {
@@ -462,7 +503,7 @@ export default {
         }
       );
     },
-    infinite (done) {
+    infinite(done) {
       if (this.requestFlage) {
         this.searchCondition.page++;
         this.$fetchGet("dispatch/pageDispatchToDo", this.searchCondition).then(
@@ -477,7 +518,7 @@ export default {
         );
       }
     },
-    refresh: function () {
+    refresh: function() {
       //下拉刷新
       // console.log("refresh");
       this.searchCondition.page = 1;
@@ -488,7 +529,7 @@ export default {
         status: this.searchCondition.status,
         handleBy: this.searchCondition.handleBy,
         areaId: this.searchCondition.areaId,
-        qualified: this.searchCondition.qualified,
+        qualified: this.searchCondition.qualified
       }).then(res => {
         this.pageList = res.list;
       });

@@ -316,6 +316,11 @@ export default {
       downIcon: -1,
     };
   },
+  beforeRouteLeave(to, from, next) {
+    // 设置下一个路由的 meta
+    to.meta.keepAlive = true; // C 跳转到 A 时让 A 不缓存，即刷新
+    next();
+  },
   components: {},
   mounted () {
     this.$nextTick(() => {
@@ -569,15 +574,15 @@ export default {
     iconClick () {
       this.$router.push({
         path: "/layout/needtodo",
-        query: {
-          name: "2",
-          searchCondition: this.searchCondition,
-          menuListTop: this.menuListTop,
-          downIcon: this.downIcon,
-          areaarr: this.areaarr,
-          areakids: this.areakids,
-          viewTypesa: this.viewTypesa,
-        }
+        // query: {
+        //   name: "2",
+        //   searchCondition: this.searchCondition,
+        //   menuListTop: this.menuListTop,
+        //   downIcon: this.downIcon,
+        //   areaarr: this.areaarr,
+        //   areakids: this.areakids,
+        //   viewTypesa: this.viewTypesa,
+        // }
       });
     },
     getMessage (val) {

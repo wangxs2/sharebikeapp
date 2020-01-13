@@ -597,13 +597,13 @@ export default {
     toHome () {
       this.$router.push({
         path: "/layout/selfCheck",
-        query: {
-          searchCondition: this.searchCondition,
-          menuListTop: this.menuListTop,
-          downIcon: this.downIcon,
-          areaarr: this.areaarr,
-          areakids: this.areakids
-        }
+        // query: {
+        //   searchCondition: this.searchCondition,
+        //   menuListTop: this.menuListTop,
+        //   downIcon: this.downIcon,
+        //   areaarr: this.areaarr,
+        //   areakids: this.areakids
+        // }
       });
     },
     placeClick () {

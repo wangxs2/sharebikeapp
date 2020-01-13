@@ -1,18 +1,24 @@
 <template>
   <div class="layout">
     <div class="appMain">
+      <!-- <keep-alive include="test-keep-alive">
+        <appMain></appMain>
+      </keep-alive> -->
       <appMain></appMain>
     </div>
     <div class="bottom">
-      <div class="menu-iteam"
-           v-for="(iteam,index) in menuList"
-           :key="index"
-           @click="toRouterIndex(iteam,index)">
-        <span class="badge"
-              v-if="index==2&&ruleStatus3"></span>
-        <span class="badge1"
-              v-if="(index==0&&ruleStatus1)||(index==1&&ruleStatus2)">{{index==0?selfCheckNum:dispatchkNum}}</span>
-        <img :src="iteam.imgUrl[selectIndex==index?0:1]">
+      <div
+        class="menu-iteam"
+        v-for="(iteam,index) in menuList"
+        :key="index"
+        @click="toRouterIndex(iteam,index)"
+      >
+        <span class="badge" v-if="index==2&&ruleStatus3"></span>
+        <span
+          class="badge1"
+          v-if="(index==0&&ruleStatus1)||(index==1&&ruleStatus2)"
+        >{{index==0?selfCheckNum:dispatchkNum}}</span>
+        <img :src="iteam.imgUrl[selectIndex==index?0:1]" />
         <span v-bind:style="{color:selectIndex==index?'#5076FF':'#AAAAAA'}">{{iteam.name}}</span>
       </div>
     </div>
@@ -26,7 +32,7 @@ export default {
     appMain
   },
   computed: {},
-  data () {
+  data() {
     return {
       longitude: "",
       latitude: "",
@@ -91,28 +97,28 @@ export default {
       ]
     };
   },
-  mounted () {
+  mounted() {
     // this.getMap();
   },
-  activated () {
+  activated() {
     // this.selected = this.$route.path;
   },
   watch: {
-    $route: function (val, oldval) {
+    $route: function(val, oldval) {
       // this.selectIndex=val.path;
       if (val) {
         this.getRouterIndex(val);
       }
     }
   },
-  created () {
+  created() {
     this.getRules();
     this.getRouterIndex(this.$route);
     this.roleCode = localStorage.roleCode;
     window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
-    getRules () {
+    getRules() {
       //获取是否有红点
       this.$fetchGet("count/willdo").then(res => {
         this.ruleStatus =
@@ -130,33 +136,39 @@ export default {
         }
       });
     },
-    watchBackWXS () {
-      return
+    watchBackWXS() {
+      return;
     },
-    getRouterIndex (val) {
+    getRouterIndex(val) {
       // this.selectIndex = this.menuList.findIndex(iteam => {
       //   return val.path == iteam.pathUrl || val.path == iteam.pathUrlTodo;
       // });
       for (var i = this.menuList.length - 1; i >= 0; i--) {
-        if (val.path == this.menuList[i].pathUrl || val.path == this.menuList[i].pathUrlTodo) {
+        if (
+          val.path == this.menuList[i].pathUrl ||
+          val.path == this.menuList[i].pathUrlTodo
+        ) {
           this.selectIndex = i;
         }
       }
     },
-    toRouterIndex (val, index) {
+    toRouterIndex(val, index) {
       // console.log(val,index);
       // console.log(this.roleCode,index);
-      if ((this.roleCode == "clean" || this.roleCode == "manage") && index == 1) {
-        this.$router.push(val.pathUrlTodo)
+      if (
+        (this.roleCode == "clean" || this.roleCode == "manage") &&
+        index == 1
+      ) {
+        this.$router.push(val.pathUrlTodo);
       } else {
-        this.$router.push(val.pathUrl)
+        this.$router.push(val.pathUrl);
       }
     },
-    getMap () {
+    getMap() {
       let that = this;
       var geolocation = new BMap.Geolocation();
       geolocation.getCurrentPosition(
-        function (r) {
+        function(r) {
           if (this.getStatus() == BMAP_STATUS_SUCCESS) {
             var mk = new BMap.Marker(r.point);
             that
@@ -164,12 +176,12 @@ export default {
                 longitude: r.point.lng,
                 latitude: r.point.lat
               })
-              .then(data => { });
+              .then(data => {});
           } else {
             MessageBox.alert("", {
               message: "failed" + this.getStatus(),
               title: "提示"
-            }).then(action => { });
+            }).then(action => {});
           }
         },
         { enableHighAccuracy: true }
@@ -177,8 +189,7 @@ export default {
       setTimeout(() => {
         this.getMap();
       }, 300000);
-    },
-
+    }
   }
 };
 </script>

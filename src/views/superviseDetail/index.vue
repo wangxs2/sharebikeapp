@@ -2,99 +2,98 @@
 
 <template>
   <div class="container">
-    <mt-popup class="imgMask"
-              v-model="popupVisible"
-              position="right">
-      <span class="iconfont icon-guandiao"
-            style="color:#fff;position:fixed;right:15px;top:15px"
-            @click="popupVisible=false"></span>
+    <mt-popup class="imgMask" v-model="popupVisible" position="right">
+      <span
+        class="iconfont icon-guandiao"
+        style="color:#fff;position:fixed;right:15px;top:15px"
+        @click="popupVisible=false"
+      ></span>
 
-      <mt-swipe style="width:100%;height:64%"
-                :continuous="false"
-                :touchstart="true"
-                :speed="10"
-                :auto="0"
-                :defaultIndex="indexImage">
-        <mt-swipe-item v-for="(iteam,index) in lageImg"
-                       :key="index">
-          <img :src="Ip+iteam"
-               v-bind:style="{transform:'rotate('+rotateS+'deg)'}"
-               width="100%">
+      <mt-swipe
+        style="width:100%;height:64%"
+        :continuous="false"
+        :touchstart="true"
+        :speed="10"
+        :auto="0"
+        :defaultIndex="indexImage"
+      >
+        <mt-swipe-item v-for="(iteam,index) in lageImg" :key="index">
+          <img :src="Ip+iteam" v-bind:style="{transform:'rotate('+rotateS+'deg)'}" width="100%" />
         </mt-swipe-item>
       </mt-swipe>
     </mt-popup>
-    <mt-popup v-model="popupVisible1"
-              class="mapwhere"
-              position="right">
+    <mt-popup v-model="popupVisible1" class="mapwhere" position="right">
       <div class="header">
-        <img src="@/assets/image/infoModification/nav_1_back@2x.png"
-             alt
-             @click="popupVisible1=false">
+        <img
+          src="@/assets/image/infoModification/nav_1_back@2x.png"
+          alt
+          @click="popupVisible1=false"
+        />
         <div class="header-title">处理地址</div>
         <div></div>
       </div>
 
       <div id="myMap"></div>
-
     </mt-popup>
-    <mt-popup class="qualified-box"
-              v-model="popupVisible3"
-              position="right">
+    <mt-popup class="qualified-box" v-model="popupVisible3" position="right">
       <div class="version-popup">
         <div class="version-popup-top">不合格原因</div>
         <div class="version-popup-center">
-          <p class="version-popup-center-box"
-             v-for="(item,index) in options"
-             :key="index">
-            <span :viewType="item.label"
-                  @click="chooseOrder($event)"
-                  class="detail-btn"></span><span>{{item.label}}</span>
+          <p class="version-popup-center-box" v-for="(item,index) in options" :key="index">
+            <span :viewType="item.label" @click="chooseOrder($event)" class="detail-btn"></span>
+            <span>{{item.label}}</span>
           </p>
         </div>
         <div class="version-popup-bottom">
-          <div @click="popupVisible3=false"
-               style="color:black">取消</div>
-          <div @click="noQualified()"
-               style="border:none;color:#26a2ff">确定</div>
+          <div @click="popupVisible3=false" style="color:black">取消</div>
+          <div @click="noQualified()" style="border:none;color:#26a2ff">确定</div>
         </div>
       </div>
     </mt-popup>
     <div class="header">
-      <img src="@/assets/image/infoModification/nav_1_back@2x.png"
-           alt
-           @click="toHome">
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toHome" />
       <div class="header-title">派单处理详情</div>
       <div style="font-size:18px"></div>
     </div>
     <main>
-      <p style="width:100%;height:1rem;background: -webkit-linear-gradient(left, #6698ff, #5076ff);"></p>
+      <p
+        style="width:100%;height:1rem;background: -webkit-linear-gradient(left, #6698ff, #5076ff);"
+      ></p>
       <nav @click="selectComany($event)">
-        <div v-for="item in iteamList"
-             :key="item.id"
-             :companyId="item.id"
-             :class="[activeComany == item.id ? 'nav-active' : '']"
-             class="nav-item">{{item.orgName}}</div>
+        <div
+          v-for="item in iteamList"
+          :key="item.id"
+          :companyId="item.id"
+          :class="[activeComany == item.id ? 'nav-active' : '']"
+          class="nav-item"
+        >{{item.orgName}}</div>
       </nav>
       <section>
         <div class="superList">
-          <div class="topsa"
-               style="margin-top:0.3rem">
+          <div class="topsa" style="margin-top:0.3rem">
             <div class="fontext">派单信息</div>
             <div class="overimg">
-              <div v-if="listdetail.overTimeFlag==1||listdetail.overTimeFlag==2"
-                   class="overTimeFlag"></div>
-              <div :class="listdetail.status == 2 ? 'red' : 'green'">{{listdetail.status == 0 ? '未处理' : listdetail.status == 1 ?"处理中":listdetail.status == 2 ?"已处理":listdetail.status == 3 ?"已转派":"已完成"}}</div>
+              <div
+                v-if="listdetail.overTimeFlag==1||listdetail.overTimeFlag==2"
+                class="overTimeFlag"
+              ></div>
+              <div
+                :class="listdetail.status == 2 ? 'red' : 'green'"
+              >{{listdetail.status == 0 ? '未处理' : listdetail.status == 1 ?"处理中":listdetail.status == 2 ?"已处理":listdetail.status == 3 ?"已转派":"已完成"}}</div>
             </div>
-
           </div>
         </div>
         <div class="superList">
-          <img class="hegeimg"
-               v-if="listdetail.qualified==2"
-               src="@/assets/image/selfcheck/hege@3x.png">
-          <img class="hegeimg"
-               v-if="listdetail.qualified==0"
-               src="@/assets/image/selfcheck/buhege@3x.png">
+          <img
+            class="hegeimg"
+            v-if="listdetail.qualified==2"
+            src="@/assets/image/selfcheck/hege@3x.png"
+          />
+          <img
+            class="hegeimg"
+            v-if="listdetail.qualified==0"
+            src="@/assets/image/selfcheck/buhege@3x.png"
+          />
           <div class="topcloum">
             <div class="topcloumson">
               <p class="leftfont">单号</p>
@@ -106,10 +105,13 @@
             </div>
             <div class="topcloumson">
               <p class="leftfont">地点</p>
-              <div class="leftfont1"
-                   @click="getMap()">
-                <p style="margin-top:0.1rem;color:#333333;text-decoration:underline">{{listdetail.handleSecAddr}}</p>
-                <p style="margin-top:0.1rem;color:#aeaeae;text-decoration:underline">{{listdetail.handleAddr}}</p>
+              <div class="leftfont1" @click="getMap()">
+                <p
+                  style="margin-top:0.1rem;color:#333333;text-decoration:underline"
+                >{{listdetail.handleSecAddr}}</p>
+                <p
+                  style="margin-top:0.1rem;color:#aeaeae;text-decoration:underline"
+                >{{listdetail.handleAddr}}</p>
               </div>
             </div>
             <div class="topcloumson">
@@ -118,7 +120,9 @@
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理方式</p>
-              <p class="leftfont1">{{listdetail.dealMethod==1?"整理":listdetail.dealMethod==2?"清运":"整理且清运"}}</p>
+              <p
+                class="leftfont1"
+              >{{listdetail.dealMethod==1?"整理":listdetail.dealMethod==2?"清运":"整理且清运"}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">企业</p>
@@ -127,12 +131,14 @@
             <div class="topcloumson">
               <p class="leftfont">派单照片</p>
               <p class="leftfont1">
-                <img v-for="(iteam,index) in listdetail.dispachPhotoURLs"
-                     :src="Ip+iteam"
-                     :key="index"
-                     alt
-                     srcset
-                     @click="handOpen(listdetail.dispachPhotoURLs,index)">
+                <img
+                  v-for="(iteam,index) in listdetail.dispachPhotoURLs"
+                  :src="Ip+iteam"
+                  :key="index"
+                  alt
+                  srcset
+                  @click="handOpen(listdetail.dispachPhotoURLs,index)"
+                />
               </p>
             </div>
             <div class="topcloumson">
@@ -142,101 +148,97 @@
           </div>
         </div>
         <div class="superList">
-          <div class="topsa"
-               style="margin-top:0.3rem">
+          <div class="topsa" style="margin-top:0.3rem">
             <div class="fontext">派单/转派记录</div>
             <div></div>
           </div>
         </div>
         <div class="superList">
-          <div class="topsa"
-               style="height:0.3rem;border:none;border-radius:0">
+          <div class="topsa" style="height:0.3rem;border:none;border-radius:0">
             <div></div>
             <div></div>
           </div>
         </div>
         <div class="superList">
-          <div class="topcloum"
-               style="padding:0 0.3rem"
-               v-for="(item,index) in listdetail.sendRecordList"
-               :key="index">
-            <div class="topcloumson"
-                 style="padding-bottom:0">
+          <div
+            class="topcloum"
+            style="padding:0 0.3rem"
+            v-for="(item,index) in listdetail.sendRecordList"
+            :key="index"
+          >
+            <div class="topcloumson" style="padding-bottom:0">
               <div style="margin-top:-0.1rem">
                 <span>{{splitsa(item.sendTime)}} {{splitsa1(item.sendTime)}}</span>
                 <!-- <br> -->
-                <p :class="index==listdetail.sendRecordList.length-1?(item.read==0?'reaed-two':'reaed-sa'):(item.read==0?'reaed-sa1':'reaed-sa')"
-                   style="display: block;width:1.1rem;height:0.4rem;padding:0rem;line-height:0.46rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem">{{index==listdetail.sendRecordList.length-1?(item.read==0?'未读':'已读'):(item.read==0?'已转派':'已读')}}</p>
+                <p
+                  :class="index==listdetail.sendRecordList.length-1?(item.read==0?'reaed-two':'reaed-sa'):(item.read==0?'reaed-sa1':'reaed-sa')"
+                  style="display: block;width:1.1rem;height:0.4rem;padding:0rem;line-height:0.46rem;text-align:center;box-sizing: border-box;border-radius: 12px;color: #ffffff;font-size: 0.3rem;margin-left:0.8rem;margin-top:0.2rem"
+                >{{index==listdetail.sendRecordList.length-1?(item.read==0?'未读':'已读'):(item.read==0?'已转派':'已读')}}</p>
               </div>
-              <div class="topcloum"
-                   style="margin:0;padding:0;align-items: center;padding-top:0rem;padding-left:0.2rem">
+              <div
+                class="topcloum"
+                style="margin:0;padding:0;align-items: center;padding-top:0rem;padding-left:0.2rem"
+              >
                 <p style="width:0.26rem;height:0.26rem;border-radius:50%;background:#5076ff;"></p>
-                <p v-if="index!==listdetail.sendRecordList.length-1"
-                   style="display:flex;flex:1;width:1px;border-left: 1px dashed #5076ff;"></p>
+                <p
+                  v-if="index!==listdetail.sendRecordList.length-1"
+                  style="display:flex;flex:1;width:1px;border-left: 1px dashed #5076ff;"
+                ></p>
               </div>
-              <div class="topcloum"
-                   style="margin:0;padding:0;flex:1;padding-left:0.2rem;margin-top:-0.1rem">
+              <div
+                class="topcloum"
+                style="margin:0;padding:0;flex:1;padding-left:0.2rem;margin-top:-0.1rem"
+              >
                 <div class="topcloumson">
-                  <p class="leftfont"
-                     style="width:22%">{{index==0?'派单人':'转派人'}}</p>
-                  <p class="leftfont1"
-                     style="width:78%">{{item.sendMan}}</p>
+                  <p class="leftfont" style="width:22%">{{index==0?'派单人':'转派人'}}</p>
+                  <p class="leftfont1" style="width:78%">{{item.sendMan}}</p>
                 </div>
                 <div class="topcloumson">
-                  <p class="leftfont"
-                     style="width:22%">接单人</p>
-                  <p class="leftfont1"
-                     style="width:78%">{{item.receiveMan}}</p>
+                  <p class="leftfont" style="width:22%">接单人</p>
+                  <p class="leftfont1" style="width:78%">{{item.receiveMan}}</p>
                 </div>
                 <div class="topcloumson">
-                  <p class="leftfont"
-                     style="width:22%">备注</p>
-                  <p class="leftfont1"
-                     style="width:78%">{{item.sendRemark}}</p>
+                  <p class="leftfont" style="width:22%">备注</p>
+                  <p class="leftfont1" style="width:78%">{{item.sendRemark}}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="superList">
-          <div class="topsa"
-               style="margin-top:0.3rem">
+          <div class="topsa" style="margin-top:0.3rem">
             <div class="fontext">处理信息</div>
             <div></div>
           </div>
         </div>
-        <div class="superList"
-             v-show="listdetail.status !== 2">
+        <div class="superList" v-show="listdetail.status !== 2">
           <div class="iteamQs">
-            <img src="@/assets/image/supervise/image_zanwu@2x.png"
-                 alt=""
-                 srcset="">
-            <p>{{listdetail.status == 0?'尚未处理，暂无处理信息':listdetail.status == 1?'企业正在处理，暂无处理信息':'已转派：已转派，暂无处理信息'}} </p>
+            <img src="@/assets/image/supervise/image_zanwu@2x.png" alt srcset />
+            <p>{{listdetail.status == 0?'尚未处理，暂无处理信息':listdetail.status == 1?'企业正在处理，暂无处理信息':'已转派：已转派，暂无处理信息'}}</p>
           </div>
         </div>
-        <div class="superList"
-             v-show="listdetail.status == 2">
-          <div class="iteamsa"
-               style="padding-top:0.3rem;padding-bottom:0.2rem">
+        <div class="superList" v-show="listdetail.status == 2">
+          <div class="iteamsa" style="padding-top:0.3rem;padding-bottom:0.2rem">
             <div style="width:50%;text-align: center">
               <p style="font-size:0.3rem;color:#666666">整理总数</p>
-              <p style="font-size:0.5rem;margin-top:0.1rem">{{listdetail.arrangeNum==undefined?0:listdetail.arrangeNum}}</p>
+              <p
+                style="font-size:0.5rem;margin-top:0.1rem"
+              >{{listdetail.arrangeNum==undefined?0:listdetail.arrangeNum}}</p>
             </div>
             <div style="width:50%;text-align: center">
               <p style="font-size:0.3rem;color:#666666">清运总数</p>
-              <p style="font-size:0.5rem;margin-top:0.1rem">{{listdetail.cleanNum==undefined?0:listdetail.cleanNum}}</p>
+              <p
+                style="font-size:0.5rem;margin-top:0.1rem"
+              >{{listdetail.cleanNum==undefined?0:listdetail.cleanNum}}</p>
             </div>
           </div>
         </div>
-        <div v-show="listdetail.status == 2"
-             class="superList">
-          <div class="iteamsa"
-               style="height:6rem;padding-bottom:0.2rem">
+        <div v-show="listdetail.status == 2" class="superList">
+          <div class="iteamsa" style="height:6rem;padding-bottom:0.2rem">
             <div id="Myechart"></div>
           </div>
         </div>
-        <div v-show="listdetail.status == 2"
-             class="superList">
+        <div v-show="listdetail.status == 2" class="superList">
           <div class="topcloum">
             <div class="topcloumson">
               <p class="leftfont">处理人</p>
@@ -244,8 +246,10 @@
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理时间</p>
-              <p class="leftfont1"
-                 v-if="listdetail.handleTime!==undefined">{{FormatDate(listdetail.handleTime)}}</p>
+              <p
+                class="leftfont1"
+                v-if="listdetail.handleTime!==undefined"
+              >{{FormatDate(listdetail.handleTime)}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理时长</p>
@@ -254,41 +258,44 @@
             <div class="topcloumson">
               <p class="leftfont">处理前</p>
               <p class="leftfont1">
-                <img v-for="(iteam,index) in listdetail.handleBeforeURLs"
-                     :src="Ip+iteam"
-                     :key="index"
-                     alt
-                     srcset
-                     @click="handOpen(listdetail.handleBeforeURLs,index)">
+                <img
+                  v-for="(iteam,index) in listdetail.handleBeforeURLs"
+                  :src="Ip+iteam"
+                  :key="index"
+                  alt
+                  srcset
+                  @click="handOpen(listdetail.handleBeforeURLs,index)"
+                />
               </p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">处理后</p>
               <p class="leftfont1">
-                <img v-for="(iteam,index) in listdetail.handleAfterURLs"
-                     :src="Ip+iteam"
-                     :key="index"
-                     alt
-                     srcset
-                     @click="handOpen(listdetail.handleAfterURLs,index)">
+                <img
+                  v-for="(iteam,index) in listdetail.handleAfterURLs"
+                  :src="Ip+iteam"
+                  :key="index"
+                  alt
+                  srcset
+                  @click="handOpen(listdetail.handleAfterURLs,index)"
+                />
               </p>
             </div>
           </div>
         </div>
-        <div class="superList"
-             v-if="listdetail.qualified!==3">
-          <div class="topsa"
-               style="margin-top:0.3rem">
+        <div class="superList" v-if="listdetail.qualified!==3">
+          <div class="topsa" style="margin-top:0.3rem">
             <div class="fontext">反馈信息</div>
             <div></div>
           </div>
         </div>
-        <div v-if="listdetail.qualified!==3"
-             class="superList">
+        <div v-if="listdetail.qualified!==3" class="superList">
           <div class="topcloum">
             <div class="topcloumson">
               <p class="leftfont">反馈时间</p>
-              <p class="leftfont1">{{listdetail.updateTime==undefined?'':FormatDate(listdetail.updateTime)}}</p>
+              <p
+                class="leftfont1"
+              >{{listdetail.updateTime==undefined?'':FormatDate(listdetail.updateTime)}}</p>
             </div>
             <div class="topcloumson">
               <p class="leftfont">反馈人员</p>
@@ -298,19 +305,18 @@
               <p class="leftfont">反馈情况</p>
               <p class="leftfont1">{{listdetail.qualified==0?'不合格':listdetail.qualified==2?'合格':''}}</p>
             </div>
-            <div v-if="listdetail.qualified==0"
-                 class="topcloumson">
+            <div v-if="listdetail.qualified==0" class="topcloumson">
               <p class="leftfont">不合格原因</p>
               <p class="leftfont1">{{listdetail.unqualifiedReason}}</p>
             </div>
           </div>
         </div>
-        <div v-if="listdetail.status == 2&listdetail.qualified==3&(roleCode=='global'||roleCode=='dispatch')"
-             class="evaluation-button">
-          <button @click="popupVisible3=true"
-                  style="background:#FF4545">不合格</button>
-          <button @click="qualified()"
-                  style="background:#56CA37">合格</button>
+        <div
+          v-if="listdetail.status == 2&listdetail.qualified==3&(roleCode=='global'||roleCode=='dispatch')"
+          class="evaluation-button"
+        >
+          <button @click="popupVisible3=true" style="background:#FF4545">不合格</button>
+          <button @click="qualified()" style="background:#56CA37">合格</button>
         </div>
       </section>
     </main>
@@ -322,14 +328,14 @@ import { Indicator } from "mint-ui";
 import { MessageBox } from "mint-ui";
 export default {
   computed: {},
-  data () {
+  data() {
     return {
       slide: [],
       imgArray: [],
       rotateS: 0,
       popupVisible: false,
-      popupVisible1: false,//地图
-      popupVisible3: false,//不合格理由
+      popupVisible1: false, //地图
+      popupVisible3: false, //不合格理由
       listdetail: {},
       showIndicators: false,
       activeComany: "", // 选中的单车企业
@@ -359,7 +365,7 @@ export default {
           value: "5"
         }
       ],
-      unqualifiedReason: [],//不合格理由
+      unqualifiedReason: [], //不合格理由
       slide2: [],
       slide1: [],
       sheetCode: "",
@@ -373,18 +379,17 @@ export default {
       indexImage: 0,
       downIcon: -1,
       eachartNode: null, //echarts
-      myMap: null,
+      myMap: null
     };
   },
   components: {},
-  mounted () {
-
+  mounted() {
     this.$nextTick(() => {
-      let worldMapContainer = document.getElementById('Myechart');
+      let worldMapContainer = document.getElementById("Myechart");
       //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
-      let resizeWorldMapContainer = function () {
-        worldMapContainer.style.width = window.innerWidth - 30 + 'px';
-        worldMapContainer.style.height = '6rem';
+      let resizeWorldMapContainer = function() {
+        worldMapContainer.style.width = window.innerWidth - 30 + "px";
+        worldMapContainer.style.height = "6rem";
       };
       //设置容器高宽
       resizeWorldMapContainer();
@@ -392,10 +397,15 @@ export default {
       this.getComanylist();
       window.onresize = () => {
         this.eachartNode.resize();
-      }
+      };
     });
   },
-  created () {
+  beforeRouteLeave(to, from, next) {
+    // 设置下一个路由的 meta
+    to.meta.keepAlive = true; // C 跳转到 A 时让 A 不缓存，即刷新
+    next();
+  },
+  created() {
     this.roleCode = localStorage.roleCode;
     if (this.$route.query.supervise) {
       this.sheetCode = this.$route.query.supervise;
@@ -410,19 +420,18 @@ export default {
       this.getMessage(this.sheetCode);
     }
     window.watchBackWXS = this.watchBackWXS;
-
   },
   methods: {
-    handleClose () {
+    handleClose() {
       console.log("close event");
     },
     //是否确认合格
-    qualified () {
-      MessageBox.confirm('确认处理合格?').then(action => {
+    qualified() {
+      MessageBox.confirm("确认处理合格?").then(action => {
         this.$fetchPut("dispatch/dispatchQualifiedFeedBack", {
           id: this.listdetail.id,
           qualified: 2,
-          unqualifiedReason: ''
+          unqualifiedReason: ""
         }).then(res => {
           if (res.status == 0) {
             MessageBox.alert("", {
@@ -436,16 +445,16 @@ export default {
             MessageBox.alert("", {
               message: res.message,
               title: "提示"
-            }).then(action => { });
+            }).then(action => {});
           }
         });
       });
     },
-    noQualified () {
+    noQualified() {
       this.$fetchPut("dispatch/dispatchQualifiedFeedBack", {
         id: this.listdetail.id,
         qualified: 0,
-        unqualifiedReason: this.unqualifiedReason.join(',')
+        unqualifiedReason: this.unqualifiedReason.join(",")
       }).then(res => {
         if (res.status == 0) {
           MessageBox.alert("", {
@@ -459,12 +468,12 @@ export default {
           MessageBox.alert("", {
             message: res.message,
             title: "提示"
-          }).then(action => { });
+          }).then(action => {});
         }
-        this.popupVisible3 = false
+        this.popupVisible3 = false;
       });
     },
-    chooseOrder (e) {
+    chooseOrder(e) {
       // console.log(e.target.childNodes[0]);
       if (e.target.className.indexOf("detail-selected") == -1) {
         e.target.className = "detail-btn detail-selected"; //切换按钮样式
@@ -479,24 +488,23 @@ export default {
       }
     },
     //获取分企业添加的列表
-    getComanylist () {
+    getComanylist() {
       this.$fetchGet("cleanConfig/ifCleanByBike")
         .then(res => {
           this.ifCleanByBike = res;
         })
-        .catch(res => { });
+        .catch(res => {});
     },
-    watchBackWXS () {
+    watchBackWXS() {
       if (this.popupVisible || this.popupVisible1) {
-        this.popupVisible = false
-        this.popupVisible1 = false
+        this.popupVisible = false;
+        this.popupVisible1 = false;
       } else {
         this.toHome();
       }
     },
     //echarts
-    initCanvas (company, arrangeNum, cleanNum) {
-
+    initCanvas(company, arrangeNum, cleanNum) {
       console.log(this.eachartNode);
       let option = {
         color: ["#958BFF", "#FF688D"],
@@ -610,36 +618,36 @@ export default {
       };
       this.eachartNode.setOption(option, true);
     },
-    toHome () {
+    toHome() {
       this.$router.push({
         path: "/layout/supervise",
-        query: {
-          searchCondition: this.searchCondition,
-          menuListTop: this.menuListTop,
-          downIcon: this.downIcon,
-          areaarr: this.areaarr,
-          areakids: this.areakids
-        }
+        // query: {
+        //   searchCondition: this.searchCondition,
+        //   menuListTop: this.menuListTop,
+        //   downIcon: this.downIcon,
+        //   areaarr: this.areaarr,
+        //   areakids: this.areakids
+        // }
       });
     },
-    rotate () {
+    rotate() {
       this.rotateS = this.rotateS + 90;
     },
-    handleChange (val) {
+    handleChange(val) {
       // console.log(val)
     },
-    splitsa (val) {
+    splitsa(val) {
       return (
         val.split(" ")[0].split("-")[1] + "-" + val.split(" ")[0].split("-")[2]
       );
     },
-    splitsa1 (val) {
+    splitsa1(val) {
       return (
         val.split(" ")[1].split(":")[0] + ":" + val.split(" ")[1].split(":")[1]
       );
     },
     //打开图片弹框
-    handOpen (val, index) {
+    handOpen(val, index) {
       if (this.listdetail.status == 2) {
         this.eachartNode.dispatchAction({ type: "hideTip" });
       }
@@ -658,7 +666,7 @@ export default {
       });
       this.indexImage = index;
     },
-    iconClick () {
+    iconClick() {
       this.$router.push({
         path: "/feedBack",
         query: {
@@ -673,7 +681,7 @@ export default {
         }
       });
     },
-    getMap () {
+    getMap() {
       this.popupVisible1 = true;
       this.myMap = new AMap.Map("myMap");
       let geolocation = new AMap.Geolocation({
@@ -692,24 +700,30 @@ export default {
       });
       geolocation.getCurrentPosition((status, result) => {
         console.log(result.position);
-        var markers = [{
-          icon: require('../../assets/image/supervise/iconren.png'),
-          label: {
-            offset: new AMap.Pixel(-20, -30),
-            content: "<div class='info'>处理位置</div>"
+        var markers = [
+          {
+            icon: require("../../assets/image/supervise/iconren.png"),
+            label: {
+              offset: new AMap.Pixel(-20, -30),
+              content: "<div class='info'>处理位置</div>"
+            },
+            position: [
+              this.listdetail.gaodeLongitude,
+              this.listdetail.gaodeLatitude
+            ]
           },
-          position: [this.listdetail.gaodeLongitude, this.listdetail.gaodeLatitude]
-        }, {
-          icon: require('../../assets/image/supervise/iconpr.png'),
-          label: {
-            offset: new AMap.Pixel(-20, -30),
-            content: "<div class='info'>当前位置</div>"
-          },
-          position: [result.position.lng, result.position.lat]
-        }];
+          {
+            icon: require("../../assets/image/supervise/iconpr.png"),
+            label: {
+              offset: new AMap.Pixel(-20, -30),
+              content: "<div class='info'>当前位置</div>"
+            },
+            position: [result.position.lng, result.position.lat]
+          }
+        ];
 
         // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
-        markers.forEach((marker) => {
+        markers.forEach(marker => {
           new AMap.Marker({
             map: this.myMap,
             icon: marker.icon,
@@ -719,12 +733,10 @@ export default {
           });
         });
         this.myMap.setFitView();
-
       });
-
     },
     // 选择公司
-    selectComany (e) {
+    selectComany(e) {
       let slide = [];
       let slide1 = [];
       let slide2 = [];
@@ -737,20 +749,20 @@ export default {
           this.listdetail = iteam;
           console.log(iteam.dispatchDealDetailList);
           if (iteam.dispatchDealDetailList.length > 0) {
-            this.$nextTick(function () {
+            this.$nextTick(function() {
               iteam.dispatchDealDetailList.forEach(item => {
                 slide.push(item.orgName);
                 slide1.push(item.arrangeNum);
                 slide2.push(item.cleanNum);
               });
-              console.log()
+              console.log();
               this.initCanvas(slide, slide1, slide2);
             });
           }
         }
       });
     },
-    getMessage (val) {
+    getMessage(val) {
       this.iteamList = [];
       let slide = [];
       let slide1 = [];
@@ -774,7 +786,7 @@ export default {
               if (iteam.id == this.activeComany) {
                 this.listdetail = res[index];
               }
-            })
+            });
             this.activeComany = this.activeComany;
           } else {
             this.activeComany = res[0].id;
@@ -791,7 +803,7 @@ export default {
             this.initCanvas(slide, slide1, slide2);
           }
         })
-        .catch(res => { });
+        .catch(res => {});
     }
   }
 };
