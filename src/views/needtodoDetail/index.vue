@@ -372,7 +372,6 @@ export default {
         zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
       });
       geolocation.getCurrentPosition((status, result) => {
-        console.log(result.position);
         var markers = [{
           icon: require('../../assets/image/supervise/iconren.png'),
           label: {
@@ -421,7 +420,6 @@ export default {
     },
     handOpen (val, index) {
       this.eachartNode.dispatchAction({ type: "hideTip" });
-      console.log(index);
       this.rotateS = 0;
       this.lageImg = [];
       this.popupVisible = true;
@@ -441,7 +439,6 @@ export default {
     },
     //echarts
     initCanvas (company, arrangeNum, cleanNum) {
-      console.log(this.eachartNode);
       let option = {
         color: ["#958BFF", "#FF688D"],
         tooltip: {
@@ -607,7 +604,6 @@ export default {
                 slide1.push(item.arrangeNum);
                 slide2.push(item.cleanNum);
               });
-              console.log()
               this.initCanvas(slide, slide1, slide2);
             });
           }

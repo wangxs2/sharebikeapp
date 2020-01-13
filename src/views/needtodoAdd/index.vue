@@ -516,7 +516,6 @@ export default {
   components: {},
   watch: {
     bikeCleanCompany: function (val) {
-      console.log(val)
       val.forEach((iteam) => {
         if (iteam.arrangeNum > 100 || iteam.cleanNum > 100) {
           iteam.arrangeNum = 0
@@ -604,7 +603,6 @@ export default {
       } else {
         this.bikeCleanCompany1 = this.bikeCleanCompany;
       }
-      // console.log(this.bikeCleanCompany2);
     },
     dealDetailList (val) {
       this.bikeTitle = val;
@@ -714,7 +712,6 @@ export default {
       // this.popupVisible = true;
       // val = val.replace(".400x400.jpg", ".square.jpg");
       // this.bigImage = val;
-      // console.log(index);
       this.rotateS = 0;
       this.lageImg = [];
       this.popupVisible = true;
@@ -753,7 +750,6 @@ export default {
       this.downPictur("bikeImg");
     },
     handleClose () {
-      // console.log("close event");
     },
     splitsa (val) {
       return (
@@ -793,7 +789,6 @@ export default {
           .then(res => {
             if (res.status == 1) {
               this.sheetCode1 = res.dispatchDetail.sheetCode;
-              // console.log(this.sheetCode1);
               this.formMessage = res.dispatchDetail;
               // if (this.formMessage.handleTime == undefined) {
               //   this.formMessage.handleTime = Date.now();

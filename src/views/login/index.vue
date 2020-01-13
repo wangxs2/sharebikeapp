@@ -44,7 +44,6 @@ export default {
   },
   beforeCreate() {},
   mounted() {
-    // console.log(this.$store.getters.password);
     if (localStorage.getItem("passWord")) {
       this.loginMess.password = localStorage.getItem("passWord");
       this.loginMess.username = localStorage.getItem("userName");
@@ -53,7 +52,7 @@ export default {
     // if()
   },
   created() {
-    this.$store.dispatch("getMap");
+    
     this.downApp();
     window.getLogin = this.getLogin;
   },

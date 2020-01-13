@@ -466,7 +466,6 @@ export default {
       } else {
         this.dayDate = val.Format("yyyy-MM");
       }
-      // console.log(this.dayDate);
       this.getData();
     },
     changeCompany (val) {
@@ -525,7 +524,6 @@ export default {
         // }).then(res => {
         //   if(res.status==1){
         //     this.dataDetail = res;
-        //   console.log(res.dispatchContentDetail);
         //   res.detailByOrgList.forEach(element => {
         //       this.dispatchCount+=element.arrangeNum;
         //       this.checkCount+=element.cleanNum

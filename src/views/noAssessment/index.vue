@@ -362,7 +362,6 @@ export default {
     achievementTimely: (val, old) => { }
   },
   beforeRouteEnter (to, from, next) {
-    // console.log(from.path);
     pathsaTwo = from.path;
     next();
   },
@@ -450,7 +449,6 @@ export default {
     },
     //下一单
     Submission () {
-      // console.log(this.currentPage);
       if (
         this.startNumber == -1 ||
         this.startNumber1 == -1 ||
@@ -477,8 +475,6 @@ export default {
           "json"
         ).then(res => {
           if (res.status == 0) {
-            // console.log(number);
-
             let number = this.currentPage;
             if (number == this.totalData.length - 1) {
               MessageBox.alert("", {

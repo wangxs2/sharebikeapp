@@ -88,7 +88,6 @@
              }
              var address = '上海市浦东新区老上海8号餐厅停车场-出入口';
              geocoder.getLocation(address, function(status, result) {
-                 console.log(result);
              });
          }
          document.getElementById("geo").onclick = geoCode;
@@ -123,7 +122,6 @@
             autoFitView: false
         })
         placeSearch.search('老上海8号餐厅', function(status, result) {
-            console.log(result);
 
         })
     </script>

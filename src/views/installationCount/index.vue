@@ -367,7 +367,6 @@ export default {
         dayDate: this.dateValue,
       }).then(res => {
         Indicator.close();
-        // console.log(res.data.mapData.length)
         this.lenNumber = res.data.mapData.length;
         let datax = [];
         res.data.dateTime.forEach(element => {

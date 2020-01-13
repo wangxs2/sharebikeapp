@@ -374,7 +374,6 @@ export default {
       }
     },
     // getAddress (row, index) {
-    //   console.log(row);
     //   if (row.title) {
     //     this.formMessage.handleAddr = row.city + row.address + row.title;
     //     this.formMessage.gpsLongitude = row.point.lng;
@@ -390,7 +389,6 @@ export default {
       // this.popupVisible1 = true;
       // val = val.replace(".400x400.jpg", ".square.jpg");
       // this.bigImage = val;
-      console.log(index);
       this.rotateS = 0;
       this.lageImg = [];
       this.popupVisible1 = true;
@@ -577,7 +575,6 @@ export default {
     //高德地图关键字提示
     suggestSa () {
       this.placeSearch.search(this.addressCtrol, (status, result) => {
-        console.log(result);
         // return;
         let addrPrefix = "";
         this.placeData = result.poiList.pois.map(iteam => {
@@ -645,7 +642,6 @@ export default {
       }
     },
     handleClose () {
-      // console.log("close event");
     },
     chooseOrder (e) {
       if (e.target.className.indexOf("detail-selected") == -1) {
@@ -664,7 +660,6 @@ export default {
       let arr = ["1"];
       let arr1 = ["2"];
       let arr2 = ["1", "2"];
-      // console.log(e.target.getAttribute("viewType"))
       if (e.target.className.indexOf("detail-selected") == -1) {
         e.target.className = "detail-btn detail-selected"; //切换按钮样式
         //写逻辑
@@ -685,7 +680,6 @@ export default {
       }else if(this.value1.length == 0){
         this.dealMethod = "";
       }
-      console.log(this.dealMethod);
     },
     toHome () {
       this.$router.push({
@@ -715,7 +709,6 @@ export default {
         });
     },
     submit () {
-      console.log(this.dealMethod)
       if (this.formMessage.handleAddr == "") {
         MessageBox.alert("", {
           message: "请选择待清理地点",
@@ -785,7 +778,6 @@ export default {
                 }).then(action => { });
               });
           } else {
-            console.log(2);
           }
         });
       }

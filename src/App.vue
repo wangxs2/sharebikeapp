@@ -23,7 +23,6 @@ export default {
   },
 
   mounted () {
-    // console.log(AMap);
   },
   created () {
     // window.watchBackWXS=this.watchBackWXS;
@@ -32,8 +31,6 @@ export default {
   },
   methods: {
     // watchBackWXS(){
-    //   console.log(555); 
-    //   console.log(this.$route.matched[0].path);
     //   if(this.$route.matched[0].path=='/layout'||this.$route.matched[0].path=='/login'){
     //     return
     //   }else{
@@ -50,14 +47,12 @@ export default {
         this.$fetchPost("login", data)
           .then(res => {
             if (res.status == "success") {
-              console.log(12);
               localStorage.setItem("roleCode", res.info.roleCode);
               document.cookie = "userId=" + res.info.id;
               if (
                 res.info.roleCode == "clean" ||
                 res.info.roleCode == "manage"
               ) {
-                console.log(13);
                 this.$router.push({
                   path: "/needtodoAdd",
                   query: {
@@ -77,7 +72,6 @@ export default {
                   }
                 });
               } else {
-                console.log(14);
                 this.$router.push({
                   path: "/layout/selfCheck"
                 });

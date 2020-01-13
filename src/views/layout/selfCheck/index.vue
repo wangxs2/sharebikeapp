@@ -218,7 +218,7 @@ import { fail } from "assert";
 export default {
   name: "zicha",
   computed: {
-    ...mapGetters(["district","addressFlag","gpsadress"])
+    ...mapGetters(["district", "addressFlag", "gpsadress"])
   },
   data() {
     return {
@@ -357,24 +357,26 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     // 设置下一个路由的 meta
-    // alert(2)
     sessionStorage.askPositon =
       this.$refs.my_scroller &&
       this.$refs.my_scroller.getPosition() &&
       this.$refs.my_scroller.getPosition().top;
     sessionStorage.mysiteCodecheck = this.mysiteCode;
-    to.meta.keepAlive = false; // B 跳转到 A 时，让 A 缓存，即不刷新
+    if (to.path == "/selfCheckdetail" || to.path == "/selfCheckAdd") {
+      to.meta.keepAlive = false; // B 跳转到 A 时，让 A 缓存，即不刷新
+    }
+
     next();
   },
   beforeRouteEnter(to, from, next) {
     if (!sessionStorage.askPositon || from.path == "/") {
       //当前页面刷新不需要切换位置
       sessionStorage.askPositon = "";
+      sessionStorage.mysiteCodecheck = "";
       next();
     } else {
       next(vm => {
-        console.log(sessionStorage.askPositon)
-         vm.mysiteCode=sessionStorage.mysiteCodecheck
+        vm.mysiteCode = sessionStorage.mysiteCodecheck;
         if (vm && vm.$refs.my_scroller) {
           //通过vm实例访问this
           setTimeout(function() {
@@ -437,7 +439,7 @@ export default {
       });
     },
     //获取当前城市
-    
+
     //进入详情
     detailClick(row) {
       this.mysiteCode = row.sheetCode;
@@ -456,7 +458,6 @@ export default {
           }
         });
       }
-      
     },
     iconClick() {
       this.$router.push({

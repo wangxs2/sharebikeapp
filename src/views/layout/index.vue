@@ -153,8 +153,8 @@ export default {
       }
     },
     toRouterIndex(val, index) {
-      // console.log(val,index);
-      // console.log(this.roleCode,index);
+      console.log(this.roleCode);
+      console.log(index);
       if (
         (this.roleCode == "clean" || this.roleCode == "manage") &&
         index == 1

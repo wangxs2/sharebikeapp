@@ -386,7 +386,6 @@ export default {
       });
     },
     chooseOrder(e) {
-      // console.log(e.target.childNodes[0]);
       if (e.target.className.indexOf("detail-selected") == -1) {
         e.target.className = "detail-btn detail-selected"; //切换按钮样式
         //写逻辑
@@ -561,7 +560,6 @@ export default {
         zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
       });
       geolocation.getCurrentPosition((status, result) => {
-        // console.log(result.position);
         var markers = [
           {
             icon: require("../../assets/image/supervise/iconren.png"),
@@ -604,7 +602,6 @@ export default {
     },
     handOpen(val, index) {
       this.eachartNode.dispatchAction({ type: "hideTip" });
-      // console.log(index);
       this.rotateS = 0;
       this.lageImg = [];
       this.popupVisible = true;
@@ -628,7 +625,6 @@ export default {
       })
         .then(res => {
           Indicator.close();
-          // console.log(res);
           this.iteamList = res;
           slide3 = res.selfCheckDealDetailList;
           if (res.selfCheckDealDetailList.length > 0) {

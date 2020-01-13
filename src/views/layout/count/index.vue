@@ -230,7 +230,6 @@ export default {
 
     // 选择视图
     selectView (e) {
-      // console.log(e.target);
       let type = e.target.getAttribute("viewType");
       if (type) {
         this.viewType = type;

@@ -230,7 +230,6 @@ export default {
     },
     getCompany (val) {
       this.value = val;
-      // console.log(this.value);
     },
     handOpen (val) {
       this.popupVisible = true;

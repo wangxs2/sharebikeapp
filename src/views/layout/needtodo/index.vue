@@ -242,7 +242,6 @@ export default {
     //     this.searchCondition = this.$route.query.searchCondition;
     //     this.menuListTop = this.$route.query.menuListTop;
     //     this.downIcon = this.$route.query.downIcon;
-    //     // console.log(this.$route.query.areaarr);
     //     if (this.$route.query.areaarr.length == 0) {
     //       this.getorgsTree();
     //     } else {
@@ -268,7 +267,9 @@ export default {
       this.$refs.my_scroller.getPosition() &&
       this.$refs.my_scroller.getPosition().top;
     sessionStorage.mysiteCodeneed = this.mysiteCode;
-    to.meta.keepAlive = false; // B 跳转到 A 时，让 A 缓存，即不刷新
+    if (to.path == "/needtodoDetail" || to.path == "/needtodoAdd") {
+      to.meta.keepAlive = false; // B 跳转到 A 时，让 A 缓存，即不刷新
+    }
     next();
   },
   beforeRouteEnter(to, from, next) {
@@ -295,6 +296,7 @@ export default {
   mounted() {},
   methods: {
     detailClick(row) {
+      this.mysiteCode = row.sheetCode;
       if (row.status == 2) {
         this.$router.push({
           path: "/needtodoDetail",
@@ -322,7 +324,6 @@ export default {
           }
         });
       }
-      this.mysiteCode = row.sheetCode;
     },
     areaTypeclick(val, index) {
       this.areaflag = false;
@@ -524,7 +525,6 @@ export default {
     },
     refresh: function() {
       //下拉刷新
-      // console.log("refresh");
       this.searchCondition.page = 1;
       this.searchCondition.pageSize = 15;
       this.$fetchGet("dispatch/pageDispatchToDo", {

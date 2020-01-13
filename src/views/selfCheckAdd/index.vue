@@ -467,7 +467,6 @@ export default {
       });
     },
     bikeCleanCompany: function (val) {
-      console.log(val)
       val.forEach((iteam) => {
         if (iteam.arrangeNum > 100 || iteam.cleanNum > 100) {
           iteam.arrangeNum = 0
@@ -963,7 +962,6 @@ export default {
         }).then(action => { });
       } else {
         let obj = {};
-        console.log(this.formMessage.handleBefore)
         obj.selfCheck = this.formMessage;
         obj.selfCheckDealDetailList = this.bikeCleanCompany;
         obj.selfCheck.handleBefore = this.formMessage.handleBefore.join(";");
@@ -1047,7 +1045,6 @@ export default {
           message: "是否确认提交",
           title: "提示"
         }).then(action => {
-          console.log(this.formMessage.handleBefore)
           if (action == "confirm") {
             let obj = {};
             obj.selfCheck = this.formMessage;
@@ -1095,7 +1092,6 @@ export default {
                 });
               });
           } else {
-            console.log(1);
           }
         });
       }

@@ -90,7 +90,6 @@ export default {
           } else {
             
             let photoStr = this.photo.join(";");
-            console.log(photoStr);
             this.$fetchPost(
               "problemFeedback",
               {

@@ -26,7 +26,7 @@ export const constantRouterMap = [
         name: '派单',
         component: () => import('@/views/layout/supervise'),
         meta: {
-          keepAlive: false // 需要被缓存
+          keepAlive: true // 需要被缓存
         }
       },
       {
@@ -53,9 +53,6 @@ export const constantRouterMap = [
         component: () => import('@/views/layout/me')
       }
     ],
-    meta: {
-      keepAlive: true // 需要被缓存
-    }
   },
   {
     path: '/selfCheckAdd',

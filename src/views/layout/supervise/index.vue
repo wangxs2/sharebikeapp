@@ -188,8 +188,8 @@ import { Indicator } from "mint-ui";
 import { mapGetters } from "vuex";
 export default {
   name: "duban",
-   computed: {
-    ...mapGetters(["district","addressFlag","gpsadress"])
+  computed: {
+    ...mapGetters(["district", "addressFlag", "gpsadress"])
   },
   data() {
     return {
@@ -330,22 +330,23 @@ export default {
       this.$refs.my_scroller.getPosition() &&
       this.$refs.my_scroller.getPosition().top;
     sessionStorage.mysiteCode = this.mysiteCode;
-    
-    to.meta.keepAlive = false; // B 跳转到 A 时，让 A 缓存，即不刷新
+    if (to.path == "/superviseDetail" || to.path == "/superviseAdd") {
+      to.meta.keepAlive = false; // B 跳转到 A 时，让 A 缓存，即不刷新
+    }
     next();
   },
   beforeRouteEnter(to, from, next) {
     if (!sessionStorage.askPositontwo || from.path == "/") {
       //当前页面刷新不需要切换位置
       sessionStorage.askPositontwo = "";
+      sessionStorage.mysiteCode = "";
       next();
     } else {
       next(vm => {
-        console.log(sessionStorage.mysiteCode)
-         vm.mysiteCode=sessionStorage.mysiteCode
+        vm.mysiteCode = sessionStorage.mysiteCode;
         if (vm && vm.$refs.my_scroller) {
           //通过vm实例访问this
-          setTimeout(()=> {
+          setTimeout(() => {
             vm.$refs.my_scroller.scrollTo(
               0,
               sessionStorage.askPositontwo,

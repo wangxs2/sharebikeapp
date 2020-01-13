@@ -353,7 +353,6 @@ export default {
   computed: {},
   watch: {
     currentPage: function(val, old) {
-      // console.log(val, old);
       if (val == 0) {
         this.presa = false;
         this.nextsa = true;
@@ -398,7 +397,6 @@ export default {
     achievementTimely: (val, old) => {},
   },
   beforeRouteEnter(to,from,next){
-    console.log(from.path);
     pathSa=from.path;
     next();
   },
@@ -444,8 +442,6 @@ export default {
       if (this.viewType == 2) {
         this.currentPage++;
         this.presa = true;
-        // console.log(this.currentPage);
-        // console.log(this.dispatchData);
         this.iteamList = this.dispatchData[this.currentPage];
         if (
           this.currentPage == this.dispatchData.length - 1 ||
@@ -458,8 +454,6 @@ export default {
       } else if (this.viewType == 1) {
         this.currentPage++;
         this.presa = true;
-        // console.log(this.currentPage);
-        // console.log(this.checkData.length - 2);
         this.iteamList = this.checkData[this.currentPage];
         if (
           this.currentPage == this.checkData.length - 1 ||
@@ -475,8 +469,6 @@ export default {
       if (this.viewType == 1) {
         this.currentPage--;
         this.nextsa = true;
-        console.log(this.currentPage);
-        console.log(this.checkData.length - 2);
         this.iteamList = this.checkData[this.currentPage];
         if (this.currentPage == 0 || this.checkData.length == 1) {
           this.presa = false;
@@ -486,8 +478,6 @@ export default {
       } else if (this.viewType == 2) {
         this.currentPage--;
         this.nextsa = true;
-        console.log(this.currentPage);
-        console.log(this.dispatchData.length - 2);
         this.iteamList = this.dispatchData[this.currentPage];
         if (this.currentPage == 0 || this.dispatchData.length == 1) {
           this.presa = false;
@@ -511,7 +501,6 @@ export default {
       this.rotateS = this.rotateS + 90;
     },
     iconClick() {
-      console.log()
       this.$router.push({
         path: pathSa
       });
