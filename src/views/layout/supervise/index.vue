@@ -185,13 +185,15 @@
 import { Loadmore } from "mint-ui";
 import { Toast } from "mint-ui";
 import { Indicator } from "mint-ui";
+import { mapGetters } from "vuex";
 export default {
   name: "duban",
-  computed: {},
+   computed: {
+    ...mapGetters(["district","addressFlag","gpsadress"])
+  },
   data() {
     return {
-      district: "",
-      addressFlag: true,
+      mysiteCode: "",
       qualifiedFlag: false, //工单
       selected: "/layout/supervise",
       viewType: "",
@@ -295,7 +297,7 @@ export default {
         qualified: ""
       },
       areaflag: true, //是否包含flag
-      mysiteCode: "",
+
       UserArea: [],
       pageList: [],
       company: [], //查询单车企业
@@ -307,7 +309,6 @@ export default {
   },
   components: {},
   mounted() {
-    this.getMap();
     if (this.$route.query.supervise) {
       this.$router.push({
         path: "/superviseDetail",
@@ -319,49 +320,18 @@ export default {
     }
   },
   created() {
-    // if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
-    //   this.searchCondition = this.$route.query.searchCondition;
-    //   if (this.$route.query.searchCondition.status) {
-    //     this.viewType10 = this.$route.query.searchCondition.status;
-    //   } else {
-    //     this.viewType10 = -1;
-    //   }
-    //   if (this.$route.query.searchCondition.qualified) {
-    //     this.viewType11 = this.$route.query.searchCondition.qualified;
-    //   } else {
-    //     this.viewType11 = -1;
-    //   }
-    //   this.menuListTop = this.$route.query.menuListTop;
-    //   this.downIcon = this.$route.query.downIcon;
-    //   if (this.$route.query.areaarr.length == 0) {
-    //     this.getorgsTree();
-    //   } else {
-    //     this.areakids = this.$route.query.areakids;
-    //     this.areaarr = this.$route.query.areaarr;
-
-    //     this.viewType = this.areaarr[this.areaarr.length - 1].id;
-    //   }
-    //   this.getListData2();
-    // } else {
-    //   this.getorgsTree();
-    // }
     this.getorgsTree();
     this.getBikeCompany();
     this.getBikeMen();
   },
   beforeRouteLeave(to, from, next) {
-    // 设置下一个路由的 meta
-    // alert(2)
     sessionStorage.askPositontwo =
       this.$refs.my_scroller &&
       this.$refs.my_scroller.getPosition() &&
       this.$refs.my_scroller.getPosition().top;
-    // if (to.path == "/superviseDetail" || to.path == "/superviseAdd") {
-    //   to.meta.keepAlive = false;
-    // } else {
-    //   to.meta.keepAlive = true;
-    // }
-    // to.meta.keepAlive = false; // B 跳转到 A 时，让 A 缓存，即不刷新
+    sessionStorage.mysiteCode = this.mysiteCode;
+    
+    to.meta.keepAlive = false; // B 跳转到 A 时，让 A 缓存，即不刷新
     next();
   },
   beforeRouteEnter(to, from, next) {
@@ -371,10 +341,11 @@ export default {
       next();
     } else {
       next(vm => {
-        // console.log(vm)
+        console.log(sessionStorage.mysiteCode)
+         vm.mysiteCode=sessionStorage.mysiteCode
         if (vm && vm.$refs.my_scroller) {
           //通过vm实例访问this
-          setTimeout(function() {
+          setTimeout(()=> {
             vm.$refs.my_scroller.scrollTo(
               0,
               sessionStorage.askPositontwo,
@@ -386,43 +357,16 @@ export default {
     }
   },
   methods: {
-    //获取当前城市
-    getMap() {
-      let geolocation = new AMap.Geolocation({
-        enableHighAccuracy: true, //是否使用高精度定位，默认:true
-        timeout: 10000, //超过10秒后停止定位，默认：无穷大
-        maximumAge: 0, //定位结果缓存0毫秒，默认：0
-        convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-        showButton: false, //显示定位按钮，默认：true
-        buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
-        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-        showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
-        showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
-        panToLocation: false, //定位成功后将定位到的位置作为地图中心点，默认：true
-        useNative: true,
-        zoomToAccuracy: false //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-      });
-      geolocation.getCurrentPosition((status, result) => {
-        if (status == "complete") {
-          this.district = result.addressComponent.district;
-          this.addressFlag = false;
-        }
-      });
-    },
     detailClick(row) {
-      this.$router.push({
-        path: "/superviseDetail",
-        query: {
-          supervise: row.sheetCode
-          // statuSa: row.status,
-          // searchCondition: this.searchCondition,
-          // menuListTop: this.menuListTop,
-          // downIcon: this.downIcon,
-          // areakids: this.areakids,
-          // areaarr: this.areaarr
-        }
-      });
       this.mysiteCode = row.sheetCode;
+      if (this.mysiteCode) {
+        this.$router.push({
+          path: "/superviseDetail",
+          query: {
+            codescroll: row.sheetCode
+          }
+        });
+      }
     },
     iconClick() {
       // this.$router.push("/superviseAdd");

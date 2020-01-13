@@ -202,7 +202,7 @@ export default {
         id: ""
       },
       noneList: false,
-      mysiteCode:'',
+      mysiteCode: "",
       searchCondition: {
         //分页属性
         page: 0,
@@ -267,22 +267,26 @@ export default {
       this.$refs.my_scroller &&
       this.$refs.my_scroller.getPosition() &&
       this.$refs.my_scroller.getPosition().top;
+    sessionStorage.mysiteCodeneed = this.mysiteCode;
     to.meta.keepAlive = false; // B 跳转到 A 时，让 A 缓存，即不刷新
     next();
   },
   beforeRouteEnter(to, from, next) {
-    
     if (!sessionStorage.askPositonthree || from.path == "/") {
       //当前页面刷新不需要切换位置
       sessionStorage.askPositonthree = "";
       next();
     } else {
       next(vm => {
-        // console.log(vm)
+        vm.mysiteCode = sessionStorage.mysiteCodeneed;
         if (vm && vm.$refs.my_scroller) {
           //通过vm实例访问this
           setTimeout(function() {
-            vm.$refs.my_scroller.scrollTo(0, sessionStorage.askPositonthree, true);
+            vm.$refs.my_scroller.scrollTo(
+              0,
+              sessionStorage.askPositonthree,
+              true
+            );
           }, 0); //同步转异步操作
         }
       });
@@ -318,7 +322,7 @@ export default {
           }
         });
       }
-      this.mysiteCode=row.sheetCode
+      this.mysiteCode = row.sheetCode;
     },
     areaTypeclick(val, index) {
       this.areaflag = false;

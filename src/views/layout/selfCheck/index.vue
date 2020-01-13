@@ -211,20 +211,20 @@
  
 <script>
 import { Loadmore } from "mint-ui";
+import { mapGetters } from "vuex";
 import { Toast } from "mint-ui";
 import { Indicator } from "mint-ui";
 import { fail } from "assert";
 export default {
   name: "zicha",
-  computed: {},
+  computed: {
+    ...mapGetters(["district","addressFlag","gpsadress"])
+  },
   data() {
     return {
       mysitea: "done",
-      addressFlag: true,
-      gpsadress: "定位中...",
       selected: "/layout/selfCheck",
       viewType: "",
-      district: "",
       viewType2: "",
       viewType3: "",
       viewType10: -1,
@@ -352,7 +352,6 @@ export default {
     this.getorgsTree();
     this.getBikeCompany();
     this.getBikeMen();
-    this.getMap();
     this.getNumber();
     window.watchBackWXS = this.watchBackWXS;
   },
@@ -363,7 +362,7 @@ export default {
       this.$refs.my_scroller &&
       this.$refs.my_scroller.getPosition() &&
       this.$refs.my_scroller.getPosition().top;
-
+    sessionStorage.mysiteCodecheck = this.mysiteCode;
     to.meta.keepAlive = false; // B 跳转到 A 时，让 A 缓存，即不刷新
     next();
   },
@@ -374,7 +373,8 @@ export default {
       next();
     } else {
       next(vm => {
-        console.log(vm);
+        console.log(sessionStorage.askPositon)
+         vm.mysiteCode=sessionStorage.mysiteCodecheck
         if (vm && vm.$refs.my_scroller) {
           //通过vm实例访问this
           setTimeout(function() {
@@ -388,13 +388,13 @@ export default {
   mounted() {
     // window.addEventListener("scroll", this.handleScroll, true);
     // this.handleScroll(this.$route.query);
-    let dd = Date.now();
-    let str = 1554393600000;
-    if (dd - str >= 0) {
-      this.isDate = false;
-    } else {
-      this.isDate = true;
-    }
+    // let dd = Date.now();
+    // let str = 1554393600000;
+    // if (dd - str >= 0) {
+    //   this.isDate = false;
+    // } else {
+    //   this.isDate = true;
+    // }
   },
   methods: {
     // handleScroll(row) {
@@ -402,7 +402,6 @@ export default {
     //   setTimeout(() => {
     //     if (document.getElementById("mysite")) {
     //       let container = document.getElementById("mysite").offsetTop - 160;
-    //       console.log(container);
     //       let x = this.$refs.my_scroller.scrollTo(0, container, true);
     //     }
     //   }, 200);
@@ -438,42 +437,15 @@ export default {
       });
     },
     //获取当前城市
-    getMap() {
-      let geolocation = new AMap.Geolocation({
-        enableHighAccuracy: true, //是否使用高精度定位，默认:true
-        timeout: 10000, //超过10秒后停止定位，默认：无穷大
-        maximumAge: 0, //定位结果缓存0毫秒，默认：0
-        convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-        showButton: false, //显示定位按钮，默认：true
-        buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
-        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-        showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
-        showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
-        panToLocation: false, //定位成功后将定位到的位置作为地图中心点，默认：true
-        useNative: true,
-        zoomToAccuracy: false //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-      });
-      geolocation.getCurrentPosition((status, result) => {
-        if (status == "complete") {
-          this.district = result.addressComponent.district;
-          this.addressFlag = false;
-        } else {
-          this.gpsadress = "定位失败";
-        }
-      });
-    },
+    
     //进入详情
     detailClick(row) {
+      this.mysiteCode = row.sheetCode;
       if (row.status == 2) {
         this.$router.push({
           path: "/selfCheckdetail",
           query: {
             message: row.sheetCode
-            // searchCondition: this.searchCondition,
-            // menuListTop: this.menuListTop,
-            // downIcon: this.downIcon,
-            // areakids: this.areakids,
-            // areaarr: this.areaarr
           }
         });
       } else {
@@ -481,15 +453,10 @@ export default {
           path: "/selfCheckAdd",
           query: {
             message: row.sheetCode
-            // searchCondition: this.searchCondition,
-            // menuListTop: this.menuListTop,
-            // downIcon: this.downIcon,
-            // areakids: this.areakids,
-            // areaarr: this.areaarr
           }
         });
       }
-      this.mysiteCode = row.sheetCode;
+      
     },
     iconClick() {
       this.$router.push({

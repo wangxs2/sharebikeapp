@@ -53,6 +53,7 @@ export default {
     // if()
   },
   created() {
+    this.$store.dispatch("getMap");
     this.downApp();
     window.getLogin = this.getLogin;
   },

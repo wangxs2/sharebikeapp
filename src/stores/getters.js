@@ -14,6 +14,9 @@ const getters = {
     willdoInfo: state => state.user.willdoInfo,
     password: state => state.user.password,
     query: state => state.app.query,
+    district: state => state.user.district,//获取当前位置
+    addressFlag: state => state.user.addressFlag,//获取当前位置
+    gpsadress: state => state.user.gpsadress,//获取当前位置
     iscacheModule: state => state.app.iscacheModule,
 }
 export default getters

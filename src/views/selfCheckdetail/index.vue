@@ -599,15 +599,7 @@ export default {
     },
     toHome() {
       this.$router.push({
-        path: "/layout/selfCheck"
-        // query: {
-        //   mysiteCode:this.sheetCode,
-        //   searchCondition: this.searchCondition,
-        //   menuListTop: this.menuListTop,
-        //   downIcon: this.downIcon,
-        //   areaarr: this.areaarr,
-        //   areakids: this.areakids
-        // }
+        path: "/layout/selfCheck",
       });
     },
     handOpen(val, index) {

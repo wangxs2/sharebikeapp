@@ -407,8 +407,8 @@ export default {
   },
   created() {
     this.roleCode = localStorage.roleCode;
-    if (this.$route.query.supervise) {
-      this.sheetCode = this.$route.query.supervise;
+    if (this.$route.query.codescroll) {
+      this.sheetCode = this.$route.query.codescroll;
       this.status = this.$route.query.statuSa;
       if (this.$route.query.downIcon || this.$route.query.downIcon == 0) {
         this.searchCondition = this.$route.query.searchCondition;
@@ -621,13 +621,6 @@ export default {
     toHome() {
       this.$router.push({
         path: "/layout/supervise",
-        // query: {
-        //   searchCondition: this.searchCondition,
-        //   menuListTop: this.menuListTop,
-        //   downIcon: this.downIcon,
-        //   areaarr: this.areaarr,
-        //   areakids: this.areakids
-        // }
       });
     },
     rotate() {
