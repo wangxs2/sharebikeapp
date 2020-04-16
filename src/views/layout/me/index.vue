@@ -80,8 +80,7 @@
     <div class="content"
          style="padding:0.1rem">
       <!-- <div class="colorsa"></div> v-if="willdoInfo.evaluation!=='close'"  -->
-      <div class="evaluation"
-           style="display:none">
+      <div class="evaluation" v-if="isevaluation">
         <div class="evaluationimg"
              @click="toEvaluation">
           <span v-if="willdoInfo.evaluation=='true'"
@@ -205,6 +204,7 @@ export default {
   data () {
     return {
       userCount: {},
+      isevaluation:true,
       ruleStatus: '',
       nowData: "",
       isJunan: false,//是否显示区
@@ -217,7 +217,9 @@ export default {
   created () {
     this.getUser();
     let myDate = new Date();
+    
     this.nowData = myDate.getMonth() == 0 ? 12 : myDate.getMonth(); //获取当前月份(0-11,0代表1月)
+    console.log(this.nowData)
     this.getData();
     this.getRules();
     this.getArea();

@@ -30,7 +30,7 @@ Vue.use(VueLazyLoad, {
 })
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
-let vConsole = new Vconsole()
+// let vConsole = new Vconsole()
 Vue.use(VuePreview, {
   mainClass: 'pswp--minimal--dark',
   barsSize: { top: 0, bottom: 0 },
@@ -45,10 +45,10 @@ Vue.use(common)
 Vue.use(mintUI)
 // Vue.prototype.Ip = process.env.API_HOST + '';
 // Vue.prototype.Ip = 'http://10.1.4.42:18088';
-Vue.prototype.Ip = 'http://10.1.30.202:18088'
+// Vue.prototype.Ip = 'http://10.1.30.202:18088'
 //图片地址
 // Vue.prototype.Ip = 'http://101.231.47.116:12333'
-// Vue.prototype.Ip = 'http://106.14.198.128:18088'
+Vue.prototype.Ip = 'http://106.14.198.128:18088'
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({

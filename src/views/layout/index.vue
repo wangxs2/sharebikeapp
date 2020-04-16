@@ -3,7 +3,7 @@
     <div class="appMain">
       <!-- <keep-alive include="test-keep-alive">
         <appMain></appMain>
-      </keep-alive> -->
+      </keep-alive>-->
       <appMain></appMain>
     </div>
     <div class="bottom">
@@ -16,8 +16,8 @@
         <span class="badge" v-if="index==2&&ruleStatus3"></span>
         <span
           class="badge1"
-          v-if="(index==0&&ruleStatus1)||(index==1&&ruleStatus2)"
-        >{{index==0?selfCheckNum:dispatchkNum}}</span>
+          v-if="(index==0&&willdoInfo.selfCheck > 0)||(index==1&&willdoInfo.dispatch)"
+        >{{index==0?willdoInfo.selfCheck:willdoInfo.dispatch}}</span>
         <img :src="iteam.imgUrl[selectIndex==index?0:1]" />
         <span v-bind:style="{color:selectIndex==index?'#5076FF':'#AAAAAA'}">{{iteam.name}}</span>
       </div>
@@ -27,11 +27,14 @@
 
 <script>
 import appMain from "./components/appMain";
+import { mapGetters } from "vuex";
 export default {
   components: {
     appMain
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["userInfo", "willdoInfo"])
+  },
   data() {
     return {
       longitude: "",
@@ -43,7 +46,6 @@ export default {
       ruleStatus1: false,
       ruleStatus2: false,
       ruleStatus3: false,
-      roleCode: "",
       imgUrl: [
         require("../../assets/image/login/icon_tab_1_nor@3x.png"),
         require("../../assets/image/login/icon_tab_2_nor@3x.png"),
@@ -99,6 +101,7 @@ export default {
   },
   mounted() {
     // this.getMap();
+    this.ruleStatus3 = this.willdoInfo.daily === "false" ? false : true;
   },
   activated() {
     // this.selected = this.$route.path;
@@ -112,29 +115,27 @@ export default {
     }
   },
   created() {
-    this.getRules();
+    // this.getRules();
     this.getRouterIndex(this.$route);
-    this.roleCode = localStorage.roleCode;
     window.watchBackWXS = this.watchBackWXS;
   },
+  
   methods: {
     getRules() {
       //获取是否有红点
-      this.$fetchGet("count/willdo").then(res => {
-        this.ruleStatus =
-          res.evaluation === "true"
-            ? (this.ruleStatus = true)
-            : (this.ruleStatus = false);
-        this.ruleStatus3 = res.daily === "false" ? false : true;
-        if (res.selfCheck > 0) {
-          this.ruleStatus1 = true;
-          this.selfCheckNum = res.selfCheck;
-        }
-        if (res.dispatch > 0) {
-          this.ruleStatus2 = true;
-          this.dispatchkNum = res.dispatch;
-        }
-      });
+      this.ruleStatus =
+        this.willdoInfo.evaluation === "true"
+          ? (this.ruleStatus = true)
+          : (this.ruleStatus = false);
+      this.ruleStatus3 = this.willdoInfo.daily === "false" ? false : true;
+      if (this.willdoInfo.selfCheck > 0) {
+        this.ruleStatus1 = true;
+        this.selfCheckNum = this.willdoInfo.selfCheck;
+      }
+      if (this.willdoInfo.dispatch > 0) {
+        this.ruleStatus2 = true;
+        this.dispatchkNum = this.willdoInfo.dispatch;
+      }
     },
     watchBackWXS() {
       return;
@@ -153,10 +154,11 @@ export default {
       }
     },
     toRouterIndex(val, index) {
-      console.log(this.roleCode);
+      console.log(this.userInfo.roleCode);
       console.log(index);
       if (
-        (this.roleCode == "clean" || this.roleCode == "manage") &&
+        (this.userInfo.roleCode == "clean" ||
+          this.userInfo.roleCode == "manage") &&
         index == 1
       ) {
         this.$router.push(val.pathUrlTodo);
