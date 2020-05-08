@@ -560,6 +560,7 @@ export default {
         zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
       });
       geolocation.getCurrentPosition((status, result) => {
+        alert(status)
         var markers = [
           {
             icon: require("../../assets/image/supervise/iconren.png"),

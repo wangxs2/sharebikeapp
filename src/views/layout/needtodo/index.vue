@@ -6,11 +6,11 @@
       <div class="tab-btns" @click="selectView">
         <div class="btn-left" viewType="1" :class="[viewTypesa == 1 ? 'tab-active' : '']">待办</div>
         <div class="btn-right" viewType="2" :class="[viewTypesa == 2 ? 'tab-active' : '']">已办</div>
-        
+
       </div>
       <div></div>
     </div>
-    <div class="content">
+    <div class="content" v-if="!isMap">
       <div class="version-popup-box">
         <div class="version-popup">
           <div v-for="(iteam,index) in menuListTop" :key="index" @click="sort(iteam,index)">
@@ -136,6 +136,9 @@
         </div>
       </scroller>
     </div>
+    <div class="contentwo" v-if="isMap">
+      <div id="maptodo"></div>
+    </div>
   </div>
 </template>
 
@@ -147,6 +150,8 @@ export default {
   data() {
     return {
       viewType: "",
+      isMap:false,//督办的地图显示
+      mapTodo:null,
       popupVisible: true,
       viewTypesa: 1, //待办
       requestFlage: true, //请求是我自己写的还是自带的刷新的
@@ -294,8 +299,64 @@ export default {
       });
     }
   },
-  mounted() {},
+  mounted() {
+    this.getMapData()
+    this.initMap()
+  },
   methods: {
+    //初始化地图‘’
+    initMap(){
+      this.mapTodo = new AMap.Map("maptodo", {
+        resizeEnable: true,
+        mapStyle: "amap://styles/9fb204085bdb47adb66e074fca3376be", // 自定义地图样式
+      });
+        //定位的问题
+      // var options = {
+      //   'showButton': true,//是否显示定位按钮
+      //   'buttonPosition': 'LB',//定位按钮的位置
+      //   /* LT LB RT RB */
+      //   'buttonOffset': new AMap.Pixel(10, 20),//定位按钮距离对应角落的距离
+      //   'showMarker': true,//是否显示定位点
+      //   'markerOptions':{//自定义定位点样式，同Marker的Options
+      //     'offset': new AMap.Pixel(-18, -36),
+      //     'content':'<img src="https://a.amap.com/jsapi_demos/static/resource/img/user.png" style="width:36px;height:36px"/>'
+      //   },
+      //   'showCircle': true,//是否显示定位精度圈
+      //   'circleOptions': {//定位精度圈的样式
+      //     'strokeColor': '#0093FF',
+      //     'noSelect': true,
+      //     'strokeOpacity': 0.5,
+      //     'strokeWeight': 1,
+      //     'fillColor': '#02B0FF',
+      //     'fillOpacity': 0.25
+      //   }
+      //   }
+      //   AMap.plugin(["AMap.Geolocation"], ()=> {
+      //       var geolocation = new AMap.Geolocation(options);
+      //       this.mapTodo.addControl(geolocation);
+      //       geolocation.getCurrentPosition()
+      //   });
+    },
+    //获取所有的点
+    getMapData(){
+       this.$fetchGet("dispatch/pageDispatchToDo", {
+         page:1,
+         pageSize:1000,
+       }).then(
+          res => {
+            console.log(res)
+            res.list.forEach(itram=>{
+              itram.lnglat=[itram,]
+            })
+          }
+        );
+    },
+
+    //加载海量点
+    getMass(){
+
+    },
+   
     detailClick(row) {
       this.mysiteCode = row.sheetCode;
       if (row.status == 2) {
@@ -596,6 +657,16 @@ export default {
         color: #5076ff;
         background: #ffffff;
       }
+    }
+  }
+  .contentwo{
+     flex: 1;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: #f2f2f2;
+    #maptodo{
+      width: 100%;
+      height: 100%;
     }
   }
   .content {

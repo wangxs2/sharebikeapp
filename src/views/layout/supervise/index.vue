@@ -98,7 +98,7 @@
     </div>
     <scroller
       style="top:2.4rem;bottom:55px;height:82%;overflow:hidden"
-      v-if="!noneList"
+      v-if="!noneList&&isMap"
       :on-infinite="infinite"
       :on-refresh="refresh"
       infiniteText="上拉加载"
@@ -179,6 +179,10 @@
         </div>
       </div>
     </scroller>
+
+    <div class="contentwo" v-if="!isMap">
+        <div id="mapSa"></div>
+    </div>
   </div>
 </template>
 <script>
@@ -194,6 +198,8 @@ export default {
   data() {
     return {
       mysiteCode: "",
+      mapSa:null,
+      isMap:false,
       qualifiedFlag: false, //工单
       selected: "/layout/supervise",
       viewType: "",
@@ -309,6 +315,8 @@ export default {
   },
   components: {},
   mounted() {
+    
+    this.initMap()
     if (this.$route.query.supervise) {
       this.$router.push({
         path: "/superviseDetail",
@@ -320,6 +328,7 @@ export default {
     }
   },
   created() {
+    this.getMapData()
     this.getorgsTree();
     this.getBikeCompany();
     this.getBikeMen();
@@ -358,6 +367,76 @@ export default {
     }
   },
   methods: {
+    initMap(){
+      this.mapSa = new AMap.Map("mapSa", {
+        resizeEnable: true,
+        mapStyle: "amap://styles/9fb204085bdb47adb66e074fca3376be", // 自定义地图样式
+      });
+    },
+     //获取所有的点
+    getMapData(){
+       this.$fetchGet("dispatch/pageDispatch", {
+         page:1,
+         pageSize:1000,
+         createBy:"",
+         areaId:"",
+         status:"",
+         orgId:"",
+         qualified:"",
+       }).then(
+          res => {
+            console.log(res)
+              res.list.forEach(itram=>{
+                itram.lnglat=[itram.gaodeLongitude,itram.gaodeLatitude]
+                itram.style=itram.status
+              })
+          }
+        );
+    },
+
+     //加载海量点
+    getMass(data){
+       var styles = [{
+            url: require("../../../assets/image/map0.png"),
+            anchor: new AMap.Pixel(25,25),
+                size: new AMap.Size(50,50)
+            },{
+                url: require("../../../assets/image/map1.png"),
+                anchor: new AMap.Pixel(25,25),
+                size: new AMap.Size(50,50)
+            },{
+                url: require("../../../assets/image/map2.png"),
+                anchor: new AMap.Pixel(25,25),
+                size: new AMap.Size(50,50)
+            },{
+                url: require("../../../assets/image/map3.png"),
+                anchor: new AMap.Pixel(25,25),
+                size: new AMap.Size(50,50)
+            },{
+                url: require("../../../assets/image/map4.png"),
+                anchor: new AMap.Pixel(25,25),
+                size: new AMap.Size(50,50)
+            },{
+                url: require("../../../assets/image/map7.png"),
+                anchor: new AMap.Pixel(25,25),
+                size: new AMap.Size(50,50)
+            },{
+                url: require("../../../assets/image/map8.png"),
+                anchor: new AMap.Pixel(25,25),
+                size: new AMap.Size(50,50)
+            }
+        ];
+
+        var mass = new AMap.MassMarks(data, {
+            opacity: 0.8,
+            zIndex: 111,
+            cursor: 'pointer',
+            style: styles
+        });
+
+
+    },
+
     detailClick(row) {
       this.mysiteCode = row.sheetCode;
       if (this.mysiteCode) {
@@ -596,6 +675,16 @@ export default {
   background: #f2f2f2;
   flex-direction: column;
   overflow: hidden;
+  .contentwo{
+    flex: 1;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: #f2f2f2;
+     #mapSa{
+      width: 100%;
+      height: 100%;
+    }
+  }
   .version-popup-box {
     height: 1.2rem;
     width: 100%;
