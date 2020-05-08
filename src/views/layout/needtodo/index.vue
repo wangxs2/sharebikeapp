@@ -6,6 +6,7 @@
       <div class="tab-btns" @click="selectView">
         <div class="btn-left" viewType="1" :class="[viewTypesa == 1 ? 'tab-active' : '']">待办</div>
         <div class="btn-right" viewType="2" :class="[viewTypesa == 2 ? 'tab-active' : '']">已办</div>
+        
       </div>
       <div></div>
     </div>
