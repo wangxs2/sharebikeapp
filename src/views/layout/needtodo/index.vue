@@ -150,7 +150,7 @@ export default {
   data() {
     return {
       viewType: "",
-      isMap:false,//督办的地图显示
+      isMap:true,//督办的地图显示
       mapTodo:null,
       popupVisible: true,
       viewTypesa: 1, //待办
@@ -310,32 +310,7 @@ export default {
         resizeEnable: true,
         mapStyle: "amap://styles/9fb204085bdb47adb66e074fca3376be", // 自定义地图样式
       });
-        //定位的问题
-      // var options = {
-      //   'showButton': true,//是否显示定位按钮
-      //   'buttonPosition': 'LB',//定位按钮的位置
-      //   /* LT LB RT RB */
-      //   'buttonOffset': new AMap.Pixel(10, 20),//定位按钮距离对应角落的距离
-      //   'showMarker': true,//是否显示定位点
-      //   'markerOptions':{//自定义定位点样式，同Marker的Options
-      //     'offset': new AMap.Pixel(-18, -36),
-      //     'content':'<img src="https://a.amap.com/jsapi_demos/static/resource/img/user.png" style="width:36px;height:36px"/>'
-      //   },
-      //   'showCircle': true,//是否显示定位精度圈
-      //   'circleOptions': {//定位精度圈的样式
-      //     'strokeColor': '#0093FF',
-      //     'noSelect': true,
-      //     'strokeOpacity': 0.5,
-      //     'strokeWeight': 1,
-      //     'fillColor': '#02B0FF',
-      //     'fillOpacity': 0.25
-      //   }
-      //   }
-      //   AMap.plugin(["AMap.Geolocation"], ()=> {
-      //       var geolocation = new AMap.Geolocation(options);
-      //       this.mapTodo.addControl(geolocation);
-      //       geolocation.getCurrentPosition()
-      //   });
+   
     },
     //获取所有的点
     getMapData(){
@@ -344,19 +319,14 @@ export default {
          pageSize:1000,
        }).then(
           res => {
-            console.log(res)
             res.list.forEach(itram=>{
-              itram.lnglat=[itram,]
+              itram.lnglat=[itram.gaodeLongitude, itram.gaodeLatitude];
+              itram.style = itram.status;
             })
+            this.getMass(res.list);
           }
         );
     },
-
-    //加载海量点
-    getMass(){
-
-    },
-   
     detailClick(row) {
       this.mysiteCode = row.sheetCode;
       if (row.status == 2) {
@@ -495,6 +465,63 @@ export default {
       } else if (this.downIcon == 2) {
         this.menuListCenter = this.qualifiedStatus;
       }
+    },
+
+
+    //加载海量点
+    getMass(data) {
+      var styles = [
+        {
+          url: require("../../../assets/image/map0.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map1.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map2.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map3.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map4.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map7.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map8.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        }
+      ];
+
+      var mass = new AMap.MassMarks(data, {
+        opacity: 0.8,
+        zIndex: 111,
+        cursor: "pointer",
+        style: styles
+      });
+
+      mass.on("click", e => {
+        // console.log(e.data.sheetCode);
+        // this.ismapclick=true
+        // this.mapList = e.data;
+      });
+
+      this.mapTodo.add(mass);
     },
 
     getorgsTree() {

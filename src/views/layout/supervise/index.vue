@@ -1,6 +1,7 @@
 
 <template>
   <div class="containerSa1">
+    <img v-if="isMap" @click="isMap=false" class="tolist1" src="../../../assets/image/tomap.png" width="100" height="100">
     <div class="header">
       <span
         v-if="addressFlag"
@@ -105,7 +106,9 @@
       noDataText="--我也是有底线的--"
       ref="my_scroller"
     >
+    
       <div class="iteamsa">
+        
         <div
           class="iteamListSa"
           v-for="(iteam, index) in pageList"
@@ -161,14 +164,10 @@
                 >未读</p>
                 <p v-if="item.qualified==2" style="flex:1;color:#41cd76;font-size:0.3rem">合格</p>
                 <p v-if="item.qualified==0" style="flex:1;color:#ff3030;font-size:0.3rem">不合格</p>
-                <!-- <p v-if="item.overtimeflag==0||item.overtimeflag==3"
-                style="flex:1;color:#41cd76;font-size:0.3rem">未超时</p>-->
                 <p
                   v-if="item.overtimeflag==1||item.overtimeflag==2"
                   style="flex:1;color:#ff3030;font-size:0.3rem"
                 >超时</p>
-                <!-- <p v-if="item.overtimeflag==2"
-                style="flex:1;color:#ff3030;font-size:0.3rem">超时已处理</p>-->
               </div>
             </div>
             <div class="bottomRight">
@@ -180,8 +179,72 @@
       </div>
     </scroller>
 
-    <div class="contentwo" v-if="!isMap">
-        <div id="mapSa"></div>
+    <div class="contentwo" v-show="!isMap">
+      <div id="mapSa">
+        <img @click="isMap=true" class="tolist" src="../../../assets/image/tolist.png" width="100" height="100">
+        <div class="iteamListSa mapinit" v-if="ismapclick">
+          <img class="closa" @click="ismapclick=false" src="../../../assets/image/close@2x.png" width="20" height="20">
+          <div class="leftSa" style="width:2.6rem;height:2.6rem">
+            <img
+              style="width:2.6rem;height:2.6rem"
+              v-if="mapList.dispachPhotoURLs.length!==0"
+              :src="Ip + mapList.dispachPhotoURLs[0]"
+              alt
+              srcset
+            />
+            <img
+              style="width:2.6rem;height:2.6rem"
+              v-if="mapList.dispachPhotoURLs.length==0"
+              src="../../../assets/image/selfcheck/image_no data@3x.png"
+              alt
+              srcset
+            />
+          </div>
+          <div class="rightSa">
+            <div class="topRight">
+              <span>{{FormatDate(mapList.dispatchTime)}}</span>
+              <span
+                style="font-size:0.3rem;line-height:1.5;"
+                :class="mapList.status == 2 ? 'red':mapList.status == 0 ? 'blue':mapList.status == 4 ? 'pink' : 'green'"
+              >{{mapList.status == 0 ? '未处理' : mapList.status == 1 ?"处理中":mapList.status == 2 ?"已处理":mapList.status == 3 ?"重新派单":"已完成"}}</span>
+            </div>
+            <div class="centersa">
+              <div
+                class="centersalist"
+                v-for="(item, index) in mapList.finishDetailList"
+                :key="index"
+              >
+                <p
+                  style="line-height:1.15;text-align:center"
+                  :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'"
+                >{{item.orgName}}</p>
+                <p
+                  v-if="item.dealTime!==undefined"
+                  style="flex:1;padding-top:0.2rem;font-size:0.3rem;"
+                >{{item.dealTime}}</p>
+                <p
+                  v-if="item.read==1&&item.dealTime==undefined"
+                  style="flex:1;padding-top:0.2rem;color:#aaaaaa;font-size:0.3rem"
+                >企业已读</p>
+                <p
+                  v-if="item.read==0&&item.dealTime==undefined"
+                  style="flex:1;padding-top:0.2rem;color:#ff0000;font-size:0.3rem"
+                >未读</p>
+                <p v-if="item.qualified==2" style="flex:1;color:#41cd76;font-size:0.3rem">合格</p>
+                <p v-if="item.qualified==0" style="flex:1;color:#ff3030;font-size:0.3rem">不合格</p>
+                <p
+                  v-if="item.overtimeflag==1||item.overtimeflag==2"
+                  style="flex:1;color:#ff3030;font-size:0.3rem"
+                >超时</p>
+              </div>
+            </div>
+            <div class="bottomRight">
+              <span class="iconfont icon-location"></span>
+              <span class="moreFont">{{mapList.handleAddr}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -198,8 +261,8 @@ export default {
   data() {
     return {
       mysiteCode: "",
-      mapSa:null,
-      isMap:false,
+      mapSa: null,
+      isMap: false,
       qualifiedFlag: false, //工单
       selected: "/layout/supervise",
       viewType: "",
@@ -305,18 +368,19 @@ export default {
       areaflag: true, //是否包含flag
 
       UserArea: [],
+      mapList: {},
       pageList: [],
       company: [], //查询单车企业
       areaarr: [],
       areaarr1: [],
       areakids: [],
-      menData: []
+      menData: [],
+      ismapclick:false,
     };
   },
   components: {},
   mounted() {
-    
-    this.initMap()
+    this.initMap();
     if (this.$route.query.supervise) {
       this.$router.push({
         path: "/superviseDetail",
@@ -328,7 +392,7 @@ export default {
     }
   },
   created() {
-    this.getMapData()
+    this.getMapData();
     this.getorgsTree();
     this.getBikeCompany();
     this.getBikeMen();
@@ -367,74 +431,86 @@ export default {
     }
   },
   methods: {
-    initMap(){
+    initMap() {
       this.mapSa = new AMap.Map("mapSa", {
         resizeEnable: true,
-        mapStyle: "amap://styles/9fb204085bdb47adb66e074fca3376be", // 自定义地图样式
+        mapStyle: "amap://styles/9fb204085bdb47adb66e074fca3376be" // 自定义地图样式
       });
     },
-     //获取所有的点
-    getMapData(){
-       this.$fetchGet("dispatch/pageDispatch", {
-         page:1,
-         pageSize:1000,
-         createBy:"",
-         areaId:"",
-         status:"",
-         orgId:"",
-         qualified:"",
-       }).then(
-          res => {
-            console.log(res)
-              res.list.forEach(itram=>{
-                itram.lnglat=[itram.gaodeLongitude,itram.gaodeLatitude]
-                itram.style=itram.status
-              })
-          }
-        );
+    //获取所有的点
+    getMapData() {
+      this.$fetchGet("dispatch/pageDispatch", {
+        page: 1,
+        pageSize: 1000,
+        createBy: "",
+        areaId: "",
+        status: "",
+        orgId: "",
+        qualified: ""
+      }).then(res => {
+        res.list.forEach(itram => {
+          itram.lnglat = [itram.gaodeLongitude, itram.gaodeLatitude];
+          itram.style = itram.status;
+        });
+        console.log(res.list);
+        this.getMass(res.list);
+      });
     },
 
-     //加载海量点
-    getMass(data){
-       var styles = [{
-            url: require("../../../assets/image/map0.png"),
-            anchor: new AMap.Pixel(25,25),
-                size: new AMap.Size(50,50)
-            },{
-                url: require("../../../assets/image/map1.png"),
-                anchor: new AMap.Pixel(25,25),
-                size: new AMap.Size(50,50)
-            },{
-                url: require("../../../assets/image/map2.png"),
-                anchor: new AMap.Pixel(25,25),
-                size: new AMap.Size(50,50)
-            },{
-                url: require("../../../assets/image/map3.png"),
-                anchor: new AMap.Pixel(25,25),
-                size: new AMap.Size(50,50)
-            },{
-                url: require("../../../assets/image/map4.png"),
-                anchor: new AMap.Pixel(25,25),
-                size: new AMap.Size(50,50)
-            },{
-                url: require("../../../assets/image/map7.png"),
-                anchor: new AMap.Pixel(25,25),
-                size: new AMap.Size(50,50)
-            },{
-                url: require("../../../assets/image/map8.png"),
-                anchor: new AMap.Pixel(25,25),
-                size: new AMap.Size(50,50)
-            }
-        ];
+    //加载海量点
+    getMass(data) {
+      var styles = [
+        {
+          url: require("../../../assets/image/map0.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map1.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map2.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map3.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map4.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map7.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        },
+        {
+          url: require("../../../assets/image/map8.png"),
+          anchor: new AMap.Pixel(25, 25),
+          size: new AMap.Size(50, 50)
+        }
+      ];
 
-        var mass = new AMap.MassMarks(data, {
-            opacity: 0.8,
-            zIndex: 111,
-            cursor: 'pointer',
-            style: styles
-        });
+      var mass = new AMap.MassMarks(data, {
+        opacity: 0.8,
+        zIndex: 111,
+        cursor: "pointer",
+        style: styles
+      });
 
+      mass.on("click", e => {
+        // console.log(e.data.sheetCode);
+        this.ismapclick=true
+        this.mapList = e.data;
+      });
 
+      this.mapSa.add(mass);
     },
 
     detailClick(row) {
@@ -668,6 +744,157 @@ export default {
   height: 84% !important;
   background-color: transparent;
 }
+.mapinit {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+  width:100%;
+  .closa{
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+  }
+}
+.iteamListSa {
+  max-width: 100%;
+  display: flex;
+  margin-bottom: 0.2rem;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0.3rem;
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+  .rightSa {
+    width: 0;
+    display: flex;
+    flex: 1;
+    box-sizing: border-box;
+    padding: 0rem;
+    padding-left: 0.2rem;
+    flex-direction: column;
+    .topRight {
+      display: flex;
+      // flex: 1;
+      justify-content: space-between;
+      align-items: center;
+      .green {
+        color: #ffc000;
+        border: 1px solid #ffc000;
+        box-sizing: border-box;
+        padding: 0.06rem;
+        border-radius: 5px;
+      }
+      .red {
+        color: #41cd76;
+        border: 1px solid #41cd76;
+        box-sizing: border-box;
+        padding: 0.06rem;
+        border-radius: 5px;
+      }
+      .blue {
+        color: red;
+        border: 1px solid red;
+        box-sizing: border-box;
+        padding: 0.06rem;
+        border-radius: 5px;
+      }
+      .pink {
+        color: #5076ff;
+        border: 1px solid #5076ff;
+        box-sizing: border-box;
+        padding: 0.06rem;
+        border-radius: 5px;
+      }
+    }
+    .centersa {
+      width: 100%;
+      display: flex;
+      flex: 1;
+      box-sizing: border-box;
+      justify-content: flex-start;
+      padding-top: 0.1rem;
+      .centersalist {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-right: 0.1rem;
+        p {
+          margin: 0;
+          padding: 0;
+          text-align: center;
+        }
+        .mobike {
+          background: #f25b4a;
+          padding: 0.06rem 0.2rem;
+          box-sizing: border-box;
+          border-radius: 12px;
+          color: #ffffff;
+          font-size: 0.3rem;
+        }
+        .ofo {
+          background: #fbc303;
+          padding: 0.06rem 0.2rem;
+          box-sizing: border-box;
+          border-radius: 12px;
+          color: #333333;
+          font-size: 0.3rem;
+        }
+        .haluo {
+          background: #01a1ff;
+          padding: 0.06rem 0.2rem;
+          box-sizing: border-box;
+          border-radius: 12px;
+          color: #ffffff;
+          font-size: 0.3rem;
+        }
+        .jiujiu {
+          background: #fd3121;
+          padding: 0.06rem 0.2rem;
+          box-sizing: border-box;
+          border-radius: 12px;
+          color: #ffffff;
+          font-size: 0.3rem;
+        }
+        .xiangqi {
+          background: #00cb4b;
+          padding: 0.06rem 0.2rem;
+          box-sizing: border-box;
+          border-radius: 12px;
+          color: #ffffff;
+          font-size: 0.3rem;
+        }
+        .other {
+          background: transparent;
+          color: #333333;
+          // padding: 0.04rem 0.15rem;
+          box-sizing: border-box;
+          border-radius: 12px;
+          font-size: 0.3rem;
+          width: 2.4rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          text-align: center;
+        }
+      }
+    }
+    .bottomRight {
+      display: flex;
+      width: 100%;
+      color: #666666;
+      justify-content: flex-start;
+      align-items: flex-end;
+      .moreFont {
+        width: 68%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
 .containerSa1 {
   width: 100%;
   height: 100%;
@@ -675,14 +902,30 @@ export default {
   background: #f2f2f2;
   flex-direction: column;
   overflow: hidden;
-  .contentwo{
+  position: relative;
+  .tolist1{
+      position: absolute;
+      right: 10px;
+      bottom: 20px;
+      z-index: 9999;
+      cursor: pointer;
+    }
+  .contentwo {
     flex: 1;
     overflow: hidden;
     box-sizing: border-box;
     background: #f2f2f2;
-     #mapSa{
+    #mapSa {
       width: 100%;
       height: 100%;
+      position: relative;
+      .tolist{
+        position: absolute;
+        right: 10px;
+        bottom: 20px;
+        z-index: 80;
+        cursor: pointer;
+      }
     }
   }
   .version-popup-box {
@@ -694,7 +937,7 @@ export default {
     position: fixed;
     top: 1.173333rem;
     left: 0;
-    z-index: 8888;
+    z-index:80;
     .version-popup {
       display: flex;
       width: 100%;
@@ -730,7 +973,7 @@ export default {
     position: fixed;
     top: 2.369rem;
     left: 0;
-    z-index: 8888;
+    z-index:80;
     .version-popup {
       display: flex;
       width: 100%;
@@ -865,144 +1108,6 @@ export default {
     max-width: 100%;
     box-sizing: border-box;
     background: #f2f2f2;
-    .iteamListSa {
-      max-width: 100%;
-      display: flex;
-      margin-bottom: 0.2rem;
-      justify-content: space-between;
-      box-sizing: border-box;
-      padding: 0.3rem;
-      background: #ffffff;
-      border-bottom: 1px solid #eeeeee;
-      .rightSa {
-        width: 0;
-        display: flex;
-        flex: 1;
-        box-sizing: border-box;
-        padding: 0rem;
-        padding-left: 0.2rem;
-        flex-direction: column;
-        .topRight {
-          display: flex;
-          // flex: 1;
-          justify-content: space-between;
-          align-items: center;
-          .green {
-            color: #ffc000;
-            border: 1px solid #ffc000;
-            box-sizing: border-box;
-            padding: 0.06rem;
-            border-radius: 5px;
-          }
-          .red {
-            color: #41cd76;
-            border: 1px solid #41cd76;
-            box-sizing: border-box;
-            padding: 0.06rem;
-            border-radius: 5px;
-          }
-          .blue {
-            color: red;
-            border: 1px solid red;
-            box-sizing: border-box;
-            padding: 0.06rem;
-            border-radius: 5px;
-          }
-          .pink {
-            color: #5076ff;
-            border: 1px solid #5076ff;
-            box-sizing: border-box;
-            padding: 0.06rem;
-            border-radius: 5px;
-          }
-        }
-        .centersa {
-          width: 100%;
-          display: flex;
-          flex: 1;
-          box-sizing: border-box;
-          justify-content: flex-start;
-          padding-top: 0.1rem;
-          .centersalist {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            margin-right: 0.1rem;
-            p {
-              margin: 0;
-              padding: 0;
-              text-align: center;
-            }
-            .mobike {
-              background: #f25b4a;
-              padding: 0.06rem 0.2rem;
-              box-sizing: border-box;
-              border-radius: 12px;
-              color: #ffffff;
-              font-size: 0.3rem;
-            }
-            .ofo {
-              background: #fbc303;
-              padding: 0.06rem 0.2rem;
-              box-sizing: border-box;
-              border-radius: 12px;
-              color: #333333;
-              font-size: 0.3rem;
-            }
-            .haluo {
-              background: #01a1ff;
-              padding: 0.06rem 0.2rem;
-              box-sizing: border-box;
-              border-radius: 12px;
-              color: #ffffff;
-              font-size: 0.3rem;
-            }
-            .jiujiu {
-              background: #fd3121;
-              padding: 0.06rem 0.2rem;
-              box-sizing: border-box;
-              border-radius: 12px;
-              color: #ffffff;
-              font-size: 0.3rem;
-            }
-            .xiangqi {
-              background: #00cb4b;
-              padding: 0.06rem 0.2rem;
-              box-sizing: border-box;
-              border-radius: 12px;
-              color: #ffffff;
-              font-size: 0.3rem;
-            }
-            .other {
-              background: transparent;
-              color: #333333;
-              // padding: 0.04rem 0.15rem;
-              box-sizing: border-box;
-              border-radius: 12px;
-              font-size: 0.3rem;
-              width: 2.4rem;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              text-align: center;
-            }
-          }
-        }
-        .bottomRight {
-          display: flex;
-          width: 100%;
-          color: #666666;
-          justify-content: flex-start;
-          align-items: flex-end;
-          .moreFont {
-            width: 68%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-        }
-      }
-    }
   }
 }
 </style>
