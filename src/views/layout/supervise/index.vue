@@ -182,8 +182,8 @@
     <div class="contentwo" v-show="!isMap">
       <div id="mapSa">
         <img @click="isMap=true" class="tolist" src="../../../assets/image/tolist.png" width="100" height="100">
-        <div class="iteamListSa mapinit" v-if="ismapclick">
-          <img class="closa" @click="ismapclick=false" src="../../../assets/image/close@2x.png" width="20" height="20">
+        <div class="iteamListSa mapinit" @click="detailClick(mapList)" v-if="ismapclick">
+          <img class="closa" @click.stop="ismapclick=false" src="../../../assets/image/close@2x.png" width="30" height="30">
           <div class="leftSa" style="width:2.6rem;height:2.6rem">
             <img
               style="width:2.6rem;height:2.6rem"
@@ -755,6 +755,7 @@ export default {
     right: 0;
     top: 0;
     cursor: pointer;
+    z-index: 9999;
   }
 }
 .iteamListSa {
