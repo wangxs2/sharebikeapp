@@ -1,7 +1,7 @@
 
 <template>
   <div class="containerSa1">
-    <img v-if="isMap" @click="isMap=false" class="tolist1" src="../../../assets/image/tomap.png" width="100" height="100">
+    <img v-if="isMap" @click="isMap=false" class="tolist1" src="../../../assets/image/tomap.png" width="60" height="60">
     <div class="header">
       <span
         v-if="addressFlag"
@@ -181,7 +181,7 @@
 
     <div class="contentwo" v-show="!isMap">
       <div id="mapSa">
-        <img @click="isMap=true" class="tolist" src="../../../assets/image/tolist.png" width="100" height="100">
+        <img @click="isMap=true" class="tolist" src="../../../assets/image/tolist.png" width="60" height="60">
         <div class="iteamListSa mapinit" @click="detailClick(mapList)" v-if="ismapclick">
           <img class="closa" @click.stop="ismapclick=false" src="../../../assets/image/close@2x.png" width="30" height="30">
           <div class="leftSa" style="width:2.6rem;height:2.6rem">
@@ -376,6 +376,7 @@ export default {
       areakids: [],
       menData: [],
       ismapclick:false,
+      mass:null,
     };
   },
   components: {},
@@ -439,15 +440,9 @@ export default {
     },
     //获取所有的点
     getMapData() {
-      this.$fetchGet("dispatch/pageDispatch", {
-        page: 1,
-        pageSize: 1000,
-        createBy: "",
-        areaId: "",
-        status: "",
-        orgId: "",
-        qualified: ""
-      }).then(res => {
+      this.searchCondition.page = 0;
+      this.searchCondition.pageSize = 1000;
+      this.$fetchGet("dispatch/pageDispatch",this.searchCondition).then(res => {
         res.list.forEach(itram => {
           itram.lnglat = [itram.gaodeLongitude, itram.gaodeLatitude];
           itram.style = itram.status;
@@ -459,58 +454,61 @@ export default {
 
     //加载海量点
     getMass(data) {
+      if(this.mass){
+        this.mass.clear()
+      }
       var styles = [
         {
           url: require("../../../assets/image/map0.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+          anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map1.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+         anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map2.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+         anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map3.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+         anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map4.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+         anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map7.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+         anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map8.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+         anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         }
       ];
 
-      var mass = new AMap.MassMarks(data, {
+      this.mass = new AMap.MassMarks(data, {
         opacity: 0.8,
         zIndex: 111,
         cursor: "pointer",
         style: styles
       });
 
-      mass.on("click", e => {
+      this.mass.on("click", e => {
         // console.log(e.data.sheetCode);
         this.ismapclick=true
         this.mapList = e.data;
       });
 
-      this.mapSa.add(mass);
+      this.mapSa.add(this.mass);
     },
 
     detailClick(row) {
@@ -622,6 +620,7 @@ export default {
     submit() {
       this.downIcon1 = false;
       this.getListData2();
+      this.getMapData()
     },
     //切换图片；
     sort(iteam, index) {

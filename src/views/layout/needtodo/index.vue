@@ -1,7 +1,7 @@
 
 <template>
   <div class="containerSa2">
-    <img v-if="!isMap" @click="isMap=true" class="tolist1" src="../../../assets/image/tomap.png" width="100" height="100">
+    <img v-if="!isMap" @click="isMap=true" class="tolist1" src="../../../assets/image/tomap.png" width="60" height="60">
     <div class="header">
       <div></div>
       <div class="tab-btns" @click="selectView">
@@ -138,7 +138,7 @@
     </div>
     <div class="contentwo" v-show="isMap">
       <div id="maptodo">
-        <img @click="isMap=false" class="tolist" src="../../../assets/image/tolist.png" width="100" height="100">
+        <img @click="isMap=false" class="tolist" src="../../../assets/image/tolist.png" width="60" height="60">
         <div class="iteamListSa mapinit" @click="detailClick(mapList)" v-if="ismapclick">
           <img class="closa" @click.stop="ismapclick=false" src="../../../assets/image/close@2x.png" width="30" height="30">
           <div
@@ -299,6 +299,7 @@ export default {
   created() {
     this.getBikeMen();
     this.getorgsTree();
+   
   },
   beforeRouteLeave(to, from, next) {
     // 设置下一个路由的 meta
@@ -321,8 +322,11 @@ export default {
     } else {
       next(vm => {
         vm.mysiteCode = sessionStorage.mysiteCodeneed;
+        vm.getMapData();
+        vm.ismapclick=false;
         if (vm && vm.$refs.my_scroller) {
           //通过vm实例访问this
+          
           setTimeout(function() {
             vm.$refs.my_scroller.scrollTo(
               0,
@@ -337,6 +341,7 @@ export default {
   mounted() {
     this.getMapData();
     this.initMap();
+    console.log(this.$route.query)
   },
   methods: {
     //初始化地图‘’
@@ -408,6 +413,7 @@ export default {
 
     //代办切换
     selectView(e) {
+      this.ismapclick=false
       let type = e.target.getAttribute("viewType");
       if (type) {
         this.viewTypesa = type;
@@ -518,38 +524,38 @@ export default {
       var styles = [
         {
           url: require("../../../assets/image/map0.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+          anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map1.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+          anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map2.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+          anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map3.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+          anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map4.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+          anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map7.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+          anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         },
         {
           url: require("../../../assets/image/map8.png"),
-          anchor: new AMap.Pixel(25, 25),
-          size: new AMap.Size(50, 50)
+          anchor: new AMap.Pixel(15, 15),
+          size: new AMap.Size(30, 30)
         }
       ];
 
