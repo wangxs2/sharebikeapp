@@ -204,7 +204,7 @@ export default {
   data () {
     return {
       userCount: {},
-      isevaluation:true,
+      isevaluation:false,
       ruleStatus: '',
       nowData: "",
       isJunan: false,//是否显示区

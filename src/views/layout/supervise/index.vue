@@ -78,12 +78,12 @@
               :key="'info1-'+index"
               @click="qualifiedclick(item,index)"
             >{{item.name}}</p>
-            <!-- <p>是否超时</p>
+            <p>派单类型</p>
             <p class="status-list"
-               :class="[viewType11 == item.id ? 'tab-active' : '']"
-               v-for="(item,index) in qualifiedStatus"
+               :class="[viewType12 == item.id ? 'tab-active' : '']"
+               v-for="(item,index) in qualifiedStatus1"
                :key="'info1-'+index"
-            @click="qualifiedclick(item,index)">{{item.name}}</p>-->
+            @click="qualifiedclick(item,index)">{{item.name}}</p>
           </div>
         </div>
         <div class="bottomsa">
@@ -262,7 +262,7 @@ export default {
     return {
       mysiteCode: "",
       mapSa: null,
-      isMap: false,
+      isMap: true,
       qualifiedFlag: false, //工单
       selected: "/layout/supervise",
       viewType: "",
@@ -270,6 +270,7 @@ export default {
       viewType3: -1,
       viewType10: -1,
       viewType11: -1,
+      viewType12: -1,
       popupVisible: true,
       requestFlage: true, //请求是我自己写的还是自带的刷新的
       areaflag: true, //是否包含flag
@@ -336,6 +337,16 @@ export default {
         },
         {
           name: "合格",
+          id: 2
+        }
+      ],
+       qualifiedStatus1: [
+        {
+          name: "人工",
+          id: 0
+        },
+        {
+          name: "智能",
           id: 2
         }
       ],
@@ -657,8 +668,9 @@ export default {
     },
     getorgsTree() {
       //获取组织树数据
-      this.$fetchGet("org/getUserArea").then(res => {
+      this.$fetchGet("org/getAreaByUser").then(res => {
         this.UserArea = res;
+        console.log(res)
         let originTree = this.parseChildren(1, res.slice(0));
         this.deleteChildren(originTree);
         this.areakids = originTree;

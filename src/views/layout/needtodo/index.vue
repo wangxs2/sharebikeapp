@@ -360,8 +360,8 @@ export default {
         status:this.stamap
       }).then(res => {
         res.list.forEach(itram => {
-          if (itram.gpsLatitude) {
-            itram.lnglat = [itram.gpsLongitude, itram.gpsLatitude];
+          if (itram.gaodeLongitude) {
+            itram.lnglat = [itram.gaodeLongitude, itram.gaodeLatitude];
             itram.style = itram.status;
             arr.push(itram);
           }
