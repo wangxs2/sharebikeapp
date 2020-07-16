@@ -36,12 +36,22 @@
       <div class="version-popup">
         <div class="variable">
           <div class="menself">
-            <p
-              v-if="menuListCenter.length==0&qualifiedFlag==false"
+            <!-- <p
+              v-if="qualifiedFlag==false"
               style="color:#999999;text-align:center"
-            >暂无数据</p>
+            >暂无数据</p> -->
             <div style="padding:0rem;background: #f2f2f2;">
+              <div class="areacheck" v-if="downIcon==0">
+                <p
+                  class="areachecklist"
+                  @click="areaTypeclick1(iteam,index)"
+                  :class="[viewType15 == iteam.regionType ? 'tab-active' : '']"
+                  v-for="(iteam, index) in UserArea"
+                  :key="index"
+                >{{iteam.regionName}}</p>
+              </div>
               <div class="areacheck" v-if="areaarr.length>0&&downIcon==0">
+
                 <p
                   class="areachecklist"
                   @click="areaTypeclick(iteam,index)"
@@ -78,12 +88,12 @@
               :key="'info1-'+index"
               @click="qualifiedclick(item,index)"
             >{{item.name}}</p>
-            <p>派单类型</p>
+            <!-- <p>派单类型</p>
             <p class="status-list"
                :class="[viewType12 == item.id ? 'tab-active' : '']"
                v-for="(item,index) in qualifiedStatus1"
                :key="'info1-'+index"
-            @click="qualifiedclick(item,index)">{{item.name}}</p>
+            @click="qualifiedclick(item,index)">{{item.name}}</p> -->
           </div>
         </div>
         <div class="bottomsa">
@@ -300,6 +310,7 @@ export default {
         }
       ],
       menuListCenter: [],
+      tyoearea: [],
       statusData: [
         {
           name: "未处理",
@@ -370,6 +381,7 @@ export default {
       searchCondition: {
         page: 0,
         pageSize: 15,
+        regionType:'',
         createBy: "",
         areaId: "",
         status: "",
@@ -379,6 +391,7 @@ export default {
       areaflag: true, //是否包含flag
 
       UserArea: [],
+      viewType15:'',
       mapList: {},
       pageList: [],
       company: [], //查询单车企业
@@ -557,6 +570,16 @@ export default {
       this.menuListCenter = this.areakids;
       this.areaarr = this.areaarr.slice(0, index + 1);
     },
+    areaTypeclick1(val, index){
+      this.viewType15 = val.regionType
+
+      let originTree = this.parseChildren(val.regionList[0].pid, val.regionList.slice(0));
+      this.deleteChildren(originTree);
+      this.areakids = originTree;
+      console.log(originTree)
+      this.menuListCenter = this.areakids;
+
+    },
     //点击查询列表
     menuListClick(row) {
       if (this.downIcon == 0) {
@@ -577,6 +600,7 @@ export default {
           this.menuListCenter = this.areakids;
         }
         this.searchCondition.areaId = this.areaname.id;
+        this.searchCondition.regionType = this.viewType15;
       } else if (this.downIcon == 1) {
         this.menuListTop[this.downIcon].label = row.shortName;
         this.menuListTop[this.downIcon].menuName = row.name;
@@ -598,6 +622,7 @@ export default {
         this.menuListTop[this.downIcon].label = "";
         this.menuListTop[this.downIcon].menuName = "";
         this.searchCondition.areaId = "";
+        this.searchCondition.regionType = "";
       } else if (this.downIcon == 1) {
         this.menuListTop[this.downIcon].label = "";
         this.menuListTop[this.downIcon].menuName = "";
@@ -670,8 +695,8 @@ export default {
       //获取组织树数据
       this.$fetchGet("org/getAreaByUser").then(res => {
         this.UserArea = res;
-        console.log(res)
-        let originTree = this.parseChildren(1, res.slice(0));
+        this.viewType15=res[0].regionType
+        let originTree = this.parseChildren(res[0].regionList[0].pid, res[0].regionList.slice(0));
         this.deleteChildren(originTree);
         this.areakids = originTree;
       });
@@ -735,6 +760,7 @@ export default {
         pageSize: 15,
         createBy: this.searchCondition.createBy,
         areaId: this.searchCondition.areaId,
+        regionType: this.viewType15,
         orgId: this.searchCondition.orgId,
         status: this.searchCondition.status,
         qualified: this.searchCondition.qualified

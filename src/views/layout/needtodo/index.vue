@@ -28,8 +28,17 @@
         <div class="version-popup">
           <div class="variable">
             <div class="menself">
-              <p v-if="menuListCenter.length==0" style="color:#999999;text-align:center">暂无数据</p>
+              <!-- <p v-if="menuListCenter.length==0" style="color:#999999;text-align:center">暂无数据</p> -->
               <div style="padding:0rem;background: #f2f2f2;">
+                <div class="areacheck" v-if="downIcon==0">
+                  <p
+                    class="areachecklist"
+                    @click="areaTypeclick1(iteam,index)"
+                    :class="[viewType15 == iteam.regionType ? 'tab-active' : '']"
+                    v-for="(iteam, index) in UserArea"
+                    :key="index"
+                  >{{iteam.regionName}}</p>
+                </div>
                 <div class="areacheck" v-if="areaarr.length>0&&downIcon==0">
                   <p
                     class="areachecklist"
@@ -206,6 +215,7 @@ export default {
       isMap: true, //督办的地图显示
       mapTodo: null,
       popupVisible: true,
+      viewType15:'',
       viewTypesa: 1, //待办
       requestFlage: true, //请求是我自己写的还是自带的刷新的
       areaflag: true, //是否包含flag
@@ -351,6 +361,16 @@ export default {
         mapStyle: "amap://styles/9fb204085bdb47adb66e074fca3376be" // 自定义地图样式
       });
     },
+    areaTypeclick1(val, index){
+      this.viewType15 = val.regionType
+
+      let originTree = this.parseChildren(val.regionList[0].pid, val.regionList.slice(0));
+      this.deleteChildren(originTree);
+      this.areakids = originTree;
+      console.log(originTree)
+      this.menuListCenter = this.areakids;
+
+    },
     //获取所有的点
     getMapData() {
       let arr = [];
@@ -469,6 +489,7 @@ export default {
           this.menuListCenter = this.areakids;
         }
         this.searchCondition.areaId = this.areaname.id;
+        this.searchCondition.regionType = this.viewType15;
       } else if (this.downIcon == 1) {
         this.menuListTop[this.downIcon].label = row.id;
         this.menuListTop[this.downIcon].menuName = row.realName;
@@ -486,6 +507,7 @@ export default {
         this.menuListTop[this.downIcon].label = "";
         this.menuListTop[this.downIcon].menuName = "";
         this.searchCondition.areaId = "";
+        this.searchCondition.regionType= "";
       } else if (this.downIcon == 1) {
         this.menuListTop[this.downIcon].label = "";
         this.menuListTop[this.downIcon].menuName = "";
@@ -577,9 +599,10 @@ export default {
 
     getorgsTree() {
       //获取组织树数据
-      this.$fetchGet("org/getUserArea").then(res => {
+      this.$fetchGet("org/getAreaByUser").then(res => {
         this.UserArea = res;
-        let originTree = this.parseChildren(1, res.slice(0));
+         this.viewType15=res[0].regionType
+        let originTree = this.parseChildren(res[0].regionList[0].pid, res[0].regionList.slice(0));
         this.deleteChildren(originTree);
         this.areakids = originTree;
       });
@@ -673,6 +696,7 @@ export default {
         status: this.searchCondition.status,
         handleBy: this.searchCondition.handleBy,
         areaId: this.searchCondition.areaId,
+        regionType: this.viewType15,
         qualified: this.searchCondition.qualified
       }).then(res => {
         this.pageList = res.list;
