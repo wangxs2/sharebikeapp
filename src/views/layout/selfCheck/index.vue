@@ -1009,11 +1009,11 @@ export default {
           padding-top: 0.2rem;
           align-items: center;
           .mobike {
-            background: #f25b4a;
+            background: #fbc303;
             padding: 0.06rem 0.2rem;
             box-sizing: border-box;
             border-radius: 12px;
-            color: #ffffff;
+            color: #333333;
             font-size: 0.3rem;
           }
           .ofo {

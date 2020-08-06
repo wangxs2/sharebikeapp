@@ -16,8 +16,8 @@
         <span class="badge" v-if="index==2&&ruleStatus3"></span>
         <span
           class="badge1"
-          v-if="(index==0&&willdoInfo.selfCheck > 0)||(index==1&&willdoInfo.dispatch)"
-        >{{index==0?willdoInfo.selfCheck:willdoInfo.dispatch}}</span>
+          v-if="(index==1&&willdoInfo.selfCheck > 0)||(index==1&&willdoInfo.dispatch)"
+        >{{index==1?willdoInfo.selfCheck:willdoInfo.dispatch}}</span>
         <img :src="iteam.imgUrl[selectIndex==index?0:1]" />
         <span v-bind:style="{color:selectIndex==index?'#5076FF':'#AAAAAA'}">{{iteam.name}}</span>
       </div>
@@ -56,14 +56,6 @@ export default {
       selectIndex: "",
       menuList: [
         {
-          name: "自查",
-          imgUrl: [
-            require("@/assets/image/login/icon_tab_1_pre@3x.png"),
-            require("@/assets/image/login/icon_tab_1_nor@3x.png")
-          ],
-          pathUrl: "/layout/selfCheck"
-        },
-        {
           name: "督办",
           imgUrl: [
             require("@/assets/image/login/icon_tab_2_pre@3x.png"),
@@ -71,6 +63,14 @@ export default {
           ],
           pathUrl: "/layout/supervise",
           pathUrlTodo: "/layout/needtodo"
+        },
+        {
+          name: "自查",
+          imgUrl: [
+            require("@/assets/image/login/icon_tab_1_pre@3x.png"),
+            require("@/assets/image/login/icon_tab_1_nor@3x.png")
+          ],
+          pathUrl: "/layout/selfCheck"
         },
         {
           name: "统计",
@@ -159,7 +159,7 @@ export default {
       if (
         (this.userInfo.roleCode == "clean" ||
           this.userInfo.roleCode == "manage") &&
-        index == 1
+        index == 0
       ) {
         this.$router.push(val.pathUrlTodo);
       } else {

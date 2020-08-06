@@ -897,7 +897,6 @@ export default {
         width: 0.266667rem;
       }
     }
-
     #myMap {
       width: 100%;
       flex: 1;

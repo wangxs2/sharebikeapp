@@ -92,8 +92,8 @@
             <p class="status-list"
                :class="[viewType12 == item.id ? 'tab-active' : '']"
                v-for="(item,index) in qualifiedStatus1"
-               :key="'info1-'+index"
-            @click="qualifiedclick(item,index)">{{item.name}}</p> -->
+               :key="'info2-'+index"
+            @click="qualifiedclick1(item,index)">{{item.name}}</p> -->
           </div>
         </div>
         <div class="bottomsa">
@@ -354,11 +354,11 @@ export default {
        qualifiedStatus1: [
         {
           name: "人工",
-          id: 0
+          id: 'manual'
         },
         {
           name: "智能",
-          id: 2
+          id: 'intell'
         }
       ],
       areaname: {
@@ -386,6 +386,7 @@ export default {
         areaId: "",
         status: "",
         orgId: "",
+        dispatchType:'',
         qualified: ""
       },
       areaflag: true, //是否包含flag
@@ -572,11 +573,12 @@ export default {
     },
     areaTypeclick1(val, index){
       this.viewType15 = val.regionType
-
+      console.log(this.viewType15)
+      this.searchCondition.regionType=val.regionType
+      this.getListData2();
       let originTree = this.parseChildren(val.regionList[0].pid, val.regionList.slice(0));
       this.deleteChildren(originTree);
       this.areakids = originTree;
-      console.log(originTree)
       this.menuListCenter = this.areakids;
 
     },
@@ -636,6 +638,7 @@ export default {
         this.menuListTop[this.downIcon].menuName = "";
         this.searchCondition.status = "";
         this.searchCondition.qualified = "";
+        this.searchCondition.dispatchType = "";
         this.viewType10 = -1;
         this.viewType11 = -1;
       }
@@ -651,6 +654,10 @@ export default {
     qualifiedclick(row, index) {
       this.viewType11 = row.id;
       this.searchCondition.qualified = row.id;
+    },
+    qualifiedclick1(row, index) {
+      this.viewType12 = row.id;
+      this.searchCondition.dispatchType = row.id;
     },
     //确定
     submit() {
@@ -763,7 +770,8 @@ export default {
         regionType: this.viewType15,
         orgId: this.searchCondition.orgId,
         status: this.searchCondition.status,
-        qualified: this.searchCondition.qualified
+        qualified: this.searchCondition.qualified,
+        dispatchType: this.searchCondition.dispatchType
       }).then(res => {
         this.pageList = res.list;
         done();
@@ -864,11 +872,11 @@ export default {
           text-align: center;
         }
         .mobike {
-          background: #f25b4a;
+          background: #fbc303;
           padding: 0.06rem 0.2rem;
           box-sizing: border-box;
           border-radius: 12px;
-          color: #ffffff;
+          color: #333333;
           font-size: 0.3rem;
         }
         .ofo {
