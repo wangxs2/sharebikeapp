@@ -122,8 +122,17 @@ export default {
           if (res.status == "success") {
             this.$store.commit("SET_CACHE", true);
             localStorage.setItem("roleCode", res.info.roleCode);
-            document.cookie = "userId=" + res.info.id;           
-            this.$router.push("/layout/selfCheck");
+            document.cookie = "userId=" + res.info.id; 
+            
+             if (
+                (res.info.roleCode == "clean" ||
+                  res.info.roleCode == "manage")
+              ) {
+                this.$router.push("/layout/needtodo")
+              } else {
+                this.$router.push("/layout/supervise")
+              }
+            
           } else if (res.status == "fail") {
             localStorage.clear("passWord")
             MessageBox.alert("", {

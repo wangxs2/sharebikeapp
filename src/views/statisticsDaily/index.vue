@@ -221,13 +221,13 @@
                       <div style="display:flex;justify-content: space-between;width:100%;border-bottom:1px solid #F2F2F2">
                         <div style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%">
                           <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
-                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.qualified==undefined?'-':item.qualified}}</span>
-                          <span style="text-align:center;color:#666666;font-size:0.34rem">合格数</span>
+                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.checkNum==undefined?'-':item.checkNum}}</span>
+                          <span style="text-align:center;color:#666666;font-size:0.34rem">抽查数</span>
                         </div>
                         <div style="display:flex;flex-direction: column;justify-content:center;border-right:1px solid #F2F2F2;padding:0.2rem;margin:0.1rem 0;width:100%">
                           <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"
-                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.qualified==undefined?'-':(item.done-item.qualified)}}</span>
-                          <span style="text-align:center;color:#666666;font-size:0.34rem">不合格数</span>
+                                style="text-align:center;margin-bottom:0.15rem;font-size:0.44rem">{{item.qualified==undefined?'-':item.qualified}}</span>
+                          <span style="text-align:center;color:#666666;font-size:0.34rem">合格数</span>
                         </div>
                         <div style="display:flex;flex-direction: column;justify-content:center;padding:0.2rem;margin:0.1rem 0;width:100%">
                           <span :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other1'"

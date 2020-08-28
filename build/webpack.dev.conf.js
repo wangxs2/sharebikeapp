@@ -9,6 +9,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+var express = require('express')
+var axios = require('axios')
+var app = express()
+var apiRoutes = express.Router()
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -26,6 +30,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
+    headers:{ 'Access-Control-Allow-Origin': '*' },
+    https:false,
+    disableHostCheck: true,
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
@@ -60,7 +67,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       filename: 'index.html',
       template: 'index.html',
       inject: true,
-      title:'儿童生长发育智能管理与指导系统',
+      title:'单车',
       favicon: resolve('favicon.ico')
     }),
     // copy custom static assets
