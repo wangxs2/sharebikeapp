@@ -33,14 +33,14 @@
                src="@/assets/image/settings/icon_next page@2x.png"
                alt>
         </div>
-        <div class="info-box"
+        <!-- <div class="info-box"
              style="margin-top:0"
              @click="toPassword">
           <div class="info-title">共享单车保有量日统计表</div>
           <img class="info-img"
                src="@/assets/image/settings/icon_next page@2x.png"
                alt>
-        </div>
+        </div> -->
         <!-- <div class="info-box"
              @click="toProblemFeedback
         ">

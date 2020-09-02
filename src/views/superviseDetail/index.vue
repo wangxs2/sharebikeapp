@@ -345,23 +345,15 @@ export default {
       roleCode: "",
       options: [
         {
-          label: "其他单车停放混乱",
-          value: "1"
-        },
-        {
-          label: "整理、清运数量差别太大",
-          value: "2"
-        },
-        {
-          label: "图片不合格",
+          label: "图片质量不合格",
           value: "3"
         },
         {
-          label: "处理地点有误",
+          label: "处理地点前后不一致",
           value: "4"
         },
         {
-          label: "处理方式有误",
+          label: "处理方式错误",
           value: "5"
         }
       ],
