@@ -19,7 +19,7 @@ module.exports = {
         // target: 'http://10.1.30.202:18181/sharebikesclean',
         target: 'http://121.37.136.100:18181/sharebikesclean/',
         // target: 'http://10.1.4.40:8888/babyrobot',
-        target: 'http://106.14.198.128:18181/sharebikesclean',
+        // target: 'http://106.14.198.128:18181/sharebikesclean',
         // target: 'http://101.132.164.97:8888/babyrobot/',
 
         changeOrigin: true,

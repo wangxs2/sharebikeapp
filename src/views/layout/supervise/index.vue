@@ -2,6 +2,7 @@
 <template>
   <div class="containerSa1">
     <img v-if="isMap" @click="isMap=false" class="tolist1" src="../../../assets/image/tomap.png" width="60" height="60">
+    <img @click="isNum=true" class="tolist2" src="../../../assets/image/pfdb.png" width="70" height="70">
     <div class="header">
       <span
         v-if="addressFlag"
@@ -31,6 +32,43 @@
         </div>
       </div>
     </div>
+    <!-- 昨日评估得分弹出框 -->
+    <div class="version-popup-box2" v-if="isNum">
+      <div class="version-popup">
+        <div class="closebtn" @click="isNum=false"></div>
+        <div class="toppf"></div>
+        <div class="num-box">
+          <div class="num-box-list">
+            <span style="color:#20A3FF;font-size:0.65rem">70</span>
+            <span style="color:#9A9A9A;font-size:0.35rem">哈啰得分</span>
+          </div>
+          <div class="num-box-list">
+            <span style="color:#F8AC0E;font-size:0.65rem">70</span>
+            <span style="color:#9A9A9A;font-size:0.35rem">摩拜得分</span>
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:0.2rem;">工单处置</div>
+        <div>
+          <table class="tableSa" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>企业</th>
+                    <th>昨日派 单数</th>
+                    <th>处理数</th>
+                    <th>平均处 理时长</th>
+                    <th>合格数</th>
+                    <th>不合格 数</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+          </table>
+        </div>
+        
+      </div>
+    </div>
+    <!-- 昨日评估得分弹出框 -->
     <!-- 查询条件的划分 -->
     <div class="version-popup-box1" v-if="downIcon1">
       <div class="version-popup">
@@ -273,6 +311,7 @@ export default {
       mysiteCode: "",
       mapSa: null,
       isMap: true,
+      isNum:true,
       qualifiedFlag: false, //工单
       selected: "/layout/supervise",
       viewType: "",
@@ -953,7 +992,14 @@ export default {
       position: absolute;
       right: 10px;
       bottom: 20px;
-      z-index: 9999;
+      z-index: 100;
+      cursor: pointer;
+    }
+    .tolist2{
+      position: absolute;
+      right: 10px;
+      bottom: 90px;
+      z-index: 100;
       cursor: pointer;
     }
   .contentwo {
@@ -1008,6 +1054,64 @@ export default {
           color: #5076ff;
         }
       }
+    }
+  }
+  .version-popup-box2{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5);
+    color: #282828;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index:130;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding:0 0.5rem;
+    .version-popup{
+      display: flex;
+      width: 100%;
+      // height: 60%;
+      background: #ffffff;
+      flex-direction: column;
+      box-sizing: border-box;
+      // padding:0.3rem;
+      border-radius: 0.2rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      .toppf{
+        width: 100%;
+        height: 3rem;
+        background: url("../../../assets/image/toppf.png");
+        background-size: 100% 100%;
+        border-radius: 0.2rem 0.2rem 0 0;
+      }
+      .closebtn{
+        position: absolute;
+        right:0.2rem;
+        top: 0.2rem;
+        width: 0.8rem;
+        height: 0.8rem;
+        background: url("../../../assets/image/icon_close@3x.png");
+        background-size: 100% 100%;
+      }
+      .num-box{
+        display: flex;
+        justify-content: space-around;
+        box-sizing: border-box;
+        padding:0.8rem;
+        .num-box-list{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
     }
   }
   .version-popup-box1 {
