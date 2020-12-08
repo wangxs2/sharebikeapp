@@ -115,6 +115,10 @@
               </div>
             </div>
             <div class="topcloumson">
+              <p class="leftfont">处置事项</p>
+              <p class="leftfont1">{{listdetail.type}}</p>
+            </div>
+            <div class="topcloumson">
               <p class="leftfont">派单人</p>
               <p class="leftfont1">{{listdetail.dispatchUserName}}</p>
             </div>

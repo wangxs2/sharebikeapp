@@ -48,8 +48,8 @@ Vue.use(mintUI)
 // Vue.prototype.Ip = 'http://10.1.30.202:18088'
 //图片地址
 // Vue.prototype.Ip = 'http://101.231.47.116:12333'
-// Vue.prototype.Ip = 'http://106.14.198.128:18088'
-Vue.prototype.Ip = 'http://121.37.136.100:18088'
+Vue.prototype.Ip = 'http://106.14.198.128:18088'
+// Vue.prototype.Ip = 'https://bike.sitiits.com/'
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({

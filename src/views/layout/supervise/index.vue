@@ -48,20 +48,27 @@
           </div>
         </div>
         <div style="text-align:center;margin-bottom:0.2rem;">工单处置</div>
-        <div>
+        <div style="box-sizing:border-box;padding:0.3rem">
           <table class="tableSa" cellspacing="0">
                 <thead>
                   <tr>
                     <th>企业</th>
-                    <th>昨日派 单数</th>
+                    <th>昨日派<br>单数</th>
                     <th>处理数</th>
-                    <th>平均处 理时长</th>
+                    <th>平均处<br>理时长</th>
                     <th>合格数</th>
-                    <th>不合格 数</th>
+                    <th>不合格<br>数</th>
                   </tr>
                 </thead>
                 <tbody>
-
+                    <tr>
+                      <td>摩拜</td>
+                      <td>12</td>
+                      <td>14</td>
+                      <td>18</td>
+                      <td>20</td>
+                      <td>46</td>
+                    </tr>
                 </tbody>
           </table>
         </div>
@@ -311,7 +318,7 @@ export default {
       mysiteCode: "",
       mapSa: null,
       isMap: true,
-      isNum:true,
+      isNum:false,
       qualifiedFlag: false, //工单
       selected: "/layout/supervise",
       viewType: "",
@@ -388,6 +395,10 @@ export default {
         {
           name: "合格",
           id: 2
+        },
+        {
+          name: "未评价",
+          id: 3
         }
       ],
        qualifiedStatus1: [
@@ -1078,7 +1089,7 @@ export default {
       background: #ffffff;
       flex-direction: column;
       box-sizing: border-box;
-      // padding:0.3rem;
+      padding-bottom:0.8rem;
       border-radius: 0.2rem;
       display: flex;
       flex-direction: column;
@@ -1098,6 +1109,30 @@ export default {
         height: 0.8rem;
         background: url("../../../assets/image/icon_close@3x.png");
         background-size: 100% 100%;
+      }
+      .tableSa{
+        width: 100%;
+        border: 1px solid #F4E2A5;
+        border-radius: 0.1rem;
+        border-right: none;
+        th{
+          font-size: 0.35rem;
+          color: #666666;
+          font-weight: normal;
+          background: #FFFDEA;
+          box-sizing: border-box;
+          padding:0.2rem 0.1rem;
+          text-align: center;
+           border-right: 1px solid #F4E2A5;
+        }
+        td{
+          font-size: 0.39rem;
+          box-sizing: border-box;
+          padding:0.3rem 0.1rem;
+          text-align: center;
+          border-top: 1px solid #F4E2A5;
+          border-right: 1px solid #F4E2A5;
+        }
       }
       .num-box{
         display: flex;

@@ -576,6 +576,8 @@ export default {
     flex: 1;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    overflow-y: scroll;
     .version-popup-box {
       height: 1.2rem;
       width: 100%;
