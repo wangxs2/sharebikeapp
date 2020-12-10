@@ -38,14 +38,18 @@
         <div class="closebtn" @click="isNum=false"></div>
         <div class="toppf"></div>
         <div class="num-box">
-          <div class="num-box-list">
+          <div class="num-box-list"  v-for="(iteam, index) in scoreData" :key="index">
+            <span :style="{'color':iteam.companyName=='哈啰'?'#20A3FF':'#F8AC0E','font-size':'0.65rem'}">{{iteam.avgScore}}</span>
+            <span style="color:#9A9A9A;font-size:0.35rem">{{iteam.companyName}}得分</span>
+          </div>
+          <!-- <div class="num-box-list">
             <span style="color:#20A3FF;font-size:0.65rem">70</span>
             <span style="color:#9A9A9A;font-size:0.35rem">哈啰得分</span>
           </div>
           <div class="num-box-list">
             <span style="color:#F8AC0E;font-size:0.65rem">70</span>
             <span style="color:#9A9A9A;font-size:0.35rem">摩拜得分</span>
-          </div>
+          </div> -->
         </div>
         <div style="text-align:center;margin-bottom:0.2rem;">工单处置</div>
         <div style="box-sizing:border-box;padding:0.3rem">
@@ -61,13 +65,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                      <td>摩拜</td>
-                      <td>12</td>
-                      <td>14</td>
-                      <td>18</td>
-                      <td>20</td>
-                      <td>46</td>
+                    <tr v-for="(iteam, index) in cleanResultData" :key="index">
+                      <td>{{iteam.orgName}}</td>
+                      <td>{{iteam.receiveCount}}</td>
+                      <td>{{iteam.done}}</td>
+                      <td>{{iteam.avgDealTimeHour}}</td>
+                      <td>{{iteam.done}}</td>
+                      <td>{{iteam.qualified}}</td>
                     </tr>
                 </tbody>
           </table>
@@ -448,9 +452,11 @@ export default {
       company: [], //查询单车企业
       areaarr: [],
       areaarr1: [],
+      scoreData:[],
       areakids: [],
       menData: [],
       ismapclick:false,
+      cleanResultData:[],
       mass:null,
     };
   },
@@ -757,6 +763,15 @@ export default {
         this.deleteChildren(originTree);
         this.areakids = originTree;
       });
+
+
+      this.$fetchGet("cleanDaily/getEvaluate").then(res => {
+        this.scoreData=res.evaluateScore
+        this.cleanResultData=res.cleanResult.detailByOrgList
+      });
+
+
+
     },
     parseChildren(pid, json) {
       //格式父级权限

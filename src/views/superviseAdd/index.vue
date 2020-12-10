@@ -724,12 +724,14 @@ export default {
           message: "请选择清运方式",
           title: "提示"
         }).then(action => { });
-      } else if (this.dispachPhotoUrls.length == 0) {
+      }
+       else if (this.dispachPhotoUrls.length == 0) {
         MessageBox.alert("", {
           message: "请上传现场照片",
           title: "提示"
         }).then(action => { });
-      } else if (this.value.length == 0) {
+      } 
+      else if (this.value.length == 0) {
         MessageBox.alert("", {
           message: "请选择派单企业",
           title: "提示"

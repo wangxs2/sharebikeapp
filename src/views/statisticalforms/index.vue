@@ -33,6 +33,14 @@
                src="@/assets/image/settings/icon_next page@2x.png"
                alt>
         </div>
+         <div class="info-box"
+             style="margin-top:0"
+             @click="toDaily('year')">
+          <div class="info-title">治理年报</div>
+          <img class="info-img"
+               src="@/assets/image/settings/icon_next page@2x.png"
+               alt>
+        </div>
         <div class="info-box"
              style="margin-top:0"
              @click="toPassword">

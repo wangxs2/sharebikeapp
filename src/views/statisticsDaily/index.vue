@@ -25,7 +25,7 @@
            alt
            @click="toUserInfo">
       <div style="color:#333333"
-           class="header-title">治理{{dailyType=='week'?'周报':dailyType=='month'?'月报':'日报'}}</div>
+           class="header-title">治理{{dailyType=='week'?'周报':dailyType=='month'?'月报':dailyType=='day'?'日报':'年报'}}</div>
       <img style="width:0.48rem;height:0.48rem"
            src="@/assets/image/statisticsDaily/icon_data@3x.png"
            @click="openPicker"
@@ -400,7 +400,7 @@
             </div>
           </div>
         </div>
-        <p style="text-align:center;font-size:0.32rem;color:#FFFFFF">治理{{dailyType=='week'?'周':dailyType=='month'?'月':'日'}}报到此结束，谢谢查阅</p>
+        <p style="text-align:center;font-size:0.32rem;color:#FFFFFF">治理{{dailyType=='week'?'周':dailyType=='month'?'月':dailyType=='day'?'日':'年'}}报到此结束，谢谢查阅</p>
         <div class="rules-bottom-img"></div>
       </div>
     </div>

@@ -30,7 +30,7 @@ Vue.use(VueLazyLoad, {
 })
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
-// let vConsole = new Vconsole()
+let vConsole = new Vconsole()
 Vue.use(VuePreview, {
   mainClass: 'pswp--minimal--dark',
   barsSize: { top: 0, bottom: 0 },
