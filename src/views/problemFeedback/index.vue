@@ -1,9 +1,15 @@
 <template>
   <div class="container">
+    <van-overlay :z-index="100" :show="showstart">
+      <div class="wrapperfast">
+        <van-loading type="spinner" size="48px" vertical color="#1989fa">上传中...</van-loading>
+      </div>
+    </van-overlay>
     <div class="header">
       <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt="" @click="toSettings">
       <div class="header-title">意见反馈</div>
-      <img src="" alt="">
+      <div></div>
+      <!-- <img src="" alt=""> -->
 
     </div>
     <div class="content">
@@ -16,7 +22,20 @@
             <img class="img-added" :src="Ip + item" alt="">
             <img class="del-img" src="@/assets/image/problemFeedback/delete@2x.png" alt="" @click="deleteImg(index)">
           </div>
-          <img class="img-add-btn" src="@/assets/image/problemFeedback/add@2x.png" alt="" @click="addImg" v-if="photo.length<4">
+          <div @click="downPictur">
+             <van-uploader
+              v-model="fileList"
+              multiple
+              :max-count='4'
+              :before-read="beforeRead"
+              :preview-image="false"
+              :accept="'image/png,image/jpeg'"
+              :after-read="afterRead"
+            >
+          <img class="img-add-btn" src="@/assets/image/problemFeedback/add@2x.png" alt="" v-if="photo.length<4" />
+          </van-uploader>
+          </div>
+         
           <div class="img-add-note" v-if="photo.length<4">至多上传四张图片</div>
         </div>
       </div>
@@ -43,10 +62,12 @@ export default {
   data() {
     return {
       problemContent: "",
+      fileList: [],
       phoneNumber: "",
       photo: [],
       showPhoto: [],
-      phoneNumberCheck: true
+      phoneNumberCheck: true,
+      showstart:false
     };
   },
   components: {},
@@ -63,15 +84,49 @@ export default {
      watchBackWXS(){
         this.toSettings();
     },
+    afterRead(file) {
+      this.showstart = true;
+      if (file&&!Array.isArray(file)){   
+          file=[file]
+      }
+      file.forEach(iteam=>{
+        lrz(iteam.file, {
+          quality: 0.2    //自定义使用压缩方式
+        })  
+        .then(rst=> {
+          let formdata = new FormData();
+          formdata.append("files", rst.file);
+          formdata.append("imgType", "bikeImg");
+          this.$fetchPost("uploadFiles", formdata, "json").then(res => {
+            if (res.data) {
+               this.photo.push(res.data[0].fileName);
+              this.showPhoto.push(res.data[0].filePath);
+              this.showstart = false;
+              //  file.file.status = 'done';
+            }
+          });
+        })
+      })
+      
+     
+    },
+    beforeRead(file){
+      // this.showstart = true;
+      if(file.length>4){
+        MessageBox.alert("", {
+          message: "最多上传4张照片",
+          title: "提示"
+        }).then(action => {});
+      }
+       return true;
+      
+    },
     //删除图片
     deleteImg(index) {
       this.photo.splice(index, 1);
       this.showPhoto.splice(index, 1);
     },
-    //添加图片
-    addImg() {
-      this.downPictur("feedbackImg");
-    },
+   
     //获取图像
     getImage(imgName, url) {
       this.photo.push(imgName);
@@ -137,6 +192,12 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  .wrapperfast {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
   .header {
     height: 1.173333rem;
     display: flex;

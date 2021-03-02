@@ -12,15 +12,20 @@ import 'babel-polyfill' //兼容ie
 import store from './stores' //vuex
 import 'lib-flexible'
 import 'animate.css'
+import lrz from 'lrz'  
 // import axios from 'axios'
 // Vue.prototype.$axios = axios
 import $ from 'zepto'
 import common from './libs/common.js'
+import './libs/appback.js'
 import Vconsole from 'vconsole'
 import VuePreview from 'vue-preview'
 import { Swipe, SwipeItem } from 'mint-ui'
 import VueLazyLoad from 'vue-lazyload'
 import VueScroller from 'vue-scroller'
+import Vant from 'vant';
+import 'vant/lib/index.css';
+Vue.use(Vant);
 Vue.use(VueScroller)
 Vue.use(VueLazyLoad, {
   preLoad: 1,
@@ -48,7 +53,7 @@ Vue.use(mintUI)
 // Vue.prototype.Ip = 'http://10.1.30.202:18088'
 //图片地址
 // Vue.prototype.Ip = 'http://101.231.47.116:12333'
-Vue.prototype.Ip = 'http://106.14.198.128:18088'
+Vue.prototype.Ip = 'http://101.132.45.201:18088'
 // Vue.prototype.Ip = 'https://bike.sitiits.com/'
 Vue.config.productionTip = false
 /* eslint-disable no-new */

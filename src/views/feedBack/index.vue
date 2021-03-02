@@ -262,9 +262,7 @@ export default {
         }
       }
     },
-    clickImage () {
-      this.downPictur("bikeImg");
-    },
+    
     getImage (val, row) {
       this.dispachPhoto.push(val);
       this.formMessage.handleAfterURLs.push(row);

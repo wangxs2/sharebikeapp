@@ -1,6 +1,11 @@
 
 <template>
   <div class="container">
+    <van-overlay :z-index="100" :show="showstart">
+      <div class="wrapperfast">
+        <van-loading type="spinner" size="48px" vertical color="#1989fa">加载中...</van-loading>
+      </div>
+    </van-overlay>
     <mt-popup class="imgMask" v-model="popupVisible" position="right">
       <span
         class="iconfont icon-guandiao"
@@ -279,6 +284,7 @@ export default {
       menuListTop: [],
       popupVisible1: false,
       popupVisible3: false,
+      showstart: false,
       downIcon: -1,
       sheetCode: "",
       rotateS: 0,
@@ -534,6 +540,7 @@ export default {
       this.eachartNode.setOption(option);
     },
     getMap() {
+      this.showstart=true
       this.eachartNode.dispatchAction({ type: "hideTip" });
       this.popupVisible1 = true;
       this.myMap = new AMap.Map("myMap");
@@ -552,7 +559,6 @@ export default {
         zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
       });
       geolocation.getCurrentPosition((status, result) => {
-        alert(status)
         var markers = [
           {
             icon: require("../../assets/image/supervise/iconren.png"),
@@ -586,6 +592,7 @@ export default {
           });
         });
         this.myMap.setFitView();
+        this.showstart=false
       });
     },
     toHome() {
@@ -638,6 +645,13 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+.wrapperfast {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  
+  }
 .green {
   color: #ffc000;
 }

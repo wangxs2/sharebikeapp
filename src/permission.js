@@ -6,6 +6,10 @@ import {
 } from './libs/util'
 
 router.beforeEach((to, from, next) => {
+    if(document.getElementById('loading')){
+        document.body.removeChild(document.getElementById('loading'))
+      }
+      next()
     if (to.path === "/login") {
         delCookie('userId');
         store.commit("SET_ID", "");

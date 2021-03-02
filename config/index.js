@@ -13,8 +13,8 @@ module.exports = {
       '/sharebikesclean': {
         // target: 'http://10.1.30.94:8888/babyrobot',
         // target: 'http://10.1.4.163:8888/babyrobot',
-        // target: 'http://10.1.4.10:8090/sharebikesclean',   
-        target: 'http://10.1.4.174:8090/sharebikesclean',
+        // target: 'https://bike.sitiits.com:18088/sharebikesclean',   
+        target: 'http://117.131.40.190:18080/sharebikesclean',
         //  target: 'http://10.1.30.67:8090/sharebikesclean',
         // target: 'http://10.1.30.202:18181/sharebikesclean',
         // target: 'http://121.37.136.100:18181/sharebikesclean/',
@@ -30,7 +30,7 @@ module.exports = {
     },
     // Various Dev Server settings
 
-    host: '10.1.4.42', // can be overwritten by process.env.HOST
+    host: '192.168.1.111', // can be overwritten by process.env.HOST
     port: 8095, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

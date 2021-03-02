@@ -2,6 +2,11 @@
 <template>
   <div class="container">
     <!-- <div id="myMap"></div> -->
+     <van-overlay :z-index="100" :show="showstart">
+      <div class="wrapperfast">
+        <van-loading type="spinner" size="48px" vertical color="#1989fa">上传中...</van-loading>
+      </div>
+    </van-overlay>
     <mt-popup class="imgMask"
               v-model="popupVisible"
               position="right">
@@ -194,7 +199,7 @@
                 <p class="leftfont"
                    style="width:22%">接单人</p>
                 <p class="leftfont1"
-                   style="width:78%">{{item.receiveMan}}</p>
+                   style="width:78%;word-break:break-all">{{item.receiveMan}}</p>
               </div>
               <div class="topcloumson">
                 <p class="leftfont"
@@ -235,13 +240,19 @@
               </span>
             </div>
             <div v-if="formMessage.handleBeforeURLs.length<5"
-                 style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
-                 @click="clickImage">
-              <img src="../../assets/image/icon_add.png"
-                   width="52px"
-                   height="52px"
-                   alt
-                   srcset>
+            @click="downPictur"
+                 style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px">
+                <van-uploader
+              v-model="fileList"
+              multiple
+              :max-count='4'
+              :before-read="beforeRead"
+              :preview-image="false"
+              :accept="'image/png,image/jpeg'"
+              :after-read="afterRead"
+            >
+                <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
+            </van-uploader>
             </div>
           </div>
         </div>
@@ -275,13 +286,19 @@
               </span>
             </div>
             <div v-if="formMessage.handleAfterURLs.length<5"
-                 style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
-                 @click="clickImage1">
-              <img src="../../assets/image/icon_add.png"
-                   width="52px"
-                   height="52px"
-                   alt
-                   srcset>
+            @click="downPictur"
+                 style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px">
+              <van-uploader
+              v-model="fileList1"
+              multiple
+              :max-count='4'
+              :before-read="beforeRead"
+              :preview-image="false"
+              :accept="'image/png,image/jpeg'"
+              :after-read="afterRead1"
+            >
+                <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
+            </van-uploader>
             </div>
           </div>
         </div>
@@ -465,6 +482,9 @@ export default {
   data () {
     return {
       time: "",
+       fileList: [],
+      fileList1: [],
+      showstart:false,
       popupVisible: false,
       popupVisible2: false,
       popupVisible1: false,
@@ -547,10 +567,76 @@ export default {
     this.getMap();
   },
   methods: {
-    clickImage () {
-      this.imageStatus = 1;
-      this.downPictur("bikeImg");
+     afterRead(file) {
+      this.showstart = true;
+      console.log(file)
+      if (file&&!Array.isArray(file)){   
+          file=[file]
+      }
+      console.log(file)
+      file.forEach(iteam=>{
+        lrz(iteam.file, {
+          quality: 0.2    //自定义使用压缩方式
+        })  
+        .then(rst=> {
+          console.log(rst)
+          let formdata = new FormData();
+          formdata.append("files", rst.file);
+          formdata.append("imgType", "bikeImg");
+          this.$fetchPost("uploadFiles", formdata, "json").then(res => {
+            if (res.data) {
+              this.handleBefore.push(res.data[0].fileName);
+              this.formMessage.handleBeforeURLs.push(res.data[0].filePath);
+              this.showstart = false;
+              //  file.file.status = 'done';
+            }
+          });
+        })
+      })
+      
+     
     },
+    afterRead1(file) {
+      this.showstart = true;
+      console.log(file)
+      if (file&&!Array.isArray(file)){   
+          file=[file]
+      }
+      console.log(file)
+      file.forEach(iteam=>{
+        lrz(iteam.file, {
+          quality: 0.2    //自定义使用压缩方式
+        })  
+        .then(rst=> {
+          console.log(rst)
+          let formdata = new FormData();
+          formdata.append("files", rst.file);
+          formdata.append("imgType", "bikeImg");
+          this.$fetchPost("uploadFiles", formdata, "json").then(res => {
+            if (res.data) {
+               this.handleAfter.push(res.data[0].fileName);
+              this.formMessage.handleAfterURLs.push(res.data[0].filePath);
+              this.showstart = false;
+              //  file.file.status = 'done';
+            }
+          });
+        })
+      })
+      
+     
+    },
+    beforeRead(file){
+      // this.showstart = true;
+      if(file.length>4){
+        MessageBox.alert("", {
+          message: "最多上传4张照片",
+          title: "提示"
+        }).then(action => {});
+      }
+       return true;
+      
+    },
+   
     rotate () {
       this.rotateS = this.rotateS + 90;
     },
@@ -747,7 +833,6 @@ export default {
     },
     clickImage1 () {
       this.imageStatus = 2;
-      this.downPictur("bikeImg");
     },
     handleClose () {
     },
@@ -878,6 +963,8 @@ export default {
       }
     },
     submit () {
+      console.log(this.formMessage.arrangeNum)
+        console.log(this.formMessage.cleanNum)
       if (this.formMessage.handleBeforeURLs.length == 0) {
         MessageBox.alert("", {
           message: "请上传整理前照片",
@@ -890,10 +977,11 @@ export default {
         }).then(action => { });
       } else if (
         (this.formMessage.arrangeNum == "" &&
-          this.formMessage.cleanNum == "") ||
+          this.formMessage.cleanNum == "") ||(this.formMessage.arrangeNum == undefined&&this.formMessage.cleanNum == undefined)||
         (this.formMessage.arrangeNum < 0 || this.formMessage.cleanNum < 0) ||
         (this.formMessage.arrangeNum == 0 && this.formMessage.cleanNum == 0) || this.formMessage.arrangeNum > 100 || this.formMessage.cleanNum > 100
       ) {
+        
         MessageBox.alert("", {
           message: "整理或清运数量有误",
           title: "提示"
@@ -953,6 +1041,13 @@ p {
   overflow: hidden;
   flex-direction: column;
   background-color: #f2f2f2;
+  .wrapperfast {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  
+  }
   .companyBike {
     color: #fff;
     font-size: 0.34rem;

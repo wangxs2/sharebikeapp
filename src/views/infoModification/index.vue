@@ -1,50 +1,81 @@
 <template>
   <div class="container">
+    <van-overlay :z-index="100" :show="showstart">
+      <div class="wrapperfast">
+        <van-loading type="spinner" size="48px" vertical color="#1989fa">上传中...</van-loading>
+      </div>
+    </van-overlay>
     <div class="header">
-      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt="" @click="toUserInfo">
+      <img src="@/assets/image/infoModification/nav_1_back@2x.png" alt @click="toUserInfo" />
       <div class="header-title">个人信息修改</div>
       <div></div>
       <!-- <img src="" alt=""> -->
-
     </div>
     <div class="content">
       <!-- <div class="user-info-box user-info-avatar box-margin-large" @click="popupVisible = true"> -->
-      <div class="user-info-box user-info-avatar box-margin-large" @click="clickImage()">
+      <div class="user-info-box user-info-avatar box-margin-large" @click="downPictur">
         <div class="info-title">头像</div>
-        <div class="info-content">
-          <img class="user-avatar-arrow" src="@/assets/image/infoModification/icon_next@2x.png" alt="">
-          <img class="user-avatar" :src="Ip + userInfoNew.imageURL" alt="" v-if="userInfoNew.imageURL">
-          <img class="user-avatar" src="@/assets/image/infoModification/默认头像@2x.png" alt="" v-else>
+        <div class="info-content"  >
+          <van-uploader
+            v-model="fileList"
+            :before-read="beforeRead"
+            :preview-image="false"
+            :accept="'image/png,image/jpeg'"
+            :after-read="afterRead"
+          >
+            <img
+              class="user-avatar-arrow"
+              
+              src="@/assets/image/infoModification/icon_next@2x.png"
+              alt
+            />
+          </van-uploader>
 
+          <img class="user-avatar" :src="Ip + userInfoNew.imageURL" alt v-if="userInfoNew.imageURL" />
+          <img class="user-avatar" src="@/assets/image/infoModification/默认头像@2x.png" alt v-else />
         </div>
       </div>
       <div class="user-info-box box-margin-large">
         <div class="info-title">姓名</div>
-        <input class="info-content" type="text" name="" id="" v-model="userInfoNew.realName">
-
+        <input class="info-content" type="text" name id v-model="userInfoNew.realName" />
       </div>
       <div class="user-info-box">
         <div class="info-title">性别</div>
         <div class="info-content">
           <div class="info-gender-box" @click="setGenderW">
-            <img src="@/assets/image/infoModification/icon_select_pre@2x.png" alt="" v-if="userInfoNew.sex == 'W'">
-            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt="" v-else>
+            <img
+              src="@/assets/image/infoModification/icon_select_pre@2x.png"
+              alt
+              v-if="userInfoNew.sex == 'W'"
+            />
+            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt v-else />
             <div class="info-gender">女</div>
           </div>
           <div class="info-gender-box" @click="setGenderM">
-            <img src="@/assets/image/infoModification/icon_select_pre@2x.png" alt="" v-if="userInfoNew.sex == 'M'">
-            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt="" v-else>
+            <img
+              src="@/assets/image/infoModification/icon_select_pre@2x.png"
+              alt
+              v-if="userInfoNew.sex == 'M'"
+            />
+            <img src="@/assets/image/infoModification/icon_select_nor@2x.png" alt v-else />
             <div class="info-gender">男</div>
           </div>
         </div>
       </div>
       <div class="user-info-box box-margin-large">
         <div class="info-title">邮箱</div>
-        <input class="info-content" type="text" name="" id="" v-model="userInfoNew.emailAddr">
+        <input class="info-content" type="text" name id v-model="userInfoNew.emailAddr" />
       </div>
       <div class="user-info-box">
         <div class="info-title">手机号</div>
-        <input class="info-content" type="text" name="" id="" v-model="userInfoNew.phoneNum" @blur="checkPhoneNum">
+        <input
+          class="info-content"
+          type="text"
+          name
+          id
+          v-model="userInfoNew.phoneNum"
+          @blur="checkPhoneNum"
+        />
       </div>
     </div>
     <div class="bottom" @click="saveChange">
@@ -70,6 +101,8 @@ export default {
   data() {
     return {
       popupVisible: false,
+      showstart: false,
+      fileList: [],
       userInfoNew: {},
       updetailImage: ""
     };
@@ -79,24 +112,51 @@ export default {
   created() {
     window.getImage = this.getImage;
     this.userInfoNew = this.cloneObj(this.userInfo);
-    window.watchBackWXS=this.watchBackWXS;  
+    window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
-    //选择头像
-    clickImage() {
-      this.downPictur("headImg");
+   
+ 
+    afterRead(file) {
+      this.showstart = true;
+      if (file && !Array.isArray(file)) {
+        file = [file];
+      }
+      file.forEach(iteam => {
+        lrz(iteam.file, {
+          quality: 0.2 //自定义使用压缩方式
+        }).then(rst => {
+          let formdata = new FormData();
+          formdata.append("files", rst.file);
+          formdata.append("imgType", "bikeImg");
+          this.$fetchPost("uploadFiles", formdata, "json").then(res => {
+            if (res.data) {
+              this.userInfoNew.imageURL = res.data[0].filePath;
+              this.updetailImage = res.data[0].fileName;
+              this.showstart = false;
+              //  file.file.status = 'done';
+            }
+          });
+        });
+      });
     },
-    //设置头像
-    getImage(val, row) {
-      this.userInfoNew.imageURL = row;
-      this.updetailImage = val;
+    beforeRead(file) {
+      // this.showstart = true;
+     
+      if (file.length > 4) {
+        MessageBox.alert("", {
+          message: "最多上传4张照片",
+          title: "提示"
+        }).then(action => {});
+      }
+      return true;
     },
     //返回个人信息修改
     toUserInfo() {
       this.$router.push("/layout/me");
     },
-    watchBackWXS(){
-        this.toUserInfo();
+    watchBackWXS() {
+      this.toUserInfo();
     },
     checkPhoneNum() {},
     //设置性别
@@ -124,7 +184,7 @@ export default {
             return;
           }
           //手机号不为空
-          if (this.userInfoNew.phoneNum!=="") {
+          if (this.userInfoNew.phoneNum !== "") {
             let phoneNumCheck = validatePhoneNum(this.userInfoNew.phoneNum);
             if (phoneNumCheck === false) {
               MessageBox("提示", "手机号格式错误！");
@@ -150,7 +210,7 @@ export default {
               ? this.updetailImage
               : this.userInfoNew.image
           };
-          this.$fetchPut("user/updateAppUser", updateData,'json').then(res => {
+          this.$fetchPut("user/updateAppUser", updateData, "json").then(res => {
             if (res.status === 0) {
               Toast("操作成功");
               this.$store.dispatch("GetUserInfo");
@@ -174,6 +234,12 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  .wrapperfast {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
   .header {
     height: 1.173333rem;
     display: flex;

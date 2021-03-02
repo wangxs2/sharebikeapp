@@ -528,7 +528,7 @@ export default {
           itram.lnglat = [itram.gaodeLongitude, itram.gaodeLatitude];
           itram.style = itram.status;
         });
-        console.log(res.list);
+        console.log(4566);
         this.getMass(res.list);
       });
     },
@@ -801,6 +801,7 @@ export default {
       this.searchCondition.pageSize = 15;
     },
     getListData2() {
+
       this.searchCondition.page = 1;
       this.$fetchGet("dispatch/pageDispatch", this.searchCondition).then(
         res => {
@@ -809,6 +810,7 @@ export default {
       );
     },
     infinite(done) {
+      console.log(4)
       if (this.requestFlage) {
         this.searchCondition.page++;
         this.$fetchGet("dispatch/pageDispatch", this.searchCondition).then(

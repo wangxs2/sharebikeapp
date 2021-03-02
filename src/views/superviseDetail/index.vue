@@ -2,6 +2,11 @@
 
 <template>
   <div class="container">
+     <van-overlay :z-index="100" :show="showstart">
+      <div class="wrapperfast">
+        <van-loading type="spinner" size="48px" vertical color="#1989fa">加载中...</van-loading>
+      </div>
+    </van-overlay>
     <mt-popup class="imgMask" v-model="popupVisible" position="right">
       <span
         class="iconfont icon-guandiao"
@@ -199,7 +204,7 @@
                 </div>
                 <div class="topcloumson">
                   <p class="leftfont" style="width:22%">接单人</p>
-                  <p class="leftfont1" style="width:78%">{{item.receiveMan}}</p>
+                  <p class="leftfont1" style="width:78%;word-break:break-all">{{item.receiveMan}}</p>
                 </div>
                 <div class="topcloumson">
                   <p class="leftfont" style="width:22%">备注</p>
@@ -338,6 +343,7 @@ export default {
       imgArray: [],
       rotateS: 0,
       popupVisible: false,
+      showstart: false,
       popupVisible1: false, //地图
       popupVisible3: false, //不合格理由
       listdetail: {},
@@ -666,6 +672,7 @@ export default {
       });
     },
     getMap() {
+      this.showstart=true
       this.popupVisible1 = true;
       this.myMap = new AMap.Map("myMap");
       let geolocation = new AMap.Geolocation({
@@ -716,6 +723,7 @@ export default {
           });
         });
         this.myMap.setFitView();
+        this.showstart=false
       });
     },
     // 选择公司
@@ -791,6 +799,13 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+.wrapperfast {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  
+  }
 .green {
   color: red;
 }

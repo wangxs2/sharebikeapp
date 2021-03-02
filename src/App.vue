@@ -102,4 +102,7 @@ export default {
 .mint-cell {
   background-color: transparent;
 }
+span{
+  word-break:break-all
+}
 </style>

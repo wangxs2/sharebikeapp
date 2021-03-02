@@ -1,6 +1,11 @@
 
 <template>
   <div class="container">
+    <van-overlay :z-index="100" :show="showstart">
+      <div class="wrapperfast">
+        <van-loading type="spinner" size="48px" vertical color="#1989fa">上传中...</van-loading>
+      </div>
+    </van-overlay>
     <mt-popup class="imgMask"
               v-model="popupVisible1"
               position="right">
@@ -110,14 +115,20 @@
                    srcset>
             </span>
           </div>
-          <div v-if="dispachPhotoUrls.length<5"
-               style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
-               @click="clickImage">
-            <img src="../../assets/image/icon_add.png"
-                 width="52px"
-                 height="52px"
-                 alt
-                 srcset>
+          <div v-if="dispachPhotoUrls.length<4"
+          @click="downPictur"
+               style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px">
+              <van-uploader
+              v-model="fileList"
+              multiple
+              :max-count='4'
+              :before-read="beforeRead"
+              :preview-image="false"
+              :accept="'image/png,image/jpeg'"
+              :after-read="afterRead"
+            >
+                <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
+            </van-uploader>
           </div>
         </div>
       </div>
@@ -245,6 +256,8 @@ export default {
     return {
       time: "",
       isDisable: false,
+      fileList:[],
+      showstart:false,
       changeId: -1,
       rotateS: 0,
       dealMethod: "",
@@ -336,8 +349,45 @@ export default {
     window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
-    clickImage () {
-      this.downPictur("bikeImg");
+    afterRead(file) {
+      this.showstart = true;
+      console.log(file)
+      if (file&&!Array.isArray(file)){   
+          file=[file]
+      }
+      console.log(file)
+      file.forEach(iteam=>{
+        lrz(iteam.file, {
+          quality: 0.2    //自定义使用压缩方式
+        })  
+        .then(rst=> {
+          console.log(rst)
+          let formdata = new FormData();
+          formdata.append("files", rst.file);
+          formdata.append("imgType", "bikeImg");
+          this.$fetchPost("uploadFiles", formdata, "json").then(res => {
+            if (res.data) {
+               this.formMessage.dispachPhoto.push(res.data[0].fileName);
+              this.dispachPhotoUrls.push(res.data[0].filePath);
+              this.showstart = false;
+              //  file.file.status = 'done';
+            }
+          });
+        })
+      })
+      
+     
+    },
+    beforeRead(file){
+      // this.showstart = true;
+      if(file.length>4){
+        MessageBox.alert("", {
+          message: "最多上传4张照片",
+          title: "提示"
+        }).then(action => {});
+      }
+       return true;
+      
     },
     addCompCtrolsa () {
       this.addressCtrol = '';
@@ -359,19 +409,25 @@ export default {
       return val;
     },
     placeClick () {
-      if (this.downAddress() == false || this.getLocation() == false) {
-        MessageBox.alert("", {
-          message: "请在权限管理里面打开定位权限",
-          title: "提示"
-        }).then(action => { });
-      } else {
-        if (this.formMessage.handleAddr) {
+      // if (this.downAddress() == false || this.getLocation() == false) {
+      //   MessageBox.alert("", {
+      //     message: "请在权限管理里面打开定位权限",
+      //     title: "提示"
+      //   }).then(action => { });
+      // } else {
+      //   if (this.formMessage.handleAddr) {
+      //     this.getMap(false);
+      //   } else {
+      //     this.getMap(true);
+      //   }
+      //   this.popupVisible = true;
+      // }
+       if (this.formMessage.handleAddr) {
           this.getMap(false);
         } else {
           this.getMap(true);
         }
         this.popupVisible = true;
-      }
     },
     // getAddress (row, index) {
     //   if (row.title) {
@@ -408,6 +464,7 @@ export default {
           //确认的回调
           this.formMessage.dispachPhoto.splice(id, 1);
           this.dispachPhotoUrls.splice(id, 1);
+          this.fileList.splice(id, 1);
         }
       });
     },
@@ -801,6 +858,13 @@ textarea {
   overflow: hidden;
   flex-direction: column;
   background: #f2f2f2;
+  .wrapperfast {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  
+  }
   .imgMask {
     width: 100%;
     height: 100%;

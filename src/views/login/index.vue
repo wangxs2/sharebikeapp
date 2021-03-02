@@ -1,8 +1,32 @@
 <template>
   <div class="login">
+    <van-overlay :show="showversion">
+      <div class="wrapper" @click.stop>
+        <div class="myvwelist">
+          <h4 style="text-align:center">更新列表</h4>
+          <div style="margin-bottom:0.3rem">
+            <div
+              style="line-height:26px"
+              v-for="(item, index) in newList"
+              :key="index"
+            >{{index+1}}、{{item}}</div>
+          </div>
+          <van-slider v-show="ispercentage" v-model="percentage" active-color="#5076ff">
+            <template #button>
+              <div class="custom-button">{{ percentage }}</div>
+            </template>
+          </van-slider>
+          <div class="btnbar">
+            <div style="color:grey;" @click="showversion=false">取消</div>
+
+            <div style="color:#5076ff;" @click="downmyapp">下载</div>
+          </div>
+        </div>
+      </div>
+    </van-overlay>
     <div class="header">
       <div class="title">
-        <img src="../../assets/image/login/LOGO@3x.png" width="150" height="132" alt srcset>
+        <img src="../../assets/image/login/LOGO@3x.png" width="150" height="132" alt srcset />
         <p>共享单车治理</p>
       </div>
     </div>
@@ -36,6 +60,12 @@ export default {
     return {
       loginId: "",
       forget: 1,
+      myvison: "",
+      newList: [],
+      apkurl: "",
+      showversion: false,
+      ispercentage: false,
+      percentage:0,
       loginMess: {
         username: "",
         password: ""
@@ -44,41 +74,90 @@ export default {
   },
   beforeCreate() {},
   mounted() {
+    document.addEventListener("plusready", () => {
+      plus.runtime.getProperty(plus.runtime.appid, inf => {
+        console.log(inf.version);
+        this.myvison = "V" + inf.version;
+      });
+    });
     if (localStorage.getItem("passWord")) {
       this.loginMess.password = localStorage.getItem("passWord");
       this.loginMess.username = localStorage.getItem("userName");
-      this.forget=2
+      this.forget = 2;
     }
     // if()
   },
   created() {
-    
     this.downApp();
     window.getLogin = this.getLogin;
   },
   methods: {
+    installApk(url) {
+      console.log(url);
+      var dtask = plus.downloader.createDownload(url, {}, (d, status) => {
+        console.log(88);
+        console.log(d);
+        if (status == 200) {
+          plus.nativeUI.toast("正在准备环境，请稍后！");
+          this.sleep(1000);
+          var path = d.filename;
+          console.log(d.filename);
+          plus.runtime.install(path);
+          this.percentage = 100;
+        } else {
+          alert("Download failed:" + status);
+        }
+      });
+      dtask.start();
+    },
+    sleep(numberMillis) {
+      var now = new Date();
+      var exitTime = now.getTime() + numberMillis;
+      while (true) {
+        now = new Date();
+        if (now.getTime() > exitTime) return;
+      }
+    },
+    clicktime() {
+      //定义定时器开始时间为0
+
+      var progressnuw = 0; //顶一个定时器
+
+      var timer = setInterval(() => {
+        //变量一直++
+
+        progressnuw++; //清楚定时器
+
+        if (progressnuw >= 100) {
+          clearInterval(timer);
+        } //获取重新赋值
+
+        this.percentage = progressnuw;
+      }, 80);
+    },
+
     getLogin(val) {
       this.loginId = val;
     },
-    // getMap(user) {
-    //   var geolocation = new BMap.Geolocation();
-    //   geolocation.getCurrentPosition(
-    //     function(r) {
-    //       if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-    //         var mk = new BMap.Marker(r.point);
-    //         this.$fetchPut("user/updateByUser", {
-    //           longitude: r.point.lng,
-    //           latitude: r.point.lat
-    //         }).then(data => {
-    //         });
-    //       } else {
-    //       }
-    //     },
-    //     { enableHighAccuracy: true }
-    //   );
-    // },
-    iconReturn(){
-      this.$router.push({path: "/forget"});
+    downApp() {
+      this.$fetchGet("sysInfo/getAPPversion").then(res => {
+        console.log(res.version);
+        this.showversion = true;
+        if (res.version !== this.myvison) {
+          this.newList = res.list;
+          this.apkurl = res.apk;
+        }
+      });
+    },
+    downmyapp() {
+      // window.location.href=this.apkurl
+      //  window.open(this.apkurl)
+      this.ispercentage = true;
+      this.clicktime()
+      this.installApk(this.apkurl);
+    },
+    iconReturn() {
+      this.$router.push({ path: "/forget" });
     },
     submitForm() {
       Indicator.open({
@@ -89,7 +168,7 @@ export default {
         localStorage.setItem("passWord", this.loginMess.password);
         localStorage.setItem("userName", this.loginMess.username);
         localStorage.setItem("forget", this.forget);
-      }else{
+      } else {
         localStorage.setItem("passWord", "");
         localStorage.setItem("userName", "");
       }
@@ -122,24 +201,19 @@ export default {
           if (res.status == "success") {
             this.$store.commit("SET_CACHE", true);
             localStorage.setItem("roleCode", res.info.roleCode);
-            document.cookie = "userId=" + res.info.id; 
-            
-             if (
-                (res.info.roleCode == "clean" ||
-                  res.info.roleCode == "manage")
-              ) {
-                this.$router.push("/layout/needtodo")
-              } else {
-                this.$router.push("/layout/supervise")
-              }
-            
+            document.cookie = "userId=" + res.info.id;
+
+            if (res.info.roleCode == "clean" || res.info.roleCode == "manage") {
+              this.$router.push("/layout/needtodo");
+            } else {
+              this.$router.push("/layout/supervise");
+            }
           } else if (res.status == "fail") {
-            localStorage.clear("passWord")
+            localStorage.clear("passWord");
             MessageBox.alert("", {
               message: res.info,
               title: "提示"
             }).then(action => {});
-
           }
         })
         .catch(res => {
@@ -161,6 +235,43 @@ export default {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+    .custom-button {
+    width: 26px;
+    color: #fff;
+    font-size: 10px;
+    line-height: 18px;
+    text-align: center;
+    background-color: #5076ff;
+    border-radius: 100px;
+  }
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0 40px;
+    .myvwelist {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background: rgb(255, 255, 255);
+      border-radius: 8px;
+      box-sizing: border-box;
+      padding: 20px 20px;
+      padding-top: 0px;
+    }
+    .btnbar {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      div {
+        flex: 1;
+        text-align: center;
+      }
+    }
+  }
   .header {
     width: 100%;
     // line-height: 1;

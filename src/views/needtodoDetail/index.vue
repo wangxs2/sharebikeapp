@@ -2,6 +2,11 @@
 
 <template>
   <div class="container">
+    <van-overlay :z-index="100" :show="showstart">
+      <div class="wrapperfast">
+        <van-loading type="spinner" size="48px" vertical color="#1989fa">加载中...</van-loading>
+      </div>
+    </van-overlay>
     <mt-popup class="imgMask"
               v-model="popupVisible"
               position="right">
@@ -166,7 +171,7 @@
                 <p class="leftfont"
                    style="width:22%">接单人</p>
                 <p class="leftfont1"
-                   style="width:78%">{{item.receiveMan}}</p>
+                   style="width:78%;word-break:break-all">{{item.receiveMan}}</p>
               </div>
               <div class="topcloumson">
                 <p class="leftfont"
@@ -300,6 +305,7 @@ export default {
       lageImg: [],//轮播显示图片
       eachartNode: null, //echarts
       popupVisible1: false,
+      showstart: false,
       ifCleanByBike: "", //是否分成企业填写整理数
       indexImage: 0,
       sheetCode: "",
@@ -355,6 +361,7 @@ export default {
   },
   methods: {
     getMap () {
+      this.showstart=true
       this.popupVisible1 = true;
       this.myMap = new AMap.Map("myMap");
       let geolocation = new AMap.Geolocation({
@@ -399,6 +406,7 @@ export default {
           });
         });
         this.myMap.setFitView();
+        this.showstart=false
 
 
 
@@ -615,6 +623,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wrapperfast {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  
+  }
 .green {
   color: #ffc000;
 }

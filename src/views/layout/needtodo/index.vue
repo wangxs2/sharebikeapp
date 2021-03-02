@@ -792,6 +792,9 @@ export default {
       p {
         margin: 0;
         padding: 0;
+        span{
+          word-break:break-all
+        }
       }
       box-sizing: border-box;
     }

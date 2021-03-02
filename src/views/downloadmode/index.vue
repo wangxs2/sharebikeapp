@@ -52,10 +52,6 @@ export default {
       this.photo.splice(index, 1);
       this.showPhoto.splice(index, 1);
     },
-    //添加图片
-    addImg() {
-      this.downPictur("feedbackImg");
-    },
     //获取图像
     getImage(imgName, url) {
       this.photo.push(imgName);
