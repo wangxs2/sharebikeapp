@@ -13,10 +13,10 @@
     </div>
     <div class="content">
       <!-- <div class="user-info-box user-info-avatar box-margin-large" @click="popupVisible = true"> -->
-      <div class="user-info-box user-info-avatar box-margin-large" @click="downPictur">
+      <div class="user-info-box user-info-avatar box-margin-large" @click="clickImage()">
         <div class="info-title">头像</div>
         <div class="info-content"  >
-          <van-uploader
+          <!-- <van-uploader
             v-model="fileList"
             :before-read="beforeRead"
             :preview-image="false"
@@ -29,7 +29,13 @@
               src="@/assets/image/infoModification/icon_next@2x.png"
               alt
             />
-          </van-uploader>
+          </van-uploader> -->
+           <img
+              class="user-avatar-arrow"
+              
+              src="@/assets/image/infoModification/icon_next@2x.png"
+              alt
+            />
 
           <img class="user-avatar" :src="Ip + userInfoNew.imageURL" alt v-if="userInfoNew.imageURL" />
           <img class="user-avatar" src="@/assets/image/infoModification/默认头像@2x.png" alt v-else />
@@ -115,6 +121,9 @@ export default {
     window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
+     clickImage() {
+      this.downPictur("headImg");
+    },
    
  
     afterRead(file) {

@@ -116,9 +116,9 @@
             </span>
           </div>
           <div v-if="dispachPhotoUrls.length<4"
-          @click="downPictur"
+          @click="clickImage"
                style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px">
-              <van-uploader
+              <!-- <van-uploader
               v-model="fileList"
               multiple
               :max-count='4'
@@ -128,7 +128,8 @@
               :after-read="afterRead"
             >
                 <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
-            </van-uploader>
+            </van-uploader> -->
+            <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
           </div>
         </div>
       </div>
@@ -349,6 +350,9 @@ export default {
     window.watchBackWXS = this.watchBackWXS;
   },
   methods: {
+    clickImage () {
+      this.downPictur("bikeImg");
+    },
     afterRead(file) {
       this.showstart = true;
       console.log(file)

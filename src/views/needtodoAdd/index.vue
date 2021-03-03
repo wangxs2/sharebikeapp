@@ -240,9 +240,9 @@
               </span>
             </div>
             <div v-if="formMessage.handleBeforeURLs.length<5"
-            @click="downPictur"
+            @click="clickImage"
                  style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px">
-                <van-uploader
+                <!-- <van-uploader
               v-model="fileList"
               multiple
               :max-count='4'
@@ -252,7 +252,8 @@
               :after-read="afterRead"
             >
                 <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
-            </van-uploader>
+            </van-uploader> -->
+            <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
             </div>
           </div>
         </div>
@@ -286,9 +287,9 @@
               </span>
             </div>
             <div v-if="formMessage.handleAfterURLs.length<5"
-            @click="downPictur"
+            @click="clickImage1"
                  style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px">
-              <van-uploader
+              <!-- <van-uploader
               v-model="fileList1"
               multiple
               :max-count='4'
@@ -298,7 +299,8 @@
               :after-read="afterRead1"
             >
                 <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
-            </van-uploader>
+            </van-uploader> -->
+            <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
             </div>
           </div>
         </div>
@@ -567,6 +569,14 @@ export default {
     this.getMap();
   },
   methods: {
+      clickImage1 () {
+      this.imageStatus = 2;
+      this.downPictur("bikeImg");
+    },
+    clickImage () {
+      this.imageStatus = 1;
+      this.downPictur("bikeImg");
+    },
      afterRead(file) {
       this.showstart = true;
       console.log(file)
@@ -831,9 +841,7 @@ export default {
         }
       });
     },
-    clickImage1 () {
-      this.imageStatus = 2;
-    },
+  
     handleClose () {
     },
     splitsa (val) {

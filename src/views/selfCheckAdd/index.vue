@@ -145,10 +145,10 @@
           </div>
           <div
             v-show="formMessage.handleBeforeURLs.length<4"
-            @click="downPictur"
+            @click="clickImage"
             style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
           >
-            <van-uploader
+            <!-- <van-uploader
               v-model="fileList"
               multiple
               :max-count='4'
@@ -158,7 +158,8 @@
               :after-read="afterRead"
             >
             <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
-            </van-uploader>
+            </van-uploader> -->
+            <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
           </div>
         </div>
       </div>
@@ -189,11 +190,11 @@
           </div>
           <div
             v-if="formMessage.handleAfterURLs.length<4"
-            @click="downPictur"
+            @click="clickImage1"
             style="width:100px;height:100px;background:#F2F2F2;box-sizing: border-box;padding:24px"
           >
             <!-- <img src="../../assets/image/icon_add.png" width="52px" height="52px" alt srcset /> -->
-             <van-uploader
+             <!-- <van-uploader
               v-model="fileList1"
               multiple
               :max-count='4'
@@ -203,7 +204,8 @@
               :after-read="afterRead1"
             >
                 <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
-            </van-uploader>
+            </van-uploader> -->
+            <img alt="等待传图" width="52px" height="52px" src="../../assets/image/icon_add.png" />
           </div>
         </div>
       </div>
@@ -547,7 +549,7 @@ export default {
       this.areakids = this.$route.query.areakids;
       this.areaarr = this.$route.query.areaarr;
     }
-    // this.downAddress();
+    this.downAddress();
     this.getbikeCleanCompany();
     window.getImage = this.getImage;
     window.getLocation = this.getLocation;
@@ -735,6 +737,24 @@ export default {
         //   areakids: this.areakids
         // }
       });
+    },
+    clickImage () {
+      this.imageStatus = 1;
+      this.downPictur("bikeImg");
+    },
+    clickImage1 () {
+      this.imageStatus = 2;
+      this.downPictur("bikeImg");
+    },
+    getImage (val, row) {
+      if (this.imageStatus == 1) {
+        this.formMessage.handleBefore.push(val);
+        this.formMessage.handleBeforeURLs.push(row);
+      }
+      if (this.imageStatus == 2) {
+        this.formMessage.handleAfter.push(val);
+        this.formMessage.handleAfterURLs.push(row);
+      }
     },
     placeClick() {
       // if (this.downAddress() == false || this.getLocation() == false) {

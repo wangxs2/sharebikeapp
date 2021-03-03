@@ -157,23 +157,34 @@ export default {
       }
       return newobj
     }
-    Vue.prototype.downPictur = function() {
-      if(window.plus) {
-        plus.android.requestPermissions(['android.permission.CAMERA'], function(e){
-          if(e.deniedAlways.length>0){    //权限被永久拒绝
-              // 弹出提示框解释为何需要定位权限，引导用户打开设置页面开启
-              Dialog.alert({
-                title: '单车治理(相机权限)',
-                message: '当前状态无法拍摄，请尝试以下方案解决：\n1、未开启拍摄权限：在设置应用权限中允许使用拍摄和读取文件权限\n2、摄像头被其他应用占用，请关闭其他应用程序或重启手机\n3、如果您手机系统版本是Android6.0以上，请打开读取外置存储权限',
-                messageAlign:'left'
-              }).then(() => {
-                // on close
-              });
-          }
-        })
+    // Vue.prototype.downPictur = function() {
+    //   if(window.plus) {
+    //     plus.android.requestPermissions(['android.permission.CAMERA'], function(e){
+    //       if(e.deniedAlways.length>0){    //权限被永久拒绝
+    //           // 弹出提示框解释为何需要定位权限，引导用户打开设置页面开启
+    //           Dialog.alert({
+    //             title: '单车治理(相机权限)',
+    //             message: '当前状态无法拍摄，请尝试以下方案解决：\n1、未开启拍摄权限：在设置应用权限中允许使用拍摄和读取文件权限\n2、摄像头被其他应用占用，请关闭其他应用程序或重启手机\n3、如果您手机系统版本是Android6.0以上，请打开读取外置存储权限',
+    //             messageAlign:'left'
+    //           }).then(() => {
+    //             // on close
+    //           });
+    //       }
+    //     })
 
-      }
+    //   }
       
+    // }
+    Vue.prototype.downPictur = function(val) {
+      if (isSystem()) {
+        return true
+      } else {
+        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+          window.webkit.messageHandlers.photo.postMessage({ body: val })
+        } else if (/(Android)/i.test(navigator.userAgent)) {
+          Android.requestPicture(val)
+        }
+      }
     }
     Vue.prototype.downAddress = function() {
       if (isSystem()) {
@@ -188,17 +199,17 @@ export default {
         }
       }
     }
-    // Vue.prototype.downApp = function() {
-    //   if (isSystem()) {
-    //     return true
-    //   } else {
-    //     if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-    //       window.webkit.messageHandlers.login.postMessage({ body: 'nowlogin' })
-    //     } else if (/(Android)/i.test(navigator.userAgent)) {
-    //       Android.requestTerminal()
-    //     }
-    //   }
-    // }
+    Vue.prototype.downApp = function() {
+      if (isSystem()) {
+        return true
+      } else {
+        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+          window.webkit.messageHandlers.login.postMessage({ body: 'nowlogin' })
+        } else if (/(Android)/i.test(navigator.userAgent)) {
+          Android.requestTerminal()
+        }
+      }
+    }
     /**
      *全局过滤 时间
      */

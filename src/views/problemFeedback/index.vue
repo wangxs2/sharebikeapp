@@ -22,8 +22,8 @@
             <img class="img-added" :src="Ip + item" alt="">
             <img class="del-img" src="@/assets/image/problemFeedback/delete@2x.png" alt="" @click="deleteImg(index)">
           </div>
-          <div @click="downPictur">
-             <van-uploader
+          <div @click="addImg">
+             <!-- <van-uploader
               v-model="fileList"
               multiple
               :max-count='4'
@@ -33,7 +33,8 @@
               :after-read="afterRead"
             >
           <img class="img-add-btn" src="@/assets/image/problemFeedback/add@2x.png" alt="" v-if="photo.length<4" />
-          </van-uploader>
+          </van-uploader> -->
+          <img class="img-add-btn" src="@/assets/image/problemFeedback/add@2x.png" alt="" v-if="photo.length<4" />
           </div>
          
           <div class="img-add-note" v-if="photo.length<4">至多上传四张图片</div>
@@ -80,6 +81,10 @@ export default {
     //返回个人中心
     toSettings() {
       this.$router.push("/settings");
+    },
+     //添加图片
+    addImg() {
+      this.downPictur("feedbackImg");
     },
      watchBackWXS(){
         this.toSettings();
