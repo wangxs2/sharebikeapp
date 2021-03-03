@@ -344,6 +344,7 @@ export default {
       this.areakids = this.$route.query.areakids;
       this.areaarr = this.$route.query.areaarr;
     }
+    this.downAddress();
     this.getAll();
     window.getImage = this.getImage;
     window.getLocation = this.getLocation;

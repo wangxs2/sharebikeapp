@@ -89,6 +89,7 @@ const user = {
                 zoomToAccuracy: false //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
             });
             geolocation.getCurrentPosition((status, result) => {
+                console.log(status)
                 if (status == "complete") {
                     commit('SET_DISTRICT', result.addressComponent.district);
                     commit('SET_ADDRESSFlAG', false);

@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <van-overlay :show="showversion">
+    <!-- <van-overlay :show="showversion">
       <div class="wrapper" @click.stop>
         <div class="myvwelist">
           <h4 style="text-align:center">更新列表</h4>
@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-    </van-overlay>
+    </van-overlay> -->
     <div class="header">
       <div class="title">
         <img src="../../assets/image/login/LOGO@3x.png" width="150" height="132" alt srcset />
@@ -139,16 +139,16 @@ export default {
     getLogin(val) {
       this.loginId = val;
     },
-    downApp() {
-      this.$fetchGet("sysInfo/getAPPversion").then(res => {
-        console.log(res.version);
-        this.showversion = true;
-        if (res.version !== this.myvison) {
-          this.newList = res.list;
-          this.apkurl = res.apk;
-        }
-      });
-    },
+    // downApp() {
+    //   this.$fetchGet("sysInfo/getAPPversion").then(res => {
+    //     console.log(res.version);
+    //     this.showversion = true;
+    //     if (res.version !== this.myvison) {
+    //       this.newList = res.list;
+    //       this.apkurl = res.apk;
+    //     }
+    //   });
+    // },
     downmyapp() {
       // window.location.href=this.apkurl
       //  window.open(this.apkurl)

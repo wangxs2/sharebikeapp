@@ -6,6 +6,7 @@ import {
 } from './libs/util'
 
 router.beforeEach((to, from, next) => {
+
     if(document.getElementById('loading')){
         document.body.removeChild(document.getElementById('loading'))
       }

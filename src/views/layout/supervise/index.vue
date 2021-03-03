@@ -7,7 +7,7 @@
       <span
         v-if="addressFlag"
         style="font-size:0.4rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
-      >定位中...</span>
+      >{{gpsadress}}</span>
       <span
         v-if="!addressFlag"
         style="font-size:0.4rem;width:25%;padding-left:2%;text-align:left;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"

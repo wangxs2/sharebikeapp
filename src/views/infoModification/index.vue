@@ -124,7 +124,11 @@ export default {
      clickImage() {
       this.downPictur("headImg");
     },
-   
+     //设置头像
+    getImage(val, row) {
+      this.userInfoNew.imageURL = row;
+      this.updetailImage = val;
+    },
  
     afterRead(file) {
       this.showstart = true;
