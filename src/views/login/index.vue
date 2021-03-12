@@ -1,15 +1,21 @@
 <template>
   <div class="login">
-    <!-- <van-overlay :show="showversion">
+    <van-overlay :show="showversion">
       <div class="wrapper" @click.stop>
         <div class="myvwelist">
-          <h4 style="text-align:center">更新列表</h4>
-          <div style="margin-bottom:0.3rem">
-            <div
+          <h4 style="text-align:center">更新提示</h4>
+          <!-- <div style="margin-bottom:0.3rem"> -->
+            <!-- <div
               style="line-height:26px"
               v-for="(item, index) in newList"
               :key="index"
             >{{index+1}}、{{item}}</div>
+          </div> -->
+          <div style="margin-bottom:0.3rem">您好：</div>
+          <div style="text-indent:0rem;line-height:0.6rem">
+            因网站服务器转移，将停用原有服务器，安卓用户请扫描下方二维码下载最新版本。由此给您带来不便，敬请谅解。
+          </div>
+          <div style="text-align:center">
           </div>
           <van-slider v-show="ispercentage" v-model="percentage" active-color="#5076ff">
             <template #button>
@@ -17,13 +23,13 @@
             </template>
           </van-slider>
           <div class="btnbar">
-            <div style="color:grey;" @click="showversion=false">取消</div>
+            <!-- <div style="color:grey;" @click="showversion=false">取消</div> -->
 
-            <div style="color:#5076ff;" @click="downmyapp">下载</div>
+            <!-- <div style="color:#5076ff;" @click="downmyapp">下载</div> -->
           </div>
         </div>
       </div>
-    </van-overlay> -->
+    </van-overlay>
     <div class="header">
       <div class="title">
         <img src="../../assets/image/login/LOGO@3x.png" width="150" height="132" alt srcset />
@@ -74,12 +80,12 @@ export default {
   },
   beforeCreate() {},
   mounted() {
-    document.addEventListener("plusready", () => {
-      plus.runtime.getProperty(plus.runtime.appid, inf => {
-        console.log(inf.version);
-        this.myvison = "V" + inf.version;
-      });
-    });
+    // document.addEventListener("plusready", () => {
+    //   plus.runtime.getProperty(plus.runtime.appid, inf => {
+    //     console.log(inf.version);
+    //     this.myvison = "V" + inf.version;
+    //   });
+    // });
     if (localStorage.getItem("passWord")) {
       this.loginMess.password = localStorage.getItem("passWord");
       this.loginMess.username = localStorage.getItem("userName");
@@ -139,22 +145,22 @@ export default {
     getLogin(val) {
       this.loginId = val;
     },
-    // downApp() {
-    //   this.$fetchGet("sysInfo/getAPPversion").then(res => {
-    //     console.log(res.version);
-    //     this.showversion = true;
-    //     if (res.version !== this.myvison) {
-    //       this.newList = res.list;
-    //       this.apkurl = res.apk;
-    //     }
-    //   });
-    // },
+    downApp1() {
+      this.$fetchGet("sysInfo/getAPPversion").then(res => {
+        console.log(res.version);
+        this.showversion = true;
+        if (res.version !== this.myvison) {
+          this.newList = res.list;
+          this.apkurl = res.apk;
+        }
+      });
+    },
     downmyapp() {
       // window.location.href=this.apkurl
-      //  window.open(this.apkurl)
-      this.ispercentage = true;
-      this.clicktime()
-      this.installApk(this.apkurl);
+       window.open("http://101.132.45.201:18181/sharebike/bicycle101.apk")
+      // this.ispercentage = true;
+      // this.clicktime()
+      // this.installApk(this.apkurl);
     },
     iconReturn() {
       this.$router.push({ path: "/forget" });
