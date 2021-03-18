@@ -110,7 +110,7 @@
                     :key="index">
                   <td v-if='iteam.areaName!==""'
                       :rowspan="getNumber(iteam.areaId)">{{iteam.areaName}}</td>
-                  <td :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'">{{iteam.orgName}}</td>
+                  <td :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1143? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'">{{iteam.orgName}}</td>
                   <td v-for="(item,index) in iteam.bicycleNumsList"
                       :key="index">{{item}}</td>
                 </tr>
@@ -838,7 +838,7 @@ export default {
             color: #01a1ff;
           }
           .jiujiu {
-            color: #fd3121;
+            color: #4DC5BC;
           }
           .xiangqi {
             color: #00cb4b;

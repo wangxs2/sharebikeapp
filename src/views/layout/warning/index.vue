@@ -34,7 +34,7 @@
               height="38"
             />
             <img
-              v-if="iteam.orgId == 1014"
+              v-if="iteam.orgId == 1143"
               src="../../../assets/image/jiujiu.png"
               width="39"
               height="38"

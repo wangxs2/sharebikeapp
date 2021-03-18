@@ -78,7 +78,7 @@
             height="58"
           />
           <img
-            v-if="iteamList.orgId==1014"
+            v-if="iteamList.orgId==1143"
             src="../../assets/image/jiujiu.png"
             width="59"
             height="58"

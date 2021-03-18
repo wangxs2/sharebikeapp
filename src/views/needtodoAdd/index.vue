@@ -47,7 +47,7 @@
                v-for="(iteam,index) in bikeCleanCompany"
                :key="index">
             <p class="companyBike"
-               :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</p>
+               :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1143? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</p>
             <div style="margin-left:0.3rem;height:100%">
               <input v-if="bikeTitle=='整理'"
                      type="number"
@@ -390,7 +390,7 @@
               <h7 style="color:#333333;font-size:0.52rem;margin-bottom:0.11rem;margin:0">{{iteam.arrangeNum==''||iteam.arrangeNum==undefined?0:iteam.arrangeNum}}</h7>
               <span class="companyBike"
                     style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                    :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
+                    :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1143? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
             </div>
           </div>
           <div v-if="isNumberbike&&bikeCleanCompany2.length>0"
@@ -403,7 +403,7 @@
               <h7 style="color:#333333;font-size:0.52rem;margin-bottom:0.1rem;margin:0">{{iteam.arrangeNum==''||iteam.arrangeNum==undefined?0:iteam.arrangeNum}}</h7>
               <span class="companyBike"
                     style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                    :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
+                    :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1143? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
             </div>
           </div>
         </div>
@@ -447,7 +447,7 @@
               <h7 style="color:#333333;font-size:0.52rem;margin-bottom:0.11rem;margin:0">{{iteam.cleanNum==''||iteam.cleanNum==undefined?0:iteam.cleanNum}}</h7>
               <span class="companyBike"
                     style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                    :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
+                    :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1143? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
             </div>
           </div>
           <div v-if="isNumberbike1&&bikeCleanCompany2.length>0"
@@ -460,7 +460,7 @@
               <h7 style="color:#333333;font-size:0.52rem;margin-bottom:0.1rem;margin:0">{{iteam.cleanNum==''||iteam.cleanNum==undefined?0:iteam.cleanNum}}</h7>
               <span class="companyBike"
                     style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                    :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
+                    :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1143? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'">{{iteam.name}}</span>
             </div>
           </div>
         </div>
@@ -1079,7 +1079,7 @@ p {
     background: #01a1ff;
   }
   .jiujiu {
-    background: #fd3121;
+    background: #4DC5BC;
   }
   .xiangqi {
     background: #00cb4b;
@@ -1097,7 +1097,7 @@ p {
     .version-popup {
       margin: 0 auto;
       background: #fff;
-      height: 8rem;
+      height: 9rem;
       width: 8.82rem;
       border-radius: 0.16rem;
       display: flex;

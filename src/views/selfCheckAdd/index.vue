@@ -32,7 +32,7 @@
           <div class="version-popup-content" v-for="(iteam,index) in bikeCleanCompany" :key="index+1">
             <div
               class="companyBike"
-              :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
+              :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1143? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
             >{{iteam.name}}</div>
             <div style="margin-left:0.3rem;height:100%">
               <input v-show="bikeTitle=='整理'" type="number" v-model="iteam.arrangeNum" />
@@ -255,7 +255,7 @@
               <span
                 class="companyBike"
                 style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
+                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1143? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
               >{{iteam.name}}</span>
             </div>
           </div>
@@ -276,7 +276,7 @@
               <span
                 class="companyBike"
                 style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
+                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1143? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
               >{{iteam.name}}</span>
             </div>
           </div>
@@ -328,7 +328,7 @@
               <span
                 class="companyBike"
                 style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
+                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1143? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
               >{{iteam.name}}</span>
             </div>
           </div>
@@ -349,7 +349,7 @@
               <span
                 class="companyBike"
                 style="font-size:0.28rem;width:1rem;height:0.5rem;line-height: 0.32rem;padding:0.1rem"
-                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1014? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
+                :class="iteam.id == 1006 ? 'mobike' : iteam.id == 1007? 'ofo':iteam.id == 1143? 'jiujiu':iteam.id == 1015? 'haluo':iteam.id == 1059? 'xiangqi':'other'"
               >{{iteam.name}}</span>
             </div>
           </div>
@@ -1308,7 +1308,7 @@ export default {
   }
 
   .jiujiu {
-    background: #fd3121;
+    background: #4DC5BC;
   }
 
   .xiangqi {

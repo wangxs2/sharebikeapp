@@ -164,7 +164,7 @@
                 <div class="centersa">
                   <p
                     style="line-height:1.5;"
-                    :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1014? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'"
+                    :class="iteam.orgId == 1006 ? 'mobike' : iteam.orgId == 1007? 'ofo':iteam.orgId == 1143? 'jiujiu':iteam.orgId == 1015? 'haluo':iteam.orgId == 1059? 'xiangqi':'other'"
                   >{{iteam.orgName}}</p>
                   <p style="color:#666666;margin-left:0.2rem">整理</p>
                   <p
@@ -1033,7 +1033,7 @@ export default {
             font-size: 0.3rem;
           }
           .jiujiu {
-            background: #fd3121;
+            background: #4DC5BC;
             padding: 0.06rem 0.2rem;
             box-sizing: border-box;
             border-radius: 12px;

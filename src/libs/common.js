@@ -36,10 +36,16 @@ function isSystem() {
   }
   //检测平台
   var p = navigator.platform
+  console.log(p)
+  console.log(navigator.userAgent)
+  console.log(navigator.maxTouchPoints)
+  /*  * ipad环境判断更新  * iOS pre 13 以前以ua作判断，13后以platform及maxTouchPoints做判断  */
+  // isiPad = (navigator.userAgent.match(/(iPad)/) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1))
   system.win = p.indexOf('Win') == 0
   system.mac = p.indexOf('Mac') == 0
   system.x11 = p == 'X11' || p.indexOf('Linux') == 0
-  system.ipad = navigator.userAgent.match(/iPad/i) != null ? true : false
+  // system.ipad =navigator.userAgent.match(/(iPad)/) ||(navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)? true : false
+  // console.log(system.ipad)
   return system.win || system.mac || system.xll || system.ipad
 }
 export default {
@@ -176,13 +182,19 @@ export default {
       
     // }
     Vue.prototype.downPictur = function(val) {
+      console.log(isSystem(),789)
       if (isSystem()) {
         return true
       } else {
+       
         if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
           window.webkit.messageHandlers.photo.postMessage({ body: val })
         } else if (/(Android)/i.test(navigator.userAgent)) {
           Android.requestPicture(val)
+        }else{
+          console.log(isSystem(),456789)
+          console.log(isSystem(),456789)
+          window.webkit.messageHandlers.photo.postMessage({ body: val })
         }
       }
     }

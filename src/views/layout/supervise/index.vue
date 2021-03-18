@@ -207,7 +207,7 @@
               >
                 <p
                   style="line-height:1.15;text-align:center"
-                  :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'"
+                  :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1143? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'"
                 >{{item.orgName}}</p>
                 <p
                   v-if="item.dealTime!==undefined"
@@ -275,7 +275,7 @@
               >
                 <p
                   style="line-height:1.15;text-align:center"
-                  :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1014? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'"
+                  :class="item.orgId == 1006 ? 'mobike' : item.orgId == 1007? 'ofo':item.orgId == 1143? 'jiujiu':item.orgId == 1015? 'haluo':item.orgId == 1059? 'xiangqi':'other'"
                 >{{item.orgName}}</p>
                 <p
                   v-if="item.dealTime!==undefined"
@@ -963,7 +963,7 @@ export default {
           font-size: 0.3rem;
         }
         .jiujiu {
-          background: #fd3121;
+          background: #4DC5BC;
           padding: 0.06rem 0.2rem;
           box-sizing: border-box;
           border-radius: 12px;
